@@ -17,9 +17,13 @@
     <script src="backend/app/static/js/templates.js"></script>
     <script>
         // 设置token
-        var after = (document.URL).split("=")[1];
-        var token = after.split("#")[0];
-        sessionStorage.token = token;
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        sessionStorage.token = getQueryString("token");
+        sessionStorage.userid = getQueryString("user_id");
     </script>
 </body>
 </html>

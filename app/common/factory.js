@@ -64,7 +64,7 @@ routeApp.factory('timestampMarker', [function() {
     };
     return timestampMarker;
 }]);
-routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($injector,$q,$location){
+routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($injector,$q){
     var tokenInjector = {
         request: function(config){
 
@@ -79,11 +79,13 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                 method: 'GET',
                 url: url,
                 params: {
-                    token: sessionStorage.token
+                    token: sessionStorage.token,
+                    user_id: sessionStorage.user_id
                 }
             }).success(function(response){
                 sessionStorage.token = response.token;
                 config.headers['token'] = sessionStorage.token;
+                config.headers['user_id'] = sessionStorage.user_id;
                 deferred.resolve(config);
             }).error(function(){
                 // todo 跳转微信登陆

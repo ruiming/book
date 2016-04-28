@@ -1,0 +1,32 @@
+<div class="tags-hot" ng-if="!busy">
+    <div class="tags-hot-header">
+        <p>选书单</p>
+        <a ui-sref="tags">查看全部标签 > </a>
+    </div>
+    <div class="tags-hot-list">
+        <a class="btn btn-default" ng-repeat="tag in tags" ui-sref="tagBooklists({tag: tag})">{{tag}}</a>
+    </div>
+</div>
+
+<div class="booklists-box">
+    <div class="btn-group booklists-order">
+        <button class="btn btn-default" ng-click="timeOrder()">
+            时间优先
+        </button>
+        <button class="btn btn-default" ng-click="collectOrder()">
+            收藏优先
+        </button>
+    </div>
+    <div class="booklists-box-content" infinite-scroll='booklists.nextPage()'
+         infinite-scroll-disabled='booklists.busy' infinite-scroll-distance='1'>
+        <a ng-repeat="booklist in booklists.list" ui-sref="booklist({id: booklist.id})">
+            <img ng-src="{{booklist.image}}">
+            <span class="title">{{booklist.title}}</span>
+            <span class="collect">{{booklist.collect}}人收藏</span>
+            <div class="booklist-tag">
+                <button class="btn btn-default" ng-repeat="tag in booklist.tags">{{tag}}</button>
+            </div>
+        </a>
+        <div class="loading-more" ng-show="booklists.busy"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
+    </div>
+</div>

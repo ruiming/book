@@ -1,0 +1,36 @@
+<div class="me">
+    <div class="user">
+        <img ui-sref="settings" ng-src="{{user.gravatar}}">
+        <div ui-sref="settings" class="user-name">
+            <p>{{user.name}}</p>
+        </div>
+        <a ui-sref="settings"><i class="fa fa-cog fa-lg"></i></a>
+        <a ui-sref="notices"><i class="fa fa-envelope-o fa-lg"></i></a>
+    </div>
+    <div class="order-panel">
+        <a ui-sref="cart" class="order-bar-split">
+            <span>{{user.cart}}</span>
+            <span>待付款</span>
+        </a>
+        <a ui-sref="ordersWait" class="order-bar-split">
+            <span>{{user.order.wait}}</span>
+            <span>待收货</span>
+        </a>
+        <a ui-sref="ordersReceived" class="order-bar-split">
+            <span>{{user.order.received}}</span>
+            <span>待评价</span>
+        </a>
+    </div>
+    <div class="user-items">
+        <a ui-sref="point" class="user-item"><i class="fa fa-ticket"></i>积分</a>
+        <a ui-sref="orders" class="user-item"><i class="fa fa-ticket"></i>全部订单</a>
+    </div>
+    <div class="user-items">
+        <a ui-sref="booklistsCollect" class="user-item"><i class="fa fa-folder"></i>收藏</a>
+        <a ui-sref="comments" class="user-item"><i class="fa fa-comments"></i>评论</a>
+    </div>
+    <div class="user-items">
+        <a href="" class="user-item"><i class="fa fa-cloud"></i>关于</a>
+        <a href="" class="user-item"><i class="fa fa-commenting"></i>帮助与反馈</a>
+    </div>
+</div>

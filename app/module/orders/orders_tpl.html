@@ -1,0 +1,32 @@
+<loading ng-if="busy"></loading>
+<div class="order-group" ng-if="!busy">
+    <ul class="order-list">
+        <div class="empty-alert" ng-if="orders.length==0">
+            <p>您还没有订单，快去逛逛吧</p>
+        </div>
+        <li class="order-list-one" ng-repeat="order in orders">
+            <div class="order-title">
+                <span class="order-head">Bookist</span>
+                <span class="order-status">{{order.status}}</span>
+            </div>
+            <a ui-sref="orderDetail({id:order.id})">
+                <ul class="order-books">
+                    <li class="order-book" ng-repeat="book in order.books">
+                        <img ng-src="{{book.image}}">
+                        <p>{{book.title}}</p>
+                        <small ng-repeat="x in book.author"><small>{{x}} </small></small>
+                        <span class="count"> {{book.count}}本 / 共{{book.price*book.count | number:2}}元</span>
+                    </li>
+                </ul>
+            </a>
+            <div class="order-meta">
+                <div class="order-meta-price">
+                    <span class="order-method">{{order.method}}</span>
+                    <span class="order-price">实付款 {{order.price}} 元</span>
+                </div>
+                <a class="btn btn-default" ng-if="order.status=='待评价'" ui-sref="orderComments({id:order.id})">评价</a>
+                <button class="btn btn-default" ng-if="order.status!='待评价'" ng-click="receipt(order)">确认收货</button>
+            </div>
+        </li>
+    </ul>
+</div>

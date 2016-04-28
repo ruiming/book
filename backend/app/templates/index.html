@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN" ng-app="index">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Book</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="static/css/app.min.css">
+    <link rel="stylesheet" href="static/css/bookist.css?ver=5">
+</head>
+<body>
+    <div ui-view class="bookist-view"></div>
+    <navbar></navbar>
+    <script src="static/js/dependence.min.js"></script>
+    <script src="static/js/app.min.js"></script>
+    <script src="static/js/templates.js"></script>
+    <script>
+        // 设置token
+        var after = (document.URL).split("=")[1];
+        var token = after.split("#")[0];
+        sessionStorage.token = token;
+    </script>
+</body>
+</html>

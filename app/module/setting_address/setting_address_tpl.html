@@ -1,0 +1,10 @@
+<div class="setting">
+    <div class="address-list" ng-repeat="x in address" ng-click="edit($index)">
+        <p>{{x.name}}, {{x.phone}}</p>
+        <small>{{x.dorm}}</small>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-success" ui-sref="AddressAdd">添加</button>
+        <button class="btn btn-default" ng-click="return()">返回</button>
+    </div>
+</div>

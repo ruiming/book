@@ -1,0 +1,9 @@
+<div class="user-items">
+    <a class="user-item"><i class="fa fa-folder user-item-gravatar"><span>头像</span></i><img ng-src="{{user.image}}"></a>
+    <a class="user-item"><i class="fa fa-comments"><span>昵称</span></i><input type="text" ng-blur="edit()" ng-model="user.name" class="form-control edit-name"></a>
+</div>
+<div class="user-items">
+    <a class="user-item" ng-click="change()"><i class="fa fa-cloud"><span>性别</span></i><span>{{user.sex}}</span></a>
+    <a ui-sref="signature({signature: user.signature})" class="user-item"><i class="fa fa-cloud"><span>个性签名</span></i><p ng-if="user.signature!=''">{{user.signature}}</p></a>
+    <a ui-sref="address" class="user-item"><i class="fa fa-commenting"><span>我的地址</span></i></a>
+</div>

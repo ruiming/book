@@ -1,0 +1,10 @@
+<loading ng-show="busy"></loading>
+<div class="tags" ng-show="!busy">
+    <span>全部标签</span>
+    <div class="tags-group" ng-repeat="oneTags in allTags">
+        <div class="tags-group-one">
+            <p>{{oneTags.title}}</p>
+            <a class="btn btn-default"  ng-repeat="tag in oneTags.tags" ui-sref="tagBooklists({tag: tag})">{{tag}}</a>
+        </div>
+    </div>
+</div>

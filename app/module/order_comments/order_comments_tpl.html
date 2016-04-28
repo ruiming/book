@@ -1,0 +1,49 @@
+<loading ng-if="busy"></loading>
+<div class="order-group" ng-if="!busy">
+    <div class="order-list-one">
+        <div class="order-title">
+            <span class="order-head">订单详细信息</span>
+            <span class="order-status">建议您把书看完再来评价书籍哦~</span>
+        </div>
+        <ul class="order-books order-comments">
+            <li class="order-book" ng-repeat="book in order.books">
+                <a ui-sref="book({isbn: book.isbn})" class="order-img">
+                    <img ng-src="{{book.image}}">
+                </a>
+                <div class="order-comment">
+                    <textarea class="form-control" rows="3" placeholder="认真评价可以获得积分哦~"></textarea>
+                </div>
+                <div class="order-star">
+                    <span>书籍评分</span>
+                    <uib-rating ng-model="book.stars" max="5" read-only="false" class="star red-star"
+                                on-leave="overStar = null" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
+                </div>
+            </li>
+        </ul>
+        <div class="platform-comment">
+            <div class="platform-comment-title">
+                <span class="order-head">平台评分</span>
+            </div>
+            <ul class="platform-comment-items">
+                <li>
+                    <span>购书体验</span>
+                    <uib-rating ng-model="stars1" max="5" read-only="false" class="red-star star"
+                                on-leave="overStar = null" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
+                </li>
+                <li>
+                    <span>物流服务</span>
+                    <uib-rating ng-model="stars2" max="5" read-only="false" class="red-star star"
+                                on-leave="overStar = null" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
+                </li>
+                <li>
+                    <span>服务态度</span>
+                    <uib-rating ng-model="stars3" max="5" read-only="false" class="red-star star"
+                                on-leave="overStar = null" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
+                </li>
+            </ul>
+        </div>
+        <div class="order-comment-fix-bottom">
+            <button class="btn btn-danger" ng-click="comment()">发表评价</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+{% extends 'admin/model/create.html' %}
+{% macro wrap() %}
+{{ caller() }}
+{% endmacro %}
+
+{% block tail %}
+{{ super() }}
+{{ lib.form_js() }}
+
+<script>
+    function get_info(){
+        $.getJSON("/douban/"+$("#isbn").val(), function(result){
+            console.log(result);
+            $("#rate").val(result['rating']['average']);
+            $("#page").val(result['pages']);
+            $("#publisher").val(result['publisher']);
+            $("#description").val(result['summary']);
+            $("#title").val(result['title']);
+            $("#origin_title").val(result['origin_title']);
+            $("#author_description").val(result['author_intro']);
+            $("#image").val(result['images']['large']);
+            $("#sub_title").val(result['alt_title']);
+            $("#binding").val(result['binding']);
+            var price = result['price'].match(/\d+(\.\d+)?/g);
+            $("#price").val(price[0]);
+            $("#catelog").val(result['catelog']);
+            $("#publish_time").val(result['pubdate']);
+            for(var i = 0; i<result['author'].length; i++){
+                faForm.addInlineField($("#author-button"), 'author');
+                var fieldname = "textarea#author-"+ i.toString();
+                $(fieldname).val(result['author'][i]);
+            }
+            for(var i = 0; i<result['translator'].length; i++){
+                faForm.addInlineField($("#translator-button"), 'translator');
+                var fieldname = "textarea#translator-"+ i.toString();
+                $(fieldname).val(result['translator'][i]);
+            }
+            for(var i = 0; i<result['tags'].length; i++){
+                faForm.addInlineField($("#tag-button"), 'tag');
+                var fieldname = "textarea#tag-"+ i.toString() +"-name";
+                $(fieldname).val(result['tags'][i].name);
+            }
+
+        })
+
+    }
+
+    var isbn_field = $("#isbn");
+    var parent = isbn_field.parent();
+    parent.append("<a id='isbn-button' class='btn'>读取数据</a>");
+    $('#isbn-button').bind("click",get_info)
+
+</script>
+{% endblock %}

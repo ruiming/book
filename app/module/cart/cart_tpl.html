@@ -1,0 +1,39 @@
+<loading ng-if="busy"></loading>
+<div class="shop-group" ng-if="!busy">
+    <div class="shop-cart-count">
+        <div class="shop-cart-count-core">
+            <h3>小计(4本书): ¥ {{price | number:2 }}</h3>
+            <i class="fa fa-info"></i>
+            <span>享受免邮和送书上门</span>
+        </div>
+        <a class="btn btn-danger">结算</a>
+    </div>
+    <ul class="shop-cart-list">
+        <div class="empty-alert" ng-if="items.length==0">
+            <p>购物车为空，快去逛逛吧</p>
+        </div>
+        <li ng-repeat="item in items" ng-if="!item.removed">
+            <div class="shop-cart-item">
+                <a class="cart-book-image" ui-sref="book({isbn: item.isbn})">
+                    <img ng-src="{{item.image}}">
+                </a>
+                <div class="cart-book-name">
+                    <a ui-sref="book({isbn: item.isbn})">{{item.title}}</a>
+                    <div class="clearfix"></div>
+                    <span ng-repeat="x in item.author"><span>{{x}} </span></span>
+                </div>
+                <p class="cart-book-price"> ¥ {{item.price | number:2 }}</p>
+                <div class="cart-book-edit">
+                    <input type="number" ng-model="item.count" value="{{item.count}}"
+                           ng-blur="editBook(item)">
+                    <button class="btn btn-default" ng-click="removeBook(item, $index)">
+                        删除
+                    </button>
+                    <button class="btn btn-default" ng-click="mark(item, $index)">
+                        移入收藏夹
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

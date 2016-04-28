@@ -1,0 +1,109 @@
+<loading ng-if="busy"></loading>
+<div class="book-detail" ng-if="!busy">
+    <div class="book-img">
+        <img class="cover" ng-src="{{book.image}}">
+        <img class="cover-bg" ng-src="{{book.image}}">
+    </div>
+    <div class="book" >
+        <div class="book-info">
+            <h3>{{book.title}}</h3>
+            <div class="book-info-rate">
+                <uib-rating class="star wechat-fix" ng-model="book.star" max="5" read-only="true" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
+                <span class="rate">{{book.rate}}</span>
+                <span class="collect">({{book.comments.length}}人评价)</span>
+                <a class="book-info-more-option" ui-sref="bookDetail({isbn: book.isbn})" ng-click="busy=true">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="book-info-basic">
+                <span class="author" ng-if='book.author!=""'><span ng-repeat="x in book.author">{{x}} </span>/</span>
+                <span class="publisher" ng-if='book.publisher!=""'>{{book.publisher}} / </span>
+                <span class="publish_time" ng-if='book.publish_time!=""'>{{book.publish_time}}</span>
+            </div>
+        </div>
+        <div class="book-section">
+            <span name="price"> ¥ {{book.price | number:2 }}</span>
+            <button class="btn btn-success" ng-click="collect()">
+                <i class="fa" ng-class="{'fa-bookmark':!book.collected,'fa-bookmark-o':book.collected}"></i>
+                收藏
+            </button>
+            <button class="btn btn-danger" ng-click="book.cart = true">
+                <i class="fa" ng-class="{'fa-cart-plus':book.cart,'fa-shopping-cart':!book.cart}"></i>
+                加入购物车
+            </button>
+        </div>
+        <div class="clearfix"></div>
+        <div class="book-intro">
+            <span>简介</span>
+            <p ng-class="{'book-intro-less':!more,'book-intro-more':more}">{{book.description}}</p>
+            <button class="btn btn-block btn-default" ng-show="!more" ng-click="more=!more">
+                更多
+            </button>
+            <button class="btn btn-block btn-default" ng-show="more" ng-click="more=!more">
+                收起
+            </button>
+        </div>
+        <div class="book-comments">
+            <span>评论</span>
+            <div class="book-comment" ng-repeat="comment in book.comments">
+                <div class="book-comment-origin">
+                    <img ng-src="{{comment.user.avatar}}">
+                    <span>{{comment.user.username}}</span>
+                    <uib-rating class="star red-star" state-on="'fa fa-star'" state-off="'fa fa-star-o'"
+                                ng-model="comment.star" max="5" read-only="true"></uib-rating>
+                </div>
+                <p>{{comment.content}}</p>
+                <div class="comment-meta">
+                    <p>{{comment.create_time | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                    <i class="fa" ng-class={false:'fa-thumbs-o-down',true:'fa-thumbs-down'}[comment.down_already]
+                       ng-click="down(comment)">{{comment.down}}</i>
+                    <i class="fa" ng-class={false:'fa-thumbs-o-up',true:'fa-thumbs-up'}[comment.up_already]
+                       ng-click="up(comment)">{{comment.up}}</i>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="book-comments-more">
+                <a class="btn btn-default" ui-sref="commentsBook({isbn: book.isbn})">全部评论</a>
+                <button class="btn btn-default" ng-click="commentBox=!comment;">我要评论</button>
+            </div>
+            <div class="book-comment-box" ng-show="commentBox">
+                <div class="book-comment-origin">
+                    <img ng-src="{{user.avatar}}">
+                    <span class="book-comment-origin">{{user.username}}</span>
+                    <uib-rating class="star red-star" state-on="'fa fa-star'" state-off="'fa fa-star-o'"
+                                ng-model="star" max="5" read-only="false" on-hover="hoveringOver(value)"></uib-rating>
+                </div>
+                <textarea ng-model="content" class="form-control" rows="3"></textarea>
+                <div class="book-comment-post">
+                    <p>评价 "{{book.title}}"</p>
+                    <button class="btn btn-success">发表</button>
+                </div>
+            </div>
+        </div>
+        <div class="books-similarity">
+            <span>购买此书的人最近也购买</span>
+            <div class="slides-book-content">
+                <a ng-repeat="book in booksBought" ui-sref="book({isbn: book.isbn})">
+                    <img ng-src="{{book.image}}">
+                    <p>{{book.title}}</p>
+                    <uib-rating ng-model="book.star" class="red-star wechat-fix" state-on="'fa fa-star'" state-off="'fa fa-star-o'" max="5" read-only="true"></uib-rating>
+                    <span>{{book.rate}}</span>
+                </a>
+            </div>
+        </div>
+        <div class="booklists-box">
+            <span>被以下书单收集</span>
+            <div class="booklists-box-content">
+                <a ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
+                    <img ng-src="{{booklist.image}}">
+                    <span class="title">{{booklist.title}}</span>
+                    <span class="collect">{{booklist.collect}}人收藏</span>
+                    <div class="booklist-tag">
+                        <button class="btn btn-default" ng-repeat="tag in booklist.tags">{{tag}}</button>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

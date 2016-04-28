@@ -1,0 +1,19 @@
+<loading ng-if="busy"></loading>
+<ul class="notices" ng-if="!busy">
+    <div class="empty-alert" ng-if="notices.length==0">
+        <p>暂无消息</p>
+    </div>
+    <li class="notice" ng-repeat="notice in notices">
+        <div class="notice-title">
+            <p>{{notice.title}}</p>
+            <span>{{notice.create_time}}</span>
+        </div>
+        <p class="notice-content">
+            {{notice.content}}
+        </p>
+        <a class="notice-read" ng-href="#/notice/{{notice.id}}">
+            <span>查看</span>
+            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </a>
+    </li>
+</ul>

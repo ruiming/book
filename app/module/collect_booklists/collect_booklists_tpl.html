@@ -1,0 +1,21 @@
+<loading ng-if="busy"></loading>
+<div class="booklists-box collect-box" ng-if="!busy">
+    <div class="booklists-box-top btn-group">
+        <a class="btn btn-default" ui-sref="booklistsCollect">
+            书单收藏夹
+        </a>
+        <a class="btn btn-default" ui-sref="booksCollect">
+            书籍收藏夹
+        </a>
+    </div>
+    <div class="booklists-box-content">
+        <a ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
+            <img ng-src="{{booklist.image}}">
+            <span class="title">{{booklist.title}}</span>
+            <span class="collect">{{booklist.collect}}人收藏</span>
+            <div class="booklist-tag">
+                <button class="btn btn-default" ng-repeat="tag in booklist.tags">{{tag}}</button>
+            </div>
+        </a>
+    </div>
+</div>

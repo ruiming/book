@@ -1,0 +1,8 @@
+flask
+celery
+flask-mongoengine
+flask-admin
+flask-login
+requests
+gunicorn
+wechatpy

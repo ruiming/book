@@ -1,0 +1,8 @@
+<div class="setting">
+    <textarea focus-me="true" class="form-control" ng-model="signature" row="2" my-maxlength="35"></textarea>
+    <span class="number">{{35 - signature.length}}</span>
+    <div class="btn-group">
+        <button class="btn btn-success" ng-click="post()">提交</button>
+        <button class="btn btn-default" ng-click="return()">返回</button>
+    </div>
+</div>

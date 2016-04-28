@@ -2,7 +2,7 @@
 import os
 import sys
 
-from flask import Flask, render_template
+from flask import Flask
 from flask.ext.mongoengine import MongoEngine
 from flask.ext.admin import Admin
 from wechatpy.oauth import WeChatOAuth
@@ -16,12 +16,12 @@ app.config.from_object('config')
 admin = Admin(app, template_mode='bootstrap3')
 db = MongoEngine(app)
 
-wechat = WeChatOAuth(app.config['CORP_ID'], app.config['SECRET'], "/wechat_auth", state='55555')
+wechat = WeChatOAuth(app.config['CORP_ID'], app.config['SECRET'], "http://bookist.org/code2token", scope='snsapi_userinfo', state='55555')
 
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('404.html'), 404
+    return '404', 404
 
 
 # Make the LazyText(Babel) JSON serializable

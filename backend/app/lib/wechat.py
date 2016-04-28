@@ -1,5 +1,6 @@
 
-from app import wechat_client
+from app import wechat
+from app.auth.model import User
 from flask import request, abort, redirect, session
 import functools
 
@@ -7,20 +8,15 @@ import functools
 def oauth(method):
     @functools.wraps(method)
     def warpper(*args, **kwargs):
-        code = request.args.get('code', None)
-        url = wechat_client.oauth.authorize_url(request.url)
-
-        if code:
-            try:
-                user_info = wechat_client.oauth.get_user_info(code)
-            except Exception as e:
-                print e.errmsg, e.errcode
-                abort(403)
-            else:
-                session['user_info'] = user_info
+        token = request.args.get('token', None)
+        url = request.url
+        if token:
+            this_user = User.objects(wechat__access_token=token)
+            this_user = this_user.first() if this_user.count() == 1 else None
+            if not this_user:
+                return redirect(wechat.authorize_url)
         else:
-            print url
-            return redirect(url)
+            return redirect(wechat.authorize_url)
 
         return method(*args, **kwargs)
     return warpper

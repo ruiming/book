@@ -28,5 +28,6 @@ CSRF_ENABLED = True
 CSRF_SESSION_KEY = SECRET_KEY
 
 # WECHAT SETTING
-CORP_ID = 'wx83be5ba2bc5d468f'
-SECRET = 'ae9586ca3821b6f3f1ceb2a760857a9d'
+CORP_ID = os.environ.get('WECHAT_CORP_ID', 'wx83be5ba2bc5d468f')
+SECRET = os.environ.get('WECHAT_SECRET', 'ae9586ca3821b6f3f1ceb2a760857a9d')
+TOKEN = os.environ.get('WECHAT_TOKEN', '123456')

@@ -68,7 +68,7 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
     var tokenInjector = {
         request: function(config){
 
-            var url = host + '/auth';
+            var url = host + '/auth_verify';
             var deferred = $q.defer();
             var http = $injector.get('$http');
 
@@ -89,7 +89,7 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                 deferred.resolve(config);
             }).error(function(){
                 // todo 跳转微信登陆
-                window.location.replace(host + '/user');
+                window.location.replace(host);
                 deferred.resolve(config);
             });
             return deferred.promise;

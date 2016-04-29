@@ -80,12 +80,12 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                 url: url,
                 params: {
                     token: sessionStorage.token,
-                    user_id: sessionStorage.user_id
+                    id: sessionStorage.user_id
                 }
             }).success(function(response){
                 sessionStorage.token = response.token;
                 config.headers['token'] = sessionStorage.token;
-                config.headers['id'] = sessionStorage.user_id;
+                config.headers['user_id'] = sessionStorage.user_id;
                 deferred.resolve(config);
             }).error(function(){
                 // todo 跳转微信登陆

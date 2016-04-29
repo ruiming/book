@@ -90,6 +90,5 @@ gulp.watch('src/css/*.css', ['css']);
 gulp.watch(['app/module/**/*.js','app/common/*.js'], ['js']);
 gulp.watch('src/img/*.*', ['img']);
 gulp.watch('app/module/**/*.html',['templates:dist']);
-gulp.watch('index.html', ['index']);
 
 gulp.task('default', ['css','js','angular','img','templates:dist','sass']);

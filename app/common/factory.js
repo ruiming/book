@@ -89,7 +89,8 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                 deferred.resolve(config);
             }).error(function(){
                 // todo 跳转微信登陆
-                window.location.replace(host);
+                console.log("verify error");
+                // window.location.replace(host);
                 deferred.resolve(config);
             });
             return deferred.promise;

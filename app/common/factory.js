@@ -80,7 +80,7 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                 url: url,
                 params: {
                     token: sessionStorage.token,
-                    id: sessionStorage.user_id
+                    user_id: sessionStorage.user_id
                 }
             }).success(function(response){
                 sessionStorage.token = response.token;

@@ -78,8 +78,8 @@ def auth_verify():
     return 'failure', 403
 
 
-@auth_module.route('/code2token/<url>', methods=['GET'])
-def code2token(url='/'):
+@auth_module.route('/code2token', methods=['GET'])
+def code2token():
 
     code = request.args.get('code', None)
     if code:
@@ -112,5 +112,5 @@ def code2token(url='/'):
             this_user.wechat.refresh_token = token['refresh_token']
             this_user.wechat.token_time = int(time())
             this_user.save()
-            return redirect(url + "?token={}".format(token)), 301
+            return redirect("http://www.bookist.org/?token={}/#/".format(token)), 301
     return 'failure'

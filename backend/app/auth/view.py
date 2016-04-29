@@ -87,7 +87,7 @@ def code2token():
             token = wechat.fetch_access_token(code)
         except WeChatOAuthException as e:
             # logger
-            return 'failure'
+            return 'failure get token'
         else:
             print token
             this_user = User.objects(wechat_openid=token['openid'])
@@ -96,7 +96,7 @@ def code2token():
                 try:
                     user_info = wechat.get_user_info(access_token=token['access_token'])
                 except Exception as e:
-                    return 'failure'
+                    return 'failure get info'
                 else:
                     pass
                     this_user = User(
@@ -113,4 +113,4 @@ def code2token():
             this_user.wechat.token_time = int(time())
             this_user.save()
             return redirect("http://www.bookist.org/?token={}/#/".format(token)), 301
-    return 'failure'
+    return 'failure get code'

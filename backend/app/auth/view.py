@@ -59,13 +59,13 @@ def auth_verify():
         this_user = this_user.first() if this_user.count() == 1 else None
 
         if not this_user:
-            return 'failure', 403
+            return 'failure unknown user', 403
 
         if not (this_user.wechat.access_token == token and this_user.wechat.token_time + this_user.wechat.expires_in > int(time())):
             try:
                 res = wechat.refresh_access_token(this_user.wechat.refresh_token)
             except Exception as e:
-                return 'failure', 403
+                return 'failure refresh', 403
             else:
                 this_user.wechat.access_token = res['access_token']
                 this_user.wechat.expires_in = res['expires_in']
@@ -75,7 +75,7 @@ def auth_verify():
 
         return_token = this_user.wechat.access_token
         return return_message('success', {'token': return_token})
-    return 'failure', 403
+    return 'failure data', 403
 
 
 @auth_module.route('/code2token', methods=['GET'])

@@ -107,18 +107,15 @@ def code2token():
                         province=user_info['province'],
                         wechat_openid=token['openid']
                     )
-                    this_user.wechat = WechatOAuth()
-                    this_user.wechat.save()
                     this_user.save()
-
-            print token
-
-            # this_user.wechat.access_token = token['access_token']
-            # this_user.wechat.expires_in = token['expires_in']
-            # this_user.wechat.refresh_token = token['refresh_token']
-            # this_user.wechat.token_time = int(time())
-            # this_user.wechat.save()
-            # this_user.save()
+            this_user.wechat = WechatOAuth(
+                access_token=token['access_token'],
+                expires_in=token['expires_in'],
+                refresh_token=token['refresh_token'],
+                token_time=int(time())
+            )
+            this_user.wechat.save()
+            this_user.save()
             return redirect("http://www.bookist.org/?token={}/#/".format(token['access_token'])), 301
 
     return 'failure get code'

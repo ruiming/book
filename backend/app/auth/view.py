@@ -95,11 +95,11 @@ def code2token():
             this_user = this_user.first() if this_user.count() == 1 else None
             if not this_user:
                 try:
+                    print token['openid'], token['access_token']
                     user_info = wechat.get_user_info(openid=token['openid'], access_token=token['access_token'])
                 except Exception as e:
                     return 'failure get info'
                 else:
-                    pass
                     this_user = User(
                         username=user_info['nickname'],
                         country=user_info['country'],

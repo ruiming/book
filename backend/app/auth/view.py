@@ -96,6 +96,7 @@ def code2token():
             if not this_user:
                 try:
                     print token['openid'], token['access_token']
+                    print token
                     user_info = wechat.get_user_info(openid=token['openid'], access_token=token['access_token'])
                 except Exception as e:
                     return 'failure get info'

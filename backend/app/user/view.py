@@ -448,7 +448,8 @@ def user_orders():
 
 @user_module.route('/test', methods=['GET'])
 def test():
-    # this_user = User.objects.get(id='570fbe38edb62a217c267124')
-    this_user = User.objects(username='111').first()
-    print this_user.pk
-    return str(this_user.pk)
+    # # this_user = User.objects.get(id='570fbe38edb62a217c267124')
+    # this_user = User.objects(username='111').first()
+    # print this_user.pk
+    # return str(this_user.pk)
+    return request.headers['token']

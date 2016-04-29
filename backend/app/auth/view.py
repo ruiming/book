@@ -52,7 +52,7 @@ def auth_verify():
     验证token是否在有效期
     :return:
     """
-    user_id = request.args.get('id', None)
+    user_id = request.args.get('user_id', None)
     token = request.args.get('token', None)
     if user_id and token:
         this_user = User.objects(wechat_openid=user_id)

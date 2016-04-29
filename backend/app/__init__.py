@@ -16,7 +16,7 @@ app.config.from_object('config')
 admin = Admin(app, template_mode='bootstrap3')
 db = MongoEngine(app)
 
-wechat = WeChatOAuth(app.config['CORP_ID'], app.config['SECRET'], "http://bookist.org/code2token", scope='snsapi_base', state='55555')
+wechat = WeChatOAuth(app.config['CORP_ID'], app.config['SECRET'], "http://www.bookist.org/code2token", scope='snsapi_base', state='55555')
 
 
 @app.errorhandler(404)

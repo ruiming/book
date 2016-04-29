@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import app, wechat
 from flask import Blueprint, jsonify, request, render_template, redirect
-from app.auth.model import User
+from app.auth.model import User, WechatOAuth
 from app.auth.function import random_str
 from time import time
 
@@ -106,11 +106,16 @@ def code2token():
                         province=user_info['province'],
                         wechat_openid=token['openid']
                     )
+                    this_user.wechat = WechatOAuth()
+                    this_user.wechat.save()
                     this_user.save()
+
             this_user.wechat.access_token = token['access_token']
             this_user.wechat.expires_in = token['expires_in']
             this_user.wechat.refresh_token = token['refresh_token']
             this_user.wechat.token_time = int(time())
+            this_user.wechat.save()
             this_user.save()
             return redirect("http://www.bookist.org/?token={}/#/".format(token)), 301
+
     return 'failure get code'

@@ -7,14 +7,14 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
     // modify response from transformResponse and alert error
     $httpProvider.defaults.transformResponse.push(function (response) {
         if(typeof(response.data) != "undefined") {
-            if(response.status == "error"){
-                alert(response.message);
-                window.location.reload();
-            }
-            else{
+            if(response.status == "success"){
                 response = response.data;
                 return response;
             }
+        }
+        if(response.status == "error"){
+            alert(response.message);
+            window.location.reload();
         }
         return response;
     });

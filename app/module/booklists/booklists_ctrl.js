@@ -20,7 +20,7 @@ routeApp.controller('BooklistsCtrl',function($scope, $http, BL) {
     $scope.booklists = new BL(url,params);
 
 
-    // todo 时间优先
+    // 时间优先
     $scope.timeOrder = function(){
         var url = host + '/booklist';
         var params = {
@@ -31,7 +31,7 @@ routeApp.controller('BooklistsCtrl',function($scope, $http, BL) {
         $scope.booklists.nextPage();
     };
 
-    // todo 收藏优先
+    // 收藏优先
     $scope.collectOrder = function(){
         var url = host + '/booklist';
         var params = {

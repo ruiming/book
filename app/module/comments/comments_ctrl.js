@@ -14,7 +14,7 @@ routeApp.controller('CommentsCtrl',function($scope, $http, $stateParams) {
         $scope.busy = false;
     });
 
-    // todo 顶评论
+    // 顶评论
     $scope.up = function(comment){
         $http({
             method: 'POST',
@@ -31,7 +31,7 @@ routeApp.controller('CommentsCtrl',function($scope, $http, $stateParams) {
         });
     };
 
-    // todo 踩评论
+    // 踩评论
     $scope.down = function(comment){
         $http({
             method: 'POST',

@@ -25,7 +25,7 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
         $scope.busy = false;
     });
 
-    // todo 收藏书单函数,同样后端判断书单是收藏还是取消收藏
+    // 收藏书单函数,同样后端判断书单是收藏还是取消收藏
     $scope.collect = function(){
         $http({
             method: 'POST',

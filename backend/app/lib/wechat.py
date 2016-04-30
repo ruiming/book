@@ -8,8 +8,12 @@ import functools
 def oauth(method):
     @functools.wraps(method)
     def warpper(*args, **kwargs):
-        token = request.args.get('token', None)
-        user_id = request.args.get('user_id', None)
+        args_token = request.args.get('token', None)
+        header_token = request.headers.get('token', None)
+        args_user_id = request.args.get('user_id', None)
+        header_user_id = request.headers.get('user_id', None)
+        token = args_token or header_token
+        user_id = args_user_id or header_user_id
         url = request.url
         if token:
             this_user = User.objects(wechat_openid=user_id, wechat__access_token=token)

@@ -44,7 +44,6 @@ def oauth4api(method):
         user_id = request.headers.get('userid', None)
         verify = True
         verify_message = ''
-        return '{}, {}'.format(token, user_id)
         if token and user_id:
             # 验证用户是否存在
             this_user = User.objects(wechat_openid=user_id, wechat__access_token=token)

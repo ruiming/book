@@ -117,7 +117,7 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                     // 跳转微信登陆
                     console.log("verify FAIL");
                     // todo  cancel comment when work
-                    // window.location.replace(host);
+                    window.location.replace(host);
                     deferred.resolve(config);
                 });
             }

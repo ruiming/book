@@ -15,10 +15,7 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
     // todo 获取书籍推荐
     $http({
         method: 'GET',
-        url: host + '/books',
-        params: {
-            
-        }
+        url: host + '/pop_book',
     }).success(function(response){
         $scope.books = response;
         for(var i=0;i<$scope.books.length;i++){

@@ -170,7 +170,7 @@ a {
     }
   }
   .booklists-box-content {
-    $height: 140px;
+    $width: 100px;
     overflow: hidden;
     padding: 0 10px;
     a {
@@ -180,8 +180,9 @@ a {
       border-bottom: 1px solid #eee;
       padding: 5px;
       img {
-        height: $height;
+        width: $width;
         float: right;
+        margin-left: 10px;
       }
       .title {
         font: {
@@ -303,11 +304,11 @@ a {
         position: relative;
         overflow: hidden;
         .cover {
-          padding: 5px 0;
           display: block;
           z-index: 1;
-          margin: 0 auto;
+          margin: 8px auto;
           height: 200px;
+          box-shadow: 1px 1px 1px #4A4A4A;
         }
         .cover-bg {
           position: absolute;

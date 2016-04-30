@@ -20,7 +20,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
     });
     
 
-    // todo 获取用户信息
+    // 获取用户信息
     $http({
         method: 'GET',
         url: host + '/user_info'

@@ -4,9 +4,11 @@ routeApp.factory('BL', function($http){
         this.busy = false;
         this.url = url;
         this.params = params;
+        this.continue = true;      // 是否继续
     };
     BL.prototype.nextPage = function(){
         if(this.busy) return;
+        if(!this.continue)  return;
         this.busy = true;
         $http({
             method: 'GET',
@@ -14,6 +16,9 @@ routeApp.factory('BL', function($http){
             params: this.params
         }).success(function(response){
             var list = response;
+            if(list.length < 5 ) {
+                this.continue = false;
+            }
             for (var i = 0 ;i < list.length; i++){
                 list[i].star = Math.ceil(list[i].rate/2);
                 this.list.push(list[i]);
@@ -71,28 +76,42 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
             var url = host + '/auth_verify';
             var deferred = $q.defer();
             var http = $injector.get('$http');
-
+            
             if(config.url === url)
                 return config;
 
-            http({
-                method: 'GET',
-                url: url,
-                params: {
-                    token: sessionStorage.token,
-                    user_id: sessionStorage.user_id
+
+            if(sessionStorage.verify === "true") {
+                var timestamp = new Date().getTime();
+                // 时间超过7000s，需要重新验证
+                if (timestamp - sessionStorage.createdtime >= 7000){
+                    sessionStorage.verify = false;
                 }
-            }).success(function(response){
-                sessionStorage.token = response.token;
-                config.headers['token'] = sessionStorage.token;
-                config.headers['userid'] = sessionStorage.user_id;
-                deferred.resolve(config);
-            }).error(function(){
-                // todo 跳转微信登陆
-                console.log("verify error");
-                // window.location.replace(host);
-                deferred.resolve(config);
-            });
+            }
+            else {
+                // 验证token
+                http({
+                    method: 'GET',
+                    url: url,
+                    params: {
+                        token: sessionStorage.token,
+                        user_id: sessionStorage.user_id
+                    }
+                }).success(function(response){
+                    sessionStorage.token = response.token;
+                    sessionStorage.createdtime = response.time;
+                    sessionStorage.verify = "true";
+                    config.headers['token'] = sessionStorage.token;
+                    config.headers['userid'] = sessionStorage.user_id;
+                    deferred.resolve(config);
+                }).error(function(){
+                    // 跳转微信登陆
+                    console.log("verify error");
+                    window.location.replace(host);
+                    deferred.resolve(config);
+                });
+            }
+            
             return deferred.promise;
         }
     };

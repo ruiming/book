@@ -31,6 +31,7 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
             method: 'POST',
             url: host + '/collect',
             data: {
+                type: 'booklist',
                 id: $stateParams.id
             }
         }).success(function(){

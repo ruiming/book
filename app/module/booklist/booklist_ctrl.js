@@ -36,6 +36,8 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
             }
         }).success(function(){
             $scope.booklist.collect_already = !$scope.booklist.collect_already;
+            if($scope.booklist.collect_already = true)  $scope.booklist.collect++;
+            else  $scope.booklist.collect--;
         });
     }
 });

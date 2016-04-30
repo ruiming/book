@@ -7,8 +7,11 @@ routeApp.factory('BL', function($http){
         this.continue = true;      // 是否继续
     };
     BL.prototype.nextPage = function(){
+        if(!this.continue){
+            this.busy = false;
+            return;
+        }
         if(this.busy) return;
-        if(!this.continue)  return;
         this.busy = true;
         $http({
             method: 'GET',
@@ -87,6 +90,7 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                 if (timestamp - sessionStorage.createdtime >= 7000){
                     sessionStorage.verify = false;
                 }
+                deferred.resolve(config);
             }
             else {
                 // 验证token

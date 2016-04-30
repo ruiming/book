@@ -41,7 +41,7 @@ def oauth4api(method):
     @functools.wraps(method)
     def warpper(*args, **kwargs):
         token = request.headers.get('token', None)
-        user_id = request.headers.get('user_id', None)
+        user_id = request.headers.get('userid', None)
         verify = True
         verify_message = ''
         return '{}, {}'.format(token, user_id)

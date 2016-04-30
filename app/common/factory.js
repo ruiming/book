@@ -85,7 +85,7 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
             }).success(function(response){
                 sessionStorage.token = response.token;
                 config.headers['token'] = sessionStorage.token;
-                config.headers['user_id'] = sessionStorage.user_id;
+                config.headers['userid'] = sessionStorage.user_id;
                 deferred.resolve(config);
             }).error(function(){
                 // todo 跳转微信登陆

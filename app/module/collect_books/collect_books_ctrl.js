@@ -2,10 +2,10 @@ routeApp.controller('CollectBooksCtrl', function($http, $scope, BL){
 
     $scope.busy = true;
 
-    // todo 获取全部收藏书籍
+    // 获取全部收藏书籍
     $http({
         method: 'GET',
-        url: host + '/collect',
+        url: host + '/user_collects',
         params: {
             type: "book"
         }
@@ -17,13 +17,14 @@ routeApp.controller('CollectBooksCtrl', function($http, $scope, BL){
         $scope.busy = false;
     });
     
-    // todo 取消收藏书籍
+    // 取消收藏书籍
     $scope.remove = function(book, index){
         $http({
             method: 'POST',
             url: host + '/collect',
             data: {
-                isbn: book.isbn
+                isbn: book.isbn,
+                type: "book"
             }
         }).success(function(){
             $scope.books.splice(index, 1);

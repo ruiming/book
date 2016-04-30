@@ -1,6 +1,7 @@
-routeApp.controller('CommentsCtrl',function($scope, $http, $stateParams) {
+routeApp.controller('CommentsCtrl',function($scope, $http, $stateParams, TEMP) {
 
     $scope.busy = true;
+    $scope.title = TEMP.getDict().title;
 
     // 获取该书的评论
     $http({
@@ -12,39 +13,44 @@ routeApp.controller('CommentsCtrl',function($scope, $http, $stateParams) {
     }).success(function(response){
         $scope.comments = response;
         $scope.busy = false;
+        for (var i=0; i< response.comments.length; i++){
+            $scope.comments[i].star = Math.ceil($scope.comments[i].star/2);
+        }
     });
 
-    // todo 顶评论
+    // 顶
     $scope.up = function(comment){
         $http({
-            method: 'POST',
+            method: 'PUT',
             url: host + '/comment',
             data: {
                 id: comment.id,
-                action: "up"
+                type: "up"
             }
-        }).success(function(response){
+        }).success(function(){
+            if(comment.down_already) comment.down--;
             comment.up_already = !comment.up_already;
             comment.down_already = false;
-            comment.up = response.up;
-            comment.down = response.down;
+            if(comment.up_already)  comment.up++;
+            else comment.up--;
         });
     };
 
-    // todo 踩评论
+    // 踩
     $scope.down = function(comment){
         $http({
-            method: 'POST',
+            method: 'PUT',
             url: host + '/comment',
             data: {
                 id: comment.id,
-                action: "down"
+                type: "down"
             }
         }).success(function(){
+            if(comment.up_already) comment.up--;
             comment.down_already = !comment.down_already;
             comment.up_already = false;
-            comment.up = response.up;
-            comment.down = response.down;
+            if(comment.down_already)  comment.down++;
+            else comment.down--;
         });
     };
     

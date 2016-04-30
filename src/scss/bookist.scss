@@ -120,11 +120,13 @@ a {
     padding: 0 5px;
     font-size: 12px;
     display: inline-block;
+    max-width: 120px;
     img {
       height: $imgHeight;
     }
     p {
       margin: 5px 0 0;
+      overflow: hidden;
     }
     i {
       color: $star;
@@ -170,7 +172,7 @@ a {
     }
   }
   .booklists-box-content {
-    $height: 140px;
+    $width: 100px;
     overflow: hidden;
     padding: 0 10px;
     a {
@@ -180,8 +182,9 @@ a {
       border-bottom: 1px solid #eee;
       padding: 5px;
       img {
-        height: $height;
+        width: $width;
         float: right;
+        margin-left: 10px;
       }
       .title {
         font: {
@@ -243,6 +246,10 @@ a {
   .booklist-header {
     padding: 10px;
     text-align: center;
+    .booklist-intro {
+      font-size: 12px;
+      padding: 0 10px 5px;
+    }
     .booklist-image-cover {
       position: absolute;
       top: -5%;
@@ -305,8 +312,9 @@ a {
         .cover {
           display: block;
           z-index: 1;
-          margin: 0 auto;
+          margin: 8px auto;
           height: 200px;
+          box-shadow: 1px 1px 1px #4A4A4A;
         }
         .cover-bg {
           position: absolute;
@@ -368,11 +376,12 @@ a {
     padding: 30px 10px;
     overflow: hidden;
     background: {
-      image: url(../../dist/images/images.jpg);
+      image: url(../images/images.jpg);
       color: #FFFFFF;
     }
     img {
       width: 60px;
+      height: 60px;
       margin: 15px;
       float: left;
       border-radius: 50%;
@@ -653,6 +662,9 @@ a {
       i {
         float: right;
         padding: 5px 10px;
+        &:before {
+          padding-right: 5px;
+        }
       }
     }
     &:last-child .comment-meta{

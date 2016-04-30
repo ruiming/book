@@ -1,6 +1,6 @@
 routeApp.controller('TagBooklistsCtrl', function($scope, BL, $stateParams){
 
-    // todo 获取指定标签的书单
+    // 获取指定标签的书单
     var url = host + '/booklist';
     var params = {
         tag: $stateParams.tag,
@@ -8,7 +8,7 @@ routeApp.controller('TagBooklistsCtrl', function($scope, BL, $stateParams){
     };
     $scope.booklists = new BL(url,params);
     
-    // todo 时间优先
+    // 时间优先
     $scope.timeOrder = function(){
         var url = host + '/booklist';
         var params = {
@@ -20,7 +20,7 @@ routeApp.controller('TagBooklistsCtrl', function($scope, BL, $stateParams){
         $scope.booklists.nextPage();
     };
 
-    // todo 收藏优先
+    // 收藏优先
     $scope.collectOrder = function(){
         var url = host + '/booklist';
         var params = {

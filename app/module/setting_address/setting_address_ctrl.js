@@ -1,6 +1,6 @@
 routeApp.controller('AddressCtrl', function ($http, $scope, $location, UserMessage) {
 
-    // todo 刷新会导致UserMessage Service数据重置
+    // 用单体UserMessage暂存用户相关信息
 
     $scope.address = UserMessage.getAddress();
 

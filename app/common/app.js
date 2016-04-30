@@ -13,7 +13,8 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             }
         }
         if(response.status == "error"){
-            alert(response.message);
+            // todo change to alert when work
+            console.log("ERROR ERROR ERROR: " + response.message);
         }
         return response;
     });
@@ -30,9 +31,9 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
         }
         return str.join("&");
     };
-    $httpProvider.defaults.headers.post = {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    };
+    $httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
+    $httpProvider.defaults.headers.put = {'Content-Type': 'application/x-www-form-urlencoded'};
+    $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};
 
     // redirect to "/" if not match
     $urlRouterProvider.otherwise("/");

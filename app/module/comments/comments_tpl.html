@@ -1,7 +1,7 @@
 <loading ng-if="busy"></loading>
 <div class="book-comments-all">
     <div class="navbar navbar-default navbar-fixed-top">
-        <a class="navbar-brand">全部评论</a>
+        <a class="navbar-brand">全部评论 - {{title}}</a>
     </div>
     <div class="book-comments-list" ng-if="!busy">
         <div class="book-comments">
@@ -14,9 +14,11 @@
                 </div>
                 <p>{{comment.content}}</p>
                 <div class="comment-meta">
-                    <p>{{comment.create_time}}</p>
-                    <i class="fa" ng-class={false:'fa-thumbs-o-down',true:'fa-thumbs-down'}[comment.down_already] ng-click="down(comment)">{{comment.down}}</i>
-                    <i class="fa" ng-class={false:'fa-thumbs-o-up',true:'fa-thumbs-up'}[comment.up_already] ng-click="up(comment)">{{comment.up}}</i>
+                    <p>{{comment.create_time*1000 | date:'yyyy-MM-dd HH:mm'}}</p>
+                    <i class="fa" ng-class={false:'fa-thumbs-o-down',true:'fa-thumbs-down'}[comment.down_already]
+                       ng-click="down(comment)">{{comment.down}}</i>
+                    <i class="fa" ng-class={false:'fa-thumbs-o-up',true:'fa-thumbs-up'}[comment.up_already]
+                       ng-click="up(comment)">{{comment.up}}</i>
                 </div>
                 <div class="clearfix"></div>
             </div>

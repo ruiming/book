@@ -1,9 +1,10 @@
-routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
+routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     
     $scope.more = false;            // 默认不加载更多书籍信息介绍
     $scope.commentBox = false;      // 默认不显示评论框
     $scope.auth = true;             // 是否已登录
     $scope.busy = true;             // Loading
+    $scope.star = 5;
 
     // 根据ISBN号获取图书信息(包含评论和标签)
     $http({
@@ -15,20 +16,24 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
     }).success(function(response){
         $scope.book = response;
         $scope.book.star = Math.ceil(response.rate/2);
+        for (var i=0; i< response.comments.length; i++){
+            $scope.book.comments[i].star = Math.ceil($scope.book.comments[i].star/2);
+        }
+        TEMP.setDict({title: $scope.book.title});
         $scope.busy = false;
     });
     
 
-    // todo 获取用户信息
+    // 获取用户信息
     $http({
         method: 'GET',
-        url: host + '/user'
+        url: host + '/user_info'
     }).success(function(response){
         $scope.user = response;
         $scope.auth = true;
     });
 
-    // todo 收藏图书
+    // 收藏图书
     $scope.collect = function() {
         $http({
             method: 'POST',
@@ -38,7 +43,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
                 type: "book"
             }
         }).success(function () {
-            $scope.book.collected = !$scope.book.collected;
+            $scope.book.collect_already = !$scope.book.collect_already;
         });
     };
 
@@ -68,45 +73,61 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
         $scope.booklists = response;
     });
 
-    // todo 顶
+    // 顶
     $scope.up = function(comment){
         $http({
-            method: 'POST',
+            method: 'PUT',
             url: host + '/comment',
             data: {
                 id: comment.id,
-                action: "up"
+                type: "up"
             }
         }).success(function(){
+            if(comment.down_already) comment.down--;
             comment.up_already = !comment.up_already;
             comment.down_already = false;
-            comment.up = response.up;
-            comment.down = response.down;
+            if(comment.up_already)  comment.up++;
+            else comment.up--;
         });
     };
 
-    // todo 踩
+    // 踩
     $scope.down = function(comment){
-        comment.down_already = !comment.down_already;
-        comment.up_already = false;
+        $http({
+            method: 'PUT',
+            url: host + '/comment',
+            data: {
+                id: comment.id,
+                type: "down"
+            }
+        }).success(function(){
+            if(comment.up_already) comment.up--;
+            comment.down_already = !comment.down_already;
+            comment.up_already = false;
+            if(comment.down_already)  comment.down++;
+            else comment.down--;
+        });
+    };
+
+    // 评论
+    $scope.postComment = function(r){
         $http({
             method: 'POST',
             url: host + '/comment',
             data: {
-                id: comment.id,
-                action: "down"
+                content: this.content,
+                isbn: $stateParams.isbn,
+                star: $scope.star*2
             }
-        }).success(function(){
-            comment.down_already = !comment.down_already;
-            comment.up_already = false;
-            comment.up = response.up;
-            comment.down = response.down;
+        }).success(function(response){
+            $scope.book.comments.unshift(response);
+            console.log($scope.book.comments);
         });
     };
-    
+
     // 评星鼠标悬浮函数
     $scope.hoveringOver = function(value) {
-        $scope.overStar = value;
+        $scope.star = value;
     };
     
 });

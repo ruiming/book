@@ -653,6 +653,9 @@ a {
       i {
         float: right;
         padding: 5px 10px;
+        &:before {
+          padding-right: 5px;
+        }
       }
     }
     &:last-child .comment-meta{

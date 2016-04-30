@@ -38,7 +38,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
                 type: "book"
             }
         }).success(function () {
-            $scope.book.collected = !$scope.book.collected;
+            $scope.book.collect_already = !$scope.book.collect_already;
         });
     };
 

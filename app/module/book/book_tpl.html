@@ -23,9 +23,13 @@
         </div>
         <div class="book-section">
             <span name="price"> ¥ {{book.price | number:2 }}</span>
-            <button class="btn btn-success" ng-click="collect()">
-                <i class="fa" ng-class="{'fa-bookmark':!book.collected,'fa-bookmark-o':book.collected}"></i>
+            <button class="btn btn-success" ng-click="collect()" ng-if="!book.collect_already">
+                <i class="fa fa-bookmark-o"></i>
                 收藏
+            </button>
+            <button class="btn btn-success" ng-click="collect()" ng-if="book.collect_already">
+                <i class="fa fa-bookmark"></i>
+                已收藏
             </button>
             <button class="btn btn-danger" ng-click="book.cart = true">
                 <i class="fa" ng-class="{'fa-cart-plus':book.cart,'fa-shopping-cart':!book.cart}"></i>

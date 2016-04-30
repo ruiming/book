@@ -16,7 +16,6 @@ class User(db.Document):
     email = db.StringField()
     username = db.StringField(required=True)
     password = db.StringField()
-    wechat = db.StringField()
     phone = db.StringField()
     description = db.StringField()
     sex = db.IntField()
@@ -34,3 +33,25 @@ class User(db.Document):
 
     def __unicode__(self):
         return u'{}'.format(self.username)
+
+    @classmethod
+    def get_one_user(cls, openid=None, token=None):
+        """
+        返回一个用户
+        :param openid: 用户的微信OPENID
+        :param token: 用户当前TOKEN
+        :return: None / User实例
+        """
+        if openid and token:
+            this_user = cls.objects(wechat_openid=openid, wechat__access_token=token)
+        elif openid and not token:
+            this_user = cls.objects(wechat_openid=openid)
+        elif not openid and token:
+            this_user = cls.objects(wechat__access_token=token)
+        else:
+            return None
+
+        if this_user.count() == 1:
+            return this_user.first()
+
+        return None

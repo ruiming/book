@@ -24,7 +24,6 @@ def comments():
     返回书籍所有评论
     """
     isbn = request.args.get('isbn', None)
-    token = request.args.get('token', None)
 
     this_book = Book.objects(isbn=isbn)
     this_book = this_book.first() if this_book.count() == 1 else None

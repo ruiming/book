@@ -55,8 +55,10 @@ def booklist():
             # 无此书单
             return return_message('error', 'booklist not found')
         else:
+
+            this_user = User.get_one_user(openid=request.headers['userid'])
+
             this_book_list_json = {
-                'status': 'success',
                 'title': this_book_list.title,
                 'subtitle': this_book_list.subtitle,
                 'author': {
@@ -68,6 +70,7 @@ def booklist():
                 'image': this_book_list.image,
                 'collect': this_book_list.collect,
                 'tag': [],
+                "collect_already": True if Collect.objects(user=this_user, type='booklist', type_id=str(this_book_list.pk)).count() == 1 else False,
                 'books': []
             }
 

@@ -176,20 +176,31 @@ def collect():
         is_inserted = Collect.objects(user=this_user, type=type, type_id=id).count()
 
         if is_inserted == 0:
+            # 添加收藏
             Collect(user=this_user, type=type, type_id=id).save()
             if type == 'booklist':
-                this_booklist = BookList.objects(_id=id).first()
+                this_booklist = BookList.objects(pk=id).first()
                 this_booklist.collect += 1
                 this_booklist.save()
-            return return_message('success', 'submit successfully')
+            return return_message('success', 'collect submit successfully')
+
         elif is_inserted == 1:
-            return return_message('success', 'collect already exist')
+            # 取消收藏
+            this_collect = Collect.objects(user=this_user, type=type, type_id=id).first()
+            if this_collect.type == 'booklist':
+                this_booklist = BookList.objects(pk=id).first()
+                this_booklist.collect -= 1
+                this_booklist.save()
+            this_collect.delete()
+
+            return return_message('success', 'discollect submit successfully')
         else:
             # logger
             return return_message('error', 'unknown error')
 
 
     elif request.method == 'DELETE':
+        # 抛弃
         """
         删除收藏信息
         """
@@ -392,14 +403,14 @@ def user_collects():
     all_collect_json = []
     for one in all_collect:
         if type == 'book':
-            one_book = Book.objects(isbn=one.type_id).first()
+            one_book = Book.objects(isbn=one.typeid).first()
             # TODO: 收藏API 书本信息补全
             all_collect_json.append({
                 'title': one_book.title,
                 'isbn': one_book.isbn
             })
         elif type == 'booklist':
-            one_booklist = BookList.objects(_id=one.type_id).first()
+            one_booklist = BookList.objects(_id=one.typeid).first()
             # todo: 收藏API 书单信息补全
             all_collect_json.append({
                 'title': one_booklist.title,

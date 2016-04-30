@@ -51,7 +51,7 @@ class BookList(db.Document):
     title = db.StringField(required=True)
     subtitle = db.StringField()
     description = db.StringField()
-    author = db.ReferenceField(User) # 或者链接到用户
+    author = db.ReferenceField(User)
     tag = db.ListField(db.ReferenceField(Tag))
     books = db.ListField(db.ReferenceField(Book))
     hot = db.IntField(default=0)

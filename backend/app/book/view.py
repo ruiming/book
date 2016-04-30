@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from app.book.model import BookList, Activity, Tag, Book
-from app.user.model import Comment
+from app.user.model import Comment, Collect
 from app.auth.model import User
 
 from app.lib.common_function import return_message
@@ -35,12 +35,13 @@ def booklist():
             return 1
         else:
             return -1
-    # TODO: 返回长度的设计
 
     type = request.args.get('type', 'all')
     tag = request.args.get('tag', None)
     isbn = request.args.get('isbn', None)
     id = request.args.get('id', None)
+    page = request.args.get('page', 1)
+    page = int(page)
 
     if id is not None:
         # 单书单查询
@@ -59,9 +60,9 @@ def booklist():
                 'title': this_book_list.title,
                 'subtitle': this_book_list.subtitle,
                 'author': {
-                    'avatar': this_book_list.author.avatar if isinstance(this_book_list.author, User) else '',
-                    'name': this_book_list.author.username if isinstance(this_book_list.author, User) else '',
-                    'id': this_book_list.author.wechat_openid if isinstance(this_book_list.author, User) else ''
+                    'avatar': this_book_list.author.avatar or '',
+                    'name': this_book_list.author.username or '',
+                    'id': this_book_list.author.wechat_openid or ''
                 },
                 'description': this_book_list.description,
                 'image': this_book_list.image,
@@ -71,6 +72,8 @@ def booklist():
             }
 
             for one_tag in this_book_list.tag:
+                if not isinstance(one_tag, Tag):
+                    continue
                 this_book_list_json['tag'].append(one_tag.name)
 
             for one_book in this_book_list.books:
@@ -88,6 +91,8 @@ def booklist():
 
             return return_message('success', {'data': this_book_list_json})
 
+
+
     # 多书籍查询
     if type not in ['all', 'hot', 'time', 'collect']:
         # 非法索引参数传入
@@ -96,55 +101,58 @@ def booklist():
     if tag is not None and isbn is not None:
         # 不允许 tag 和 isbn 同时传入
         return return_message('error', 'tag and isbn could not be existed at a same time')
+
     if tag is not None:
         # 按 tag 进行搜索
+        all_booklist = BookList.objects(tag__in=Tag.objects(name=tag))
+
         if type == 'hot':
-            all_booklist = BookList.objects(tag__in=Tag.objects(name=tag)).order_by("-hot").limit(5)
+            all_booklist = all_booklist.order_by("-hot").limit(5).skip(5*(page-1))
         elif type == 'time':
-            all_booklist = BookList.objects(tag__in=Tag.objects(name=tag)).order_by("-create_time").limit(5)
+            all_booklist = all_booklist.order_by("-create_time").limit(5).skip(5*(page-1))
         elif type == 'collect':
-            all_booklist = BookList.objects(tag__in=Tag.objects(name=tag)).order_by("-collect").limit(5)
+            all_booklist = all_booklist.order_by("-collect").limit(5).skip(5*(page-1))
 
         elif type == 'all':
             # 综合查询
-            all_booklist = BookList.objects(tag__in=Tag.objects(name=tag))
             all_booklist = list(all_booklist)
             all_booklist = sorted(all_booklist, cmp=sort_function)
-
+            all_booklist = all_booklist[5*(page-1):min(5*page, len(all_booklist))]
 
 
     if isbn is not None:
         # 按 isbn 进行搜索
-
+        all_booklist = BookList.objects(books__in=Book.objects(isbn=isbn))
 
         if type == 'hot':
-            all_booklist = BookList.objects(books__in=Book.objects(isbn=isbn)).order_by("-hot").limit(5)
+            all_booklist = all_booklist.order_by("-hot").limit(5).skip(5*(page-1))
         elif type == 'time':
-            all_booklist = BookList.objects(books__in=Book.objects(isbn=isbn)).order_by("-create_time").limit(5)
+            all_booklist = all_booklist.order_by("-create_time").limit(5).skip(5*(page-1))
         elif type == 'collect':
-            all_booklist = BookList.objects(books__in=Book.objects(isbn=isbn)).order_by("-collect").limit(5)
+            all_booklist = all_booklist.order_by("-collect").limit(5).skip(5*(page-1))
 
         elif type == 'all':
             # 综合查询
-            all_booklist = BookList.objects(books__in=Book.objects(isbn=isbn))
             all_booklist = list(all_booklist)
             all_booklist = sorted(all_booklist, cmp=sort_function)
+            all_booklist = all_booklist[5*(page-1):min(5*page, len(all_booklist))]
 
 
     if tag is None and isbn is None:
         # 无索引
+        all_booklist = BookList.objects()
         if type == 'hot':
-            all_booklist = BookList.objects().order_by("-hot").limit(5)
+            all_booklist = all_booklist.order_by("-hot").limit(5).skip(5*(page-1))
         elif type == 'time':
-            all_booklist = BookList.objects().order_by("-create_time").limit(5)
+            all_booklist = all_booklist.order_by("-create_time").limit(5).skip(5*(page-1))
         elif type == 'collect':
-            all_booklist = BookList.objects().order_by("-collect").limit(5)
+            all_booklist = all_booklist.order_by("-collect").limit(5).skip(5*(page-1))
 
         elif type == 'all':
             # 综合查询
-            all_booklist = BookList.objects()
             all_booklist = list(all_booklist)
             all_booklist = sorted(all_booklist, cmp=sort_function)
+            all_booklist = all_booklist[5*(page-1):min(5*page, len(all_booklist))]
 
     all_book_list_json = []
 
@@ -190,7 +198,6 @@ def slides():
 @allow_cross_domain
 @oauth4api
 def book():
-    # TODO: 这本书是否被该用户收藏
     # TODO: 下面的评论是否被点过赞
     # TODO： 评论同时返回
     isbn = request.args.get('isbn', None)
@@ -208,6 +215,8 @@ def book():
     if this_book is None:
         return return_message('error', 'book do not exist')
 
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
     if type == 'summary':
         this_book_json = {
             'isbn': this_book.isbn,
@@ -222,7 +231,8 @@ def book():
             'tag': [],
             'comments': [],
             'rate': this_book.rate,
-            'commenters': Comment.objects(book=this_book).count()
+            'commenters': Comment.objects(book=this_book).count(),
+            'collect_already': True if Collect.objects(type='book', type_id=this_book.isbn, user=this_user).count() == 1 else False
         }
     else:
 
@@ -297,7 +307,6 @@ def tags():
                     'tags': [one_tag.name]
                 })
 
-
     elif type == 'hot':
 
         def tag_sort(x, y):
@@ -317,17 +326,6 @@ def tags():
 
         all_tag_json = []
         for one_tag in all_tag_sorted:
-            pass
-            is_added = False
-            for one_tag_json in all_tag_json:
-                if one_tag_json['title'] == one_tag[1].belong:
-                    one_tag_json['tags'].append(one_tag[1].name)
-                    is_added = True
-
-            if not is_added:
-                all_tag_json.append({
-                    'title': one_tag[1].belong,
-                    'tags': [one_tag[1].name]
-                })
+            all_tag_json.append(one_tag[1].name)
 
     return return_message('success', all_tag_json)

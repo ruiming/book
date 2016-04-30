@@ -157,12 +157,11 @@ def collect():
                     return False
 
         return False
+
     if request.method == 'POST':
         """
         提交收藏信息
         """
-
-        token = request.form.get('token', None)
         type = request.form.get('type', None)
         id = request.form.get('id', None)
 
@@ -172,11 +171,7 @@ def collect():
         if id == '' or not istance_objects(type, id):
             return return_message('error', 'missing id')
 
-        this_user = User.objects(token=token)
-        this_user = this_user.first() if this_user.count() == 1 else None
-
-        if this_user is None:
-            return return_message('error', 'user do not exist')
+        this_user = User.get_one_user(openid=request.headers['userid'])
 
         is_inserted = Collect.objects(user=this_user, type=type, type_id=id).count()
 
@@ -198,29 +193,24 @@ def collect():
         """
         删除收藏信息
         """
-        token = request.form.get('token', None)
         id = request.form.get('id', None)
 
         if len(id) != 24:
             return return_message('error', 'unknown id')
 
-        this_user = User.objects(token=token)
-        this_user = this_user.first() if this_user.count() == 1 else None
+        this_user = User.get_one_user(openid=request.headers['userid'])
 
-        if this_user is None:
-            return return_message('error', 'user do not exist')
-
-        is_inserted = Collect.objects(_id=id).count()
+        is_inserted = Collect.objects(pk=id).count()
 
         if is_inserted == 0:
             return return_message('success', 'submit successfully')
         elif is_inserted == 1:
-            this_collect = Collect.objects(_id=id).first()
+            this_collect = Collect.objects(pk=id).first()
             if this_collect.type == 'booklist':
-                this_booklist = BookList.objects(_id=id).first()
+                this_booklist = BookList.objects(pk=id).first()
                 this_booklist.collect -= 1
                 this_booklist.save()
-            Collect.objects(_id=id).delete()
+            Collect.objects(pk=id).delete()
 
             return return_message('success', 'submit successfully')
         else:

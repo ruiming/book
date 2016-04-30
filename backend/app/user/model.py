@@ -10,7 +10,6 @@ class Comment(db.Document):
     """
     评论模型
     """
-    _id = db.ObjectIdField(required=False)
     content = db.StringField(required=True)
     star = db.IntField(required=True)
     up = db.IntField(required=True, default=0)
@@ -26,7 +25,7 @@ class UserCommentLove(db.Document):
     用户评论点赞表
     """
     user = db.ReferenceField(User, required=True)
-    commentid = db.StringField(required=True)
+    comment = db.ReferenceField(Comment, required=True)
     type = db.StringField(required=True, default=u'none')
     time = db.DateTimeField(required=True, default=datetime.now())
 
@@ -46,7 +45,6 @@ class Collect(db.Document):
     """
     书籍/书单收藏模型
     """
-    _id = db.ObjectIdField()
     user = db.ReferenceField(User)
     type = db.StringField()  # 表示是书籍还是书单 ['book', 'booklist']
     type_id = db.StringField()

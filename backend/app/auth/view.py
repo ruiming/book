@@ -73,8 +73,7 @@ def auth_verify():
                 this_user.wechat.token_time = int(time())
                 this_user.save()
 
-        return_token = this_user.wechat.access_token
-        return return_message('success', {'token': return_token})
+        return return_message('success', {'token': this_user.wechat.access_token, 'time': this_user.wechat.token_time})
     return 'failure data', 403
 
 
@@ -106,9 +105,12 @@ def code2token():
                         country=user_info['country'],
                         city=user_info['city'],
                         province=user_info['province'],
-                        wechat_openid=token['openid']
+                        wechat_openid=token['openid'],
+                        avator=token['headimgurl']
                     )
                     this_user.save()
+
+           # 更新用户信息
             this_user.wechat = WechatOAuth(
                 access_token=token['access_token'],
                 expires_in=token['expires_in'],

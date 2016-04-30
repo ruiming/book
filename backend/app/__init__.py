@@ -52,7 +52,7 @@ from app.book.model import BookList, Activity, Book, Tag, Applacation
 from app.book.admin_model import BookView, TagView, BookListView, ActivityView
 from app.auth.admin_model import UserView
 from app.auth.model import User
-from app.user.model import Comment, Points, Order
+from app.user.model import Comment, Points, Order, Collect
 
 
 admin.add_view(BookListView(BookList, name=u'书单管理'))
@@ -64,3 +64,4 @@ admin.add_view(UserView(User, name=u'用户管理'))
 admin.add_view(ModelView(Comment))
 admin.add_view(ModelView(Points))
 admin.add_view(ModelView(Order))
+admin.add_view(ModelView(Collect))

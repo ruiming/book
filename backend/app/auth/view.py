@@ -120,3 +120,13 @@ def code2token():
             return redirect("http://www.bookist.org/?token={}&user_id={}#/".format(token['access_token'], token['openid'])), 301
 
     return 'failure get code'
+
+
+@auth_module.route('/test', methods=['GET'])
+def test():
+
+    token = request.headers.get('token', None)
+    user_id = request.headers.get('user_id', None)
+
+    return '{}, {}'.format(token, user_id)
+

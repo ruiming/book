@@ -34,7 +34,8 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
             method: 'POST',
             url: host + '/collect',
             data: {
-                isbn: $stateParams.isbn
+                isbn: $stateParams.isbn,
+                type: "book"
             }
         }).success(function () {
             $scope.book.collected = !$scope.book.collected;

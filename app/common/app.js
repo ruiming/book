@@ -14,7 +14,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
         }
         if(response.status == "error"){
             alert(response.message);
-            window.location.reload();
         }
         return response;
     });

@@ -23,6 +23,11 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
 
     $httpProvider.interceptors.push('tokenInjector');
 
+    $httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+    $httpProvider.defaults.headers.post = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    };
+
     // redirect to "/" if not match
     $urlRouterProvider.otherwise("/");
 

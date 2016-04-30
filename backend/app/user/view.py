@@ -8,6 +8,7 @@ from app.user.model import Comment, Points, UserCommentLove, Collect, Order
 
 from app.lib.common_function import return_message, token_verify
 from app.lib.api_function import allow_cross_domain
+from app.lib.wechat import oauth
 
 from datetime import datetime
 
@@ -17,6 +18,7 @@ user_module = Blueprint('user_module', __name__)
 
 @user_module.route('/comments', methods=['GET'])
 @allow_cross_domain
+@oauth
 def comments():
     """
     返回书籍所有评论
@@ -51,6 +53,7 @@ def comments():
 
 @user_module.route('/comment', methods=['POST', 'PUT'])
 @allow_cross_domain
+@oauth
 def comment():
     """
     发布评论
@@ -140,6 +143,7 @@ def comment():
 
 @user_module.route('/collect', methods=['POST', 'DELETE'])
 @allow_cross_domain
+@oauth
 def collect():
     def istance_objects(type, id):
         if type == 'book':
@@ -227,6 +231,7 @@ def collect():
 
 @user_module.route('/order', methods=['GET', 'POST'])
 @allow_cross_domain
+@oauth
 def order():
     if request.method == 'GET':
         """
@@ -312,6 +317,7 @@ def order():
 
 @user_module.route('/user_comments', methods=['GET'])
 @allow_cross_domain
+@oauth
 def user_comment():
 
     pass
@@ -344,6 +350,7 @@ def user_comment():
 
 @user_module.route('/user_points', methods=['GET'])
 @allow_cross_domain
+@oauth
 def user_points():
     """
     获取用户积分详细
@@ -377,6 +384,7 @@ def user_points():
 
 @user_module.route('/user_collects', methods=['GET'])
 @allow_cross_domain
+@oauth
 def user_collects():
     pass
     token = request.args.get('token', None)
@@ -414,6 +422,7 @@ def user_collects():
 
 @user_module.route('/user_orders', methods=['GET'])
 @allow_cross_domain
+@oauth
 def user_orders():
     token = request.args.get('token', None)
     status = request.args.get('status', None)
@@ -444,12 +453,3 @@ def user_orders():
         })
 
     return return_message('success', all_order_json)
-
-
-@user_module.route('/test', methods=['GET'])
-def test():
-    # # this_user = User.objects.get(id='570fbe38edb62a217c267124')
-    # this_user = User.objects(username='111').first()
-    # print this_user.pk
-    # return str(this_user.pk)
-    return request.headers['token']

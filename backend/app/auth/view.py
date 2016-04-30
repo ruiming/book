@@ -8,7 +8,7 @@ from time import time
 
 from datetime import datetime, timedelta
 from app.lib.api_function import allow_cross_domain
-from app.lib.wechat import oauth
+from app.lib.wechat import oauth4link
 from app.lib.common_function import return_message
 
 
@@ -21,7 +21,7 @@ auth_module = Blueprint('auth_module', __name__)
 
 
 @auth_module.route('/', methods=['GET'])
-@oauth
+@oauth4link
 def index():
     return render_template('/index.html')
 

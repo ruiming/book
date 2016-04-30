@@ -6,7 +6,7 @@ from app.auth.model import User
 
 from app.lib.common_function import return_message
 from app.lib.api_function import allow_cross_domain
-from app.lib.wechat import oauth
+from app.lib.wechat import oauth4api
 
 from json import dumps
 
@@ -15,7 +15,7 @@ book_modules = Blueprint('book_module', __name__)
 
 @book_modules.route('/booklist', methods=['GET'])
 @allow_cross_domain
-@oauth
+@oauth4api
 def booklist():
     """
     书单接口
@@ -163,7 +163,7 @@ def booklist():
 
 @book_modules.route('/slides', methods=['GET'])
 @allow_cross_domain
-@oauth
+@oauth4api
 def slides():
     # DONE
 
@@ -188,7 +188,7 @@ def slides():
 
 @book_modules.route('/book', methods=['GET'])
 @allow_cross_domain
-@oauth
+@oauth4api
 def book():
     # TODO: 这本书是否被该用户收藏
     # TODO: 下面的评论是否被点过赞
@@ -271,7 +271,7 @@ def book():
 
 @book_modules.route('/tags', methods=['GET'])
 @allow_cross_domain
-@oauth
+@oauth4api
 def tags():
     # DONE
 

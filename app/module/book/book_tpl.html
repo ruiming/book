@@ -58,7 +58,7 @@
                 </div>
                 <p>{{comment.content}}</p>
                 <div class="comment-meta">
-                    <p>{{comment.create_time | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                    <p>{{comment.create_time*1000 | date:'yyyy-MM-dd HH:mm'}}</p>
                     <i class="fa" ng-class={false:'fa-thumbs-o-down',true:'fa-thumbs-down'}[comment.down_already]
                        ng-click="down(comment)">{{comment.down}}</i>
                     <i class="fa" ng-class={false:'fa-thumbs-o-up',true:'fa-thumbs-up'}[comment.up_already]
@@ -67,8 +67,8 @@
                 <div class="clearfix"></div>
             </div>
             <div class="book-comments-more">
-                <a class="btn btn-default" ui-sref="commentsBook({isbn: book.isbn})">全部评论</a>
-                <button class="btn btn-default" ng-click="commentBox=!comment;">我要评论</button>
+                <a class="btn btn-default" ui-sref="commentsBook({isbn: book.isbn, title: book.title})">全部评论</a>
+                <button class="btn btn-default" ng-click="commentBox=!commentBox;">我要评论</button>
             </div>
             <div class="book-comment-box" ng-show="commentBox">
                 <div class="book-comment-origin">

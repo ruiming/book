@@ -3,7 +3,7 @@
     <div class="booklist-header">
         <img class="booklist-image-cover" ng-src="{{booklist.image}}">
         <h3>{{booklist.title}}</h3>
-        <p>{{booklist.description}}</p>
+        <p class="booklist-intro">{{booklist.description}}</p>
         <img class="avatar" ng-src="{{booklist.author.avatar}}">
         <small>{{booklist.author.name}} / {{booklist.collect}}人收藏</small>
         <button class="btn btn-info" ng-click="collect()" ng-show="!booklist.collect_already">

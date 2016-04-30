@@ -1,6 +1,6 @@
 routeApp.controller('MeCtrl',function($scope, $http) {
 
-    // todo 返回用户信息，gravatar,name,cart,order{wait,received}
+    // 返回用户信息，gravatar,name,cart,order{wait,received}
     $http({
         method: 'GET',
         url: host + '/user_info'

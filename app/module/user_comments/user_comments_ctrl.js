@@ -5,12 +5,15 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
     $scope.readonly = true;         // 只读
     $scope.busy = true;
 
-    // todo 用户所有评论
+    // 用户所有评论
     $http({
         method: 'GET', 
-        url: host + '/comments'
+        url: host + '/user_comments'
     }).success(function(response){
         $scope.comments = response;
+        for (var i=0; i< $scope.comments.length; i++){
+            $scope.comments[i].star = Math.ceil($scope.comments[i].star/2);
+        }
         $scope.busy = false;
     });
 
@@ -19,13 +22,18 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
         obj.edit = true;
     };
     
-    // todo 修改评论
+    // 修改评论
     $scope.submit = function(obj){
+        console.log(obj);
         $http({
-            method: 'POST',
+            method: 'PUT',
             url: host + '/comment',
             data:{
-                id: obj.comment.id
+                id: obj.comment.id,
+                type: "edit",
+                content: obj.comment.content,
+                star: obj.comment.star*2
+
             }
         }).success(function(){
             obj.readonly = true;
@@ -33,7 +41,7 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
         });
     };
     
-    // todo 删除评论
+    // 删除评论
     $scope.delete = function(id, index){
         $http({
             method: 'DELETE',

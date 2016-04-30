@@ -1,4 +1,4 @@
-routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
+routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     
     $scope.more = false;            // 默认不加载更多书籍信息介绍
     $scope.commentBox = false;      // 默认不显示评论框
@@ -16,6 +16,10 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
     }).success(function(response){
         $scope.book = response;
         $scope.book.star = Math.ceil(response.rate/2);
+        for (var i=0; i< response.comments.length; i++){
+            $scope.book.comments[i].star = Math.ceil($scope.book.comments[i].star/2);
+        }
+        TEMP.setDict({title: $scope.book.title});
         $scope.busy = false;
     });
     
@@ -106,7 +110,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
     };
 
     // 评论
-    $scope.postComment = function(){
+    $scope.postComment = function(r){
         $http({
             method: 'POST',
             url: host + '/comment',
@@ -116,7 +120,8 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams) {
                 star: $scope.star*2
             }
         }).success(function(response){
-
+            $scope.book.comments.unshift(response);
+            console.log($scope.book.comments);
         });
     };
 

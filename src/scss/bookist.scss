@@ -120,11 +120,13 @@ a {
     padding: 0 5px;
     font-size: 12px;
     display: inline-block;
+    max-width: 120px;
     img {
       height: $imgHeight;
     }
     p {
       margin: 5px 0 0;
+      overflow: hidden;
     }
     i {
       color: $star;
@@ -244,6 +246,10 @@ a {
   .booklist-header {
     padding: 10px;
     text-align: center;
+    .booklist-intro {
+      font-size: 12px;
+      padding: 0 10px 5px;
+    }
     .booklist-image-cover {
       position: absolute;
       top: -5%;
@@ -370,11 +376,12 @@ a {
     padding: 30px 10px;
     overflow: hidden;
     background: {
-      image: url(../../dist/images/images.jpg);
+      image: url(../images/images.jpg);
       color: #FFFFFF;
     }
     img {
       width: 60px;
+      height: 60px;
       margin: 15px;
       float: left;
       border-radius: 50%;

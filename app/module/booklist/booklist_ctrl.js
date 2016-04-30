@@ -2,14 +2,6 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
 
     $scope.busy = true;
 
-    // todo 获取用户信息
-    $http({
-        method: 'GET',
-        url: host + '/user'
-    }).success(function(response){
-        $scope.user = response;
-    });
-
     // 获取书单信息
     $http({
         method: 'GET',

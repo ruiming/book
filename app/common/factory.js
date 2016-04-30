@@ -32,6 +32,25 @@ routeApp.factory('BL', function($http){
     };
     return BL;
 });
+routeApp.factory('TEMP', function(){
+    var _list = [];
+    var _dict = {};
+    
+    return {
+        setList: function(list){
+            _list = list;
+        },
+        getList: function(){
+            return _list;
+        },
+        setDict: function(dict){
+            _dict = dict;
+        },
+        getDict: function(){
+            return _dict;
+        }
+    };
+});
 routeApp.factory('UserMessage', function () {
 
     var _address = [];

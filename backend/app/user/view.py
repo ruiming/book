@@ -4,13 +4,14 @@ from flask import Blueprint, jsonify, request
 
 from app.auth.model import User
 from app.book.model import Book, BookList
-from app.user.model import Comment, Points, UserCommentLove, Collect, Order
+from app.user.model import Comment, Points, UserCommentLove, Collect, Order, Notice
 
 from app.lib.common_function import return_message, token_verify
 from app.lib.api_function import allow_cross_domain
 from app.lib.wechat import oauth4api
 
 from datetime import datetime
+from time import time
 
 
 user_module = Blueprint('user_module', __name__)
@@ -30,27 +31,40 @@ def comments():
     if this_book is None:
         return return_message('error', 'book do not exist')
 
-    all_comment = Comment.objects(book=this_book).order_by("-create_time")
+    page = request.args.get('page', 1)
+    try:
+        page = int(page)
+    except:
+        return return_message('error', 'unknown page')
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
+    all_comment = Comment.objects(book=this_book).order_by("create_time").limit(5).skip(5*(page-1))
 
     all_comment_json = []
 
     for one in all_comment:
+        up_already = True if UserCommentLove.objects(user=this_user, comment=one, type='up').count() == 1 else False
+        down_already = True if UserCommentLove.objects(user=this_user, comment=one, type='down').count() == 1 else False
         all_comment_json.append({
             'id': str(one.pk),
             'content': one.content,
             'star': one.star,
             'up': one.up,
             'down': one.down,
+            'up_already': up_already,
+            'down_already': down_already,
             'user': {
                 'avatar': one.user.avatar,
                 'username': one.user.username
-            }
+            },
+            'create_time': one.create_time
         })
 
     return return_message('success', all_comment_json)
 
 
-@user_module.route('/comment', methods=['POST', 'PUT'])
+@user_module.route('/comment', methods=['POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
 def comment():
@@ -62,8 +76,11 @@ def comment():
         isbn = request.form.get('isbn', None)
         content = request.form.get('content', None)
         star = request.form.get('star', None)
-        # TODO: star的max值
-        star = int(star) if star is not None else None
+        if isinstance(star, int):
+            star = min(int(star), 10)
+
+        if not star:
+            return return_message('success', 'unknown star')
 
         if isbn is None or content is None or star is None:
             return return_message('error', 'missing comment data')
@@ -74,11 +91,7 @@ def comment():
         if this_book is None:
             return return_message('error', 'book do not exist')
 
-        this_user = User.objects(token=token)
-        this_user = this_user.first() if this_user.count() == 1 else None
-
-        if this_user is None:
-            return return_message('error', 'user do not exist')
+        this_user = User.get_one_user(openid=request.headers['userid'])
 
         this_comment = Comment(
             content=content,
@@ -87,7 +100,16 @@ def comment():
             user=this_user
 
         ).save()
-        return return_message('success', 'submit successfully')
+
+        this_comment_json = {
+            'id': str(this_comment.pk),
+            'content': this_comment.content,
+            'star': this_comment.star,
+            'up': this_comment.up,
+            'down': this_comment.down,
+            'create_time': this_comment.create_time
+        }
+        return return_message('success', {'data': this_comment_json})
 
     elif request.method == 'PUT':
         """
@@ -95,49 +117,96 @@ def comment():
         """
 
         id = request.form.get('id', None)
-        token = request.form.get('token', None)
         type = request.form.get('type', 'up')
 
         if id is not None:
             if len(id) != 24:
                 id = None
 
-        if type not in ['up', 'down']:
+        if type not in ['up', 'down', 'edit']:
             return return_message('error', 'unknown type')
 
         if id is None:
             return return_message('error', 'unknown comment')
         else:
-            this_comment = Comment.objects(_id=id)
+
+            this_comment = Comment.objects(pk=id)
             if this_comment.count() != 1:
                 return return_message('error', 'unknown comment')
             else:
                 this_comment = this_comment.first()
 
-        this_user = User.objects(token=token).first()
+        this_user = User.get_one_user(openid=request.headers['userid'])
 
-        this_user_comment_love = UserCommentLove.objects(user=this_user, commentid=str(this_comment._id))
+
+        if type == 'edit':
+
+            content = request.form.get("content", None)
+            star = request.form.get('star', 0)
+            try:
+                star = min(int(star), 10)
+            except:
+                return return_message("error", 'unknown star')
+
+            this_comment.content = content
+            this_comment.star = star
+            this_comment.edit_time = int(time())
+            this_comment.save()
+
+            return return_message('success', 'change comment')
+
+
+        this_user_comment_love = UserCommentLove.objects(user=this_user, comment=this_comment)
 
         if this_user_comment_love.count() == 1:
             # 存在记录
             this_user_comment_love = this_user_comment_love.first()
 
-            this_comment[this_user_comment_love.type] -= 1
-            this_user_comment_love.type = type
+            if type == this_user_comment_love.type:
+                # 与数据库相同 == 删除
+                this_comment[this_user_comment_love.type] -= 1
+                this_comment.save()
+                this_user_comment_love.delete()
+                return return_message('success', 'submit cancel {}'.format(type))
+            else:
+                # 与数据库的不相同
+                this_comment[this_user_comment_love.type] -= 1
 
-            this_comment[type] += 1
-            this_comment.save()
-            this_user_comment_love.save()
+                this_comment[type] += 1
+                this_user_comment_love.type = type
+
+                this_comment.save()
+                this_user_comment_love.save()
+                return return_message('success', 'submit change type to {}'.format(type))
         else:
+            # 不存在记录，添加纪录
+
             UserCommentLove(
                 user=this_user,
-                commentid=str(this_comment.pk),
+                comment=this_comment,
                 type=type
             ).save()
             this_comment[type] += 1
             this_comment.save()
+            return return_message('success', 'submit {}'.format(type))
 
-        return return_message('success', 'submit success')
+    elif request.method == 'DELETE':
+
+        id = request.form.get('id', None)
+
+        this_user = User.get_one_user(openid=request.headers['userid'])
+
+        if not id or len(id) != 24 or Comment.objects(pk=id).count() != 1:
+            return return_message('error', 'unknown id')
+
+        this_comment = Comment.objects(user=this_user, pk=id).first()
+        if isinstance(this_comment, Comment):
+            all_user_comment_love = UserCommentLove.objects(comment=this_comment)
+            for one_love in all_user_comment_love:
+                one_love.delete()
+
+            this_comment.delete()
+        return return_message('success', 'delete comment')
 
 
 @user_module.route('/collect', methods=['POST', 'DELETE'])
@@ -164,9 +233,14 @@ def collect():
         """
         type = request.form.get('type', None)
         id = request.form.get('id', None)
+        isbn = request.form.get('isbn', None)
+
 
         if type not in ['book', 'booklist']:
             return return_message('error', 'unknown type')
+
+        if type == 'book':
+            id = isbn
 
         if id == '' or not istance_objects(type, id):
             return return_message('error', 'missing id')
@@ -315,24 +389,33 @@ def order():
         return return_message('success', 'submit successfully')
 
 
+@user_module.route('/user_info', methods=['GET'])
+@allow_cross_domain
+@oauth4api
+def user_info():
+
+    this_user = User.get_one_user(openid=request.headers['userid'], token=request.headers['token'])
+    this_user_info = {
+        'username': this_user.username,
+        'avatar': this_user.avatar or '',
+        'unread_notice': Notice.objects(user=this_user, is_read=False).count()
+    }
+    return return_message('success', {'data': this_user_info})
+
+
 @user_module.route('/user_comments', methods=['GET'])
 @allow_cross_domain
 @oauth4api
 def user_comment():
 
-    pass
-    token = request.args.get('token', None)
-    this_user = token_verify(token)
-
-    if this_user is None:
-        return return_message('error', 'user verify failure')
+    this_user = User.get_one_user(openid=request.headers['userid'])
 
     all_comment = Comment.objects(user=this_user)
 
     all_comment_json = []
     for one in all_comment:
         all_comment_json.append({
-            'id': str(one._id),
+            'id': str(one.pk),
             'content': one.content,
             'star': one.star,
             'up': one.up,
@@ -357,22 +440,19 @@ def user_points():
     :return:
     """
 
-    token = request.args.get('token', None)
-    this_user = token_verify(token)
+    this_user = User.get_one_user(openid=request.headers['userid'])
 
-    if this_user is None:
-        return return_message('error', 'user verify fail')
-
-    all_user_credits = Points.objects(user=this_user)
+    all_user_credits = Points.objects(user=this_user).order_by("-time")
 
     all_user_credits_json = {
-        'now_credits': this_user.credits,
+        'now_points': 0,
         'count': len(all_user_credits),
         'logs': []
     }
 
     for one_credits in all_user_credits:
-        all_user_credits_json['list'].append({
+        all_user_credits_json['now_points'] += one_credits.point
+        all_user_credits_json['logs'].append({
             'type': one_credits.type,
             'point': one_credits.point,
             'time': one_credits.time,
@@ -386,35 +466,37 @@ def user_points():
 @allow_cross_domain
 @oauth4api
 def user_collects():
-    pass
-    token = request.args.get('token', None)
     type = request.args.get('type', 'book')
 
     if type not in ['book', 'booklist']:
         return return_message('error', 'unknown type')
 
-    this_user = token_verify(token)
+    this_user = User.get_one_user(openid=request.headers['userid'])
 
-    if this_user is None:
-        return return_message('error', 'user verify failure')
 
     all_collect = Collect.objects(user=this_user, type=type)
 
     all_collect_json = []
     for one in all_collect:
         if type == 'book':
-            one_book = Book.objects(isbn=one.typeid).first()
+            one_book = Book.objects(isbn=one.type_id).first()
             # TODO: 收藏API 书本信息补全
             all_collect_json.append({
                 'title': one_book.title,
-                'isbn': one_book.isbn
+                'isbn': one_book.isbn,
+                'image': one_book.image,
+                'rate': one_book.rate,
+                'reason': one_book.reason
             })
         elif type == 'booklist':
-            one_booklist = BookList.objects(_id=one.typeid).first()
+            one_booklist = BookList.objects(pk=one.type_id).first()
             # todo: 收藏API 书单信息补全
             all_collect_json.append({
+                'id': str(one_booklist.pk),
                 'title': one_booklist.title,
-                'description': one_booklist.description
+                'collect': one_booklist.collect,
+                'image': one_booklist.image,
+                'tags': [one_tag.name for one_tag in one_booklist.tag]
             })
 
     return return_message('success', all_collect_json)
@@ -453,3 +535,47 @@ def user_orders():
         })
 
     return return_message('success', all_order_json)
+
+
+@user_module.route('/user_notices', methods=['GET', 'POST'])
+@allow_cross_domain
+@oauth4api
+def user_notices():
+    """
+
+    :return:
+    """
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
+    if request.method == 'GET':
+
+        all_user_notices = Notice.objects(user=this_user).order_by("-create_time")
+
+        all_user_notices_json = {
+            'data': []
+        }
+
+        for one_notice in all_user_notices:
+            all_user_notices_json['data'].append({
+                'id': str(one_notice.pk),
+                'time': one_notice.create_time,
+                'content': one_notice.content,
+                'url': one_notice.url,
+                'is_read': one_notice.is_read
+            })
+
+        return return_message('success', all_user_notices_json)
+
+    elif request.method == 'POST':
+        pass
+        id = request.form.get('id', 0)
+
+        # TODO: 完成NOTICE的阅读
+
+
+        all_before_notices = Notice.objects(create_time__lte=time, user=this_user, is_read=False)
+
+        for one_notice in all_before_notices:
+            one_notice.save()
+
+        return return_message('success', 'read it')

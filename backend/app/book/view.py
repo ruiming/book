@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
-from app.book.model import BookList, Activity, Tag, Book
-from app.user.model import Comment, Collect
+from app.book.model import BookList, Activity, Tag, Book, BookTag
+from app.user.model import Comment, Collect, UserCommentLove
 from app.auth.model import User
 
 from app.lib.common_function import return_message
@@ -69,7 +69,7 @@ def booklist():
                 'description': this_book_list.description,
                 'image': this_book_list.image,
                 'collect': this_book_list.collect,
-                'tag': [],
+                'tags': [],
                 "collect_already": True if Collect.objects(user=this_user, type='booklist', type_id=str(this_book_list.pk)).count() == 1 else False,
                 'books': []
             }
@@ -77,7 +77,7 @@ def booklist():
             for one_tag in this_book_list.tag:
                 if not isinstance(one_tag, Tag):
                     continue
-                this_book_list_json['tag'].append(one_tag.name)
+                this_book_list_json['tags'].append(one_tag.name)
 
             for one_book in this_book_list.books:
                 if not isinstance(one_book, Book):
@@ -197,6 +197,59 @@ def slides():
     return return_message('success', {'data': all_activity_json})
 
 
+@book_modules.route('/pop_book', methods=['GET'])
+@allow_cross_domain
+@oauth4api
+def pop_book():
+    """
+    首页热门书籍
+    :return:
+    """
+    page = request.args.get("page", 1)
+    try:
+        page = int(page)
+    except:
+        return return_message('error', 'unknown page')
+
+    all_user_tag = []
+    all_book_isbn = []
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+    all_collect = Collect.objects(user=this_user, type='book')
+    for one_collect in all_collect:
+        one_book = Book.objects(isbn=one_collect.type_id)
+        one_book = one_book.first() if one_book.count() == 1 else None
+        if one_book:
+            for one_tag in one_book.tag:
+                all_user_tag.append(BookTag(name=one_tag.name))
+            all_book_isbn.append(one_book.isbn)
+    if all_user_tag:
+        all_book = Book.objects(tag__in=all_user_tag).order_by("-rate")
+    else:
+        all_book = Book.objects().order_by("-rate")
+
+    all_book_json = []
+    for one_book in all_book:
+        if one_book.isbn not in all_book_isbn:
+            all_book_json.append({
+                'title': one_book.title,
+                'isbn': one_book.isbn,
+                'subtitle': one_book.subtitle,
+                'image': one_book.image,
+                'rate': one_book.rate,
+                'reason': one_book.reason
+            })
+
+    all_book_json = all_book_json[5*(page-1):5*page]
+
+    return return_message('success',all_book_json)
+
+
+
+
+    return return_message('success', 'no data')
+
+
 @book_modules.route('/book', methods=['GET'])
 @allow_cross_domain
 @oauth4api
@@ -237,6 +290,27 @@ def book():
             'commenters': Comment.objects(book=this_book).count(),
             'collect_already': True if Collect.objects(type='book', type_id=this_book.isbn, user=this_user).count() == 1 else False
         }
+        for one_tag in this_book.tag:
+            this_book_json['tag'].append(one_tag.name)
+
+        all_hot_comment = Comment.objects(book=this_book).order_by("-up").limit(3)
+        for one_comment in all_hot_comment:
+            up_already = True if UserCommentLove.objects(user=this_user, comment=one_comment, type='up').count() == 1 else False
+            down_already = True if UserCommentLove.objects(user=this_user, comment=one_comment, type='down').count() == 1 else False
+            this_book_json['comments'].append({
+                'id': str(one_comment.pk),
+                'content': one_comment.content,
+                'star': one_comment.star,
+                'up': one_comment.up,
+                'down': one_comment.down,
+                'up_already': up_already,
+                'down_already': down_already,
+                'create_time': one_comment.create_time,
+                'user': {
+                    'username': one_comment.user.username,
+                    'avatar': one_comment.user.avatar
+                }
+            })
     else:
 
         this_book_json = {
@@ -260,24 +334,6 @@ def book():
             'rate': this_book.rate,
             'reason': this_book.reason
         }
-
-    for one_tag in this_book.tag:
-        this_book_json['tag'].append(one_tag.name)
-
-    all_hot_comment = Comment.objects(book=this_book).order_by("-up").limit(5)
-    for one_comment in all_hot_comment:
-        this_book_json['comments'].append({
-            'content': one_comment.content,
-            'star': one_comment.star,
-            'up': one_comment.up,
-            'down': one_comment.down,
-            # TODO: 添加该用户是否评论过此书。
-            'create_time': one_comment.create_time,
-            'user': {
-                'username': one_comment.user.username,
-                'avatar': one_comment.user.avatar
-            }
-        })
 
     return return_message('success', {'data': this_book_json})
 

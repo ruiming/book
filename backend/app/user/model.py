@@ -3,7 +3,7 @@
 from app import db
 from app.auth.model import User
 from app.book.model import Book
-from datetime import datetime
+from time import time
 
 
 class Comment(db.Document):
@@ -17,8 +17,8 @@ class Comment(db.Document):
 
     book = db.ReferenceField(Book)
     user = db.ReferenceField(User)
-    create_time = db.DateTimeField(required=True, default=datetime.now())
-
+    create_time = db.IntField(required=True, default=int(time()))
+    edit_time = db.IntField()
 
 class UserCommentLove(db.Document):
     """
@@ -27,7 +27,7 @@ class UserCommentLove(db.Document):
     user = db.ReferenceField(User, required=True)
     comment = db.ReferenceField(Comment, required=True)
     type = db.StringField(required=True, default=u'none')
-    time = db.DateTimeField(required=True, default=datetime.now())
+    time = db.IntField(required=True, default=int(time()))
 
 
 class Points(db.Document):
@@ -37,7 +37,7 @@ class Points(db.Document):
     type = db.IntField(required=True, default=0)
     content = db.StringField()
     point = db.IntField(required=True)
-    time = db.DateTimeField(required=True, default=datetime.now())
+    time = db.IntField(required=True, default=int(time()))
     user = db.ReferenceField(User)
 
 
@@ -48,7 +48,7 @@ class Collect(db.Document):
     user = db.ReferenceField(User)
     type = db.StringField()  # 表示是书籍还是书单 ['book', 'booklist']
     type_id = db.StringField()
-    time = db.DateTimeField(required=True, default=datetime.now())
+    time = db.IntField(required=True, default=int(time()))
 
 
 class Order(db.Document):
@@ -56,5 +56,34 @@ class Order(db.Document):
     status = db.StringField()
     book = db.ReferenceField(Book)
     price = db.DecimalField(required=True, default=0.00)
-    create_time = db.DateTimeField(required=True, default=datetime.now())
-    edit_time = db.DateTimeField(required=True, default=datetime.now())
+    create_time = db.IntField(required=True, default=int(time()))
+    edit_time = db.IntField(required=True, default=int(time()))
+
+
+class Cart(db.Document):
+    # 购物车模型
+    pass
+    list = db.ListField(db.ReferenceField(Book))
+
+
+class Notice(db.Document):
+    """
+    通知模型
+    """
+    content = db.StringField()
+    url = db.StringField()
+    create_time = db.IntField(default=int(time()))
+    is_read = db.BooleanField(default=False)
+    read_time = db.IntField()
+    user = db.ReferenceField(User)
+
+
+    def read(self):
+        try:
+            self.is_read = True
+            self.read_time = int(time())
+            self.save()
+        except:
+            return False
+
+        return True

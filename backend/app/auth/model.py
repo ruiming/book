@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from app import db
-from datetime import datetime
+from time import time
 
 
 class WechatOAuth(db.EmbeddedDocument):
@@ -18,14 +18,14 @@ class User(db.Document):
     password = db.StringField()
     phone = db.StringField()
     description = db.StringField()
-    sex = db.IntField()
-    avatar = db.StringField()  # the file name of avatar
+    sex = db.IntField(default=0)
+    avatar = db.StringField(default='')  # the file name of avatar
     school = db.StringField(required=True, default=u"华南师范大学石牌校区")
     dormitory = db.StringField()
     province = db.StringField()
     city = db.StringField()
     country = db.StringField()
-    create_time = db.DateTimeField(default=datetime.now(), required=True)
+    create_time = db.IntField(default=int(time()), required=True)
     group = db.IntField(required=True, default=1)
     credits = db.IntField(required=True, default=0)
     # For APP
@@ -55,3 +55,5 @@ class User(db.Document):
             return this_user.first()
 
         return None
+
+

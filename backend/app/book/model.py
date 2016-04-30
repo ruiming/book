@@ -2,7 +2,7 @@
 
 from app import db
 
-from datetime import datetime
+from time import time
 from app.auth.model import User
 
 
@@ -29,7 +29,7 @@ class Book(db.Document):
     subtitle = db.StringField()
     author = db.ListField(db.StringField())
     translator = db.ListField(db.StringField())
-    create_time = db.DateTimeField(default=datetime.now(), required=True)
+    create_time = db.IntField(default=int(time()), required=True)
     publish_time = db.StringField()
     image = db.StringField(required=True)
     page = db.IntField()
@@ -57,8 +57,8 @@ class BookList(db.Document):
     hot = db.IntField(default=0)
     image = db.StringField()
     collect = db.IntField(default=0, required=True)
-    create_time = db.DateTimeField(default=datetime.now(), required=True)
-    last_edit_time = db.DateTimeField(default=datetime.now(), required=True)
+    create_time = db.IntField(default=int(time()), required=True)
+    last_edit_time = db.IntField(default=int(time()), required=True)
 
 
 class Activity(db.Document):
@@ -69,8 +69,8 @@ class Activity(db.Document):
     title = db.StringField()
     url = db.StringField()
     enabled = db.BooleanField(required=True, default=True)
-    start_time = db.DateTimeField(default=datetime.now(), required=True)
-    end_time = db.DateTimeField(required=False)
+    start_time = db.IntField(default=int(time()), required=True)
+    end_time = db.IntField(required=False)
 
 
 class Applacation(db.Document):

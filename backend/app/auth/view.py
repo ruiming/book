@@ -92,34 +92,38 @@ def code2token():
 
             this_user = User.objects(wechat_openid=token['openid'])
             this_user = this_user.first() if this_user.count() == 1 else None
-            if not this_user:
-                try:
-                    print token['openid'], token['access_token']
-                    print token
-                    user_info = wechat.get_user_info(openid=token['openid'], access_token=token['access_token'])
-                except Exception as e:
-                    return 'failure get info'
-                else:
+
+            try:
+                user_info = wechat.get_user_info(openid=token['openid'], access_token=token['access_token'])
+            except Exception as e:
+                return 'failure get info'
+            else:
+                if not this_user:
                     this_user = User(
                         username=user_info['nickname'],
                         country=user_info['country'],
                         city=user_info['city'],
                         province=user_info['province'],
                         wechat_openid=token['openid'],
-                        avator=token['headimgurl']
+                        avator=token['headimgurl'],
+                        sex=token['sex']
                     )
                     this_user.save()
 
-           # 更新用户信息
-            this_user.wechat = WechatOAuth(
-                access_token=token['access_token'],
-                expires_in=token['expires_in'],
-                refresh_token=token['refresh_token'],
-                token_time=int(time())
-            )
-            this_user.wechat.save()
-            this_user.save()
-            return redirect("http://www.bookist.org/?token={}&user_id={}#/".format(token['access_token'], token['openid'])), 301
+               # 更新用户信息
+                this_user.avatar = user_info['headimgurl']
+                this_user.sex = user_info['sex']
+                this_user.username = user_info['nickname']
+
+                this_user.wechat = WechatOAuth(
+                    access_token=token['access_token'],
+                    expires_in=token['expires_in'],
+                    refresh_token=token['refresh_token'],
+                    token_time=int(time())
+                )
+                this_user.wechat.save()
+                this_user.save()
+                return redirect("http://www.bookist.org/?token={}&user_id={}#/".format(token['access_token'], token['openid'])), 301
 
     return 'failure get code'
 

@@ -4,6 +4,8 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
     $scope.edit = false;            // 可编辑
     $scope.readonly = true;         // 只读
     $scope.busy = true;
+    $scope.wait = false;
+    $scope.required = true;
 
     // 用户所有评论
     $http({
@@ -24,7 +26,11 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
     
     // 修改评论
     $scope.submit = function(obj){
-        console.log(obj);
+        if(!obj.commentForm.content.$valid){
+            console.log($scope.commentForm.content.$error);
+            return;
+        }
+        obj.wait = true;
         $http({
             method: 'PUT',
             url: host + '/comment',
@@ -33,9 +39,9 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
                 type: "edit",
                 content: obj.comment.content,
                 star: obj.comment.star*2
-
             }
         }).success(function(){
+            obj.wait = false;
             obj.readonly = true;
             obj.edit = false;
         });

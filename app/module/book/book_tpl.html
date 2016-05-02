@@ -23,11 +23,14 @@
         </div>
         <div class="book-section">
             <span name="price"> ¥ {{book.price | number:2 }}</span>
-            <button class="btn btn-success" ng-click="collect()" ng-if="!book.collect_already">
+            <button class="btn btn-success" ng-click="collect()" ng-if="!book.collect_already&&!wait2">
                 <i class="fa fa-bookmark-o"></i>
                 收藏
             </button>
-            <button class="btn btn-success" ng-click="collect()" ng-if="book.collect_already">
+            <button class="btn btn-success" ng-class="{true: 'btn-collect', false: 'btn-collected'}[book.collect_already]" ng-show="wait2" disabled>
+                <wait></wait>
+            </button>
+            <button class="btn btn-success" ng-click="collect()" ng-if="book.collect_already&&!wait2">
                 <i class="fa fa-bookmark"></i>
                 已收藏
             </button>
@@ -70,20 +73,20 @@
                 <a class="btn btn-default" ui-sref="commentsBook({isbn: book.isbn, title: book.title})">全部评论</a>
                 <button class="btn btn-default" ng-click="commentBox=!commentBox;">我要评论</button>
             </div>
-            <div class="book-comment-box" ng-show="commentBox">
+            <form name="commentForm" class="book-comment-box" ng-show="commentBox">
                 <div class="book-comment-origin">
                     <img ng-src="{{user.avatar}}">
                     <span class="book-comment-origin">{{user.username}}</span>
                     <uib-rating class="star red-star" state-on="'fa fa-star'" state-off="'fa fa-star-o'"
                                 ng-model="star" max="5" read-only="false" on-hover="hoveringOver(value)"></uib-rating>
                 </div>
-                <textarea ng-model="content" class="form-control" rows="3"></textarea>
+                <textarea ng-model="content" name="content" class="form-control" rows="3" ng-required="required"></textarea>
                 <div class="book-comment-post">
                     <p>评价 "{{book.title}}"</p>
                     <button class="btn btn-success" ng-click="postComment()" ng-show="!wait">发表</button>
-                    <button class="btn btn-success" ng-show="wait"><wait></wait></button>
+                    <button class="btn btn-success" ng-show="wait" style="width: 54px" disabled><wait></wait></button>
                 </div>
-            </div>
+            </form>
         </div>
         <div class="books-similarity">
             <span>购买此书的人最近也购买</span>

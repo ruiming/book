@@ -5,7 +5,9 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     $scope.auth = true;             // 是否已登录
     $scope.busy = true;             // Loading
     $scope.star = 5;
-    $scope.wait = false;
+    $scope.wait = false;            // 发表评论wait
+    $scope.wait2 = false;           // 收藏图书wait
+    $scope.required = true;
 
     // 根据ISBN号获取图书信息(包含评论和标签)
     $http({
@@ -36,6 +38,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
 
     // 收藏图书
     $scope.collect = function() {
+        $scope.wait2 = true;
         $http({
             method: 'POST',
             url: host + '/collect',
@@ -45,6 +48,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             }
         }).success(function () {
             $scope.book.collect_already = !$scope.book.collect_already;
+            $scope.wait2 = false;
         });
     };
 
@@ -112,6 +116,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
 
     // 评论
     $scope.postComment = function(){
+        if(!this.commentForm.content.$valid) return;
         $scope.wait = true;
         $http({
             method: 'POST',

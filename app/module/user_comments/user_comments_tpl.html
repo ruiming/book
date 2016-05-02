@@ -9,23 +9,24 @@
             <i class="fa fa-trash-o" ng-click="deleteBox=true"></i>
             <i class="fa fa-pencil-square-o" ng-click="focus(this)"></i>
         </div>
-        <div class="comment-book">
+        <form name="commentForm" class="comment-book">
             <a ui-sref="book({isbn:comment.book.isbn})">
                 <img ng-src="{{comment.book.image}}">
             </a>
             <div class="comment-content">
-                <textarea class="form-control" rows="3"
+                <textarea class="form-control" rows="3" name="content" ng-required="required"
                           ng-model="comment.content" ng-readonly="readonly" focus-me="{{edit}}"></textarea>
             </div>
-        </div>
-        <div class="comment-star">
-            <i class="fa fa-thumbs-o-up comment-up">{{comment.up}}</i>
-            <i class="fa fa-thumbs-o-down comment-down">{{comment.down}}</i>
-            <button ng-show="edit" class="btn btn-success" ng-click="submit(this)">确认修改</button>
-            <uib-rating ng-model="comment.star" max="5" read-only="!edit" class="red-star star"
-                        ng-class="{true: 'comment-star-left'}[edit]"
-                        state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
-        </div>
+            <div class="comment-star">
+                <i class="fa fa-thumbs-o-up comment-up">{{comment.up}}</i>
+                <i class="fa fa-thumbs-o-down comment-down">{{comment.down}}</i>
+                <button ng-show="edit&&!wait" class="btn btn-success" ng-click="submit(this)">确认修改</button>
+                <button class="btn btn-success" ng-show="wait" style="width: 80px" ng-show="wait" disabled><wait></wait></button>
+                <uib-rating ng-model="comment.star" max="5" read-only="!edit" class="red-star star"
+                            ng-class="{true: 'comment-star-left'}[edit]"
+                            state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
+            </div>
+        </form>
         <div ng-show="deleteBox" class="modal-dialog">
             <div class="modal-header">
                 <h4 class="modal-title">你确认要删除评论吗?</h4>

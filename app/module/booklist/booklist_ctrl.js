@@ -1,6 +1,7 @@
 routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
 
     $scope.busy = true;
+    $scope.wait = false;
 
     // 获取书单信息
     $http({
@@ -19,6 +20,7 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
 
     // 收藏书单函数,同样后端判断书单是收藏还是取消收藏
     $scope.collect = function(){
+        $scope.wait = true;
         $http({
             method: 'POST',
             url: host + '/collect',
@@ -30,6 +32,7 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
             $scope.booklist.collect_already = !$scope.booklist.collect_already;
             if($scope.booklist.collect_already)  $scope.booklist.collect++;
             else  $scope.booklist.collect--;
+            $scope.wait = false;
         });
     }
 });

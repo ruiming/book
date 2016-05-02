@@ -3,12 +3,11 @@ routeApp.controller('SettingsCtrl', function($http, $scope, UserMessage){
     // todo 设置页，需要gravatar, name, sex, cart, order{wait,received}, address[{name, phone, dorm, id}], signature
     $http({
         method: 'GET',
-        url: host + '/user',
-        params: {
-            type: "detail"
-        }
+        url: host + '/user_info'
     }).success(function(response){
         $scope.user = response;
+        UserMessage.setSignature(response.signature);
+        UserMessage.setAddress(response.address);
     });
 
     // todo 改变性别
@@ -37,9 +36,5 @@ routeApp.controller('SettingsCtrl', function($http, $scope, UserMessage){
 
       });
     };
-
-    // 页面传递参数用
-    UserMessage.setSignature($scope.user.signature);
-    UserMessage.setAddress($scope.user.address);
 
 });

@@ -17,7 +17,7 @@
             <p>{{book.title}}</p>
             <uib-rating ng-model="book.star" class="red-star wechat-fix" max="5"
                         state-on="'fa fa-star'" state-off="'fa fa-star-o'" read-only="true"></uib-rating>
-            <span>{{book.rate}}</span>
+            <span>{{book.rate | number:1}}</span>
         </a>
     </div>
 </div>

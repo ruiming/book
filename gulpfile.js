@@ -87,7 +87,7 @@ gulp.task('sass', function(){
 
 gulp.watch('src/scss/*.scss',['sass']);
 gulp.watch('src/css/*.css', ['css']);
-gulp.watch(['app/module/**/*.js','app/common/*.js'], ['js']);
+gulp.watch(['app/module/**/*.js', 'app/common/*.js'], ['js']);
 gulp.watch('src/img/*.*', ['img']);
 gulp.watch('app/module/**/*.html',['templates:dist']);
 

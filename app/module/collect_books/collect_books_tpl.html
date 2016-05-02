@@ -14,7 +14,7 @@
                 <a ui-sref="book({isbn: book.isbn})"><img ng-src="{{book.image}}"></a>
                 <span class="title">&nbsp;{{book.title}}<i class="mark-book-remove fa fa-trash-o" ng-click="remove(book, $index)"></i></span>
                 <uib-rating class="star red-star wechat-fix" ng-model="book.star" max="5" read-only="true" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
-                <span class="rate">&nbsp;{{book.rate}}</span>
+                <span class="rate">&nbsp;{{book.rate | number:1}}</span>
                 <blockquote class="reason">{{book.reason}}</blockquote>
             </div>
         </div>

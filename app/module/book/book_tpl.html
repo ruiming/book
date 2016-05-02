@@ -10,7 +10,7 @@
             <div class="book-info-rate">
                 <uib-rating class="star wechat-fix" ng-model="book.star" max="5" read-only="true" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
                 <span class="rate">{{book.rate}}</span>
-                <span class="collect">({{book.comments.length}}人评价)</span>
+                <span class="collect">({{book.commenters}}人评价)</span>
                 <a class="book-info-more-option" ui-sref="bookDetail({isbn: book.isbn})" ng-click="busy=true">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </a>
@@ -80,7 +80,8 @@
                 <textarea ng-model="content" class="form-control" rows="3"></textarea>
                 <div class="book-comment-post">
                     <p>评价 "{{book.title}}"</p>
-                    <button class="btn btn-success" ng-click="postComment()">发表</button>
+                    <button class="btn btn-success" ng-click="postComment()" ng-show="!wait">发表</button>
+                    <button class="btn btn-success" ng-show="wait"><wait></wait></button>
                 </div>
             </div>
         </div>

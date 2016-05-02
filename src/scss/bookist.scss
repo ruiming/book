@@ -78,11 +78,15 @@ a {
   background-color: #ffffff;
   margin-bottom: 20px;
   img {
-    height: 160px !important;
+    min-height: 160px !important;
+    width: 100%;
   }
   a[role="button"]{
     background-image: linear-gradient(to right,rgba(0,0,0,.0001) 0,rgba(0, 0, 0, 0.0001) 100%);
     height: 180px;
+  }
+  .carousel-inner {
+    height: 160px !important;
   }
   .carousel-indicators{
     display: none;
@@ -289,6 +293,9 @@ a {
         .tag {
           float: left;
           padding: 12px;
+          &:first-child {
+            border-right: 1px solid #eee;
+          }
         }
       }
     }
@@ -1593,5 +1600,106 @@ a {
   100% {
     -webkit-transform: translateY(0px);
 
+  }
+}
+#circularG{
+  position:relative;
+  width:20px;
+  height:20px;
+  margin: auto;
+}
+
+.circularG{
+  position:absolute;
+  background-color:rgb(255,255,255);
+  width:5px;
+  height:5px;
+  border-radius:3px;
+  -webkit-border-radius:3px;
+  animation-name:bounce_circularG;
+  -webkit-animation-name:bounce_circularG;
+  animation-duration:1.1s;
+  -webkit-animation-duration:1.1s;
+  animation-iteration-count:infinite;
+  -webkit-animation-iteration-count:infinite;
+  animation-direction:normal;
+  -webkit-animation-direction:normal;
+}
+
+#circularG_1{
+  left:0;
+  top:8px;
+  animation-delay:0.41s;
+  -webkit-animation-delay:0.41s;
+}
+
+#circularG_2{
+  left:2px;
+  top:2px;
+  animation-delay:0.55s;
+  -webkit-animation-delay:0.55s;
+}
+
+#circularG_3{
+  top:0;
+  left:8px;
+  animation-delay:0.69s;
+  -webkit-animation-delay:0.69s;
+}
+
+#circularG_4{
+  right:2px;
+  top:2px;
+  animation-delay:0.83s;
+  -webkit-animation-delay:0.83s;
+}
+
+#circularG_5{
+  right:0;
+  top:8px;
+  animation-delay:0.97s;
+  -webkit-animation-delay:0.97s;
+}
+
+#circularG_6{
+  right:2px;
+  bottom:2px;
+  animation-delay:1.1s;
+  -webkit-animation-delay:1.1s;
+}
+
+#circularG_7{
+  left:8px;
+  bottom:0;
+  animation-delay:1.24s;
+  -webkit-animation-delay:1.24s;
+}
+
+#circularG_8{
+  left:2px;
+  bottom:2px;
+  animation-delay:1.38s;
+  -webkit-animation-delay:1.38s;
+}
+
+
+
+@keyframes bounce_circularG{
+  0%{
+    transform:scale(1);
+  }
+
+  100%{
+    transform:scale(.3);
+  }
+}
+
+@-webkit-keyframes bounce_circularG{
+  0%{
+    -webkit-transform:scale(1);
+  }
+
+  100%{
+    -webkit-transform:scale(.3);
   }
 }

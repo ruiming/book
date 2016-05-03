@@ -4,14 +4,6 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
     $scope.noWrapSlides = false;
     $scope.active = 0;
 
-    // 获取活动轮播
-    $http({
-        method: 'GET',
-        url: host + '/slides'
-    }).success(function(response){
-        $scope.slides = response;
-    });
-
     // 获取书籍推荐
     $http({
         method: 'GET',
@@ -32,6 +24,14 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
         }
     }).success(function(response){
         $scope.booklists = response;
+    });
+
+    // 获取活动轮播
+    $http({
+        method: 'GET',
+        url: host + '/slides'
+    }).success(function(response){
+        $scope.slides = response;
     });
     
 });

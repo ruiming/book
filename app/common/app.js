@@ -14,7 +14,7 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
         }
         if(response.status == "error"){
             // todo change to alert when work
-            console.log("ERROR ERROR ERROR: " + response.message);
+            console.log("----------------Error----------------: " + response.message);
         }
         return response;
     });

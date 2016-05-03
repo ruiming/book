@@ -11,7 +11,7 @@
         <span>书籍推荐</span>
         <a ui-sref="recommend">更多 > </a>
     </div>
-    <div class="slides-book-content">
+    <div class="slides-book-content" style="min-height: 195px;">
         <a ng-repeat="book in books" ui-sref="book({isbn:book.isbn})">
             <img ng-src="{{book.image}}">
             <p>{{book.title}}</p>
@@ -21,7 +21,7 @@
         </a>
     </div>
 </div>
-<div class="booklists-box">
+<div class="booklists-box" style="min-height: 400px;">
     <div class="booklists-box-header">
         <i class="fa fa-list"></i>
         <span>热门书单</span>

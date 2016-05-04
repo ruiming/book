@@ -185,6 +185,7 @@ a {
       width: 100%;
       border-bottom: 1px solid #eee;
       padding: 5px;
+      position: relative;
       img {
         width: $width;
         float: right;
@@ -204,6 +205,8 @@ a {
       .booklist-tag {
         display: block;
         overflow: hidden;
+        bottom: 10px;
+        position: absolute;
         button {
           float: left;
           font-size: 12px;

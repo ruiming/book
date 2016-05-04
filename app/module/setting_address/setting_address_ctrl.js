@@ -3,6 +3,7 @@ routeApp.controller('AddressCtrl', function ($http, $scope, $location, UserMessa
     // 用单体UserMessage暂存用户相关信息
 
     $scope.address = UserMessage.getAddress();
+    if($scope.address == undefined) $scope.address = [];
 
     $scope.return = function() {
         $location.path('/settings').replace();
@@ -13,4 +14,5 @@ routeApp.controller('AddressCtrl', function ($http, $scope, $location, UserMessa
         $location.path('/setting/address/add').replace();
     };
 
+    console.log($scope.address);
 });

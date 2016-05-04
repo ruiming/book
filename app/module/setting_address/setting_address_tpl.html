@@ -1,4 +1,7 @@
 <div class="setting">
+    <div class="empty-alert" ng-if="address.length==0">
+        <p>您还没有添加地址</p>
+    </div>
     <div class="address-list" ng-repeat="x in address" ng-click="edit($index)">
         <p>{{x.name}}, {{x.phone}}</p>
         <small>{{x.dorm}}</small>

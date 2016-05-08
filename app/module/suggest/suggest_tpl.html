@@ -1,0 +1,16 @@
+<div class="suggest">
+    <div class="i-suggest">
+        <div class="suggest-header">
+            <h4>说出你的建议和看法帮助改善平台</h4>
+        </div>
+        <hr>
+        <div class="input-group">
+            <img ng-src="{{avatar}}">
+        </div>
+        <form class="suggestion" name="suggestBox">
+            <textarea class="form-control" name="suggestion" ng-model="suggestion" ng-required="required"></textarea>
+            <button type="submit" class="btn btn-block btn-info" ng-show="!wait" ng-click="post()">提交</button>
+            <button class="btn btn-block btn-info" ng-show="wait" disabled><wait></wait></button>
+        </form>
+    </div>
+</div>

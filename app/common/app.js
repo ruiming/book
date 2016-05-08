@@ -1,4 +1,5 @@
 var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngTouch','infinite-scroll']);
+
 var host = "http://www.bookist.org";
 // var host = "http://119.29.204.83:5000";
 
@@ -169,5 +170,10 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             url: '/setting/address/add',
             controller: 'AddressAddCtrl',
             templateUrl: 'setting_address_add/setting_address_add_tpl.html'
+        })
+        .state('suggest', {
+            url: '/suggest',
+            controller: 'SuggestCtrl',
+            templateUrl: 'suggest/suggest_tpl.html'
         });
 }]);

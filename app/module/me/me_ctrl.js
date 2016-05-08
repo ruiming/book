@@ -6,6 +6,13 @@ routeApp.controller('MeCtrl',function($scope, $http) {
         url: host + '/user_info'
     }).success(function(response){
         $scope.user = response;
+        $scope.user.cart = 5;
+        $scope.user.order = {
+            wait: 4,
+            received: 3
+        };
+        sessionStorage.name = $scope.user.username;
+        sessionStorage.avatar = $scope.user.avatar;
     });
     
 });

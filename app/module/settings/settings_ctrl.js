@@ -33,7 +33,7 @@ routeApp.controller('SettingsCtrl', function($http, $scope, UserMessage){
               name: $scope.user.name
           }
       }).success(function(response){
-
+          sessionStorage.name = $scope.user.name;
       });
     };
 

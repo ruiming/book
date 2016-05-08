@@ -11,6 +11,41 @@ routeApp.controller('CartCtrl',function($scope, $http) {
         $scope.items = response;
         $scope.busy = false;
         $scope.recount($scope.items);
+    }).error(function(){
+        $scope.items = [
+            {
+                "title": "灯塔",
+                "image": "https://img1.doubanio.com/lpic/s28369978.jpg",
+                "author": [
+                    "[法]克里斯多夫·夏布特（Christophe Chabouté）"
+                ],
+                "isbn": "9787550268388",
+                "price": 12,
+                "count": 2
+            },
+            {
+                "title": "灯塔",
+                "image": "https://img1.doubanio.com/lpic/s28369978.jpg",
+                "author": [
+                    "[法]克里斯多夫·夏布特（Christophe Chabouté）"
+                ],
+                "isbn": "9787550268388",
+                "price": 12,
+                "count": 2
+            },
+            {
+                "title": "灯塔",
+                "image": "https://img1.doubanio.com/lpic/s28369978.jpg",
+                "author": [
+                    "[法]克里斯多夫·夏布特（Christophe Chabouté）"
+                ],
+                "isbn": "9787550268388",
+                "price": 12,
+                "count": 2
+            }
+        ];
+        $scope.busy = false;
+        $scope.recount($scope.items);
     });
 
     // 计算价格

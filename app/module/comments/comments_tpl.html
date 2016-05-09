@@ -7,7 +7,7 @@
         <div class="book-comments">
             <div class="book-comment" ng-repeat="comment in comments">
                 <div class="book-comment-origin">
-                    <img ng-src="{{comment.book.image}}">
+                    <img ng-src="{{comment.book.avatar}}">
                     <span class="book-comment-origin">{{comment.user.username}}</span>
                     <uib-rating class="star red-star" ng-model="comment.star"
                                 state-on="'fa fa-star'" state-off="'fa fa-star-o'" max="5" read-only="true"></uib-rating>

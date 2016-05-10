@@ -422,7 +422,23 @@ def billing():
         查看一个订单状态
         """
 
-        pass
+        id = request.args.get('id', None)
+
+        if not id or len(id) != 24:
+            return return_message('unknown billing id')
+
+        this_billing = Billing.objects(pk=id)
+        if this_billing.count() != 1:
+            return return_message('error', 'unknown billing id')
+        else:
+            this_billing = this_billing.first()
+
+        this_billing_json = {
+            'id': this_billing.pk,
+            'status': this_billing
+        }
+
+
 
     elif request.method == 'POST':
         """
@@ -542,6 +558,32 @@ def user_collects():
             })
 
     return return_message('success', all_collect_json)
+
+
+@user_module.route('/user_carts', methods=['GET'])
+@allow_cross_domain
+@oauth4api
+def user_carts():
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
+    all_cart = Cart.objects(user=this_user, status=1)
+
+    all_cart_json = []
+
+    for one_cart in all_cart:
+        all_cart_json.append({
+            'number': one_cart.number,
+            'price': one_cart.price,
+            'book':{
+                'title': one_cart.book.title,
+                'image': one_cart.book.image,
+                'author': [one_author for one_author in one_cart.book.author],
+            }
+        })
+    return return_message('success', all_cart_json)
+
+
 
 
 @user_module.route('/user_billings', methods=['GET'])

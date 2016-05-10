@@ -8,6 +8,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     $scope.wait = false;            // 发表评论wait
     $scope.wait2 = false;           // 收藏图书wait
     $scope.wait3 = false;           // 加入购物车wait
+    $scope.wait4 = false;           // 提醒延迟
     $scope.required = true;
     $scope.hehe = false;
 
@@ -22,6 +23,12 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             }
         }).success(function(){
             $scope.wait3 = false;
+            $scope.wait4 = true;
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait4 = false;
+                });
+            }, 1500);
         });
     };
 

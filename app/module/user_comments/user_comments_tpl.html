@@ -5,9 +5,11 @@
     </div>
     <li ng-repeat="comment in comments">
         <div class="comment-title">
-            <span>{{comment.book.title}}</span>
-            <i class="fa fa-trash-o" ng-click="deleteBox=true"></i>
-            <i class="fa fa-pencil-square-o" ng-click="focus(this)"></i>
+            <div class="comment-action">
+                <i class="fa fa-trash-o" ng-click="deleteBox=true"></i>
+                <i class="fa fa-pencil-square-o" ng-click="focus(this)"></i>
+            </div>
+            <p>{{comment.book.title}}</p>
         </div>
         <form name="commentForm" class="comment-book">
             <a ui-sref="book({isbn:comment.book.isbn})">
@@ -35,7 +37,8 @@
                 <p>巴拉拉巴拉拉把啦啦啦啦啦啦把啦啦啦啦啦啦吧啦啦啦啦啦巴拉巴拉巴拉吧啦啦啦啦啦。</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" type="button" ng-show="!clickBuy" ng-click="delete(comment.id, $index)">确认</button>
+                <button class="btn btn-primary" type="button" ng-show="!clickBuy&&!wait" ng-click="delete(comment.id, $index)">确认</button>
+                <button class="btn btn-primary" type="button" ng-show="wait" style="width: 54px"><wait></wait></button>
                 <button class="btn btn-warning" type="button" ng-click="deleteBox=false">取消</button>
             </div>
         </div>

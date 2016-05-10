@@ -1,6 +1,6 @@
 var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngTouch','infinite-scroll']);
 
-var host = "http://www.bookist.org";
+var host = "http://192.168.1.105";
 // var host = "http://119.29.204.83:5000";
 
 routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRouterProvider',function ($stateProvider,$locationProvider,$httpProvider,$urlRouterProvider) {

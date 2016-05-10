@@ -6,6 +6,7 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
     $scope.busy = true;
     $scope.wait = false;
     $scope.required = true;
+    $scope.wait = false;            // 删除等待
 
     // 用户所有评论
     $http({
@@ -49,6 +50,7 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
     
     // 删除评论
     $scope.delete = function(id, index){
+        $scope.wait = true;
         $http({
             method: 'DELETE',
             url: host + '/comment',
@@ -56,6 +58,7 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
                 id: id
             }
         }).success(function(){
+            $scope.wait = false;
             $scope.comments.splice(index, 1);
         });
     }

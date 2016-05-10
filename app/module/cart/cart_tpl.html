@@ -1,12 +1,12 @@
 <loading ng-if="busy"></loading>
 <div class="shop-group" ng-if="!busy">
     <div class="shop-cart-count">
+        <a class="btn btn-danger">结算</a>
         <div class="shop-cart-count-core">
-            <h3>小计(4本书): ¥ {{price | number:2 }}</h3>
+            <p>小计(4本书): ¥ {{price | number:2 }}</p>
             <i class="fa fa-info"></i>
             <span>享受免邮和送书上门</span>
         </div>
-        <a class="btn btn-danger">结算</a>
     </div>
     <ul class="shop-cart-list">
         <div class="empty-alert" ng-if="items.length==0">

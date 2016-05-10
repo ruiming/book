@@ -8,9 +8,10 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     $scope.wait = false;            // 发表评论wait
     $scope.wait2 = false;           // 收藏图书wait
     $scope.wait3 = false;           // 加入购物车wait
-    $scope.wait4 = false;           // 提醒延迟
+    $scope.wait4 = false;           // 加入购物车提醒延迟
+    $scope.wait5 = false;           // 收藏提醒延迟
+
     $scope.required = true;
-    $scope.hehe = false;
 
     // 加入购物车
     $scope.addCart = function(){
@@ -72,6 +73,12 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
         }).success(function () {
             $scope.book.collect_already = !$scope.book.collect_already;
             $scope.wait2 = false;
+            $scope.wait5 = true;
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait5 = false;
+                });
+            }, 1500);
         });
     };
 

@@ -7,12 +7,32 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     $scope.star = 5;
     $scope.wait = false;            // 发表评论wait
     $scope.wait2 = false;           // 收藏图书wait
+    $scope.wait3 = false;           // 加入购物车wait
+    $scope.wait4 = false;           // 加入购物车提醒延迟
+    $scope.wait5 = false;           // 收藏提醒延迟
+
     $scope.required = true;
-    $scope.hehe = false;
-    $scope.test = function(){
-        $scope.hehe = !$scope.hehe;
-        console.log($scope.hehe);
+
+    // 加入购物车
+    $scope.addCart = function(){
+        $scope.wait3 = true;
+        $http({
+            method: 'POST',
+            url: host + '/cart',
+            data: {
+                isbn: $stateParams.isbn
+            }
+        }).success(function(){
+            $scope.wait3 = false;
+            $scope.wait4 = true;
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait4 = false;
+                });
+            }, 1500);
+        });
     };
+
     // 根据ISBN号获取图书信息(包含评论和标签)
     $http({
         method: 'GET',
@@ -53,6 +73,12 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
         }).success(function () {
             $scope.book.collect_already = !$scope.book.collect_already;
             $scope.wait2 = false;
+            $scope.wait5 = true;
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait5 = false;
+                });
+            }, 1500);
         });
     };
 

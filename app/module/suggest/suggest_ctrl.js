@@ -6,13 +6,13 @@ routeApp.controller('SuggestCtrl', function($http, $scope){
     $scope.name = sessionStorage.name;
     $scope.avatar = sessionStorage.avatar;
 
-    // todo 发布建议和看法
+    // 发布建议和看法
     $scope.post = function(){
         if(this.suggestBox.suggestion.$invalid)    return;
         $scope.wait = true;
         $http({
             method: 'POST',
-            url: host + '/suggest',
+            url: host + '/user_feedback',
             data: {
                 content: $scope.suggestion
             }

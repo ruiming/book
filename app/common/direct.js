@@ -58,7 +58,7 @@ routeApp.directive('loading', function(){
     return {
         restrict: 'AE',
         replace: true,
-        template: '<div class="cssload-container"><div class="cssload-cord cssload-leftMove"><div class="cssload-ball"></div></div><div class="cssload-cord"<div class="cssload-ball"></div</div<div class="cssload-cord"> <div class="cssload-ball"></div> </div> <div class="cssload-cord"> <div class="cssload-ball"></div> </div> <div class="cssload-cord"> <div class="cssload-ball"></div> </div> <div class="cssload-cord"> <div class="cssload-ball"></div> </div> <div class="cssload-cord cssload-rightMove"> <div class="cssload-ball"></div> </div> <div class="cssload-shadows"> <div class="cssload-leftShadow"></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div class="cssload-rightShadow"></div> </div>'
+        template: '<div class="cssload-thecube"><div class="cssload-cube cssload-c1"></div><div class="cssload-cube cssload-c2"></div><div class="cssload-cube cssload-c4"></div><div class="cssload-cube cssload-c3"></div></div>'
     }
 });
 routeApp.directive('wait', function(){

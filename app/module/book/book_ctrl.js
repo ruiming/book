@@ -8,7 +8,11 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     $scope.wait = false;            // 发表评论wait
     $scope.wait2 = false;           // 收藏图书wait
     $scope.required = true;
-
+    $scope.hehe = false;
+    $scope.test = function(){
+        $scope.hehe = !$scope.hehe;
+        console.log($scope.hehe);
+    };
     // 根据ISBN号获取图书信息(包含评论和标签)
     $http({
         method: 'GET',

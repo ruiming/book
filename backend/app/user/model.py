@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from app import db
-from app.auth.model import User
+from app.auth.model import User, UserAddress
 from app.book.model import Book
 from time import time
 
@@ -73,6 +73,7 @@ class Billing(db.Document):
     status = db.StringField()
     # 待付款 pending ; 代收货 waiting 带评价 commenting 已评价 done 已取消 canceled
     list = db.ListField(db.ReferenceField(Cart))
+    address = db.ReferenceField(UserAddress)
     price = db.DecimalField(required=True, default=0.00)
     create_time = db.IntField(required=True, default=int(time()))
     edit_time = db.IntField(required=True, default=int(time()))

@@ -2,7 +2,7 @@
 
 from flask import Blueprint, jsonify, request
 
-from app.auth.model import User
+from app.auth.model import User, UserAddress
 from app.book.model import Book, BookList
 from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback
 
@@ -106,7 +106,9 @@ def comment():
             'content': this_comment.content,
             'star': this_comment.star,
             'up': this_comment.up,
+            'up_already': False,
             'down': this_comment.down,
+            'down_already': False,
             'create_time': this_comment.create_time
         }
         return return_message('success', {'data': this_comment_json})
@@ -324,15 +326,16 @@ def cart():
 
         number = request.form.get('number', 1)
         try:
-            number = int(number)
+            number = min(int(number), 10)
         except:
             number = 1
         this_user = User.get_one_user(openid=request.headers['userid'])
 
-        this_cart = Cart.objects(book=this_book, status=1, user=this_user).count()
+        this_cart = Cart.objects(book=this_book, status=1, user=this_user)
         if this_cart.count() == 1:
-
+            this_cart = this_cart.first()
             this_cart.number += number
+            this_cart.number = min(this_cart.number, 10)
             this_cart.edit_time = int(time())
             this_cart.save()
         else:
@@ -353,8 +356,7 @@ def cart():
         """
         number = request.form.get('number', None)
         try:
-            if not number:
-                number = int(number)
+            number = int(number)
         except:
             return return_message('error', 'unknown number')
 
@@ -417,10 +419,14 @@ def cart():
 @allow_cross_domain
 @oauth4api
 def billing():
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
     if request.method == 'GET':
         """
         查看一个订单状态
         """
+        #TODO: 继续完成查看函数
 
         id = request.args.get('id', None)
 
@@ -444,7 +450,46 @@ def billing():
         """
         提交/修改一个订单
         """
-        pass
+        carts = request.form.get('cartlist', None)
+
+        address_id = request.form.get('address_id', None)
+        if not address_id or len(address_id) != 24:
+            return return_message('error', 'unknown address id')
+
+        this_user_address = UserAddress.objects(pk=address_id)
+        if this_user_address.count() != 1:
+            return return_message('error', 'unknown address id')
+        else:
+            this_user_address = this_user_address.first()
+            if this_user_address not in this_user.address:
+                return return_message('error', 'error operation')
+
+        all_cart = []
+
+        try:
+            cart_list = carts.split(',')
+            for one_cart in cart_list:
+
+                all_cart.append(Cart.objects(pk=one_cart, user=this_user))
+        except:
+            return return_message('error', 'unknown cart id')
+
+        price_sum = 0
+
+        for one_cart in all_cart:
+
+            price_sum += (one_cart.price * one_cart.number)
+            one_cart.status = 2
+            one_cart.save()
+
+        Billing(
+            user=this_user,
+            status='pending',
+            list=all_cart,
+            address=this_user_address,
+            price=price_sum
+        ).save()
+        return return_message('success', 'post billing')
 
 
 @user_module.route('/user_info', methods=['GET'])
@@ -456,10 +501,133 @@ def user_info():
     this_user_info = {
         'username': this_user.username,
         'avatar': this_user.avatar or '',
-        'unread_notice': Notice.objects(user=this_user, is_read=False).count()
+        'unread_notice': Notice.objects(user=this_user, is_read=False).count(),
+        'cart_num': Cart.objects(user=this_user, status=1).count()
     }
     return return_message('success', {'data': this_user_info})
 
+
+@user_module.route('/user_info_detail', methods=['GET'])
+@allow_cross_domain
+@oauth4api
+def user_info_detail():
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
+    """
+    获取用户的详细信息
+    """
+    user_info_detail_json = {
+        'sex': this_user.sex,
+        'avatar': this_user.avatar,
+        'username': this_user.username,
+        'address':[]
+    }
+    for one_address in this_user.address:
+        user_info_detail_json['address'].append({
+            'id': str(one_address.pk),
+            'name': one_address.name,
+            'phone': one_address.phone,
+            'dormitory': one_address.dormitory
+        })
+
+    return return_message('success', user_info_detail_json)
+
+
+@user_module.route('/user_address', methods=['POST', 'PUT', 'DELETE'])
+@allow_cross_domain
+@oauth4api
+def user_address():
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
+    if request.method == 'POST':
+
+        name = request.form.get('name', None)
+        phone = request.form.get('phone', None)
+
+        try:
+            if len(phone) != 11:
+                raise Exception
+            phone = int(phone)
+
+        except:
+            return return_message('error', 'unknown phone')
+
+        dormitory = request.form.get('dormitory', None)
+
+        if not name or not phone or not dormitory:
+            return return_message('error', 'missing data')
+
+        this_user_address = UserAddress(
+            name=name,
+            phone=str(phone),
+            dormitory=dormitory
+        ).save()
+        this_user.address.append(this_user_address)
+        this_user.save()
+
+        return return_message('success', 'add user address')
+
+    elif request.method == 'PUT':
+        """
+        修改一个用户地址
+        """
+        name = request.form.get('name', None)
+        phone = request.form.get('phone', None)
+
+        try:
+            if len(phone) != 11:
+                raise Exception
+            phone = int(phone)
+
+        except:
+            return return_message('error', 'unknown phone')
+
+        dormitory = request.form.get('dormitory', None)
+
+        id = request.form.get('id', None)
+        if not id or len(id) != 24:
+            return return_message('error', 'unknown address id')
+
+        this_user_address = UserAddress.objects(pk=id)
+        if this_user_address.count() != 1:
+            return return_message('error', 'unknown address id')
+        else:
+            this_user_address = this_user_address.first()
+            if this_user_address not in this_user.address:
+                return return_message('error', 'error operation')
+
+        if not name or not phone or not dormitory:
+            return return_message('error', 'missing data')
+
+        this_user_address.name = name
+        this_user_address.phone = str(phone)
+        this_user_address.dormitory = dormitory
+        this_user_address.save()
+        return return_message('success', 'put user address')
+
+    elif request.method == 'DELETE':
+
+        id = request.form.get('id', None)
+        if not id or len(id) != 24:
+            return return_message('error', 'unknown address id')
+
+        this_user_address = UserAddress.objects(pk=id)
+        if this_user_address.count() != 1:
+            return return_message('error', 'unknown address id')
+        else:
+            this_user_address = this_user_address.first()
+
+        if this_user_address not in this_user.address:
+            return return_message('error', 'unknown operation')
+
+        this_user.address.remove(this_user_address)
+
+        this_user_address.delete()
+        this_user.save()
+
+        return return_message('success', 'delete user address')
 
 @user_module.route('/user_comments', methods=['GET'])
 @allow_cross_domain
@@ -564,26 +732,23 @@ def user_collects():
 @allow_cross_domain
 @oauth4api
 def user_carts():
-
     this_user = User.get_one_user(openid=request.headers['userid'])
-
     all_cart = Cart.objects(user=this_user, status=1)
-
     all_cart_json = []
 
     for one_cart in all_cart:
         all_cart_json.append({
+            'id': str(one_cart.pk),
             'number': one_cart.number,
-            'price': one_cart.price,
-            'book':{
+            'price': str(one_cart.price),
+            'book': {
+                'isbn': one_cart.book.isbn,
                 'title': one_cart.book.title,
                 'image': one_cart.book.image,
                 'author': [one_author for one_author in one_cart.book.author],
             }
         })
     return return_message('success', all_cart_json)
-
-
 
 
 @user_module.route('/user_billings', methods=['GET'])

@@ -3,6 +3,16 @@ from app import db
 from time import time
 
 
+class UserAddress(db.Document):
+    """
+    用户收获地址
+    """
+    pass
+    name = db.StringField(required=True)
+    phone = db.StringField(required=True)
+    dormitory = db.StringField(required=True)
+
+
 class WechatOAuth(db.EmbeddedDocument):
     access_token = db.StringField()
     expires_in = db.IntField()
@@ -21,7 +31,7 @@ class User(db.Document):
     sex = db.IntField(default=0)
     avatar = db.StringField(default='')  # the file name of avatar
     school = db.StringField(required=True, default=u"华南师范大学石牌校区")
-    dormitory = db.StringField()
+    address = db.ListField(db.ReferenceField(UserAddress))
     province = db.StringField()
     city = db.StringField()
     country = db.StringField()

@@ -20,6 +20,7 @@ class Comment(db.Document):
     create_time = db.IntField(required=True, default=int(time()))
     edit_time = db.IntField()
 
+
 class UserCommentLove(db.Document):
     """
     用户评论点赞表
@@ -51,19 +52,30 @@ class Collect(db.Document):
     time = db.IntField(required=True, default=int(time()))
 
 
-class Order(db.Document):
-    user = db.ReferenceField(User)
-    status = db.StringField()
+class Cart(db.Document):
+    """
+    购物车模型
+    """
     book = db.ReferenceField(Book)
-    price = db.DecimalField(required=True, default=0.00)
+    number = db.IntField(required=True, default=0)
+    price = db.DecimalField(required=True)
+    user = db.ReferenceField(User)
+    status = db.IntField(required=True, default=1)  # 1 有效， 0 无效, 2 已提交billing
     create_time = db.IntField(required=True, default=int(time()))
     edit_time = db.IntField(required=True, default=int(time()))
 
 
-class Cart(db.Document):
-    # 购物车模型
-    pass
-    list = db.ListField(db.ReferenceField(Book))
+class Billing(db.Document):
+    """
+    账单模型
+    """
+    user = db.ReferenceField(User)
+    status = db.StringField()
+    # 待付款 pending ; 代收货 waiting 带评价 commenting 已评价 done 已取消 canceled
+    list = db.ListField(db.ReferenceField(Cart))
+    price = db.DecimalField(required=True, default=0.00)
+    create_time = db.IntField(required=True, default=int(time()))
+    edit_time = db.IntField(required=True, default=int(time()))
 
 
 class Notice(db.Document):
@@ -77,7 +89,6 @@ class Notice(db.Document):
     read_time = db.IntField()
     user = db.ReferenceField(User)
 
-
     def read(self):
         try:
             self.is_read = True
@@ -87,3 +98,9 @@ class Notice(db.Document):
             return False
 
         return True
+
+
+class Feedback(db.Document):
+    content = db.StringField(required=True)
+    user = db.ReferenceField(User)
+    time = db.IntField(required=True, default=int(time()))

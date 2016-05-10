@@ -1098,6 +1098,7 @@ a {
 }
 .cart-here {
   padding: 8px;
+  z-index: 9999;
   box-shadow: 1px 1px 1px 1px #888;
   border-radius: 50%;
   background-color: #D9534F;
@@ -1388,6 +1389,23 @@ a {
       margin-left: 10px!important;
     }
   }
+}
+.add-success {
+  position: fixed;
+  bottom: 50px;
+  background-color: #DDD;
+  width: 100%;
+  text-align: center;
+  height: 37px;
+  p {
+    font-size: 12px;
+    margin: 10px auto;
+  }
+  transition: 0.3s height;
+}
+.add-success.ng-hide-remove {
+  height: 0;
+  transition: 0.3s height;
 }
 .edit-name,
 .edit-name:hover,

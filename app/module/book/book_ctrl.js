@@ -7,12 +7,24 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     $scope.star = 5;
     $scope.wait = false;            // 发表评论wait
     $scope.wait2 = false;           // 收藏图书wait
+    $scope.wait3 = false;           // 加入购物车wait
     $scope.required = true;
     $scope.hehe = false;
-    $scope.test = function(){
-        $scope.hehe = !$scope.hehe;
-        console.log($scope.hehe);
+
+    // 加入购物车
+    $scope.addCart = function(){
+        $scope.wait3 = true;
+        $http({
+            method: 'POST',
+            url: host + '/cart',
+            data: {
+                isbn: $stateParams.isbn
+            }
+        }).success(function(){
+            $scope.wait3 = false;
+        });
     };
+
     // 根据ISBN号获取图书信息(包含评论和标签)
     $http({
         method: 'GET',

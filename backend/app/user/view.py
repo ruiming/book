@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request
 
 from app.auth.model import User
 from app.book.model import Book, BookList
-from app.user.model import Comment, Points, UserCommentLove, Collect, Order, Notice
+from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback
 
 from app.lib.common_function import return_message, token_verify
 from app.lib.api_function import allow_cross_domain
@@ -303,90 +303,132 @@ def collect():
             return return_message('error', 'unknown error')
 
 
-@user_module.route('/order', methods=['GET', 'POST'])
+@user_module.route('/cart', methods=['POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
-def order():
+def cart():
+    if request.method == 'POST':
+        """
+        提交一个购物车
+        """
+        # TODO: 重复当作数量修改
+
+        isbn = request.form.get('isbn', None)
+        if not isbn:
+            return return_message('error', 'unknown book isbn')
+        this_book = Book.objects(isbn=isbn)
+        if this_book.count() != 1:
+            return return_message('error', 'unknown book')
+        else:
+            this_book = this_book.first()
+
+        number = request.form.get('number', 1)
+        try:
+            number = int(number)
+        except:
+            number = 1
+        this_user = User.get_one_user(openid=request.headers['userid'])
+
+        this_cart = Cart.objects(book=this_book, status=1, user=this_user).count()
+        if this_cart.count() == 1:
+
+            this_cart.number += number
+            this_cart.edit_time = int(time())
+            this_cart.save()
+        else:
+
+            this_cart = Cart(
+                book=this_book,
+                number=number,
+                price=this_book.price,
+                user=this_user,
+            )
+            this_cart.save()
+
+        return return_message('success', 'post cart id {}'.format(this_cart.pk))
+
+    elif request.method == 'PUT':
+        """
+        修改一个购物车
+        """
+        number = request.form.get('number', None)
+        try:
+            if not number:
+                number = int(number)
+        except:
+            return return_message('error', 'unknown number')
+
+        status = request.form.get('status', 1)
+
+        if status not in [0, 1]:
+            return return_message('error', 'unknown status')
+
+        this_user = User.get_one_user(openid=request.headers['userid'])
+
+
+        isbn = request.form.get('isbn', None)
+        if not isbn:
+            return return_message('error', 'unknown book isbn')
+        this_book = Book.objects(isbn=isbn)
+        if this_book.count() != 1:
+            return return_message('error', 'unknown book')
+        else:
+            this_book = this_book.first()
+
+        this_cart = Cart.objects(book=this_book, status=1, user=this_user)
+        if this_cart.count() != 1:
+            return return_message('error', 'unknown cart')
+        this_cart = this_cart.first()
+
+        this_cart.status = status
+        this_cart.number = number
+        this_cart.save()
+
+        return return_message('success', 'PUT cart')
+
+    elif request.method == 'DELETE':
+        """
+        删除一个购物车
+        """
+
+        this_user = User.get_one_user(openid=request.headers['userid'])
+
+        isbn = request.form.get('isbn', None)
+        if not isbn:
+            return return_message('error', 'unknown book isbn')
+        this_book = Book.objects(isbn=isbn)
+        if this_book.count() != 1:
+            return return_message('error', 'unknown book')
+        else:
+            this_book = this_book.first()
+
+        this_cart = Cart.objects(book=this_book, status=1, user=this_user)
+        if this_cart.count() != 1:
+            return return_message('error', 'unknown cart')
+        this_cart = this_cart.first()
+
+        this_cart.status = 0
+        this_cart.save()
+
+        return return_message('success', 'DELETE cart')
+
+
+@user_module.route('/billing', methods=['GET', 'POST'])
+@allow_cross_domain
+@oauth4api
+def billing():
     if request.method == 'GET':
         """
         查看一个订单状态
         """
-        token = request.args.get('token', None)
-        this_user = User.objects(token=token).first()
 
-        isbn = request.args.get('isbn', None)
-        # TODO: 改为用id查询订单信息
-        if isbn is None or Book.objects(isbn=isbn).count() != 1:
-            return return_message('error', 'unknown book isbn')
-
-        this_book = Book.objects(isbn=isbn).first()
-        this_book_order = Order.objects(user=this_user, book=this_book)
-
-        if this_book_order.count() != 1:
-            # 查不到订单
-            return return_message('succss', {
-                'order': {
-                    'status': 'none'
-                }
-            })
-        else:
-            # 返回订单信息
-            this_book_order = this_book_order.first()
-            return return_message('success', {
-                'order': {
-                    'status': this_book_order.status,
-                    'book': {
-                        'title': this_book_order.book.title
-                        # 书本信息补全
-                    },
-                    'price': this_book_order.price,
-                    'create_time': this_book_order.create_time
-                }
-            })
+        pass
 
     elif request.method == 'POST':
         """
         提交/修改一个订单
         """
-        token = request.form.get('token', None)
-        isbn = request.form.get('isbn', None)
-
-        status = request.form.get('status', None)
-
-        if isbn is None or Book.objects(isbn=isbn).count() != 1:
-            return return_message('error', 'unknown book isbn')
-
-        if status not in ['none', 'pending', 'cart', 'done']:
-            return return_message('error', 'unknown status')
-
-        this_user = User.objects(token=token).first()
-        this_book = Book.objects(isbn=isbn).first()
-
-        this_order = Order.objects(user=this_user, book=this_book)
-        this_order = None if this_order.count() != 1 else this_order.first()
-
-        if this_order is None:
-            if status != 'none':
-                Order(
-                    user=this_user,
-                    book=this_book,
-                    status=status,
-                    price=this_book.price
-                    # TODO: 重新获取当当书籍的价格
-                ).save()
-
-        else:
-
-            if status == 'none':
-                this_order.delete()
-            else:
-                this_order.status = status
-                this_order.price = this_book.price
-                # TODO: 重新获取当当价格
-                this_order.edit_time = datetime.now()
-                this_order.save()
-
-        return return_message('success', 'submit successfully')
+        pass
 
 
 @user_module.route('/user_info', methods=['GET'])
@@ -502,39 +544,41 @@ def user_collects():
     return return_message('success', all_collect_json)
 
 
-@user_module.route('/user_orders', methods=['GET'])
+@user_module.route('/user_billings', methods=['GET'])
 @allow_cross_domain
 @oauth4api
-def user_orders():
-    token = request.args.get('token', None)
+def user_billings():
+
     status = request.args.get('status', None)
 
-    if status not in ['all', 'pending', 'cart', 'done']:
+    if status not in ['pending', 'waiting', 'commenting', 'done', 'canceled']:
         return return_message('error', 'unknown order status')
 
-    this_user = User.objects(token=token).first()
+    this_user = User.get_one_user(openid=request.headers['userid'])
 
-    if status == 'all':
-        all_order = Order.objects(user=this_user)
-    else:
-        all_order = Order.objects(user=this_user, status=status)
+    all_billing = Billing.objects(user=this_user, status=status)
 
-    all_order_json=[]
-    for one_order in all_order:
-        all_order_json.append({
-            'status': one_order.status,
-            'price': one_order.price,
-            'book': {
-                'title': one_order.book.title,
-                'isbn': one_order.book.isbn,
-                # TODO: 补全书籍信息
-                'author': [one_author for one_author in one_order.book.author]
-            },
-            'create_time': one_order.create_time,
-            'edit_time': one_order.edit_time
+    all_billing_json = []
+
+    for one_billing in all_billing:
+        all_billing_json.append({
+            'status': one_billing.status,
+            'id': one_billing.pk,
+            'price': one_billing.price,
+            'carts': [{
+                'book':{
+                    'isbn': one_cart.book.isbn,
+                    'title': one_cart.book.title,
+                    'image': one_cart.book.image,
+                },
+                'number': one_cart.number,
+                'create_time': one_cart.create_time,
+            } for one_cart in one_billing.list],
+            'create_time': one_billing.create_time,
+            'edit_time': one_billing.edit_time
         })
 
-    return return_message('success', all_order_json)
+    return return_message('success', all_billing_json)
 
 
 @user_module.route('/user_notices', methods=['GET', 'POST'])
@@ -572,10 +616,29 @@ def user_notices():
 
         # TODO: 完成NOTICE的阅读
 
-
         all_before_notices = Notice.objects(create_time__lte=time, user=this_user, is_read=False)
 
         for one_notice in all_before_notices:
             one_notice.save()
 
         return return_message('success', 'read it')
+
+
+@user_module.route('/user_feedback', methods=['POST'])
+@allow_cross_domain
+@oauth4api
+def user_feedback():
+
+    content = request.form.get('content', None)
+
+    if not content or content == '':
+        return return_message('error', 'empty content')
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
+    Feedback(
+        content=content,
+        user=this_user
+    ).save()
+
+    return return_message('success', 'feedback')

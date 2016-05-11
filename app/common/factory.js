@@ -97,12 +97,10 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
 
 
             if(sessionStorage.verify === "true") {
-                console.log("verify already, wait some time to retry...");
                 var timestamp = new Date().getTime() / 1000;
                 // 时间超过7000s，需要重新验证
                 if (timestamp - sessionStorage.createdtime >= 7000){
                     sessionStorage.verify = false;
-                    console.log("verify already, but will try verify again before next request");
                 }
                 config.headers['token'] = sessionStorage.token;
                 config.headers['userid'] = sessionStorage.user_id;

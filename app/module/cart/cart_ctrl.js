@@ -4,6 +4,7 @@ routeApp.controller('CartCtrl',function($scope, $http) {
     $scope.busy = true;
     $scope.wait1 = false;           // 删除购物车书籍延迟
     $scope.wait2 = false;           // 修改购物车书籍数量延迟
+    $scope.wait3 = false;           // 数量有误提示
 
     // 获取购物车
     $http({
@@ -49,8 +50,14 @@ routeApp.controller('CartCtrl',function($scope, $http) {
 
     // 编辑书籍数量
     $scope.editBook = function(item){
-        if(item.number <= 0)   item.number = 1;
-        if(item.number > 10)   item.number = 10;
+        if(item.number <= 0)   {
+            item.number = 1;
+            $scope.wait3 = true;
+        }
+        if(item.number > 10)   {
+            item.number = 10;
+            $scope.wait3 = true;
+        }
         $http({
             method: 'PUT',
             url: host + '/cart',
@@ -64,6 +71,7 @@ routeApp.controller('CartCtrl',function($scope, $http) {
             window.setTimeout(function() {
                 $scope.$apply(function() {
                     $scope.wait2 = false;
+                    $scope.wait3 = false;
                 });
             }, delay);
         });

@@ -101,14 +101,15 @@ def code2token():
             else:
                 if not this_user:
                     print user_info
+                    print user_info.get('openid', None)
                     this_user = User(
                         username=user_info.get('nickname', ''),
                         country=user_info.get('country', ''),
                         city=user_info.get('city', ''),
                         province=user_info.get('province', ''),
-                        id=token.get('openid', ''),
-                        avatar=token.get('headimgurl', ''),
-                        sex=token.get('sex', 0)
+                        id=user_info.get('openid', ''),
+                        avatar=user_info.get('headimgurl', ''),
+                        sex=user_info.get('sex', 0)
                     )
                     this_user.save()
 

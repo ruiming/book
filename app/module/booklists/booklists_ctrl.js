@@ -1,15 +1,22 @@
 routeApp.controller('BooklistsCtrl',function($scope, $http, BL) {
     
     // 获取热门书单标签
-    $http({
-        method: 'GET',
-        url: host + '/tags',
-        params: {
-            type: "hot"
-        }
-    }).success(function(response){
-        $scope.tags = response;
-    });
+    if(sessionStorage.tags != undefined) {
+        $scope.tags = JSON.parse(sessionStorage.tags);
+    }
+    else {
+        $http({
+            method: 'GET',
+            url: host + '/tags',
+            params: {
+                type: "hot"
+            }
+        }).success(function(response){
+            $scope.tags = response;
+            sessionStorage.tags = JSON.stringify($scope.tags);
+        });
+    }
+
 
     // 获取书单,获取默认排序的十个书单
     var url = host + '/booklist';

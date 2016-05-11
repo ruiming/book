@@ -2,6 +2,7 @@
     <div class="empty-alert" ng-if="address.length==0">
         <p>您还没有添加地址</p>
     </div>
+    <div class="loading-more" ng-show="wait"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
     <div class="address-list" ng-repeat="x in address" ng-click="edit()">
         <p>{{x.name}}, {{x.phone}}</p>
         <small>{{x.dormitory}}</small>

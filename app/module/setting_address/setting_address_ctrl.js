@@ -1,13 +1,14 @@
 routeApp.controller('AddressCtrl', function ($http, $scope, $state, User) {
 
-    // User暂存要修改的地址信息
+    $scope.wait = true;
 
     // todo 获取用户地址信息
     $http({
         method: 'GET',
-        url: host + '/user_info_detail'
+        url: host + '/user_address'
     }).success(function(response){
-        $scope.address = response.address;
+        $scope.address = response;
+        $scope.wait = false;
     });
 
     $scope.edit = function(){

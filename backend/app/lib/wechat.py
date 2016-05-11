@@ -19,7 +19,7 @@ def oauth4link(method):
         verify = True
         if token and user_id:
             # 验证用户是否存在
-            this_user = User.objects(wechat_openid=user_id, wechat__access_token=token)
+            this_user = User.objects(id=user_id, wechat__access_token=token)
             this_user = this_user.first() if this_user.count() == 1 else None
             if not this_user:
                 verify = False
@@ -46,7 +46,7 @@ def oauth4api(method):
         verify_message = ''
         if token and user_id:
             # 验证用户是否存在
-            this_user = User.objects(wechat_openid=user_id, wechat__access_token=token)
+            this_user = User.objects(id=user_id, wechat__access_token=token)
             this_user = this_user.first() if this_user.count() == 1 else None
             if not this_user:
                 verify = False

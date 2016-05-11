@@ -55,7 +55,7 @@ def auth_verify():
     user_id = request.args.get('user_id', None)
     token = request.args.get('token', None)
     if user_id and token:
-        this_user = User.objects(wechat_openid=user_id)
+        this_user = User.objects(id=user_id)
         this_user = this_user.first() if this_user.count() == 1 else None
 
         if not this_user:
@@ -87,10 +87,11 @@ def code2token():
 
         except WeChatOAuthException as e:
             # logger
+            print e
             return 'failure get token'
         else:
 
-            this_user = User.objects(wechat_openid=token['openid'])
+            this_user = User.objects(id=token['openid'])
             this_user = this_user.first() if this_user.count() == 1 else None
 
             try:
@@ -99,21 +100,24 @@ def code2token():
                 return 'failure get info'
             else:
                 if not this_user:
+                    print user_info
+                    print user_info.get('openid', None)
                     this_user = User(
-                        username=user_info['nickname'],
-                        country=user_info['country'],
-                        city=user_info['city'],
-                        province=user_info['province'],
-                        wechat_openid=token['openid'],
-                        avator=token['headimgurl'],
-                        sex=token['sex']
+                        username=user_info.get('nickname', ''),
+                        country=user_info.get('country', ''),
+                        city=user_info.get('city', ''),
+                        province=user_info.get('province', ''),
+                        id=user_info.get('openid', ''),
+                        avatar=user_info.get('headimgurl', ''),
+                        sex=user_info.get('sex', 0)
                     )
                     this_user.save()
 
                # 更新用户信息
-                this_user.avatar = user_info['headimgurl']
-                this_user.sex = user_info['sex']
-                this_user.username = user_info['nickname']
+                print user_info
+                this_user.avatar = user_info.get('headimgurl', '')
+                this_user.sex = user_info.get('sex', 0)
+                this_user.username = user_info.get('nickname', '')
 
                 this_user.wechat = WechatOAuth(
                     access_token=token['access_token'],
@@ -123,16 +127,6 @@ def code2token():
                 )
                 this_user.wechat.save()
                 this_user.save()
-                return redirect("http://www.bookist.org/?token={}&user_id={}#/".format(token['access_token'], token['openid'])), 301
+                return redirect("http://www.bookist.org/?token={}&user_id={}".format(token['access_token'], token['openid'])), 301
 
     return 'failure get code'
-
-
-@auth_module.route('/test', methods=['GET'])
-def test():
-
-    token = request.headers.get('token', None)
-    user_id = request.headers.get('user_id', None)
-
-    return '{}, {}'.format(token, user_id)
-

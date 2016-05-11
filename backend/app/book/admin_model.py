@@ -41,7 +41,7 @@ class BookListView(ModelView):
 
     form_ajax_refs = {
         'author': {
-            'fields': (User.username, User.wechat_openid)
+            'fields': (User.username, User.id)
         },
         'tag': {
             'fields': (Tag.name, Tag.belong)

@@ -629,6 +629,7 @@ def user_address():
 
         return return_message('success', 'delete user address')
 
+
 @user_module.route('/user_comments', methods=['GET'])
 @allow_cross_domain
 @oauth4api

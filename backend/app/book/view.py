@@ -64,7 +64,7 @@ def booklist():
                 'author': {
                     'avatar': this_book_list.author.avatar or '',
                     'name': this_book_list.author.username or '',
-                    'id': this_book_list.author.wechat_openid or ''
+                    'id': this_book_list.author.id or ''
                 },
                 'description': this_book_list.description,
                 'image': this_book_list.image,

@@ -22,7 +22,7 @@ class WechatOAuth(db.EmbeddedDocument):
 
 class User(db.Document):
 
-    wechat_openid = db.StringField(required=True, unique=True)
+    id = db.StringField(required=True, unique=True, primary_key=True)
     email = db.StringField()
     username = db.StringField(required=True)
     password = db.StringField()
@@ -53,9 +53,9 @@ class User(db.Document):
         :return: None / User实例
         """
         if openid and token:
-            this_user = cls.objects(wechat_openid=openid, wechat__access_token=token)
+            this_user = cls.objects(id=openid, wechat__access_token=token)
         elif openid and not token:
-            this_user = cls.objects(wechat_openid=openid)
+            this_user = cls.objects(id=openid)
         elif not openid and token:
             this_user = cls.objects(wechat__access_token=token)
         else:

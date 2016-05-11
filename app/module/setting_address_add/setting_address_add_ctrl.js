@@ -1,28 +1,28 @@
-routeApp.controller('AddressAddCtrl', function($http, $scope, $location, UserMessage){
+routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state, User){
 
-    var data = UserMessage.getTemp();
+    var data = User.getTemp();
     $scope.edit = false;
 
     $scope.correct_name = false;
     $scope.correct_dorm = false;
     $scope.correct_phone = false;
-    $scope.ok = false;                  // 添加成功提示
+    $scope.ok1 = false;                  // 添加成功提示
     $scope.ok2 = false;                 // 修改成功提示
     $scope.ok3 = false;                 // 删除成功提示
     $scope.wait1 = false;               // 添加等待动画
     $scope.wait2 = false;               // 修改等待动画
     $scope.wait3 = false;               // 删除等待动画
 
-    if(data!=null) {
+    if(JSON.stringify(data) != '{}') {
         $scope.name = data.name;
         $scope.phone = data.phone;
-        $scope.dorm = data.dorm;
+        $scope.dorm = data.dormitory;
         $scope.id = data.id;
         $scope.edit = true;
-        UserMessage.setTemp({});
+        User.setTemp({});
     }
     
-    // todo 添加和修改地址
+    // 添加和修改地址
     $scope.add = function(){
         if(this.addressForm.$invalid) {
             console.log(this.addressForm);
@@ -52,8 +52,9 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, UserMes
             }
         }
         else{
-            // todo 编辑状态
+            // 编辑状态
             if($scope.edit) {
+                console.log("edit");
                 $scope.wait2 = true;
                 $http({
                     method: 'PUT',
@@ -66,18 +67,18 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, UserMes
                     }
                 }).success(function(){
                     $scope.wait2 = false;
-                    $scope.ok = true;
+                    $scope.ok2 = true;
                     window.setTimeout(function() {
-                        $scope.$apply(function(response) {
-                            $scope.ok = false;
-                            data = response;
-                            $scope.return();
+                        $scope.$apply(function() {
+                            $scope.ok2 = false;
+                            $scope.back();
                         });
-                    }, 2500);
+                    }, 1000);
                 });
             }
-            // todo 发布状态
+            // 添加状态
             else {
+                console.log("add");
                 $scope.wait1 = true;
                 $http({
                     method: 'POST',
@@ -88,21 +89,20 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, UserMes
                         dormitory: $scope.dorm
                     }
                 }).success(function(){
-                    $scope.wait2 = false;
-                    $scope.ok = true;
+                    $scope.wait1 = false;
+                    $scope.ok1 = true;
                     window.setTimeout(function() {
-                        $scope.$apply(function(response) {
-                            $scope.ok = false;
-                            data = response;
-                            $scope.return();
+                        $scope.$apply(function() {
+                            $scope.ok1 = false;
+                            $scope.back();
                         });
-                    }, 2500);
+                    }, 1000);
                 });
             }
         }
     };
 
-    // todo 删除地址
+    // 删除地址
     $scope.delete = function(id) {
         $scope.wait3 = true;
         $http({
@@ -117,16 +117,15 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, UserMes
             window.setTimeout(function() {
                 $scope.$apply(function() {
                     $scope.ok3 = false;
-                    $location.path('/setting/address').replace();
+                    $scope.back();
                 });
-            }, 2500);
+            }, 1000);
         });
     };
 
-    // todo 返回上层
-    $scope.return = function() {
-        UserMessage.setAddress(UserMessage.getAddress().push(data));
-        $location.path('/setting/address').replace();
+    // 返回上层
+    $scope.back = function() {
+        history.back();
     }
     
 });

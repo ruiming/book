@@ -1,20 +1,22 @@
-routeApp.controller('AddressCtrl', function ($http, $scope, $location, UserMessage) {
+routeApp.controller('AddressCtrl', function ($http, $scope, $state, User) {
 
-    // 用单体UserMessage暂存用户相关信息
+    // User暂存要修改的地址信息
 
-    $scope.address = UserMessage.getAddress();
-    if($scope.address == undefined) $scope.address = [];
+    // todo 获取用户地址信息
+    $http({
+        method: 'GET',
+        url: host + '/user_info_detail'
+    }).success(function(response){
+        $scope.address = response.address;
+    });
 
-    $scope.return = function() {
-        $location.path('/settings').replace();
+    $scope.edit = function(){
+        User.setTemp(this.x);
+        $state.go('AddressAdd');
     };
 
-    $scope.edit = function(id) {
-        UserMessage.setTemp(this.address[id]);
-        // todo 编辑时要移除该地址
-        UserMessage.setAddress(UserMessage.getAddress.splice(id, 1));
-        $location.path('/setting/address/add').replace();
-    };
-
-    console.log($scope.address);
+    // 返回上层
+    $scope.back = function() {
+        history.back();
+    }
 });

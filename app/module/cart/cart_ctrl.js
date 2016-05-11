@@ -2,6 +2,8 @@ routeApp.controller('CartCtrl',function($scope, $http) {
 
     $scope.price = 0;
     $scope.busy = true;
+    $scope.wait1 = false;           // 删除购物车书籍延迟
+    $scope.wait2 = false;           // 修改购物车书籍数量延迟
 
     // 获取购物车
     $http({
@@ -34,8 +36,14 @@ routeApp.controller('CartCtrl',function($scope, $http) {
                 isbn: item.book.isbn
             }
         }).success(function () {
+            $scope.wait1 = true;
             $scope.items.splice(index, 1);
             $scope.recount();
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait1 = false;
+                });
+            }, delay);
         });
     };
 
@@ -51,8 +59,13 @@ routeApp.controller('CartCtrl',function($scope, $http) {
                 "number": item.number
             }
         }).success(function(){
-            console.log($scope.items);
+            $scope.wait2 = true;
             $scope.recount();
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait2 = false;
+                });
+            }, delay);
         });
     };
     

@@ -51,24 +51,17 @@ routeApp.factory('TEMP', function(){
         }
     };
 });
-routeApp.factory('UserMessage', function () {
+routeApp.factory('User', function () {
 
-    var _address = [];
     var _signature = '';
     var _temp = {};
 
     return {
-        getAddress: function () {
-            return _address;
-        },
         getSignature: function() {
             return _signature;
         },
         getTemp: function() {
             return _temp;
-        },
-        setAddress: function (address) {
-            _address = address;
         },
         setSignature: function(signature) {
             _signature = signature;

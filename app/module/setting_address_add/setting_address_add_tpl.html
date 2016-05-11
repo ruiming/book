@@ -7,8 +7,8 @@
         </div>
         <div class="form-group">
             <label>手机号码</label>
-            <input type="number" name="phone" ng-model="phone" class="form-control" placeholder="11位手机号"
-                   ng-required=true ng-minlength="11" ng-maxlength="11" focus-me="{{correct_phone}}" ng-change="check()">
+            <input type="text" name="phone" ng-model="phone" class="form-control" placeholder="11位手机号"
+                   ng-required=true ng-minlength="11" ng-maxlength="11" minlength=11 maxlength=11 focus-me="{{correct_phone}}" ng-change="check()">
         </div>
         <div class="form-group">
             <label>宿舍地址</label>
@@ -16,19 +16,19 @@
                    ng-required=true focus-me="{{correct_dorm}}" placeholder="宿舍位置">
         </div>
         <div class="btn-group">
-            <button class="btn btn-success" type="submit" ng-if="!edit" ui-sref="AddressAdd" ng-click="add()">添加</button>
-            <button class="btn btn-success" disabled ng-if="!wait1"><wait></wait></button>
-            <button class="btn btn-success" type="submit" ng-if="edit" ui-sref="AddressAdd" ng-click="add()">修改</button>
-            <button class="btn btn-success" disabled ng-if="!wait2"><wait></wait></button>
-            <button class="btn btn-danger" type="button" ng-if="edit" ng-click="delete(id)">删除</button>
-            <button class="btn btn-danger" disabled ng-if="!wait3"><wait></wait></button>
-            <button class="btn btn-default" ng-click="return()">返回</button>
+            <button class="btn btn-success" type="submit" ng-if="!edit&&!wait1" ui-sref="AddressAdd" ng-click="add()" ng-disabled="ok1">添加</button>
+            <button class="btn btn-success" disabled ng-if="wait1"><wait></wait></button>
+            <button class="btn btn-success" type="submit" ng-if="edit&&!wait2" ui-sref="AddressAdd" ng-click="add()" ng-disabled="ok2">修改</button>
+            <button class="btn btn-success" disabled ng-if="wait2"><wait></wait></button>
+            <button class="btn btn-danger" type="button" ng-if="edit&&!wait3" ng-click="delete(id)" ng-disabled="ok3">删除</button>
+            <button class="btn btn-danger" disabled ng-if="wait3"><wait></wait></button>
+            <button class="btn btn-default" ng-click="back()">返回</button>
         </div>
     </form>
 </div>
 <div ng-if="correct_name" class="animate-if"><p>姓名信息有误</p></div>
 <div ng-if="correct_phone" class="animate-if"><p>手机信息有误</p></div>
 <div ng-if="correct_dorm" class="animate-if"><p>宿舍信息有误</p></div>
-<div ng-if="ok" class="animate-if"><p>添加成功</p></div>
+<div ng-if="ok1" class="animate-if"><p>添加成功</p></div>
 <div ng-if="ok2" class="animate-if"><p>修改成功</p></div>
 <div ng-if="ok3" class="animate-if"><p>删除成功</p></div>

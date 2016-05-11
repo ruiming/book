@@ -47,6 +47,5 @@
         </a>
     </div>
 </div>
-<div ng-show="wait1">
-    <message content="收藏成功" bottom="50px"></message>
-</div>
+<div ng-if="wait1" class="animate-if"><p>收藏成功</p></div>
+<div ng-if="wait2" class="animate-if"><p>取消收藏成功</p></div>

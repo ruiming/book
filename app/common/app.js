@@ -1,7 +1,8 @@
-var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngTouch','infinite-scroll']);
+// config
+var delay = 2800;                           // time delay for message animate
+var host = "http://www.bookist.org";        // API url
 
-var host = "http://www.bookist.org";
-// var host = "http://119.29.204.83:5000";
+var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngTouch','infinite-scroll']);
 
 routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRouterProvider',function ($stateProvider,$locationProvider,$httpProvider,$urlRouterProvider) {
 
@@ -177,3 +178,4 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             templateUrl: 'suggest/suggest_tpl.html'
         });
 }]);
+

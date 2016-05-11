@@ -1,13 +1,12 @@
-routeApp.controller('SettingsCtrl', function($http, $scope, UserMessage){
+routeApp.controller('SettingsCtrl', function($http, $scope, User){
 
-    // todo 设置页，需要gravatar, name, sex, cart, order{wait,received}, address[{name, phone, dorm, id}], signature
+    // todo 设置页 User暂存签名
     $http({
         method: 'GET',
         url: host + '/user_info_detail'
     }).success(function(response){
         $scope.user = response;
-        UserMessage.setSignature(response.signature);
-        UserMessage.setAddress(response.address);
+        User.setSignature(response.signature);
     });
 
 });

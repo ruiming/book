@@ -11,6 +11,8 @@ routeApp.controller('AddressCtrl', function ($http, $scope, $location, UserMessa
 
     $scope.edit = function(id) {
         UserMessage.setTemp(this.address[id]);
+        // todo 编辑时要移除该地址
+        UserMessage.setAddress(UserMessage.getAddress.splice(id, 1));
         $location.path('/setting/address/add').replace();
     };
 

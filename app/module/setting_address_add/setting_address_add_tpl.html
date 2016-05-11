@@ -16,8 +16,12 @@
                    ng-required=true focus-me="{{correct_dorm}}" placeholder="宿舍位置">
         </div>
         <div class="btn-group">
-            <button class="btn btn-success" type="submit" ui-sref="AddressAdd" ng-click="add()">添加</button>
-            <button class="btn btn-danger" type="button" ng-if="deleteBox" ng-click="delete(id)">删除</button>
+            <button class="btn btn-success" type="submit" ng-if="!edit" ui-sref="AddressAdd" ng-click="add()">添加</button>
+            <button class="btn btn-success" disabled ng-if="!wait1"><wait></wait></button>
+            <button class="btn btn-success" type="submit" ng-if="edit" ui-sref="AddressAdd" ng-click="add()">修改</button>
+            <button class="btn btn-success" disabled ng-if="!wait2"><wait></wait></button>
+            <button class="btn btn-danger" type="button" ng-if="edit" ng-click="delete(id)">删除</button>
+            <button class="btn btn-danger" disabled ng-if="!wait3"><wait></wait></button>
             <button class="btn btn-default" ng-click="return()">返回</button>
         </div>
     </form>
@@ -26,3 +30,5 @@
 <div ng-if="correct_phone" class="animate-if"><p>手机信息有误</p></div>
 <div ng-if="correct_dorm" class="animate-if"><p>宿舍信息有误</p></div>
 <div ng-if="ok" class="animate-if"><p>添加成功</p></div>
+<div ng-if="ok2" class="animate-if"><p>修改成功</p></div>
+<div ng-if="ok3" class="animate-if"><p>删除成功</p></div>

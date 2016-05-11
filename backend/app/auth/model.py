@@ -11,6 +11,7 @@ class UserAddress(db.Document):
     name = db.StringField(required=True)
     phone = db.StringField(required=True)
     dormitory = db.StringField(required=True)
+    enable = db.BooleanField(required=True, default=True)
 
 
 class WechatOAuth(db.EmbeddedDocument):

@@ -65,6 +65,7 @@ class Cart(db.Document):
     edit_time = db.IntField(required=True, default=int(time()))
 
 
+
 class Billing(db.Document):
     """
     账单模型
@@ -72,6 +73,7 @@ class Billing(db.Document):
     user = db.ReferenceField(User)
     status = db.StringField()
     # 待付款 pending ; 代收货 waiting 带评价 commenting 已评价 done 已取消 canceled
+    status_list = db.ListField(db.StringField())
     list = db.ListField(db.ReferenceField(Cart))
     address = db.ReferenceField(UserAddress)
     price = db.DecimalField(required=True, default=0.00)

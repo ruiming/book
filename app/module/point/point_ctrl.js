@@ -8,7 +8,7 @@ routeApp.controller('PointCtrl', function($http, $scope, BL){
         url: host + '/user_points'
     }).success(function(response){
         $scope.points = response;
-
+        $scope.busy = false;
     });
     
 });

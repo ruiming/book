@@ -415,7 +415,7 @@ def cart():
         return return_message('success', 'DELETE cart')
 
 
-@user_module.route('/billing', methods=['GET', 'POST'])
+@user_module.route('/billing', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
 def billing():
@@ -501,9 +501,36 @@ def billing():
             status='pending',
             list=all_cart,
             address=this_user_address,
-            price=price_sum
+            price=price_sum,
+            status_list=['create|{}'.format(int(time()))]
         ).save()
         return return_message('success', 'post billing')
+
+    elif request.method == 'PUT':
+        """
+        修改一个订单
+        """
+        pass
+
+    elif request.method == 'DELETE':
+        """
+        取消一个订单
+        """
+        id = request.form.get('id', None)
+        try:
+            this_billing = Billing.objects(pk=id, user=this_user)
+            if this_billing.count() != 1:
+                raise Exception
+            this_billing = this_billing.first()
+        except:
+            return return_message('error', 'unknown billing id')
+
+        this_billing.status = 'canceled'
+        this_billing.list.append('canceled|{}'.format(int(time())))
+        this_billing.save()
+
+        return return_message('success', 'delete billing')
+
 
 
 @user_module.route('/user_info', methods=['GET'])

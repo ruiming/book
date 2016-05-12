@@ -544,8 +544,9 @@ def user_info():
         'avatar': this_user.avatar or '',
         'sex': this_user.sex,
         'unread_notice': Notice.objects(user=this_user, is_read=False).count(),
-        'cart_num': Cart.objects(user=this_user, status=1).count()
-
+        'cart_num': Cart.objects(user=this_user, status=1).count(),
+        'billing_pending_num': Billing.objects(user=this_user, status='pending').count(),
+        'billing_commenting_num': Billing.objects(user=this_user, status='commenting').count()
     }
     return return_message('success', {'data': this_user_info})
 

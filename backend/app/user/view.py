@@ -786,15 +786,19 @@ def user_carts():
 @allow_cross_domain
 @oauth4api
 def user_billings():
+    """
+    返回用户订单
+    """
+    status = request.args.get('status', 'all')
 
-    status = request.args.get('status', None)
-
-    if status not in ['pending', 'waiting', 'commenting', 'done', 'canceled']:
+    if status not in ['pending', 'waiting', 'commenting', 'done', 'canceled', 'all']:
         return return_message('error', 'unknown order status')
 
     this_user = User.get_one_user(openid=request.headers['userid'])
-
-    all_billing = Billing.objects(user=this_user, status=status)
+    if status == 'all':
+        all_billing = Billing.objects(user=this_user)
+    else:
+        all_billing = Billing.objects(user=this_user, status=status)
 
     all_billing_json = []
 
@@ -804,7 +808,7 @@ def user_billings():
             'id': one_billing.pk,
             'price': one_billing.price,
             'carts': [{
-                'book':{
+                'book': {
                     'isbn': one_cart.book.isbn,
                     'title': one_cart.book.title,
                     'image': one_cart.book.image,
@@ -812,6 +816,10 @@ def user_billings():
                 'number': one_cart.number,
                 'create_time': one_cart.create_time,
             } for one_cart in one_billing.list],
+            'status_list': [{
+                'status': one_status.split('|')[0],
+                'time': int(one_status.split('|')[1])
+                            } for one_status in one_billing.status_list],
             'create_time': one_billing.create_time,
             'edit_time': one_billing.edit_time
         })

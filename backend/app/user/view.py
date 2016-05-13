@@ -415,7 +415,7 @@ def cart():
         return return_message('success', 'DELETE cart')
 
 
-@user_module.route('/billing', methods=['GET', 'POST'])
+@user_module.route('/billing', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
 def billing():
@@ -431,32 +431,43 @@ def billing():
         id = request.args.get('id', None)
 
         if not id or len(id) != 24:
-            return return_message('unknown billing id')
+            return return_message('error', 'unknown billing id')
 
-        this_billing = Billing.objects(pk=id)
+        this_billing = Billing.objects(pk=id, user=this_user)
         if this_billing.count() != 1:
             return return_message('error', 'unknown billing id')
         else:
             this_billing = this_billing.first()
 
         this_billing_json = {
-            'id': this_billing.pk,
-            'status': this_billing
+            'id': str(this_billing.pk),
+            'status': this_billing.status,
+            'status_list': [one for one in this_billing.status_list],
+            'carts': [{
+                'id': str(one_cart.pk),
+                'number': one_cart.number,
+                'price': str(one_cart.price),
+                'book': {
+                    'isbn': one_cart.book.isbn,
+                    'title': one_cart.book.title,
+                    'image': one_cart.book.image,
+                    'author': [one_author for one_author in one_cart.book.author],
+                }
+                      } for one_cart in this_billing.list]
         }
-
-
+        return return_message('success', {'data': this_billing_json})
 
     elif request.method == 'POST':
         """
         提交/修改一个订单
         """
-        carts = request.form.get('cartlist', None)
+        carts = request.form.get('cart_list', None)
 
         address_id = request.form.get('address_id', None)
         if not address_id or len(address_id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=address_id)
+        this_user_address = UserAddress.objects(pk=address_id, enable=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
@@ -469,8 +480,11 @@ def billing():
         try:
             cart_list = carts.split(',')
             for one_cart in cart_list:
-
-                all_cart.append(Cart.objects(pk=one_cart, user=this_user))
+                this_cart = Cart.objects(pk=one_cart, user=this_user)
+                if this_cart.count() != 1:
+                    raise Exception
+                this_cart = this_cart.first()
+                all_cart.append(this_cart)
         except:
             return return_message('error', 'unknown cart id')
 
@@ -487,9 +501,36 @@ def billing():
             status='pending',
             list=all_cart,
             address=this_user_address,
-            price=price_sum
+            price=price_sum,
+            status_list=['create|{}'.format(int(time()))]
         ).save()
         return return_message('success', 'post billing')
+
+    elif request.method == 'PUT':
+        """
+        修改一个订单
+        """
+        pass
+
+    elif request.method == 'DELETE':
+        """
+        取消一个订单
+        """
+        id = request.form.get('id', None)
+        try:
+            this_billing = Billing.objects(pk=id, user=this_user)
+            if this_billing.count() != 1:
+                raise Exception
+            this_billing = this_billing.first()
+        except:
+            return return_message('error', 'unknown billing id')
+
+        this_billing.status = 'canceled'
+        this_billing.list.append('canceled|{}'.format(int(time())))
+        this_billing.save()
+
+        return return_message('success', 'delete billing')
+
 
 
 @user_module.route('/user_info', methods=['GET'])
@@ -501,47 +542,36 @@ def user_info():
     this_user_info = {
         'username': this_user.username,
         'avatar': this_user.avatar or '',
+        'sex': this_user.sex,
         'unread_notice': Notice.objects(user=this_user, is_read=False).count(),
-        'cart_num': Cart.objects(user=this_user, status=1).count()
+        'cart_num': Cart.objects(user=this_user, status=1).count(),
+        'billing_pending_num': Billing.objects(user=this_user, status='pending').count(),
+        'billing_commenting_num': Billing.objects(user=this_user, status='commenting').count()
     }
     return return_message('success', {'data': this_user_info})
 
 
-@user_module.route('/user_info_detail', methods=['GET'])
-@allow_cross_domain
-@oauth4api
-def user_info_detail():
-
-    this_user = User.get_one_user(openid=request.headers['userid'])
-
-    """
-    获取用户的详细信息
-    """
-    user_info_detail_json = {
-        'sex': this_user.sex,
-        'avatar': this_user.avatar,
-        'username': this_user.username,
-        'address':[]
-    }
-    for one_address in this_user.address:
-        user_info_detail_json['address'].append({
-            'id': str(one_address.pk),
-            'name': one_address.name,
-            'phone': one_address.phone,
-            'dormitory': one_address.dormitory
-        })
-
-    return return_message('success', user_info_detail_json)
-
-
-@user_module.route('/user_address', methods=['POST', 'PUT', 'DELETE'])
+@user_module.route('/user_address', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
 def user_address():
 
     this_user = User.get_one_user(openid=request.headers['userid'])
 
-    if request.method == 'POST':
+    if request.method == 'GET':
+        address_list = []
+        for one_address in this_user.address:
+            if one_address.enable:
+                address_list.append({
+                    'id': str(one_address.pk),
+                    'name': one_address.name,
+                    'phone': one_address.phone,
+                    'dormitory': one_address.dormitory
+                })
+
+        return return_message('success', address_list)
+
+    elif request.method == 'POST':
 
         name = request.form.get('name', None)
         phone = request.form.get('phone', None)
@@ -590,7 +620,7 @@ def user_address():
         if not id or len(id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=id)
+        this_user_address = UserAddress.objects(pk=id, enable=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
@@ -613,7 +643,7 @@ def user_address():
         if not id or len(id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=id)
+        this_user_address = UserAddress.objects(pk=id, enable=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
@@ -622,10 +652,10 @@ def user_address():
         if this_user_address not in this_user.address:
             return return_message('error', 'unknown operation')
 
-        this_user.address.remove(this_user_address)
 
-        this_user_address.delete()
-        this_user.save()
+        this_user_address.enable = False
+
+        this_user_address.save()
 
         return return_message('success', 'delete user address')
 
@@ -756,15 +786,19 @@ def user_carts():
 @allow_cross_domain
 @oauth4api
 def user_billings():
+    """
+    返回用户订单
+    """
+    status = request.args.get('status', 'all')
 
-    status = request.args.get('status', None)
-
-    if status not in ['pending', 'waiting', 'commenting', 'done', 'canceled']:
+    if status not in ['pending', 'waiting', 'commenting', 'done', 'canceled', 'all']:
         return return_message('error', 'unknown order status')
 
     this_user = User.get_one_user(openid=request.headers['userid'])
-
-    all_billing = Billing.objects(user=this_user, status=status)
+    if status == 'all':
+        all_billing = Billing.objects(user=this_user)
+    else:
+        all_billing = Billing.objects(user=this_user, status=status)
 
     all_billing_json = []
 
@@ -774,7 +808,7 @@ def user_billings():
             'id': one_billing.pk,
             'price': one_billing.price,
             'carts': [{
-                'book':{
+                'book': {
                     'isbn': one_cart.book.isbn,
                     'title': one_cart.book.title,
                     'image': one_cart.book.image,
@@ -782,6 +816,10 @@ def user_billings():
                 'number': one_cart.number,
                 'create_time': one_cart.create_time,
             } for one_cart in one_billing.list],
+            'status_list': [{
+                'status': one_status.split('|')[0],
+                'time': int(one_status.split('|')[1])
+                            } for one_status in one_billing.status_list],
             'create_time': one_billing.create_time,
             'edit_time': one_billing.edit_time
         })

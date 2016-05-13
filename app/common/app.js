@@ -3,7 +3,7 @@ var delay = 2800;                           // time delay for message animate
 var host = "http://www.bookist.org";        // API url
 // var host = "http://192.168.1.105";
 
-var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngTouch','infinite-scroll']);
+var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngSanitize','ngTouch','infinite-scroll']);
 
 routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRouterProvider',function ($stateProvider,$locationProvider,$httpProvider,$urlRouterProvider) {
 

@@ -17,7 +17,7 @@
             </a>
             <div class="comment-content">
                 <textarea class="form-control" rows="3" name="content" ng-required="required"
-                          ng-model="comment.content" ng-readonly="readonly" focus-me="{{edit}}"></textarea>
+                          ng-model="comment.content" ng-bind-html="comment.content | nl2br" ng-readonly="readonly" focus-me="{{edit}}"></textarea>
             </div>
             <div class="comment-star">
                 <i class="fa fa-thumbs-o-up comment-up">{{comment.up}}</i>

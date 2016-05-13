@@ -22,7 +22,7 @@
         <header>书籍内容介绍</header>
         <article >
             <section>
-                <p class="info">{{book.description}}</p>
+                <p class="info" ng-bind-html="book.description | nl2br"></p>
             </section>
         </article>
     </div>
@@ -30,7 +30,7 @@
         <header>作者介绍</header>
         <article>
             <section>
-                <p class="info">{{book.author_description}}</p>
+                <p class="info" ng-bind-html="book.author_description | nl2br"></p>
             </section>
         </article>
     </div>
@@ -38,7 +38,7 @@
         <header>目录</header>
         <article>
             <section>
-                <p class="info">{{book.catelog}}</p>
+                <p class="info" ng-bind-html="book.catelog | nl2br"></p>
             </section>
         </article>
     </div>

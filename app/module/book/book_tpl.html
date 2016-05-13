@@ -45,7 +45,7 @@
         <div class="clearfix"></div>
         <div class="book-intro">
             <span>简介</span>
-            <p ng-class="{'book-intro-less':!more,'book-intro-more':more}">{{book.description}}</p>
+            <p ng-bind-html="book.description | nl2br" ng-class="{'book-intro-less':!more,'book-intro-more':more}"></p>
             <button class="btn btn-block btn-default" ng-show="!more" ng-click="more=!more">
                 更多
             </button>
@@ -62,7 +62,7 @@
                     <uib-rating class="star red-star" state-on="'fa fa-star'" state-off="'fa fa-star-o'"
                                 ng-model="comment.star" max="5" read-only="true"></uib-rating>
                 </div>
-                <p>{{comment.content}}</p>
+                <p class="ng-binding" ng-bind-html="comment.content | nl2br"></p>
                 <div class="comment-meta">
                     <p>{{comment.create_time*1000 | date:'yyyy-MM-dd HH:mm'}}</p>
                     <i class="fa" ng-class={false:'fa-thumbs-o-down',true:'fa-thumbs-down'}[comment.down_already]

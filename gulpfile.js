@@ -18,6 +18,7 @@ gulp.task('angular', function(){
             'static/js/ui-bootstrap-tpls-1.2.4.min.js',
             'static/js/angular-animate.min.js',
             'static/js/angular-touch.min.js',
+            'static/js/angular-sanitize.min.js',
             'static/js/ng-infinite-scroll.min.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())

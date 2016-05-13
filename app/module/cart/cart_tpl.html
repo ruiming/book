@@ -1,38 +1,53 @@
 <loading ng-if="busy"></loading>
 <div class="shop-group" ng-if="!busy">
-    <div class="shop-cart-count">
-        <a class="btn btn-danger">结算</a>
-        <div class="shop-cart-count-core">
-            <p>小计(4本书): ¥ {{price | number:2 }}</p>
-            <i class="fa fa-info"></i>
-            <span>享受免邮和送书上门</span>
-        </div>
+    <div class="shop-cart-head">
+        <span>购物车</span>
+        <span ng-click="edit()" ng-if="!editStatu">编辑</span>
+        <span ng-click="editOk()" ng-if="editStatu">完成</span>
     </div>
     <ul class="shop-cart-list">
         <div class="empty-alert" ng-if="items.length==0">
             <p>购物车为空，快去逛逛吧</p>
         </div>
-        <li ng-repeat="item in items" ng-if="!item.removed">
+        <li ng-repeat="item in items">
             <div class="shop-cart-item">
+                <div class="checkbox">
+                    <label><span ng-class="item.status">
+                        <input type="checkbox" ng-model="item.checked" ng-click="select(item.status)">
+                    </span></label>
+                </div>
                 <a class="cart-book-image" ui-sref="book({isbn: item.book.isbn})">
                     <img ng-src="{{item.book.image}}">
                 </a>
                 <div class="cart-book-name">
                     <a ui-sref="book({isbn: item.book.isbn})">{{item.book.title}}</a>
-                    <div class="clearfix"></div>
-                    <span ng-repeat="x in item.book.author"><span>{{x}} </span></span>
                 </div>
                 <p class="cart-book-price"> ¥ {{item.price | number:2 }}</p>
-                <div class="cart-book-edit">
-                    <input type="number" ng-model="item.number" ng-blur="editBook(item)">
-                    <button class="btn btn-default" ng-click="removeBook(item, $index)">
-                        删除
-                    </button>
+                <span class="cart-book-count" ng-show="!editStatu"> X {{ item.number }}</span>
+                <div class="cart-book-edit" ng-if="editStatu">
+                    <i class="fa fa-trash-o fa-1x" ng-click="removeBook(item, $index)" aria-hidden="true"></i>
+                    <div class="cart-book-edit-count">
+                        <i class="fa fa-minus" aria-hidden="true" ng-click="minus(item)"></i>
+                        <input type="number" ng-model="item.number" ng-change="editBook(item)">
+                        <i class="fa fa-plus" aria-hidden="true" ng-click="plus(item)"></i>
+                    </div>
                 </div>
             </div>
         </li>
     </ul>
+    <div class="cart-to-order">
+        <button class="btn btn-danger" ng-if="!editStatu" ng-disabled="count===0 || editStatu">结算({{count}})</button>
+        <button class="btn btn-info" ng-if="editStatu" ng-disabled="count===0" ng-click="collect()">移入收藏夹({{number}})</button>
+        <button class="btn btn-success" ng-if="editStatu" ng-disabled="count===0" ng-click="delete()">删除({{number}})</button>
+        <div class="checkbox">
+            <label><span ng-class="status">
+                <input type="checkbox" ng-model="checked" ng-click="selectAll()">
+            </span></label>
+            <label>全选</label>
+        </div>
+        <div class="cart-count" ng-if="!editStatu">
+            <label> ¥ {{price | number: 2}}</label>
+        </div>
+    </div>
 </div>
-<div ng-if="wait1" class="animate-if"><p>删除成功</p></div>
-<div ng-if="wait2" class="animate-if"><p>数量修改成功</p></div>
-<div ng-if="wait3" class="animate-if"><p>每本书单次购买数量不能超过10本</p></div>
+<div ng-if="wait1" class="animate-if animate-if-2"><p>删除成功</p></div>

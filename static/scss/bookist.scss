@@ -7,7 +7,13 @@ $star: red;
   -webkit-box-shadow:$shadow;
   box-shadow:$shadow;
 }
-
+@mixin box-sizing($box) {
+  -webkit-box-sizing: $box;
+  -moz-box-sizing: $box;
+  -o-box-sizing: $box;
+  -ms-box-sizing: $box;
+  box-sizing: $box;
+}
 @mixin blur($filter) {
   -webkit-filter: blur($filter);
   filter: blur($filter);
@@ -784,7 +790,91 @@ a {
 }
 .shop-group  {
   background-color: $bgColor;
-  .shop-cart-count {
+  margin-bottom: 82px;
+  .checkbox {
+    float: left;
+    height: 110px;
+    overflow: hidden;
+    margin-right: 10px;
+    label {
+      top: 45px;
+      position: relative;
+      padding-left: 0;
+      span {
+        display: inline-block;
+        border: 1px solid #d9d9d9;
+        width: 1.375em;
+        height: 1.375em;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        @include box-sizing(border-box);
+        &.active {
+          background: #ff5252;
+          position: relative;
+          border-color: #ff5252;
+          &:after {
+            position: absolute;
+            content: '';
+            width: 0.75em;
+            height: 0.41em;
+            border: 2px solid #ffffff;
+            border-top: none;
+            border-right: none;
+            left: 0.3em;
+            top: 0.35em;
+            @include box-sizing(border-box);
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+          }
+        }
+      }
+      input {
+        visibility: hidden;
+      }
+    }
+  }
+  .cart-to-order {
+    position: fixed;
+    z-index: 9999;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    .checkbox {
+      height: auto;
+      position: absolute;
+      left: 15px;
+      label {
+        &:last-child {
+          height: 24px;
+          float: right;
+          padding-left: 10px;
+        }
+        position: initial;
+        span {
+          position: initial;
+          right: 0;
+        }
+      }
+    }
+    .cart-count {
+      float: right;
+      label {
+        color: #D9534F;
+        padding: 8px 10px 8px 0;
+      }
+    }
+    button {
+      padding: 10px 20px;
+      border-radius: 0;
+      float: right;
+    }
+  }
+  .shop-cart-head {
     position: fixed;
     top: 0;
     left: 0;
@@ -793,26 +883,18 @@ a {
     padding: 15px 10px 10px;
     font-size: 15px;
     background-color: #fff;
-    .shop-cart-count-core {
-      p {
-        font-size: 20px;
-        margin-top: 0;
+    overflow: hidden;
+    text-align: center;
+    z-index: 99;
+    span {
+      &:last-child {
+        right: 10px;
+        position: absolute;
       }
-      i span{
-        color: #2b2b2b;
-        font-size: 1.5rem;
-      }
-    }
-    a {
-      float: right;
-      width: 58px;
-      border: 0;
-      padding: 6px 14px;
-      margin-top: 25px;
     }
   }
   ul {
-    margin-top: 83px;
+    margin-top: 47px;
     padding: 0 0 10px;
     list-style: none;
     display: block;
@@ -822,18 +904,19 @@ a {
       padding: 10px 0;
       border-bottom: 1px solid #e3e3e3;
       .shop-cart-item {
+        position: relative;
         margin-left: 15px;
         overflow: hidden;
         .cart-book-image {
-          float: right;
+          float: left;
           img {
-            height: 120px;
+            height: 130px;
             float: left;
             margin-right: 10px;
-            margin-left: 10px;
           }
         }
         .cart-book-name {
+          font-size: 14px;
           display: block;
           overflow: hidden;
           a {
@@ -841,23 +924,49 @@ a {
           }
         }
         .cart-book-price {
-          color: #b12704;
-          margin: 5px 0 10px;
+          color: #F92828;
+          margin: 5px 0 5px 0;
+        }
+        .cart-book-count {
+          position: absolute;
+          bottom: 0;
+          color: black;
+          font-size: 12px;
         }
         .cart-book-edit {
           display: block;
           overflow: hidden;
-          input {
-            height: 34px;
-            width: 60px;
-            text-align: center;
-            padding: 0 0 0 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            float: left;
-            margin-right: 10px;
+          .cart-book-edit-count {
+            margin-right: 50px;
+            i {
+              background-color: white;
+              padding: 4.5px 10px;
+              float: left;
+              color: #B6B6B6;
+              border: 0;
+              border-right: 1px solid #F0F0F0;
+              &:last-child {
+                float: none;
+                border-left: 1px solid #F0F0F0;
+                border-right: 0;
+              }
+            }
+            input,
+            input:active {
+              width: 60px;
+              text-align: center;
+              padding: 3px 5px;
+              font-size: 12px;
+              border: 0;
+              outline: none;
+              border-radius: 0;
+              float: left;
+            }
           }
-          button {
+          .fa-trash-o {
+            float: right;
+            font-size: 1.3em;
+            padding-top: 2px;
             margin-right: 10px;
           }
         }
@@ -1418,7 +1527,14 @@ a {
     font-size: 12px;
     margin: 10px auto;
   }
-  transition: 0.3s height, all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  transition: 0.3s bottom, 0.3s height, all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+.animate-if-2 {
+  bottom: 92px;
+}
+.animate-if-2.ng-enter,
+.animate-if-2.ng-leave {
+  height: 0;
 }
 .animate-if.ng-enter,
 .animate-if.ng-leave {

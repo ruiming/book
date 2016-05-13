@@ -4,8 +4,18 @@ routeApp.controller('SuggestCtrl', function($http, $scope){
     $scope.wait = false;        // 提交反馈wait
     $scope.wait2 = false;       // 提交反馈动画时延
 
-    $scope.name = sessionStorage.name;
-    $scope.avatar = sessionStorage.avatar;
+    if(sessionStorage.user != undefined) {
+        $scope.user = JSON.parse(sessionStorage.user);
+    }
+    else {
+        $http({
+            method: 'GET',
+            url: host + '/user_info'
+        }).success(function(response){
+            $scope.user = response;
+            sessionStorage.user = JSON.stringify(response);
+        });
+    }
 
     // 发布建议和看法
     $scope.post = function(){

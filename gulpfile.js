@@ -12,13 +12,13 @@ var sass = require('gulp-sass');
 // 打包js依赖文件如angularJS文件和jquery等
 gulp.task('angular', function(){
 
-    gulp.src(['src/js/jquery.min.js',
-            'src/js/angular.min.js',
-            'src/js/angular-ui-router.min.js',
-            'src/js/ui-bootstrap-tpls-1.2.4.min.js',
-            'src/js/angular-animate.min.js',
-            'src/js/angular-touch.min.js',
-            'src/js/ng-infinite-scroll.min.js'])
+    gulp.src(['static/js/jquery.min.js',
+            'static/js/angular.min.js',
+            'static/js/angular-ui-router.min.js',
+            'static/js/ui-bootstrap-tpls-1.2.4.min.js',
+            'static/js/angular-animate.min.js',
+            'static/js/angular-touch.min.js',
+            'static/js/ng-infinite-scroll.min.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
         .pipe(concat('dependence.min.js'))
@@ -53,12 +53,12 @@ gulp.task('templates:dist', function() {
 // 打包合并css和fonts
 gulp.task('css', function(){
     
-    gulp.src(['src/css/*.css'])
+    gulp.src(['static/css/*.css'])
         .pipe(concat('app.min.css'))
         .pipe(cleanCSS())
         .pipe(gulp.dest('backend/app/static/css/'));
 
-    gulp.src('src/fonts/*')
+    gulp.src('static/fonts/*')
         .pipe(gulp.dest('backend/app/static/fonts/'));
 
 });
@@ -66,7 +66,7 @@ gulp.task('css', function(){
 // 压缩图片
 gulp.task('img', function(){
     
-    gulp.src('src/images/*.*')
+    gulp.src('static/images/*.*')
         .pipe(imagemin({
             progressive: true
         }))
@@ -76,7 +76,7 @@ gulp.task('img', function(){
 // 编译sass
 gulp.task('sass', function(){
 
-    gulp.src('src/scss/*.scss')
+    gulp.src('static/scss/*.scss')
         .pipe(plumber())
         .pipe(sass())
         .pipe(cleanCSS())
@@ -85,10 +85,10 @@ gulp.task('sass', function(){
 });
 
 
-gulp.watch('src/scss/*.scss',['sass']);
-gulp.watch('src/css/*.css', ['css']);
+gulp.watch('static/scss/*.scss',['sass']);
+gulp.watch('static/css/*.css', ['css']);
 gulp.watch(['app/module/**/*.js', 'app/common/*.js'], ['js']);
-gulp.watch('src/img/*.*', ['img']);
+gulp.watch('static/img/*.*', ['img']);
 gulp.watch('app/module/**/*.html',['templates:dist']);
 
 gulp.task('default', ['css','js','angular','img','templates:dist','sass']);

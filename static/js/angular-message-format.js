@@ -345,7 +345,7 @@ InterpolationPartsWatcher.prototype.cancelWatch = function cancelWatch() {
 /* global SelectMessage: false */
 /* global subtractOffset: false */
 
-// The params src and dst are exactly one of two types: NestedParserState or MessageFormatParser.
+// The params static and dst are exactly one of two types: NestedParserState or MessageFormatParser.
 // This function is fully optimized by V8. (inspect via IRHydra or --trace-deopt.)
 // The idea behind writing it this way is to avoid repeating oneself.  This is the ONE place where
 // the parser state that is saved/restored when parsing nested mustaches is specified.

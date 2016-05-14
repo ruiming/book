@@ -37,6 +37,9 @@ routeApp.factory('TEMP', function(){
     var _dict = {};
     
     return {
+        pushList: function(list){
+            _list.push(list);
+        },
         setList: function(list){
             _list = list;
         },

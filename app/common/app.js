@@ -173,6 +173,11 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             controller: 'AddressAddCtrl',
             templateUrl: 'setting_address_add/setting_address_add_tpl.html'
         })
+        .state('cart2order', {
+            url: '/cart2order',
+            controller: 'Cart2OrderCtrl',
+            templateUrl: 'cart2order/cart2order_tpl.html'
+        })
         .state('suggest', {
             url: '/suggest',
             controller: 'SuggestCtrl',

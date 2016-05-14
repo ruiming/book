@@ -36,7 +36,7 @@
         </li>
     </ul>
     <div class="cart-to-order">
-        <button class="btn btn-danger" ng-if="!editStatu" ng-disabled="count===0 || editStatu">结算({{count}})</button>
+        <button class="btn btn-danger" ng-if="!editStatu" ng-disabled="count===0 || editStatu" ng-click="cart2order()">结算({{count}})</button>
         <button class="btn btn-info" ng-if="editStatu" ng-disabled="count===0" ng-click="collect()">移入收藏夹({{number}})</button>
         <button class="btn btn-success" ng-if="editStatu" ng-disabled="count===0" ng-click="delete()">删除({{number}})</button>
         <div class="checkbox">

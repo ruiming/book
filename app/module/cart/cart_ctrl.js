@@ -1,4 +1,4 @@
-routeApp.controller('CartCtrl',function($scope, $http) {
+routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
 
     $scope.price = 0;
     $scope.busy = true;
@@ -211,5 +211,19 @@ routeApp.controller('CartCtrl',function($scope, $http) {
             $scope.recount();
         });
     };
+
+    // 计算
+    $scope.cart2order = function() {
+        var orderIsbn = [];
+        for(var i=0, j=0; i<$scope.items.length; i++) {
+            if($scope.items[i].checked) {
+                TEMP.pushList({
+                    "isbn": $scope.items[i].book.isbn,
+                    "number": $scope.items[i].number
+                })
+            }
+        }
+        $state.go('cart2order');
+    }
     
 });

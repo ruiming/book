@@ -8,7 +8,7 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
     $scope.token = sessionStorage.token;
     $scope.user_id = sessionStorage.user_id;
     $scope.fuck = function() {
-        location.href = "http://bookist.org?fuck=true?token=" + $scope.token + "?user_id=" + $scope.user_id + "/";
+        location.href = "http://bookist.org?fuck=true&token=" + $scope.token + "&user_id=" + $scope.user_id + "/";
     };
 
     // 获取书籍推荐

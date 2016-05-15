@@ -495,7 +495,7 @@ def billing():
             one_cart.status = 2
             one_cart.save()
 
-        Billing(
+        this_billing = Billing(
             user=this_user,
             status='pending',
             list=all_cart,
@@ -503,7 +503,7 @@ def billing():
             price=price_sum,
             status_list=['create|{}'.format(int(time()))]
         ).save()
-        return return_message('success', 'post billing')
+        return return_message('success', {'data': str(this_billing.pk)})
 
     elif request.method == 'PUT':
         """
@@ -529,7 +529,6 @@ def billing():
         this_billing.save()
 
         return return_message('success', 'delete billing')
-
 
 
 @user_module.route('/user_info', methods=['GET'])
@@ -651,10 +650,11 @@ def user_address():
         if this_user_address not in this_user.address:
             return return_message('error', 'unknown operation')
 
-
+        this_user.address.remove(this_user_address)
         this_user_address.enable = False
 
         this_user_address.save()
+        this_user.save()
 
         return return_message('success', 'delete user address')
 

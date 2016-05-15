@@ -775,6 +775,7 @@ def user_carts():
                 'title': one_cart.book.title,
                 'image': one_cart.book.image,
                 'author': [one_author for one_author in one_cart.book.author],
+                'is_collection': True if Collect.objects(user=this_user, type='book', type_id=one_cart.book.isbn).count() == 1 else False
             }
         })
     return return_message('success', all_cart_json)

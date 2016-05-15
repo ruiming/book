@@ -274,7 +274,6 @@ def collect():
             # logger
             return return_message('error', 'unknown error')
 
-
     elif request.method == 'DELETE':
         # 抛弃
         """
@@ -730,7 +729,6 @@ def user_collects():
 
     this_user = User.get_one_user(openid=request.headers['userid'])
 
-
     all_collect = Collect.objects(user=this_user, type=type)
 
     all_collect_json = []
@@ -771,7 +769,7 @@ def user_carts():
         all_cart_json.append({
             'id': str(one_cart.pk),
             'number': one_cart.number,
-            'price': str(one_cart.price),
+            'price': float(one_cart.price),
             'book': {
                 'isbn': one_cart.book.isbn,
                 'title': one_cart.book.title,

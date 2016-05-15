@@ -274,7 +274,6 @@ def collect():
             # logger
             return return_message('error', 'unknown error')
 
-
     elif request.method == 'DELETE':
         # 抛弃
         """
@@ -496,7 +495,7 @@ def billing():
             one_cart.status = 2
             one_cart.save()
 
-        Billing(
+        this_billing = Billing(
             user=this_user,
             status='pending',
             list=all_cart,
@@ -504,7 +503,7 @@ def billing():
             price=price_sum,
             status_list=['create|{}'.format(int(time()))]
         ).save()
-        return return_message('success', 'post billing')
+        return return_message('success', {'data': str(this_billing.pk)})
 
     elif request.method == 'PUT':
         """
@@ -530,7 +529,6 @@ def billing():
         this_billing.save()
 
         return return_message('success', 'delete billing')
-
 
 
 @user_module.route('/user_info', methods=['GET'])
@@ -652,10 +650,11 @@ def user_address():
         if this_user_address not in this_user.address:
             return return_message('error', 'unknown operation')
 
-
+        this_user.address.remove(this_user_address)
         this_user_address.enable = False
 
         this_user_address.save()
+        this_user.save()
 
         return return_message('success', 'delete user address')
 
@@ -730,7 +729,6 @@ def user_collects():
 
     this_user = User.get_one_user(openid=request.headers['userid'])
 
-
     all_collect = Collect.objects(user=this_user, type=type)
 
     all_collect_json = []
@@ -771,12 +769,13 @@ def user_carts():
         all_cart_json.append({
             'id': str(one_cart.pk),
             'number': one_cart.number,
-            'price': str(one_cart.price),
+            'price': float(one_cart.price),
             'book': {
                 'isbn': one_cart.book.isbn,
                 'title': one_cart.book.title,
                 'image': one_cart.book.image,
                 'author': [one_author for one_author in one_cart.book.author],
+                'is_collection': True if Collect.objects(user=this_user, type='book', type_id=one_cart.book.isbn).count() == 1 else False
             }
         })
     return return_message('success', all_cart_json)

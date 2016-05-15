@@ -47,7 +47,7 @@ routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $state){
                 address_id: $scope.x.id
             }
         }).success(function(response){
-            $state.go('orderDetail', {'id': response});
+            $state.go('orderDetail', {'id': response}, {"location": 'orders'});
             window.setTimeout(function() {
                 $scope.$apply(function() {
                     $scope.wait = false;

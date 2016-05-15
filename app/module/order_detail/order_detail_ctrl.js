@@ -1,82 +1,39 @@
 routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
 
+    $scope.price = 0;
     $scope.busy = true;
+    $scope.status_list = [];
 
-    // todo 获取订单详细信息
+    // todo 待取消问题
+    var statusDict = {
+        "create": "创建",
+        "pending": "待发货",
+        "waiting": "待收货",
+        "commenting": "待评价",
+        "done": "已完成",
+        "canceled": "已取消"
+    };
+
+    // 获取订单详细信息
     $http({
         method: 'GET',
-        url: host + '/orders',
+        url: host + '/billing',
         params: {
             id: $stateParams.id
         }
     }).success(function(response){
         $scope.order = response;
-        $scope.busy = false;
-    }).error(function(){
-        $scope.order = {
-                "create_time": "2015-04-02 14:52:32",
-                "status": "待确认",
-                "id": 199156345,
-                "user": {
-                    "avatar": "http://tp2.sinaimg.cn/2680544593/50/5725935006/1",
-                    "username": "小白",
-                    "id": "125124"
-                },
-                "process": [
-                    {
-                        "status": "待确认",
-                        "time": "2015-04-02 14:52:32"
-                    },
-                    {
-                        "status": "已确认",
-                        "time": "2015-04-02 20:00:00"
-                    },
-                    {
-                        "status": "已送达",
-                        "time": "2015-04-03 12:12:00"
-                    }
-                ],
-                "receipt": {
-                    "name": "王思聪",
-                    "id": 1005201,
-                    "dorm": "华南师范大学石牌校区西三123",
-                    "phone": "15521189653"
-                },
-                "price": 42,
-                "method": "货到付款",
-                "books": [
-                    {
-                        "title": "灯塔",
-                        "image": "https://img1.doubanio.com/lpic/s28369978.jpg",
-                        "author": [
-                            "[法]克里斯多夫·夏布特（Christophe Chabouté）"
-                        ],
-                        "isbn": "9787550268388",
-                        "price": 12,
-                        "count": 2
-                    },
-                    {
-                        "title": "灯塔",
-                        "image": "https://img1.doubanio.com/lpic/s28369978.jpg",
-                        "author": [
-                            "[法]克里斯多夫·夏布特（Christophe Chabouté）"
-                        ],
-                        "isbn": "9787550268388",
-                        "price": 12,
-                        "count": 2
-                    },
-                    {
-                        "title": "灯塔",
-                        "image": "https://img1.doubanio.com/lpic/s28369978.jpg",
-                        "author": [
-                            "[法]克里斯多夫·夏布特（Christophe Chabouté）"
-                        ],
-                        "isbn": "9787550268388",
-                        "price": 12,
-                        "count": 2
-                    }
-                ]
-            };
+        $scope.order.status = statusDict[$scope.order.status];
+        for(var i=0; i<$scope.order.carts.length; i++) {
+            $scope.price += $scope.order.carts[i].number * $scope.order.carts[i].price;
+        }
+        for(var j=0; j<$scope.order.status_list.length; j++) {
+            var temp = $scope.order.status_list[j].split('|');
+            $scope.status_list.push({
+                "status": statusDict[temp[0]],
+                "time": temp[1]
+            });
+        }
         $scope.busy = false;
     });
 

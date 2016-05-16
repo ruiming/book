@@ -5,17 +5,20 @@ routeApp.controller('OrdersWaitCtrl',function($scope, $http) {
     // todo 获取待收货订单
     $http({
         method: 'GET',
-        url: host + '/orders',
+        url: host + '/user_billings',
         params: {
-            type: "wait"
+            status: "pending"
         }
     }).success(function(response){
         $scope.orders = response;
+        for(x in $scope.orders){
+            $scope.orders[x].status = statusDict[$scope.orders[x].status];
+        }
         $scope.busy = false;
     });
 
-    // todo 确认收货
-    $scope.receipt = function(order, index){
+    // todo 取消订单
+    $scope.cancel = function(order, index){
         $http({
             method: 'POST',
             url: host + '/order',

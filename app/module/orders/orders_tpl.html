@@ -26,7 +26,8 @@
                     <span class="order-price">实付款 {{order.price}} 元</span>
                 </div>
                 <a class="btn btn-default" ng-if="order.status=='待评价'" ui-sref="orderComments({id:order.id})">评价</a>
-                <button class="btn btn-default" ng-if="order.status!='待评价'" ng-click="receipt(order)">确认收货</button>
+                <button class="btn btn-default" ng-if="order.status=='待收货'" ng-click="receipt(order, $index)">确认收货</button>
+                <button class="btn btn-default" ng-if="order.status=='待发货'" ng-click="cancel(order, $index)">取消订单</button>
             </div>
         </li>
     </ul>

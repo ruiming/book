@@ -121,6 +121,11 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             controller: 'OrderCommentsCtrl',
             templateUrl: 'order_comments/order_comments_tpl.html'
         })
+        .state('ordersCommented', {
+            url: '/orders/commented',
+            controller: 'OrdersCommentedCtrl',
+            templateUrl: 'orders_commented/orders_commented_tpl.html'
+        })
         .state('comments',{
             url: '/comments',
             controller: 'UserCommentsCtrl',

@@ -15,4 +15,17 @@ routeApp.controller('OrdersReceivedCtrl',function($scope, $http) {
         $scope.busy = false;
     });
 
+    // todo 确认收货
+    $scope.receipt = function(order, index){
+        $http({
+            method: 'POST',
+            url: host + '/order',
+            data: {
+                "id": order.id
+            }
+        }).success(function(){
+            $scope.orders.splice(index, 1);
+        });
+    };
+
 });

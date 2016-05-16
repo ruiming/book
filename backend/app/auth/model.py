@@ -7,7 +7,6 @@ class UserAddress(db.Document):
     """
     用户收获地址
     """
-    pass
     name = db.StringField(required=True)
     phone = db.StringField(required=True)
     dormitory = db.StringField(required=True)

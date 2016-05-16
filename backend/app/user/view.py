@@ -425,7 +425,7 @@ def billing():
         """
         查看一个订单状态
         """
-        #TODO: 继续完成查看函数
+        # TODO: 继续完成查看函数
 
         id = request.args.get('id', None)
 
@@ -452,7 +452,12 @@ def billing():
                     'image': one_cart.book.image,
                     'author': [one_author for one_author in one_cart.book.author],
                 }
-                      } for one_cart in this_billing.list]
+                      } for one_cart in this_billing.list],
+            'address': {
+                'name': this_billing.address.name,
+                'phone': this_billing.address.phone,
+                'dormitory': this_billing.address.dormitory
+            }
         }
         return return_message('success', {'data': this_billing_json})
 
@@ -804,16 +809,18 @@ def user_billings():
     for one_billing in all_billing:
         all_billing_json.append({
             'status': one_billing.status,
-            'id': one_billing.pk,
-            'price': one_billing.price,
+            'id': str(one_billing.pk),
+            'price': float(one_billing.price),
             'carts': [{
                 'book': {
                     'isbn': one_cart.book.isbn,
                     'title': one_cart.book.title,
                     'image': one_cart.book.image,
+                    'authors': [one_author for one_author in one_cart.book.author]
                 },
                 'number': one_cart.number,
                 'create_time': one_cart.create_time,
+                'price': float(one_cart.price),
             } for one_cart in one_billing.list],
             'status_list': [{
                 'status': one_status.split('|')[0],

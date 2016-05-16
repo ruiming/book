@@ -104,8 +104,12 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
     $scope.editOk = function() {
         for(var i=0; i<$scope.items.length; i++){
             $scope.items[i].checked = $scope.checkArr[i];
-            if($scope.items[i].checked)    $scope.items[i].status = "active";
-            else    $scope.items[i].status = "";
+            if($scope.items[i].checked)    {
+                $scope.items[i].status = "active";
+            }
+            else {
+                $scope.items[i].status = "";
+            }
         }
         $scope.recount();
         $scope.editStatu = false;
@@ -214,12 +218,12 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
 
     // 结算
     $scope.cart2order = function() {
-        for(var i=0, j=0; i<$scope.items.length; i++) {
+        for(var i=0; i<$scope.items.length; i++) {
             if($scope.items[i].checked) {
-                TEMP.pushList($scope.items[i])
+                TEMP.pushList($scope.items[i]);
             }
         }
         $state.go('cart2order');
-    }
+    };
     
 });

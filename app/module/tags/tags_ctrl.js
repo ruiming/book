@@ -12,6 +12,6 @@ routeApp.controller('TagsCtrl', function($scope, $http){
     }).success(function(response){
         $scope.busy = false;
         $scope.allTags = response;
-    })
+    });
 
 });

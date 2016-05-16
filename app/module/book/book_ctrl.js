@@ -1,5 +1,4 @@
 routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
-    
     $scope.more = false;            // 默认不加载更多书籍信息介绍
     $scope.busy = true;             // 页面加载动画Loading
     $scope.wait = false;            // 发表评论wait
@@ -10,8 +9,8 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     $scope.wait6 = false;           // 取消收藏延迟
     $scope.wait7 = false;           // 发布评论延迟
     $scope.required = true;         // 必填
-    $scope.content = "";             // 初始评论
-    $scope.star = 5;                 // 默认星星数
+    $scope.content = "";            // 初始评论
+    $scope.star = 5;                // 默认星星数
 
     // 加入购物车
     $scope.addCart = function(){
@@ -49,7 +48,6 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
         TEMP.setDict({title: $scope.book.title});
         $scope.busy = false;
     });
-    
 
     // todo 获取用户信息
     $http({
@@ -123,11 +121,17 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
                 type: "up"
             }
         }).success(function(){
-            if(comment.down_already) comment.down--;
+            if(comment.down_already) {
+                comment.down--;
+            }
             comment.up_already = !comment.up_already;
             comment.down_already = false;
-            if(comment.up_already)  comment.up++;
-            else comment.up--;
+            if(comment.up_already)  {
+                comment.up++;
+            }
+            else {
+                comment.up--;
+            }
         });
     };
 
@@ -141,11 +145,17 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
                 type: "down"
             }
         }).success(function(){
-            if(comment.up_already) comment.up--;
+            if(comment.up_already) {
+                comment.up--;
+            }
             comment.down_already = !comment.down_already;
             comment.up_already = false;
-            if(comment.down_already)  comment.down++;
-            else comment.down--;
+            if(comment.down_already)  {
+                comment.down++;
+            }
+            else {
+                comment.down--;
+            }
         });
     };
 
@@ -180,5 +190,4 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             }, delay);
         });
     };
-    
 });

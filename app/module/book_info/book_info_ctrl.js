@@ -1,5 +1,4 @@
 routeApp.controller('BookInfoCtrl', function($http, $scope, $stateParams){
-
     $scope.busy = true;
     
     // 获取图书信息(包含评论和标签)
@@ -14,5 +13,4 @@ routeApp.controller('BookInfoCtrl', function($http, $scope, $stateParams){
         $scope.book = response;
         $scope.busy = false;
     });
-    
 });

@@ -19,5 +19,5 @@ routeApp.controller('AddressCtrl', function ($http, $scope, $state, User) {
     // 返回上层
     $scope.back = function() {
         history.back();
-    }
+    };
 });

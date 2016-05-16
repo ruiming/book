@@ -19,7 +19,9 @@ routeApp.controller('SuggestCtrl', function($http, $scope){
 
     // 发布建议和看法
     $scope.post = function(){
-        if(this.suggestBox.suggestion.$invalid)    return;
+        if(this.suggestBox.suggestion.$invalid) {
+            return;
+        }
         $scope.wait = true;
         $http({
             method: 'POST',

@@ -28,11 +28,17 @@ routeApp.controller('CommentsCtrl',function($scope, $http, $stateParams, TEMP) {
                 type: "up"
             }
         }).success(function(){
-            if(comment.down_already) comment.down--;
+            if(comment.down_already) {
+                comment.down--;
+            }
             comment.up_already = !comment.up_already;
             comment.down_already = false;
-            if(comment.up_already)  comment.up++;
-            else comment.up--;
+            if(comment.up_already) {
+                comment.up++;
+            }
+            else {
+                comment.up--;
+            }
         });
     };
 
@@ -46,11 +52,17 @@ routeApp.controller('CommentsCtrl',function($scope, $http, $stateParams, TEMP) {
                 type: "down"
             }
         }).success(function(){
-            if(comment.up_already) comment.up--;
+            if(comment.up_already) {
+                comment.up--;
+            }
             comment.down_already = !comment.down_already;
             comment.up_already = false;
-            if(comment.down_already)  comment.down++;
-            else comment.down--;
+            if(comment.down_already)  {
+                comment.down++;
+            }
+            else {
+                comment.down--;
+            }
         });
     };
     

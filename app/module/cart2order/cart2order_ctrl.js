@@ -54,6 +54,6 @@ routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
                     $scope.wait = false;
                 });
             }, 500);
-        })
-    }
+        });
+    };
 });

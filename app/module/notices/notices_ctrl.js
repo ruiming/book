@@ -9,6 +9,6 @@ routeApp.controller('NoticesCtrl', function($http, $scope){
     }).success(function(response){
         $scope.notices = response;
         $scope.busy = false;
-    })
+    });
     
 });

@@ -48,5 +48,5 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
                 });
             }, delay);
         });
-    }
+    };
 });

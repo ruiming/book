@@ -1,4 +1,4 @@
-routeApp.controller('PointCtrl', function($http, $scope, BL){
+routeApp.controller('PointCtrl', function($http, $scope){
 
     $scope.busy = true;
 

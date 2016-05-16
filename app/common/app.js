@@ -4,11 +4,9 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
 
     // modify response from transformResponse and alert error
     $httpProvider.defaults.transformResponse.push(function (response) {
-        if(typeof(response.data) != "undefined") {
-            if(response.status == "success"){
-                response = response.data;
-                return response;
-            }
+        if(typeof(response.data) != "undefined" && response.status == "success") {
+            response = response.data;
+            return response;
         }
         if(response.status == "error") {
             // todo change to alert when work

@@ -126,6 +126,6 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
     // 返回上层
     $scope.back = function() {
         history.back();
-    }
+    };
     
 });

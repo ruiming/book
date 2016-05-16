@@ -31,6 +31,6 @@ routeApp.controller('OrdersCtrl',function($scope, $http) {
         }).error(function () {
             order.status = "待评价";
         });
-    }
+    };
 
 });

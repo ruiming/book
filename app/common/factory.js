@@ -11,7 +11,9 @@ routeApp.factory('BL', function($http){
             this.busy = false;
             return;
         }
-        if(this.busy) return;
+        if(this.busy) {
+            return;
+        }
         this.busy = true;
         $http({
             method: 'GET',
@@ -35,7 +37,6 @@ routeApp.factory('BL', function($http){
 routeApp.factory('TEMP', function(){
     var _list = [];
     var _dict = {};
-    
     return {
         pushList: function(list){
             _list.push(list);
@@ -94,10 +95,8 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
             var url = host + '/auth_verify';
             var deferred = $q.defer();
             var http = $injector.get('$http');
-            
             if(config.url === url)
                 return config;
-
 
             if(sessionStorage.verify === "true") {
                 var timestamp = new Date().getTime() / 1000;
@@ -133,7 +132,6 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                     deferred.resolve(config);
                 });
             }
-            
             return deferred.promise;
         }
     };

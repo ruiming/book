@@ -1,4 +1,4 @@
-routeApp.controller('CollectBooksCtrl', function($http, $scope, BL){
+routeApp.controller('CollectBooksCtrl', function($http, $scope){
 
     $scope.busy = true;
 
@@ -28,6 +28,6 @@ routeApp.controller('CollectBooksCtrl', function($http, $scope, BL){
             }
         }).success(function(){
             $scope.books.splice(index, 1);
-        })
-    }
+        });
+    };
 });

@@ -25,5 +25,5 @@ routeApp.controller('OrdersWaitCtrl',function($scope, $http) {
         }).success(function(){
             $scope.orders.splice(index, 1);
         });
-    }
+    };
 });

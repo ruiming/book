@@ -67,5 +67,5 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
                 });
             }, delay);
         });
-    }
+    };
 });

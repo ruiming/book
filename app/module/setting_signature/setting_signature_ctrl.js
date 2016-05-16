@@ -17,6 +17,6 @@ routeApp.controller('SignatureCtrl', function ($http, $scope, $stateParams, $loc
     
     $scope.return = function() {
         $location.path('/settings').replace();
-    }
+    };
 
 });

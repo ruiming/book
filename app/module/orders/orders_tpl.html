@@ -11,7 +11,7 @@
                 <span class="order-status">{{order.status}}</span>
             </div>
             <a ui-sref="orderDetail({id:order.id})">
-                <ul class="order-books">
+                <ul class="order-books" style="margin-bottom: 0">
                     <li class="order-book" ng-repeat="z in order.carts">
                         <img ng-src="{{z.book.image}}">
                         <p>{{z.book.title}}</p>
@@ -22,7 +22,7 @@
             </a>
             <div class="order-meta">
                 <div class="order-meta-price">
-                    <span class="order-method">{{order.method}}</span>
+                    <span class="order-method">货到付款</span>
                     <span class="order-price">实付款 {{order.price}} 元</span>
                 </div>
                 <a class="btn btn-default" ng-if="order.status=='待评价'" ui-sref="orderComments({id:order.id})">评价</a>

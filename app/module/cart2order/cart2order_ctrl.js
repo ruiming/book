@@ -1,4 +1,4 @@
-routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $state){
+routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
 
     $scope.wait = false;            // 确认订单等待
 
@@ -47,7 +47,8 @@ routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $state){
                 address_id: $scope.x.id
             }
         }).success(function(response){
-            $state.go('orderDetail', {'id': response});
+            // * 防止后退回到订单生成页面
+            $location.path('/order/'+response+'/detail').replace();
             window.setTimeout(function() {
                 $scope.$apply(function() {
                     $scope.wait = false;

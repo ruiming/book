@@ -12,6 +12,9 @@ routeApp.controller('OrdersCtrl',function($scope, $http) {
         }
     }).success(function(response){
         $scope.orders = response;
+        for(x in $scope.orders){
+            $scope.orders[x].status = statusDict[$scope.orders[x].status];
+        }
         $scope.busy = false;
     });
 

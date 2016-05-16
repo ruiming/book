@@ -4,16 +4,6 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
     $scope.busy = true;
     $scope.status_list = [];
 
-    // todo 待取消问题
-    var statusDict = {
-        "create": "创建",
-        "pending": "待发货",
-        "waiting": "待收货",
-        "commenting": "待评价",
-        "done": "已完成",
-        "canceled": "已取消"
-    };
-
     // 获取订单详细信息
     $http({
         method: 'GET',

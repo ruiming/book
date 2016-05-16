@@ -5,7 +5,7 @@
     </div>
     <li class="notice" ng-repeat="notice in notices">
         <div class="notice-title">
-            <p ng-bind-html="notice.content | nl2br"></p>
+            <p ng-bind-html="notice.content"></p>
             <span>{{notice.time*1000 | date:'yyyy-MM-dd HH:mm' }}</span>
         </div>
         <p class="notice-content">

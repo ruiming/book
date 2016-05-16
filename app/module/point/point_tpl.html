@@ -6,7 +6,7 @@
         </div>
         <ul class="point-list">
             <li ng-repeat="x in points.logs">
-                <span class="point-title" ng-bind-html="x.content | nl2br"></span>
+                <span class="point-title" ng-bind-html="x.content"></span>
                 <span class="point-result" ng-if="x.point>0">+ {{x.point}}</span>
                 <span class="point-result" ng-if="x.point<0">- {{-x.point}}</span>
             </li>

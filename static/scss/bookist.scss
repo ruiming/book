@@ -30,6 +30,9 @@ body {
   font-family: $font;
   background-color: $bgColor;
 }
+p {
+  white-space: pre-wrap;
+}
 
 a {
   color: #000000;

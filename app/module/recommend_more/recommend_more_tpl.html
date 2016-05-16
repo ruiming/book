@@ -5,7 +5,7 @@
             <span class="title">{{book.title}}</span>
             <uib-rating class="star red-star wechat-fix" ng-model="book.star" max="5" read-only="true" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
             <span class="rate">&nbsp;{{book.rate}}</span>
-            <blockquote class="reason" ng-bind-html="book.reason | nl2br"></blockquote>
+            <blockquote class="reason" ng-bind-html="book.reason"></blockquote>
         </a>
         <div class="loading-more" ng-show="books.busy"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
     </div>

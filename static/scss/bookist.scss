@@ -1358,8 +1358,8 @@ a {
       }
     }
     .order-meta {
-      padding: 10px;
       .order-meta-price {
+        padding: 8px;
         display: block;
         float: left;
         span {
@@ -1369,8 +1369,10 @@ a {
       }
       button,
       a {
+        border-radius: 0;
         float: right;
-        line-height: 1.9;
+        padding: 16.5px;
+        font-size: 15px;
       }
     }
     .order-meta-fix-bottom {

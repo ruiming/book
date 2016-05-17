@@ -42,9 +42,13 @@
                     <span class="order-method">货到付款</span>
                     <span class="order-price">实付款 {{price}} 元</span>
                 </div>
-                <a class="btn btn-default" ng-if="order.status=='待评价'" ui-sref="orderComments({id: order.id})">评价</a>
-                <button class="btn btn-default" ng-if="order.status!='待评价'" ng-click="receipt(order)">确认收货</button>
+                <a class="btn btn-danger" ng-if="order.status=='待评价'&&!wait2" ui-sref="orderComments({id: order.id})">评价</a>
+                <button class="btn btn-danger" ng-if="order.status=='待收货'&&!wait2" ng-click="receipt(order)">确认收货</button>
+                <button class="btn btn-danger" ng-if="order.status=='待发货'&&!wait2" ng-click="cancel(order)">取消订单</button>
+                <button class="btn btn-danger" ng-if="order.status=='已取消'" style="width: 95px;" disabled>已取消</button>
+                <button class="btn btn-danger" ng-if="wait2" disabled style="width: 95px;"><wait></wait></button>
             </div>
         </li>
     </ul>
 </div>
+<div ng-if="wait" class="animate-if" style="bottom: 58px;"><p>订单取消成功</p></div>

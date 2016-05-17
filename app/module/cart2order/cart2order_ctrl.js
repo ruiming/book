@@ -33,7 +33,7 @@ routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
             type: "default"
         }
     }).success(function(response){
-        $scope.x = response[0];
+        $scope.x = response;
         $scope.wait = false;
     });
 

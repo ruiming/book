@@ -4,13 +4,6 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
     $scope.noWrapSlides = false;
     $scope.active = 0;
 
-    // 刷新微信缓存
-    $scope.token = sessionStorage.token;
-    $scope.user_id = sessionStorage.user_id;
-    $scope.fuck = function() {
-        location.href = "http://bookist.org?token=" + $scope.token + "&user_id=" + $scope.user_id + "#/?fuckWechat=true";
-    };
-
     // 获取书籍推荐
     if(sessionStorage.books != undefined){
         $scope.books = JSON.parse(sessionStorage.books);

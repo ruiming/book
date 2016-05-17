@@ -24,7 +24,7 @@
             <span class="title">{{booklist.title}}</span>
             <span class="collect">{{booklist.collect}}人收藏</span>
             <div class="booklist-tag">
-                <button class="btn btn-default" ng-repeat="tag in booklist.tags">{{tag}}</button>
+                <div class="tag" ng-repeat="tag in booklist.tags">{{tag}}</div>
             </div>
         </a>
         <div class="loading-more" ng-show="booklists.busy"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>

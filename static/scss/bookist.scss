@@ -216,15 +216,10 @@ a {
         overflow: hidden;
         bottom: 10px;
         position: absolute;
-        button {
+        .tag {
           float: left;
           font-size: 12px;
-          padding: 2px;
-          margin: {
-            right: 8px;
-            top: 10px;
-          }
-          border-color: $grayColor;
+          padding-right: 5px;
           color: $grayColor;
         }
       }
@@ -243,6 +238,7 @@ a {
     a {
       font-weight: 500;
       font-size: 13px;
+      border-radius: 0;
       float: right;
     }
   }
@@ -252,9 +248,11 @@ a {
     overflow: hidden;
     a {
       margin: 0 15px 10px 0;
-      border-color: #03A9F4;
-      color: #03A9F4;
+      border: 1px dashed #DADADA;
+      color: #000000;
+      font-weight: bold;
       font-size: 12px;
+      border-radius: 0;
     }
   }
 }
@@ -1079,14 +1077,12 @@ a {
         font-weight: 700;
       }
       a {
-        border: 1px solid #dadada;
-        border-radius: 3px;
-        color: #252525;
-        display: inline-block;
-        line-height: 18px;
-        padding: 5px 7px;
-        margin: 5px;
-        float: left;
+        margin: 0 15px 10px 0;
+        border: 1px dashed #DADADA;
+        color: #000000;
+        font-weight: bold;
+        font-size: 12px;
+        border-radius: 0;
       }
     }
   }

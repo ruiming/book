@@ -16,12 +16,14 @@
                    ng-required=true focus-me="{{correct_dorm}}" placeholder="宿舍位置">
         </div>
         <div class="btn-group">
-            <button class="btn btn-success" type="submit" ng-if="!edit&&!wait1" ui-sref="AddressAdd" ng-click="add()" ng-disabled="ok1">添加</button>
-            <button class="btn btn-success" disabled ng-if="wait1"><wait></wait></button>
-            <button class="btn btn-success" type="submit" ng-if="edit&&!wait2" ui-sref="AddressAdd" ng-click="add()" ng-disabled="ok2">修改</button>
-            <button class="btn btn-success" disabled ng-if="wait2"><wait></wait></button>
+            <button class="btn btn-success" type="submit" ng-if="!edit&&!wait1" ng-click="add()" ng-disabled="ok1">添加</button>
+            <button class="btn btn-success" disabled ng-if="wait1" style="width: 54px;"><wait></wait></button>
+            <button class="btn btn-success" type="submit" ng-if="edit&&!wait2" ng-click="add()" ng-disabled="ok2">修改</button>
+            <button class="btn btn-success" disabled ng-if="wait2" style="width: 54px;"><wait></wait></button>
             <button class="btn btn-danger" type="button" ng-if="edit&&!wait3" ng-click="delete(id)" ng-disabled="ok3">删除</button>
-            <button class="btn btn-danger" disabled ng-if="wait3"><wait></wait></button>
+            <button class="btn btn-danger" disabled ng-if="wait3" style="width: 54px;"><wait></wait></button>
+            <button class="btn btn-info" type="submit" ng-if="edit&&!wait4" ng-click="setDefault()" ng-disabled="ok4">设置为默认地址</button>
+            <button class="btn btn-info" disabled ng-if="wait4" style="width: 124px;"><wait></wait></button>
             <button class="btn btn-default" ng-click="back()">返回</button>
         </div>
     </form>
@@ -32,3 +34,4 @@
 <div ng-if="ok1" class="animate-if"><p>添加成功</p></div>
 <div ng-if="ok2" class="animate-if"><p>修改成功</p></div>
 <div ng-if="ok3" class="animate-if"><p>删除成功</p></div>
+<div ng-if="ok4" class="animate-if"><p>设置成功</p></div>

@@ -6,6 +6,7 @@
     <div class="address-list" ng-repeat="x in address" ng-click="edit()">
         <p>{{x.name}}, {{x.phone}}</p>
         <small>{{x.dormitory}}</small>
+        <span ng-if="x.is_default">默认地址</span>
     </div>
     <div class="btn-group">
         <button class="btn btn-success" ui-sref="AddressAdd">添加</button>

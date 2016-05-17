@@ -7,9 +7,13 @@
             </div>
             <div class="order-cart">
                 <div class="colorBar"></div>
-                <div class="order-address rarrow">
-                    <p class="name">收货人:{{x.name}}<em>{{x.phone}}</em></p>
-                    <p class="address">{{x.dormitory}}</p>
+                <div class="order-address rarrow" ui-sref="address()">
+                    <!--
+                    todo 选择地址
+                    -->
+                    <p class="name" ng-if="x!=undefined">收货人:{{x.name}}<em>{{x.phone}}</em></p>
+                    <p class="address" ng-if="x!=undefined">{{x.dormitory}}</p>
+                    <p class="empty" ng-if="x===undefined">你还没有添加地址信息</p>
                 </div>
                 <div class="colorBar"></div>
                 <div class="order-books">

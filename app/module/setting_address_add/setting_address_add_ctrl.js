@@ -9,9 +9,11 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
     $scope.ok1 = false;                  // 添加成功提示
     $scope.ok2 = false;                 // 修改成功提示
     $scope.ok3 = false;                 // 删除成功提示
+    $scope.ok4 = false;                 // 设置默认地址成功提示
     $scope.wait1 = false;               // 添加等待动画
     $scope.wait2 = false;               // 修改等待动画
     $scope.wait3 = false;               // 删除等待动画
+    $scope.wait4 = false;               //　设置默认地址成功动画
 
     if(JSON.stringify(data) != '{}') {
         $scope.name = data.name;
@@ -121,6 +123,29 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
                 });
             }, 1000);
         });
+    };
+
+    // 设置默认地址
+    $scope.setDefault = function(id) {
+        $scope.wait4 = true;
+        $http({
+            method: 'PUT',
+            url: host + '/user_address',
+            data: {
+                id: id,
+                type: "default"
+            }
+        }).success(function(){
+            $scope.ok4 = true;
+            $scope.wait4 = false;
+            console.log(1);
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.ok4 = false;
+                    $scope.back();
+                })
+            }, 1000);
+        })
     };
 
     // 返回上层

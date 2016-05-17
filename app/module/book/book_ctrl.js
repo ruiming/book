@@ -94,10 +94,10 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             type: "similarity"
         }
     }).success(function(response){
-        $scope.booksBought = response.books;
-        for(var i=0;i<$scope.booksBought.length;i++){
-            $scope.booksBought[i].star = Math.ceil($scope.booksBought[i].rate/2);
-        }
+        // $scope.booksBought = response.books;
+        // for(var i=0;i<$scope.booksBought.length;i++){
+        //     $scope.booksBought[i].star = Math.ceil($scope.booksBought[i].rate/2);
+        // }
     });
     
     // 获取该书被收录的书单

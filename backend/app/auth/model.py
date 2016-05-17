@@ -3,14 +3,6 @@ from app import db
 from time import time
 
 
-class UserAddress(db.Document):
-    """
-    用户收获地址
-    """
-    name = db.StringField(required=True)
-    phone = db.StringField(required=True)
-    dormitory = db.StringField(required=True)
-    enable = db.BooleanField(required=True, default=True)
 
 
 class WechatOAuth(db.EmbeddedDocument):
@@ -31,7 +23,6 @@ class User(db.Document):
     sex = db.IntField(default=0)
     avatar = db.StringField(default='')  # the file name of avatar
     school = db.StringField(required=True, default=u"华南师范大学石牌校区")
-    address = db.ListField(db.ReferenceField(UserAddress))
     province = db.StringField()
     city = db.StringField()
     country = db.StringField()
@@ -67,3 +58,13 @@ class User(db.Document):
         return None
 
 
+class UserAddress(db.Document):
+    """
+    用户收获地址
+    """
+    name = db.StringField(required=True)
+    phone = db.StringField(required=True)
+    dormitory = db.StringField(required=True)
+    enable = db.BooleanField(required=True, default=True)
+    user = db.ReferenceField(User)
+    is_default = db.BooleanField(required=True,default=False)

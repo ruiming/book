@@ -366,7 +366,6 @@ def cart():
 
         this_user = User.get_one_user(openid=request.headers['userid'])
 
-
         isbn = request.form.get('isbn', None)
         if not isbn:
             return return_message('error', 'unknown book isbn')
@@ -471,13 +470,11 @@ def billing():
         if not address_id or len(address_id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=address_id, enable=True)
+        this_user_address = UserAddress.objects(pk=address_id, user=this_user,  enable=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
             this_user_address = this_user_address.first()
-            if this_user_address not in this_user.address:
-                return return_message('error', 'error operation')
 
         all_cart = []
 
@@ -515,6 +512,46 @@ def billing():
         修改一个订单
         """
         pass
+        id = request.form.get('id', None)
+        try:
+            this_billing = Billing.objects(pk=id, user=this_user)
+            if this_billing.count() != 1:
+                raise Exception
+            this_billing = this_billing.first()
+        except:
+            return return_message('error', 'unknown billing id')
+
+        status = request.form.get('status', None)
+
+        if status not in ['waiting', 'commenting', 'done', 'refund']:
+            return return_message('error', 'unknown type')
+
+        if status == 'waiting':
+            if this_billing.status != 'pending':
+                return return_message('error', 'error operation')
+
+            # TODO 待付款 -> 已付款，待发货 的状态判断
+
+        elif status == 'commenting':
+            if this_billing.status != 'waiting':
+                return return_message('error', 'error operation')
+
+            # TODO 已付款，待发货 -> 已收获，待评价 的状态判断
+
+        elif status == 'done':
+            if this_billing.status != 'commenting':
+                return return_message('error', 'error operation')
+
+            # TODO 已收获，待评价 -> 账单完成 的状态判断
+
+        elif status == 'refund':
+            pass
+            # TODO 退货 的状态判断
+
+        this_billing.status = status
+        this_billing.status_list.append('{}|{}'.format(status, str(int(time()))))
+        this_billing.save()
+        return return_message('success', 'PUT Billing')
 
     elif request.method == 'DELETE':
         """
@@ -530,7 +567,7 @@ def billing():
             return return_message('error', 'unknown billing id')
 
         this_billing.status = 'canceled'
-        this_billing.list.append('canceled|{}'.format(int(time())))
+        this_billing.status_list.append('canceled|{}'.format(int(time())))
         this_billing.save()
 
         return return_message('success', 'delete billing')
@@ -562,14 +599,27 @@ def user_address():
     this_user = User.get_one_user(openid=request.headers['userid'])
 
     if request.method == 'GET':
+
+        type = request.args.get('type', None)
+        if type == 'default':
+            all_user_address = UserAddress.objects(user=this_user, enable=True, is_default=True)
+
+            if all_user_address.count() == 0:
+                all_user_address = UserAddress.objects(user=this_user, enable=True)
+
+            all_user_address = [all_user_address.first()]
+        else:
+            all_user_address = UserAddress.objects(user=this_user, enable=True)
+
         address_list = []
-        for one_address in this_user.address:
+        for one_address in all_user_address:
             if one_address.enable:
                 address_list.append({
                     'id': str(one_address.pk),
                     'name': one_address.name,
                     'phone': one_address.phone,
-                    'dormitory': one_address.dormitory
+                    'dormitory': one_address.dormitory,
+                    'is_default': one_address.is_default
                 })
 
         return return_message('success', address_list)
@@ -592,13 +642,36 @@ def user_address():
         if not name or not phone or not dormitory:
             return return_message('error', 'missing data')
 
-        this_user_address = UserAddress(
-            name=name,
-            phone=str(phone),
-            dormitory=dormitory
-        ).save()
-        this_user.address.append(this_user_address)
-        this_user.save()
+        type = request.form.get('type', None)
+
+        if UserAddress.objects(user=this_user, enable=True, is_default=True).count() == 0:
+            this_user_address = UserAddress(
+                name=name,
+                phone=str(phone),
+                dormitory=dormitory,
+                user=this_user,
+                is_default=True
+            ).save()
+        else:
+            this_user_address = UserAddress(
+                name=name,
+                phone=str(phone),
+                dormitory=dormitory,
+                user=this_user,
+            ).save()
+
+
+
+
+        if type == 'default':
+            all_default_address = UserAddress.objects(user=this_user, enable=True, is_default=True)
+            for one in all_default_address:
+                one.is_default = False
+                one.save()
+
+            this_user_address.is_default = True
+            this_user_address.save()
+
 
         return return_message('success', 'add user address')
 
@@ -623,21 +696,29 @@ def user_address():
         if not id or len(id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=id, enable=True)
+        this_user_address = UserAddress.objects(pk=id, user=this_user, enable=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
             this_user_address = this_user_address.first()
-            if this_user_address not in this_user.address:
-                return return_message('error', 'error operation')
 
         if not name or not phone or not dormitory:
             return return_message('error', 'missing data')
 
+        type = request.form.get('type', None)
+
         this_user_address.name = name
         this_user_address.phone = str(phone)
         this_user_address.dormitory = dormitory
+
+        if type == 'default':
+            all_default_address = UserAddress.objects(user=this_user, enable=True, is_default=True)
+            for one in all_default_address:
+                one.is_default = False
+                one.save()
+            this_user_address.is_default = True
         this_user_address.save()
+
         return return_message('success', 'put user address')
 
     elif request.method == 'DELETE':
@@ -646,20 +727,23 @@ def user_address():
         if not id or len(id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=id, enable=True)
+        this_user_address = UserAddress.objects(pk=id, user=this_user, enable=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
             this_user_address = this_user_address.first()
 
-        if this_user_address not in this_user.address:
-            return return_message('error', 'unknown operation')
-
-        this_user.address.remove(this_user_address)
         this_user_address.enable = False
-
         this_user_address.save()
-        this_user.save()
+
+        if this_user_address.is_default:
+            this_user_address.is_default = False
+            all_not_default_address = UserAddress.objects(user=this_user, enable=True, is_default=False)
+
+            if all_not_default_address.count() >=1:
+                all_not_default_address = all_not_default_address.first()
+                all_not_default_address.is_default = True
+                all_not_default_address.save()
 
         return return_message('success', 'delete user address')
 

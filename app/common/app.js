@@ -205,7 +205,7 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             }
         })
         .state('orders',{
-            url: '/orders',
+            url: '/orders/{status}/show',
             views: {
                 'main': {
                     controller: 'OrdersCtrl',

@@ -13,20 +13,20 @@
     待评价: 书籍已经成功送达用户手上且用户已确认收货，此时用户可以进入书籍评价状态
     -->
     <div class="order-panel">
-        <div class="order-head" ui-sref="orders" class="user-item"><i class="fa fa-ticket"></i>全部订单</div>
-        <a ui-sref="ordersWait" class="order-bar-split">
+        <div class="order-head user-item" ui-sref="orders({status:'all'})" ><i class="fa fa-ticket"></i>全部订单</div>
+        <a ui-sref="orders({status:'pending'})" class="order-bar-split">
             <img src="/static/images/57147baaNf2463e54.png">
             <span>待发货</span>
         </a>
-        <a ui-sref="ordersReceived" class="order-bar-split">
+        <a ui-sref="orders({status:'waiting'})" class="order-bar-split">
             <img src="/static/images/57147bb0N365a03ef.png">
             <span>待收货</span>
         </a>
-        <a ui-sref="ordersCommented" class="order-bar-split">
+        <a ui-sref="orders({status:'commenting'})" class="order-bar-split">
             <img src="/static/images/57147bbbN2cf7ffd7.png">
             <span>待评价</span>
         </a>
-        <a ui-sref="ordersBack" class="order-bar-split">
+        <a ui-sref="orders({status:'back'})" class="order-bar-split">
             <img src="/static/images/57147bbbN2cf7ffd7.png">
             <span>退款/售后</span>
         </a>

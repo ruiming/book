@@ -35,6 +35,10 @@ class User(db.Document):
     def __unicode__(self):
         return u'{}'.format(self.username)
 
+
+    def read_book_list(self, booklist):
+        pass
+
     @classmethod
     def get_one_user(cls, openid=None, token=None):
         """

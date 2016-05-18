@@ -38,7 +38,6 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
             url: host + '/billing',
             data: {
                 "id": order.id,
-                "status": "canceled"
             }
         }).error(function(){
             $scope.wait2 = false;
@@ -55,20 +54,20 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
 
     // todo 确认收货
     $scope.receipt = function(order){
+        order.wait2 = true;
         $http({
-            method: 'POST',
-            url: host + '/order',
+            method: 'PUT',
+            url: host + '/billing',
             data: {
-                "id": order.id
+                "id": order.id,
+                "status": "commenting"
             }
         }).success(function(){
-            $scope.order.process.push({'status':'已收货','time': '2015-04-03 12:12:00'});
+            $scope.status_list.push({'status':'已收货','time': Date.parse(new Date())/1000});
             $scope.order.status = "待评价";
-            $scope.turn = 3;
         }).error(function(){
-            $scope.order.process.push({'status':'已收货','time': '2015-04-03 12:12:00'});
+            $scope.status_list.push({'status':'已收货','time': Date.parse(new Date())/1000});
             $scope.order.status = "待评价";
-            $scope.turn = 3;
         });
     };
 });

@@ -192,18 +192,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 }
             }
         })
-        .state('ordersReceived',{
-            url: '/orders/received',
-            views: {
-                'main': {
-                    controller: 'OrdersReceivedCtrl',
-                    templateUrl: 'orders_received/orders_received_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
-                }
-            }
-        })
         .state('orders',{
             url: '/orders/{status}/show',
             views: {
@@ -231,9 +219,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'OrderCommentsCtrl',
                     templateUrl: 'order_comments/order_comments_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })

@@ -1,10 +1,18 @@
 <loading ng-if="busy"></loading>
 <div class="order-group" ng-if="!busy">
     <ul class="order-list">
-        <div class="empty-alert" ng-if="orders.length==0">
+        <div class="empty-alert" ng-if="orders.length==0 && type=='all'">
             <p>您还没有订单，快去逛逛吧</p>
         </div>
-
+        <div class="empty-alert" ng-if="orders.length==0 && type=='pending'">
+            <p>您还没有待发货订单，快去逛逛吧</p>
+        </div>
+        <div class="empty-alert" ng-if="orders.length==0 && type=='waiting'">
+            <p>您还没有待收货订单，快去逛逛吧</p>
+        </div>
+        <div class="empty-alert" ng-if="orders.length==0 && type=='refund'">
+            <p>您还没有发起售后请求</p>
+        </div>
         <li class="order-list-one" ng-repeat="order in orders">
             <div class="order-title">
                 <span class="order-head">Bookist</span>
@@ -25,13 +33,12 @@
                     <span class="order-method">货到付款</span>
                     <span class="order-price">实付款 {{order.price}} 元</span>
                 </div>
-                <a class="btn btn-danger" ng-if="order.status=='待评价'&&!order.wait2" ui-sref="orderComments({id: order.id})">评价</a>
-                <button class="btn btn-danger" ng-if="order.status=='待收货'&&!order.wait2" ng-click="receipt(order)">确认收货</button>
-                <button class="btn btn-danger" ng-if="order.status=='待发货'&&!order.wait2" ng-click="cancel(order)">取消订单</button>
+                <a class="btn btn-danger" ng-if="order.status=='待评价'&&!wait2" style="width: 95px;" ui-sref="orderComments({id: order.id})">评价</a>
+                <button class="btn btn-danger" ng-if="order.status=='待收货'&&!wait2" ng-click="receipt(order)">确认收货</button>
+                <button class="btn btn-danger" ng-if="order.status=='待发货'&&!wait2" ng-click="cancel(order)">取消订单</button>
                 <button class="btn btn-danger" ng-if="order.status=='已取消'" style="width: 95px;" disabled>已取消</button>
-                <button class="btn btn-danger" ng-if="order.wait2" disabled style="width: 95px;"><wait></wait></button>
+                <button class="btn btn-danger" ng-if="wait2" disabled style="width: 95px;"><wait></wait></button>
             </div>
         </li>
     </ul>
 </div>
-<div ng-if="wait" class="animate-if"><p>订单取消成功</p></div>

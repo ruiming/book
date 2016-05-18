@@ -5,7 +5,7 @@ routeApp.controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
     // todo 获取待评价订单的详细信息
    $http({
        method: 'GET',
-       url: host + '/orders',
+       url: host + '/billing',
        params: {
            id: $stateParams.id
        }

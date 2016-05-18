@@ -185,7 +185,7 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             views: {
                 'main': {
                     controller: 'OrdersCtrl',
-                    templateUrl: ' orders/orders_tpl.html'
+                    templateUrl: 'orders/orders_tpl.html'
                 },
                 'nav': {
                     templateUrl: 'navbar/navbar_tpl.html'

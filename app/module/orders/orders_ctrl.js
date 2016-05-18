@@ -4,6 +4,7 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
     $scope.busy = true;
     $scope.wait = false;        // 取消订单提示
     $scope.type = $stateParams.status;
+    console.log($stateParams.status);
 
     // 非法参数，返回
     if($stateParams.status !== "pending"

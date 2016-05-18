@@ -168,18 +168,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 }
             }
         })
-        .state('ordersWait',{
-            url: '/orders/wait',
-            views: {
-                'main': {
-                    controller: 'OrdersWaitCtrl',
-                    templateUrl: 'orders_wait/orders_wait_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
-                }
-            }
-        })
         .state('cart',{
             url: '/cart',
             views: {
@@ -197,7 +185,7 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             views: {
                 'main': {
                     controller: 'OrdersCtrl',
-                    templateUrl: ' app/module/orders/orders_tpl.html'
+                    templateUrl: ' orders/orders_tpl.html'
                 },
                 'nav': {
                     templateUrl: 'navbar/navbar_tpl.html'

@@ -38,7 +38,7 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
             url: host + '/billing',
             data: {
                 "id": order.id,
-                "status": "pending"
+                "status": "canceled"
             }
         }).error(function(){
             $scope.wait2 = false;

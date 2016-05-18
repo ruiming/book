@@ -75,6 +75,9 @@ a {
       width: 25%;
       a {
         padding: 5px;
+        i:before {
+          height: 19px;
+        }
         p {
           margin-bottom: 0;
         }

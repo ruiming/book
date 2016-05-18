@@ -1,6 +1,7 @@
 routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
 
     $scope.wait = true;            // 确认订单等待
+    $scope.no_address = true;      // 地址必须有
 
     // 从单体获取
     $scope.books = TEMP.getList();
@@ -33,8 +34,11 @@ routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
         }
     }).success(function(response){
         $scope.x = response[0];
-        console.log($scope.x);
+        $scope.no_address = false;
         $scope.wait = false;
+    }).error(function(){
+        $scope.wait = false;
+        $scope.no_address = true;
     });
 
     // todo提交订单

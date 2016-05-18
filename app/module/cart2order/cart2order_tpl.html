@@ -45,7 +45,7 @@
     </div>
 </div>
 <div class="make-order cart-to-order">
-    <button class="btn btn-danger" ng-if="!wait" ng-click="make()">提交订单</button>
+    <button class="btn btn-danger" ng-if="!wait" ng-disabled="no_address" ng-click="make()">提交订单</button>
     <button class="btn btn-danger" ng-if="wait" style="width: 98px;"><wait></wait></button>
     <div class="cart-count">
         <label> 总额: ¥ {{order.price | number: 2}}</label>

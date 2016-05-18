@@ -37,16 +37,15 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
             method: 'DELETE',
             url: host + '/billing',
             data: {
-                "id": order.id,
+                "id": order.id
             }
-        }).error(function(){
+        }).success(function(){
             $scope.wait2 = false;
             $scope.order.status = "已取消";
             $scope.status_list.push({'status':'已取消','time': Date.parse(new Date())/1000});
             window.setTimeout(function() {
                 $scope.$apply(function() {
                     $scope.wait = false;
-                    // history.back();
                 });
             }, delay);
         });
@@ -63,9 +62,6 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
                 "status": "commenting"
             }
         }).success(function(){
-            $scope.status_list.push({'status':'已收货','time': Date.parse(new Date())/1000});
-            $scope.order.status = "待评价";
-        }).error(function(){
             $scope.status_list.push({'status':'已收货','time': Date.parse(new Date())/1000});
             $scope.order.status = "待评价";
         });

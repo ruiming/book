@@ -27,7 +27,6 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
     // 添加和修改地址
     $scope.add = function(){
         if(this.addressForm.$invalid) {
-            console.log(this.addressForm);
             if(this.addressForm.name.$invalid)  {
                 $scope.correct_name = true;
                 window.setTimeout(function() {
@@ -56,7 +55,6 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
         else{
             // 编辑状态
             if($scope.edit) {
-                console.log("edit");
                 $scope.wait2 = true;
                 $http({
                     method: 'PUT',
@@ -80,7 +78,6 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
             }
             // 添加状态
             else {
-                console.log("add");
                 $scope.wait1 = true;
                 $http({
                     method: 'POST',
@@ -133,12 +130,14 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
             url: host + '/user_address',
             data: {
                 id: id,
+                name: $scope.name,
+                phone: $scope.phone,
+                dormitory: $scope.dorm,
                 type: "default"
             }
         }).success(function(){
             $scope.ok4 = true;
             $scope.wait4 = false;
-            console.log(1);
             window.setTimeout(function() {
                 $scope.$apply(function() {
                     $scope.ok4 = false;

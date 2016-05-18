@@ -10,6 +10,7 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
     $scope.count = 0;               // 书籍数量(单本数量可叠加，结算显示)
     $scope.number = 0;              // 书籍种类(单本数量不叠加，移入收藏和删除显示)
     $scope.checkArr = [];           // 暂存勾选状态
+    TEMP.setList([]);
 
 
     // 获取购物车

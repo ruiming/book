@@ -7,7 +7,7 @@
                 <span class="order-status">共{{price}}元</span>
             </div>
             <ul class="order-books">
-                <a class="order-book" ui-sref="book({isbn: book.isbn})" ng-repeat="z in order.carts">
+                <a class="order-book" ui-sref="book({isbn: z.book.isbn})" ng-repeat="z in order.carts">
                     <img ng-src="{{z.book.image}}">
                     <p>{{z.book.title}}</p>
                     <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>

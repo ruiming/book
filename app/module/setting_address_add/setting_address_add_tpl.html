@@ -22,7 +22,7 @@
             <button class="btn btn-success" disabled ng-if="wait2" style="width: 54px;"><wait></wait></button>
             <button class="btn btn-danger" type="button" ng-if="edit&&!wait3" ng-click="delete(id)" ng-disabled="ok3">删除</button>
             <button class="btn btn-danger" disabled ng-if="wait3" style="width: 54px;"><wait></wait></button>
-            <button class="btn btn-info" type="submit" ng-if="edit&&!wait4" ng-click="setDefault()" ng-disabled="ok4">设置为默认地址</button>
+            <button class="btn btn-info" type="submit" ng-if="edit&&!wait4" ng-click="setDefault(id)" ng-disabled="ok4">设置为默认地址</button>
             <button class="btn btn-info" disabled ng-if="wait4" style="width: 124px;"><wait></wait></button>
             <button class="btn btn-default" ng-click="back()">返回</button>
         </div>

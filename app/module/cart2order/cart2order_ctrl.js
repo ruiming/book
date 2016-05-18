@@ -4,7 +4,6 @@ routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
 
     // 从单体获取
     $scope.books = TEMP.getList();
-    TEMP.setList([]);
     
     
     $scope.cart_list = "";

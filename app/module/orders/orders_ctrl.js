@@ -16,12 +16,12 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
         history.back();
     }
 
-    // 获取全部订单
+    // 获取订单
     $http({
         method: 'GET',
         url: host + '/user_billings',
         params: {
-            status: "all"
+            status: $stateParams.status
         }
     }).success(function(response){
         $scope.orders = response;

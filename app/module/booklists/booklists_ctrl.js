@@ -1,8 +1,16 @@
 routeApp.controller('BooklistsCtrl',function($scope, $http, BL) {
-    
-    // 获取热门书单标签
+    var url = host + '/booklist';
+    var params = {
+        type: "all",
+        page: 1
+    };
+
+    // 获取书单,获取默认排序的十个书单
+    $scope.booklists = new BL(url,params);
+
+    // 获取热门书单标签并缓存
     if(sessionStorage.tags != undefined) {
-        $scope.tags = JSON.parse(sessionStorage.tags);
+        $scope.tags = angular.fromJson(sessionStorage.tags);
     }
     else {
         $http({
@@ -13,19 +21,9 @@ routeApp.controller('BooklistsCtrl',function($scope, $http, BL) {
             }
         }).success(function(response){
             $scope.tags = response;
-            sessionStorage.tags = JSON.stringify($scope.tags);
+            sessionStorage.tags = angular.toJson($scope.tags);
         });
     }
-
-
-    // 获取书单,获取默认排序的十个书单
-    var url = host + '/booklist';
-    var params = {
-        type: "all",
-        page: 1
-    };
-    $scope.booklists = new BL(url,params);
-
 
     // 时间优先
     $scope.timeOrder = function(){
@@ -48,6 +46,4 @@ routeApp.controller('BooklistsCtrl',function($scope, $http, BL) {
         $scope.booklists = new BL(url, params);
         $scope.booklists.nextPage();
     };
-
-
 });

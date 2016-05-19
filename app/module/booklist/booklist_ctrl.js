@@ -1,5 +1,4 @@
 routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
-
     $scope.busy = true;
     $scope.wait = false;
     $scope.wait1 = false;       // 收藏书单延迟
@@ -14,13 +13,15 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
         }
     }).success(function(response){
         $scope.booklist = response;
-        for(var i=0;i<$scope.booklist.books.length;i++){
-            $scope.booklist.books[i].star = Math.ceil($scope.booklist.books[i].rate/2);
+        for(var i in $scope.booklist.books){
+            if($scope.booklist.books.hasOwnProperty(i)){
+                $scope.booklist.books[i].star = Math.ceil($scope.booklist.books[i].rate/2);
+            }
         }
         $scope.busy = false;
     });
 
-    // 收藏书单函数,同样后端判断书单是收藏还是取消收藏
+    // 收藏书单函数
     $scope.collect = function(){
         $scope.wait = true;
         $http({

@@ -43,13 +43,15 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
         $scope.book = response;
         $scope.book.star = Math.ceil(response.rate/2);
         for (var i in $scope.book.comments){
-            $scope.book.comments[i].star = Math.ceil($scope.book.comments[i].star/2);
+            if($scope.book.comments.hasOwnProperty(i)){
+                $scope.book.comments[i].star = Math.ceil($scope.book.comments[i].star/2);
+            }
         }
         TEMP.setDict({title: $scope.book.title});
         $scope.busy = false;
     });
 
-    // todo 获取用户信息
+    // 获取用户信息,sessionStorage
     if(angular.isUndefined(sessionStorage.user)) {
         $http({
             method: 'GET',

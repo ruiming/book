@@ -1,9 +1,6 @@
 routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
-
     $scope.price = 0;
     $scope.busy = true;
-    $scope.wait1 = false;           // 删除购物车书籍延迟
-    $scope.wait2 = false;           // 移入收藏夹延迟
     $scope.checked = false;         // 默认全选
     $scope.status = "";             // 默认不激活
     $scope.editStatu = false;       // 默认非编辑状态
@@ -12,7 +9,6 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
     $scope.checkArr = [];           // 暂存勾选状态
     TEMP.setList([]);
 
-
     // 获取购物车
     $http({
         method: 'GET',
@@ -20,11 +16,13 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
     }).success(function(response){
         $scope.items = response;
         $scope.busy = false;
-        for(var i=0; i<$scope.items.length; i++) {
-            $scope.items[i].checked = false;
-            $scope.items[i].index = i;
-            $scope.items[i]._index = i;     // 替代$index便于删除操作
-            $scope.items[i].status = "";
+        for(var i in $scope.items) {
+            if($scope.items.hasOwnProperty(i)){
+                $scope.items[i].checked = false;
+                $scope.items[i].index = i;
+                $scope.items[i]._index = i;     // 替代$index便于删除操作
+                $scope.items[i].status = "";
+            }
         }
         $scope.recount($scope.items);
     });
@@ -36,15 +34,17 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
         $scope.status = "active";
         $scope.checked = true;
         $scope.number = 0;
-        for(var i=0; i<$scope.items.length; i++){
-            $scope.price += $scope.items[i].price*$scope.items[i].number*$scope.items[i].checked;
-            $scope.count += $scope.items[i].number*$scope.items[i].checked;
-            if(!$scope.items[i].checked) {
-                $scope.checked = false;
-                $scope.status = "";
-            }
-            else {
-                $scope.number ++ ;
+        for(var i in $scope.items){
+            if($scope.items.hasOwnProperty(i)){
+                $scope.price += $scope.items[i].price*$scope.items[i].number*$scope.items[i].checked;
+                $scope.count += $scope.items[i].number*$scope.items[i].checked;
+                if(!$scope.items[i].checked) {
+                    $scope.checked = false;
+                    $scope.status = "";
+                }
+                else {
+                    $scope.number ++ ;
+                }
             }
         }
         if($scope.items.length == 0){
@@ -57,18 +57,22 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
         if($scope.status == "active") {
             $scope.status = "";
             $scope.checked = false;
-            for(var i=0; i<$scope.items.length; i++){
-                $scope.items[i].checked = false;
-                $scope.items[i].status = "";
+            for(var i in $scope.items){
+                if($scope.items.hasOwnProperty(i)){
+                    $scope.items[i].checked = false;
+                    $scope.items[i].status = "";
+                }
             }
             $scope.recount();
         }
         else {
             $scope.status = "active";
             $scope.checked = true;
-            for(var j=0; j<$scope.items.length; j++){
-                $scope.items[j].checked = true;
-                $scope.items[j].status = "active";
+            for(var j in $scope.items){
+                if($scope.items.hasOwnProperty(j)){
+                    $scope.items[j].checked = true;
+                    $scope.items[j].status = "active";
+                }
             }
             $scope.recount();
         }
@@ -92,10 +96,12 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
 
     // 编辑
     $scope.edit = function() {
-        for(var i=0; i<$scope.items.length; i++){
-            $scope.checkArr[i] = $scope.items[i].checked;
-            $scope.items[i].checked = false;
-            $scope.items[i].status = "";
+        for(var i in $scope.items){
+            if($scope.items.hasOwnProperty(i)){
+                $scope.checkArr[i] = $scope.items[i].checked;
+                $scope.items[i].checked = false;
+                $scope.items[i].status = "";
+            }
         }
         $scope.recount();
         $scope.editStatu = true;
@@ -103,13 +109,15 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
 
     // 完成编辑
     $scope.editOk = function() {
-        for(var i=0; i<$scope.items.length; i++){
-            $scope.items[i].checked = $scope.checkArr[i];
-            if($scope.items[i].checked)    {
-                $scope.items[i].status = "active";
-            }
-            else {
-                $scope.items[i].status = "";
+        for(var i in $scope.items){
+            if($scope.items.hasOwnProperty(i)){
+                $scope.items[i].checked = $scope.checkArr[i];
+                if($scope.items[i].checked)    {
+                    $scope.items[i].status = "active";
+                }
+                else {
+                    $scope.items[i].status = "";
+                }
             }
         }
         $scope.recount();
@@ -132,8 +140,8 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
 
     // 删除多本选中书籍
     $scope.delete = function() {
-        for(var i=0; i<$scope.items.length; i++) {
-            if($scope.items[i].checked){
+        for(var i in $scope.items) {
+            if($scope.items.hasOwnProperty(i) && $scope.items[i].checked){
                 $scope.removeBook($scope.items[i]);
                 for(var j = i+1; j<$scope.items.length; j++) {
                     $scope.items[j]._index --;
@@ -152,23 +160,19 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
                 isbn: item.book.isbn
             }
         }).success(function () {
-            $scope.wait1 = true;
             $scope.items.splice(item._index, 1);
             $scope.checkArr.splice(item.index, 1);
             $scope.recount();
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait1 = false;
-                });
-            }, delay);
         });
     };
 
-    // todo 移入多本图书到收藏夹，收藏有问题
+    // 移入多本图书到收藏夹
     $scope.collect = function() {
         for(var i=0; i<$scope.items.length; i++) {
             if($scope.items[i].checked) {
-                $scope.collectBook($scope.items[i]);
+                if(!$scope.items[i].book.is_collection){
+                    $scope.collectBook($scope.items[i]);
+                }
                 $scope.removeBook($scope.items[i]);
                 for(var j = i+1; j<$scope.items.length; j++) {
                     $scope.items[j]._index --;
@@ -179,7 +183,6 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
 
     // 收藏图书
     $scope.collectBook = function(item) {
-        console.log(item);
         $http({
             method: 'POST',
             url: host + '/collect',
@@ -187,13 +190,6 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
                 isbn: item.book.isbn,
                 type: "book"
             }
-        }).success(function () {
-            $scope.wait2 = true;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait2 = false;
-                });
-            }, delay);
         });
     };
 
@@ -219,8 +215,8 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
 
     // 结算
     $scope.cart2order = function() {
-        for(var i=0; i<$scope.items.length; i++) {
-            if($scope.items[i].checked) {
+        for(var i in $scope.items) {
+            if($scope.items.hasOwnProperty(i) && $scope.items[i].checked) {
                 TEMP.pushList($scope.items[i]);
             }
         }

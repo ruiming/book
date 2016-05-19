@@ -1,7 +1,7 @@
 routeApp.controller('IndexCtrl',function($scope, $http) {
 
     $scope.myInterval = 5000;
-    $scope.noWrapSlides = false;
+    $scope.noWrapSlides = true;
     $scope.active = 0;
 
     // 获取书籍推荐

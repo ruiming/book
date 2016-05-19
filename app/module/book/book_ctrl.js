@@ -42,7 +42,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     }).success(function(response){
         $scope.book = response;
         $scope.book.star = Math.ceil(response.rate/2);
-        for (var i=0; i< response.comments.length; i++){
+        for (var i in $scope.book.comments){
             $scope.book.comments[i].star = Math.ceil($scope.book.comments[i].star/2);
         }
         TEMP.setDict({title: $scope.book.title});
@@ -50,12 +50,18 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
     });
 
     // todo 获取用户信息
-    $http({
-        method: 'GET',
-        url: host + '/user_info'
-    }).success(function(response){
-        $scope.user = response;
-    });
+    if(angular.isUndefined(sessionStorage.user)) {
+        $http({
+            method: 'GET',
+            url: host + '/user_info'
+        }).success(function(response){
+            $scope.user = response;
+            sessionStorage.user = angular.toJson(response);
+        });
+    }
+    else {
+        $scope.user = angular.fromJson(sessionStorage.user);
+    }
 
     // 收藏图书
     $scope.collect = function() {

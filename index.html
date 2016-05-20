@@ -3,25 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Book</title>
+    <title>Bookist</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <!-- build:cssProduct /static/css/app.min.css -->
-    <link rel="stylesheet" href="backend/app/static/css/app.min.css">
-    <link rel="stylesheet" href="backend/app/static/css/bookist.css">
+    <link rel="stylesheet" href="static/development/css/app.min.css">
+    <link rel="stylesheet" href="static/development/css/bookist.css">
     <!-- endbuild -->
 </head>
 <body>
     <div ui-view="main" class="bookist-view"></div>
     <div ui-view="nav"></div>
-    <!-- build:jsProduct /static/js/dependence.min.js -->
-    <script src="backend/app/static/js/dependence.min.js"></script>
-    <script src="backend/app/static/js/app.js"></script>
-    <script src="backend/app/static/js/templates.js"></script>
+    <!-- build:jsProduct /static/js/app.min.js -->
+    <script src="static/development/js/dependence.min.js"></script>
+    <script src="static/development/js/app.js"></script>
+    <script src="static/development/js/templates.js"></script>
     <!-- endbuild -->
     <!-- build:remove -->
     <!--
         开发环境 development     v2016.5.20
+        app.min.css             其他css文件
+        bookist.css             自己写的css文件
         dependence.min.js       Angular和jQuery相关Js文件，无需理会
         app.js                  自己写的js文件，进行整合但未压缩，便于查错
         template.js             模板文件

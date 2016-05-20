@@ -8,6 +8,8 @@ var minifyHtml = require('gulp-minify-html');
 var ngTemplate = require('gulp-ng-template');
 var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
+var usemin = require('gulp-usemin');
+var rev = require('gulp-rev');
 
 // 打包js依赖文件如angularJS文件和jquery等
 gulp.task('angular', function(){
@@ -31,6 +33,14 @@ gulp.task('angular', function(){
 // 打包压缩自己写的angular路由，控制器，指令文件
 gulp.task('js', function(){
 
+    // develop
+    gulp.src(['app/common/*.js','app/module/**/*.js'])
+        .pipe(plumber())
+        .pipe(ngAnnotate())
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('backend/app/static/js/'));
+
+    // product
     gulp.src(['app/common/*.js','app/module/**/*.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
@@ -53,7 +63,7 @@ gulp.task('templates:dist', function() {
 
 // 打包合并css和fonts
 gulp.task('css', function(){
-    
+
     gulp.src(['static/css/*.css'])
         .pipe(concat('app.min.css'))
         .pipe(cleanCSS())
@@ -76,7 +86,6 @@ gulp.task('img', function(){
 
 // 编译sass
 gulp.task('sass', function(){
-
     gulp.src('static/scss/*.scss')
         .pipe(plumber())
         .pipe(sass())
@@ -85,11 +94,21 @@ gulp.task('sass', function(){
 
 });
 
+// 部署生产环境，将全部css和js各合为一个
+gulp.task('usemin', function(){
+    gulp.src('index.html')
+        .pipe(plumber())
+        .pipe(usemin({
+            cssProduct: ['concat'],
+            jsProduct: ['concat',uglify(),rev()]
+        }))
+        .pipe(gulp.dest('backend/app/templates'))
+});
 
 gulp.watch('static/scss/*.scss',['sass']);
 gulp.watch('static/css/*.css', ['css']);
 gulp.watch(['app/module/**/*.js', 'app/common/*.js'], ['js']);
 gulp.watch('static/img/*.*', ['img']);
 gulp.watch('app/module/**/*.html',['templates:dist']);
-
-gulp.task('default', ['css','js','angular','img','templates:dist','sass']);
+gulp.watch(['backend/app/static/css/*.*', 'backend/app/static/js/*.*', 'index.html'],['usemin']);
+gulp.task('default', ['css','js','angular','img','templates:dist','sass','usemin']);

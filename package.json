@@ -24,7 +24,6 @@
   "homepage": "https://github.com/boooook/boooook#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-sass": "^2.2.0",
     "gulp-clean-css": "^2.0.6",
     "gulp-concat": "^2.6.0",
     "gulp-imagemin": "^2.4.0",
@@ -32,6 +31,9 @@
     "gulp-ng-annotate": "^2.0.0",
     "gulp-ng-template": "^0.2.2",
     "gulp-plumber": "^1.1.0",
-    "gulp-uglify": "^1.5.3"
+    "gulp-rev": "^7.0.0",
+    "gulp-sass": "^2.2.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-usemin": "^0.3.23"
   }
 }

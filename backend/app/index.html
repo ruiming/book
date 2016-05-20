@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN" ng-app="index">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bookist</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/app.min.css"/>
+</head>
+<body>
+    <div ui-view="main" class="bookist-view"></div>
+    <div ui-view="nav"></div>
+    <script src="/static/js/app.min.js"></script>
+    
+    <script>
+        // 设置token
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        sessionStorage.token = getQueryString("token");
+        sessionStorage.user_id = getQueryString("user_id");
+    </script>
+</body>
+</html>

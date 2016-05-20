@@ -11,12 +11,31 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
         && $stateParams.status !== "all"
         && $stateParams.status !== "commenting"
         && $stateParams.status !== "waiting"
-        && $stateParams.status !== "refund"
+        && $stateParams.status !== "after"
+        && $stateParams.status !== "done"
     ) {
         history.back();
     }
+    else if($stateParams.status == "after") {
+        // todo 获取正在申请售后服务的订单
+        $http({
+            method: 'GET',
+            url: host + '/user_billings',
+            params: {
+                status: "after"
+            }
+        }).success(function(response){
+            $scope.orders_after = response;
+            for(var x in $scope.orders_after){
+                if($scope.orders_after.hasOwnProperty(x)){
+                    $scope.orders_after[x].status = statusDict[$scope.orders_after[x].status];
+                }
+            }
+        });
+    }
 
     // 获取订单
+    // todo 为after时返回已收货的订单，包括待评价和已评价订单
     $http({
         method: 'GET',
         url: host + '/user_billings',
@@ -25,11 +44,18 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
         }
     }).success(function(response){
         $scope.orders = response;
-        for(x in $scope.orders){
-            $scope.orders[x].status = statusDict[$scope.orders[x].status];
+        for(var x in $scope.orders){
+            if($scope.orders.hasOwnProperty(x)){
+                $scope.orders[x].status = statusDict[$scope.orders[x].status];
+            }
         }
         $scope.busy = false;
     });
+
+    // todo 取消售后
+    $scope.stop = function(order){
+        order.wait2 = true;
+    };
 
     // 取消订单    pending -> canceled
     $scope.cancel = function(order){

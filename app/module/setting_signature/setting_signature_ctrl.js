@@ -2,7 +2,7 @@ routeApp.controller('SignatureCtrl', function ($http, $scope, $stateParams, $loc
 
     $scope.signature = $stateParams.signature;
 
-    // todo 修改签名
+    // 修改签名
     $scope.post = function() {
         $http({
             method: 'POST',

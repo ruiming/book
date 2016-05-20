@@ -13,7 +13,7 @@ routeApp.controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
        }
    }).success(function(response){
        $scope.order = response;
-       $scope.busy = false; 
+       $scope.busy = false;
    }).error(function(){
        history.back();
    });
@@ -39,7 +39,7 @@ routeApp.controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
         }
     };
 
-    // todo 书籍评价
+    // 书籍评价
     $scope.commentBook = function(book){
         console.log(book);
         $http({

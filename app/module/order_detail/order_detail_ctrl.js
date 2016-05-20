@@ -29,7 +29,7 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
         $scope.busy = false;
     });
 
-    // todo 取消订单
+    // 取消订单
     $scope.cancel = function(order){
         $scope.wait = true;
         $scope.wait2 = true;
@@ -51,7 +51,7 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
         });
     };
 
-    // todo 确认收货
+    // 确认收货
     $scope.receipt = function(order){
         order.wait2 = true;
         $http({

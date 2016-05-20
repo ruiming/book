@@ -25,7 +25,7 @@ routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
         }
     }
 
-    // todo 获取默认地址
+    // 获取默认地址
     $http({
         method: 'GET',
         url: host + '/user_address',

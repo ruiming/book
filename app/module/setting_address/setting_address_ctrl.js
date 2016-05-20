@@ -2,7 +2,7 @@ routeApp.controller('AddressCtrl', function ($http, $scope, $state, User) {
 
     $scope.wait = true;
 
-    // todo 获取用户地址信息
+    // 获取用户地址信息
     $http({
         method: 'GET',
         url: host + '/user_address'

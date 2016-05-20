@@ -6,15 +6,27 @@
     <title>Book</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <!-- build:cssProduct /static/css/app.min.css -->
     <link rel="stylesheet" href="backend/app/static/css/app.min.css">
-    <link rel="stylesheet" href="backend/app/static/css/bookist.css?ver=3">
+    <link rel="stylesheet" href="backend/app/static/css/bookist.css">
+    <!-- endbuild -->
 </head>
 <body>
     <div ui-view="main" class="bookist-view"></div>
     <div ui-view="nav"></div>
-    <script src="backend/app/static/js/dependence.min.js?ver=3"></script>
-    <script src="backend/app/static/js/app.min.js?ver=3"></script>
-    <script src="backend/app/static/js/templates.js?ver=3"></script>
+    <!-- build:jsProduct /static/js/dependence.min.js -->
+    <script src="backend/app/static/js/dependence.min.js"></script>
+    <script src="backend/app/static/js/app.js"></script>
+    <script src="backend/app/static/js/templates.js"></script>
+    <!-- endbuild -->
+    <!-- build:remove -->
+    <!--
+        开发环境 development     v2016.5.20
+        dependence.min.js       Angular和jQuery相关Js文件，无需理会
+        app.js                  自己写的js文件，进行整合但未压缩，便于查错
+        template.js             模板文件
+    -->
+    <!-- endbuild-->
     <script>
         // 设置token
         function getQueryString(name) {

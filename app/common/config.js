@@ -23,3 +23,22 @@ var statusDict = {                       // 订单状态转换
     "replace_refused": "换货失败",       // 同上
     "closed": "已关闭"                   // 因某些原因被关闭的订单
 };
+/* 状态流程
+ *                                                            -> refund_refused
+ *                                                            -> closed    -> refund_refused
+ *                                          ->  ->  -> refund -> refunding -> refunded
+ * create(pending) -> waiting -> commenting -> done ->
+ *                 -> canceled              ->  ->  -> replace -> replacing -> replaced(commenting/done) -> ...
+ *                                                             -> closed    -> replace_refused
+ *                                                             -> replaced_refused
+ */
+
+/*
+ * 积分机制
+ * 初次登陆:            100分        所有用户第一次登陆默认获取
+ * 第一次下单购买:        50分        仅限第一单，且订单完成不包含退款才计入
+ * 购买一本图书：         10分        按本计，每本记一次
+ * 评价一本图书：        2/5分        购买后评价5分，未购买评价2分
+ * 评价获置顶:           20分         人工置顶，自动发消息通知并加分
+ * 系统奖励:             xx分         提供接口，推送消息通知并发放奖励
+ */

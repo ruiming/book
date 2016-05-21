@@ -99,7 +99,7 @@ gulp.task('usemin', function(cb){
         .pipe(plumber())
         .pipe(usemin({
             cssProduct: ['concat'],
-            jsProduct: ['concat',uglify()]
+            jsProduct: [ngAnnotate(),'concat',uglify()]
         }))
         .pipe(gulp.dest('backend/app/'))
         .on('end',cb);

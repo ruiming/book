@@ -32,6 +32,8 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
     $httpProvider.defaults.headers.put = {'Content-Type': 'application/x-www-form-urlencoded'};
     $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};
 
+    $locationProvider.html5Mode(true);
+    
     // redirect to "/" if not match
     $urlRouterProvider.otherwise("/");
 

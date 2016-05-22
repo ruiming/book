@@ -16,6 +16,9 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
         return response;
     });
 
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
     // push timestampMaker into httpProvider
     $httpProvider.interceptors.push('timestampMarker');
 
@@ -2004,24 +2007,6 @@ routeApp.controller('TagBooklistsCtrl', ["$scope", "BL", "$stateParams", functio
 
 }]);
 
-routeApp.controller('TagsCtrl', ["$scope", "$http", function($scope, $http){
-
-    $scope.busy = true;
-
-    // 获取全部标签
-    $http({
-        method: 'GET',
-        url: host + '/tags',
-        params: {
-            type: "all"
-        }
-    }).success(function(response){
-        $scope.busy = false;
-        $scope.allTags = response;
-    });
-
-}]);
-
 routeApp.controller('UserCommentsCtrl', ["$http", "$scope", function($http, $scope){
     
     $scope.deleteBox = false;       // 删除确认框
@@ -2092,4 +2077,22 @@ routeApp.controller('UserCommentsCtrl', ["$http", "$scope", function($http, $sco
             }, delay);
         });
     };
+}]);
+
+routeApp.controller('TagsCtrl', ["$scope", "$http", function($scope, $http){
+
+    $scope.busy = true;
+
+    // 获取全部标签
+    $http({
+        method: 'GET',
+        url: host + '/tags',
+        params: {
+            type: "all"
+        }
+    }).success(function(response){
+        $scope.busy = false;
+        $scope.allTags = response;
+    });
+
 }]);

@@ -16,6 +16,9 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
         return response;
     });
 
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
     // push timestampMaker into httpProvider
     $httpProvider.interceptors.push('timestampMarker');
 

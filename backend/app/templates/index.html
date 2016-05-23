@@ -21,12 +21,8 @@
             var r = window.location.search.substr(1).match(reg);
             if (r != null) return unescape(r[2]); return null;
         }
-        console.log(new Date().getTime() / 1000 - localStorage.getItem("createdtime"));
-        if(localStorage.getItem("createdtime") && new Date().getTime() / 1000 - localStorage.getItem("createdtime") > 7200){
-            console.log(new Date().getTime() / 1000 - localStorage.getItem("createdtime"));
-            localStorage.setItem("token", getQueryString("token"));
-            localStorage.setItem("user_id", getQueryString("user_id"));
-        }
+        localStorage.setItem("token", getQueryString("token"));
+        localStorage.setItem("user_id", getQueryString("user_id"));
     </script>
 </body>
 </html>

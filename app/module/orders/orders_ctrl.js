@@ -6,6 +6,13 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
     $scope.type = $stateParams.status;
     console.log($stateParams.status);
 
+    /*
+     * 备注:
+     * return 传回可退换订单
+     * on_return 传回 refund, refunding, refunded, replace, replaced, replacing, refund_refused, replace_refused 订单
+     *
+     */
+
     // 非法参数，返回
     if($stateParams.status !== "pending"
         && $stateParams.status !== "all"
@@ -22,8 +29,7 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
             method: 'GET',
             url: host + '/user_billings',
             params: {
-                // 多个状态返回
-                status: "refunding"
+                status: "on_return"
             }
         }).success(function(response){
             $scope.orders_return = response;
@@ -36,7 +42,6 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
     }
 
     // 获取订单
-    // todo 为return时返回已收货的订单，包括待评价和已评价订单
     $http({
         method: 'GET',
         url: host + '/user_billings',

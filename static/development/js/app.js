@@ -405,6 +405,9 @@ var statusDict = {                       // 订单状态转换
  * 系统奖励:             xx分         提供接口，推送消息通知并发放奖励
  */
 
+/*
+ * 错误码 todo
+ */
 routeApp.directive('currentTime', ["$timeout", "dateFilter", function($timeout, dateFilter) {
 // 实时显示指定规格化的时间
     return {
@@ -640,208 +643,6 @@ routeApp.filter('nl2br', ['$sanitize', function($sanitize) {
         return $sanitize(msg);
     };
 }]);
-routeApp.controller('BookCtrl', ["$scope", "$http", "$stateParams", "TEMP", function($scope, $http, $stateParams, TEMP) {
-    $scope.more = false;            // 默认不加载更多书籍信息介绍
-    $scope.busy = true;             // 页面加载动画Loading
-    $scope.wait = false;            // 发表评论wait
-    $scope.wait2 = false;           // 收藏图书wait
-    $scope.wait3 = false;           // 加入购物车wait
-    $scope.wait4 = false;           // 加入购物车提醒延迟
-    $scope.wait5 = false;           // 收藏提醒延迟
-    $scope.wait6 = false;           // 取消收藏延迟
-    $scope.wait7 = false;           // 发布评论延迟
-    $scope.required = true;         // 必填
-    $scope.content = "";            // 初始评论
-    $scope.star = 5;                // 默认星星数
-
-    // 加入购物车
-    $scope.addCart = function(){
-        $scope.wait3 = true;
-        $http({
-            method: 'POST',
-            url: host + '/cart',
-            data: {
-                isbn: $stateParams.isbn
-            }
-        }).success(function(){
-            $scope.wait3 = false;
-            $scope.wait4 = true;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait4 = false;
-                });
-            }, 1500);
-        });
-    };
-
-    // 根据ISBN号获取图书信息(包含评论和标签)
-    $http({
-        method: 'GET',
-        url: host + '/book',
-        params: {
-            isbn: $stateParams.isbn
-        }
-    }).success(function(response){
-        $scope.book = response;
-        $scope.book.star = Math.ceil(response.rate/2);
-        for (var i in $scope.book.comments){
-            if($scope.book.comments.hasOwnProperty(i)){
-                $scope.book.comments[i].star = Math.ceil($scope.book.comments[i].star/2);
-            }
-        }
-        TEMP.setDict({title: $scope.book.title});
-        $scope.busy = false;
-    });
-
-    // 获取用户信息,sessionStorage
-    if(angular.isUndefined(sessionStorage.user)) {
-        $http({
-            method: 'GET',
-            url: host + '/user_info'
-        }).success(function(response){
-            $scope.user = response;
-            sessionStorage.user = angular.toJson(response);
-        });
-    }
-    else {
-        $scope.user = angular.fromJson(sessionStorage.user);
-    }
-
-    // 收藏图书
-    $scope.collect = function() {
-        $scope.wait2 = true;
-        $http({
-            method: 'POST',
-            url: host + '/collect',
-            data: {
-                isbn: $stateParams.isbn,
-                type: "book"
-            }
-        }).success(function () {
-            $scope.book.collect_already = !$scope.book.collect_already;
-            $scope.wait2 = false;
-            if($scope.book.collect_already) {
-                $scope.wait5 = true;
-            }
-            else {
-                $scope.wait6 = true;
-            }
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait5 = false;
-                    $scope.wait6 = false;
-                });
-            }, delay);
-        });
-    };
-
-    // todo 获取购买此书的人也购买的书籍
-    $http({
-        method: 'GET',
-        url: host + '/book',
-        params: {
-            isbn: $stateParams.isbn,
-            type: "similarity"
-        }
-    }).success(function(response){
-        // $scope.booksBought = response.books;
-        // for(var i=0;i<$scope.booksBought.length;i++){
-        //     $scope.booksBought[i].star = Math.ceil($scope.booksBought[i].rate/2);
-        // }
-    });
-    
-    // 获取该书被收录的书单
-    $http({
-        method: 'GET',
-        url: host + '/booklist',
-        params: {
-            isbn: $stateParams.isbn
-        }
-    }).success(function(response){
-        $scope.booklists = response;
-    });
-
-    // 顶
-    $scope.up = function(comment){
-        $http({
-            method: 'PUT',
-            url: host + '/comment',
-            data: {
-                id: comment.id,
-                type: "up"
-            }
-        }).success(function(){
-            if(comment.down_already) {
-                comment.down--;
-            }
-            comment.up_already = !comment.up_already;
-            comment.down_already = false;
-            if(comment.up_already)  {
-                comment.up++;
-            }
-            else {
-                comment.up--;
-            }
-        });
-    };
-
-    // 踩
-    $scope.down = function(comment){
-        $http({
-            method: 'PUT',
-            url: host + '/comment',
-            data: {
-                id: comment.id,
-                type: "down"
-            }
-        }).success(function(){
-            if(comment.up_already) {
-                comment.up--;
-            }
-            comment.down_already = !comment.down_already;
-            comment.up_already = false;
-            if(comment.down_already)  {
-                comment.down++;
-            }
-            else {
-                comment.down--;
-            }
-        });
-    };
-
-    // 评论
-    $scope.postComment = function(){
-        if(!this.commentForm.content.$valid) return;
-        $scope.wait = true;
-        $http({
-            method: 'POST',
-            url: host + '/comment',
-            data: {
-                content: $scope.content,
-                isbn: $stateParams.isbn,
-                star: $scope.star*2
-            }
-        }).success(function(response){
-            $scope.commentBox = false;
-            $scope.wait7 = true;
-            response.user = {
-                avatar: $scope.user.avatar,
-                username: $scope.user.username
-            };
-            response.star = response.star/2;
-            $scope.book.commenters ++;
-            $scope.book.comments.push(response);
-            $scope.wait = false;
-            $scope.content = "";
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait7 = false;
-                });
-            }, delay);
-        });
-    };
-}]);
-
 routeApp.controller('BookListCtrl',["$scope", "$http", "$stateParams", function($scope, $http, $stateParams) {
     $scope.busy = true;
     $scope.wait = false;
@@ -1173,6 +974,87 @@ routeApp.controller('CartCtrl',["$scope", "$http", "$state", "TEMP", function($s
     
 }]);
 
+routeApp.controller('BookInfoCtrl', ["$http", "$scope", "$stateParams", function($http, $scope, $stateParams){
+    $scope.busy = true;
+    
+    // 获取图书信息(包含评论和标签)
+    $http({
+        method: 'GET',
+        url: host + '/book',
+        params: {
+            isbn: $stateParams.isbn,
+            type: "detail"
+        }
+    }).success(function(response){
+        $scope.book = response;
+        $scope.busy = false;
+    });
+}]);
+
+routeApp.controller('Cart2OrderCtrl', ["$http", "$scope", "TEMP", "$location", function($http, $scope, TEMP, $location){
+
+    $scope.wait = true;            // 确认订单等待
+    $scope.no_address = true;      // 地址必须有
+
+    // 从单体获取
+    $scope.books = TEMP.getList();
+    
+    
+    $scope.cart_list = "";
+    $scope.order = {
+        number: 0,
+        price: 0
+    };
+
+    // 订单处理
+    for(var i=0; i<$scope.books.length; i++){
+        $scope.order.number += $scope.books[i].number;
+        $scope.order.price += $scope.books[i].price * $scope.books[i].number;
+        if(i !== $scope.books.length-1){
+            $scope.cart_list += $scope.books[i].id + ",";
+        }
+        else {
+            $scope.cart_list += $scope.books[i].id;
+        }
+    }
+
+    // 获取默认地址
+    $http({
+        method: 'GET',
+        url: host + '/user_address',
+        params: {
+            type: "default"
+        }
+    }).success(function(response){
+        $scope.x = response[0];
+        $scope.no_address = false;
+        $scope.wait = false;
+    }).error(function(){
+        $scope.wait = false;
+        $scope.no_address = true;
+    });
+
+    // todo提交订单
+    $scope.make = function(){
+        $scope.wait = true;
+        $http({
+            method: 'POST',
+            url: host + '/billing',
+            data: {
+                cart_list: $scope.cart_list,
+                address_id: $scope.x.id
+            }
+        }).success(function(response){
+            // * 防止后退回到订单生成页面
+            $location.path('/order/'+response+'/detail').replace();
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait = false;
+                });
+            }, 500);
+        });
+    };
+}]);
 routeApp.controller('CollectBookListsCtrl', ["$http", "$scope", function($http, $scope){
 
     $scope.busy = true;
@@ -1188,40 +1070,6 @@ routeApp.controller('CollectBookListsCtrl', ["$http", "$scope", function($http, 
         $scope.booklists = response;
         $scope.busy = false;
     });
-}]);
-
-routeApp.controller('CollectBooksCtrl', ["$http", "$scope", function($http, $scope){
-
-    $scope.busy = true;
-
-    // 获取全部收藏书籍
-    $http({
-        method: 'GET',
-        url: host + '/user_collects',
-        params: {
-            type: "book"
-        }
-    }).success(function(response){
-        $scope.books = response;
-        for(var i=0;i<$scope.books.length;i++){
-            $scope.books[i].star = Math.ceil($scope.books[i].rate/2);
-        }
-        $scope.busy = false;
-    });
-    
-    // 取消收藏书籍
-    $scope.remove = function(book, index){
-        $http({
-            method: 'POST',
-            url: host + '/collect',
-            data: {
-                isbn: book.isbn,
-                type: "book"
-            }
-        }).success(function(){
-            $scope.books.splice(index, 1);
-        });
-    };
 }]);
 
 routeApp.controller('CommentsCtrl',["$scope", "$http", "$stateParams", "TEMP", function($scope, $http, $stateParams, TEMP) {
@@ -1292,6 +1140,40 @@ routeApp.controller('CommentsCtrl',["$scope", "$http", "$stateParams", "TEMP", f
         });
     };
     
+}]);
+
+routeApp.controller('CollectBooksCtrl', ["$http", "$scope", function($http, $scope){
+
+    $scope.busy = true;
+
+    // 获取全部收藏书籍
+    $http({
+        method: 'GET',
+        url: host + '/user_collects',
+        params: {
+            type: "book"
+        }
+    }).success(function(response){
+        $scope.books = response;
+        for(var i=0;i<$scope.books.length;i++){
+            $scope.books[i].star = Math.ceil($scope.books[i].rate/2);
+        }
+        $scope.busy = false;
+    });
+    
+    // 取消收藏书籍
+    $scope.remove = function(book, index){
+        $http({
+            method: 'POST',
+            url: host + '/collect',
+            data: {
+                isbn: book.isbn,
+                type: "book"
+            }
+        }).success(function(){
+            $scope.books.splice(index, 1);
+        });
+    };
 }]);
 
 routeApp.controller('IndexCtrl',["$scope", "$http", function($scope, $http) {
@@ -1382,183 +1264,206 @@ routeApp.controller('NoticesCtrl', ["$http", "$scope", function($http, $scope){
     
 }]);
 
-routeApp.controller('OrderCommentsCtrl', ["$scope", "$http", "$stateParams", function($scope, $http, $stateParams){
+routeApp.controller('BookCtrl', ["$scope", "$http", "$stateParams", "TEMP", function($scope, $http, $stateParams, TEMP) {
+    $scope.more = false;            // 默认不加载更多书籍信息介绍
+    $scope.busy = true;             // 页面加载动画Loading
+    $scope.wait = false;            // 发表评论wait
+    $scope.wait2 = false;           // 收藏图书wait
+    $scope.wait3 = false;           // 加入购物车wait
+    $scope.wait4 = false;           // 加入购物车提醒延迟
+    $scope.wait5 = false;           // 收藏提醒延迟
+    $scope.wait6 = false;           // 取消收藏延迟
+    $scope.wait7 = false;           // 发布评论延迟
+    $scope.required = true;         // 必填
+    $scope.content = "";            // 初始评论
+    $scope.star = 5;                // 默认星星数
 
-    $scope.busy = true;
-    $scope.wait = false;        // 等待
-    $scope.alert = false;       // 错误提示
-
-    // 获取待评价订单的详细信息, todo 订单待评价才允许继续
-   $http({
-       method: 'GET',
-       url: host + '/billing',
-       params: {
-           id: $stateParams.id
-       }
-   }).success(function(response){
-       $scope.order = response;
-       $scope.busy = false;
-   }).error(function(){
-       history.back();
-   });
-
-    // todo 订单评价
-    $scope.comment = function(){
-        $scope.wait = true;
-        if(!this.commentForm.$valid) {
-            $scope.wait = false;
-            $scope.alert = true;
+    // 加入购物车
+    $scope.addCart = function(){
+        $scope.wait3 = true;
+        $http({
+            method: 'POST',
+            url: host + '/cart',
+            data: {
+                isbn: $stateParams.isbn
+            }
+        }).success(function(){
+            $scope.wait3 = false;
+            $scope.wait4 = true;
             window.setTimeout(function() {
                 $scope.$apply(function() {
-                    $scope.alert = false;
+                    $scope.wait4 = false;
                 });
-            }, 4000);
-        }
-        else {
-            for(var i in $scope.order.carts){
-                if($scope.order.carts.hasOwnProperty(i)){
-                    $scope.commentBook($scope.order.carts[i].book);
-                }
-            }
-        }
-        // todo 平台评分
-        $http({
-            method: 'POST',
-            url: host + '/user_billing',
-            data: {
-                stars1: $scope.stars1,
-                stars2: $scope.stars2,
-                stars3: $scope.stars3
-            }
-        }).success(function(response){
-
+            }, 1500);
         });
     };
 
-    // 书籍评价
-    $scope.commentBook = function(book){
-        console.log(book);
-        $http({
-            method: 'POST',
-            url: host + '/comment',
-            data: {
-                content: book.content,
-                isbn: book.isbn,
-                star: book.star*2
-            }
-        });
-    };
-    
-}]);
-
-routeApp.controller('OrdersCtrl',["$scope", "$http", "$stateParams", function($scope, $http, $stateParams) {
-
-    $scope.message = false;
-    $scope.busy = true;
-    $scope.wait = false;        // 取消订单提示
-    $scope.type = $stateParams.status;
-    console.log($stateParams.status);
-
-    // 非法参数，返回
-    if($stateParams.status !== "pending"
-        && $stateParams.status !== "all"
-        && $stateParams.status !== "commenting"
-        && $stateParams.status !== "waiting"
-        && $stateParams.status !== "return"
-        && $stateParams.status !== "done"
-    ) {
-        history.back();
-    }
-    else if($stateParams.status == "return") {
-        // todo 获取正在申请售后服务的订单
-        $http({
-            method: 'GET',
-            url: host + '/user_billings',
-            params: {
-                // 多个状态返回
-                status: "refunding"
-            }
-        }).success(function(response){
-            $scope.orders_return = response;
-            for(var x in $scope.orders_return){
-                if($scope.orders_return.hasOwnProperty(x)){
-                    $scope.orders_return[x].status = statusDict[$scope.orders_return[x].status];
-                }
-            }
-        });
-    }
-
-    // 获取订单
-    // todo 为return时返回已收货的订单，包括待评价和已评价订单
+    // 根据ISBN号获取图书信息(包含评论和标签)
     $http({
         method: 'GET',
-        url: host + '/user_billings',
+        url: host + '/book',
         params: {
-            status: $stateParams.status
+            isbn: $stateParams.isbn
         }
     }).success(function(response){
-        $scope.orders = response;
-        for(var x in $scope.orders){
-            if($scope.orders.hasOwnProperty(x)){
-                $scope.orders[x].status = statusDict[$scope.orders[x].status];
+        $scope.book = response;
+        $scope.book.star = Math.ceil(response.rate/2);
+        for (var i in $scope.book.comments){
+            if($scope.book.comments.hasOwnProperty(i)){
+                $scope.book.comments[i].star = Math.ceil($scope.book.comments[i].star/2);
             }
         }
+        TEMP.setDict({title: $scope.book.title});
         $scope.busy = false;
     });
 
-    // todo 取消售后
-    $scope.stop = function(order){
-        order.wait2 = true;
-    };
-
-    // 取消订单    pending -> canceled
-    $scope.cancel = function(order){
-        order.wait2 = true;
+    // 获取用户信息,sessionStorage
+    if(angular.isUndefined(sessionStorage.user)) {
         $http({
-            method: 'DELETE',
-            url: host + '/billing',
+            method: 'GET',
+            url: host + '/user_info'
+        }).success(function(response){
+            $scope.user = response;
+            sessionStorage.user = angular.toJson(response);
+        });
+    }
+    else {
+        $scope.user = angular.fromJson(sessionStorage.user);
+    }
+
+    // 收藏图书
+    $scope.collect = function() {
+        $scope.wait2 = true;
+        $http({
+            method: 'POST',
+            url: host + '/collect',
             data: {
-                "id": order.id
+                isbn: $stateParams.isbn,
+                type: "book"
             }
-        }).success(function(){
-            order.wait2 = false;
-            order.status = "已取消";
+        }).success(function () {
+            $scope.book.collect_already = !$scope.book.collect_already;
+            $scope.wait2 = false;
+            if($scope.book.collect_already) {
+                $scope.wait5 = true;
+            }
+            else {
+                $scope.wait6 = true;
+            }
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait5 = false;
+                    $scope.wait6 = false;
+                });
+            }, delay);
         });
     };
 
-    // 确认收货    waiting -> commenting
-    $scope.receipt = function(order){
-        order.wait2 = true;
-        $http({
-            method: 'PUT',
-            url: host + '/billing',
-            data: {
-                "id": order.id,
-                "status": "commenting"
-            }
-        }).success(function(){
-            order.wait2 = false;
-            order.status = "待评价";
-        });
-    };
-
-}]);
-
-routeApp.controller('BookInfoCtrl', ["$http", "$scope", "$stateParams", function($http, $scope, $stateParams){
-    $scope.busy = true;
-    
-    // 获取图书信息(包含评论和标签)
+    // todo 获取购买此书的人也购买的书籍
     $http({
         method: 'GET',
         url: host + '/book',
         params: {
             isbn: $stateParams.isbn,
-            type: "detail"
+            type: "similarity"
         }
     }).success(function(response){
-        $scope.book = response;
-        $scope.busy = false;
+        // $scope.booksBought = response.books;
+        // for(var i=0;i<$scope.booksBought.length;i++){
+        //     $scope.booksBought[i].star = Math.ceil($scope.booksBought[i].rate/2);
+        // }
     });
+    
+    // 获取该书被收录的书单
+    $http({
+        method: 'GET',
+        url: host + '/booklist',
+        params: {
+            isbn: $stateParams.isbn
+        }
+    }).success(function(response){
+        $scope.booklists = response;
+    });
+
+    // 顶
+    $scope.up = function(comment){
+        $http({
+            method: 'PUT',
+            url: host + '/comment',
+            data: {
+                id: comment.id,
+                type: "up"
+            }
+        }).success(function(){
+            if(comment.down_already) {
+                comment.down--;
+            }
+            comment.up_already = !comment.up_already;
+            comment.down_already = false;
+            if(comment.up_already)  {
+                comment.up++;
+            }
+            else {
+                comment.up--;
+            }
+        });
+    };
+
+    // 踩
+    $scope.down = function(comment){
+        $http({
+            method: 'PUT',
+            url: host + '/comment',
+            data: {
+                id: comment.id,
+                type: "down"
+            }
+        }).success(function(){
+            if(comment.up_already) {
+                comment.up--;
+            }
+            comment.down_already = !comment.down_already;
+            comment.up_already = false;
+            if(comment.down_already)  {
+                comment.down++;
+            }
+            else {
+                comment.down--;
+            }
+        });
+    };
+
+    // 评论
+    $scope.postComment = function(){
+        if(!this.commentForm.content.$valid) return;
+        $scope.wait = true;
+        $http({
+            method: 'POST',
+            url: host + '/comment',
+            data: {
+                content: $scope.content,
+                isbn: $stateParams.isbn,
+                star: $scope.star*2
+            }
+        }).success(function(response){
+            $scope.commentBox = false;
+            $scope.wait7 = true;
+            response.user = {
+                avatar: $scope.user.avatar,
+                username: $scope.user.username
+            };
+            response.star = response.star/2;
+            $scope.book.commenters ++;
+            $scope.book.comments.push(response);
+            $scope.wait = false;
+            $scope.content = "";
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait7 = false;
+                });
+            }, delay);
+        });
+    };
 }]);
 
 routeApp.controller('OrderDetailCtrl',["$scope", "$http", "$stateParams", function($scope, $http, $stateParams){
@@ -1631,85 +1536,177 @@ routeApp.controller('OrderDetailCtrl',["$scope", "$http", "$stateParams", functi
     };
 }]);
 
-routeApp.controller('Cart2OrderCtrl', ["$http", "$scope", "TEMP", "$location", function($http, $scope, TEMP, $location){
+routeApp.controller('OrdersCtrl',["$scope", "$http", "$stateParams", function($scope, $http, $stateParams) {
 
-    $scope.wait = true;            // 确认订单等待
-    $scope.no_address = true;      // 地址必须有
+    $scope.message = false;
+    $scope.busy = true;
+    $scope.wait = false;        // 取消订单提示
+    $scope.type = $stateParams.status;
+    console.log($stateParams.status);
 
-    // 从单体获取
-    $scope.books = TEMP.getList();
-    
-    
-    $scope.cart_list = "";
-    $scope.order = {
-        number: 0,
-        price: 0
-    };
+    /*
+     * 备注:
+     * return 传回可退换订单
+     * on_return 传回 refund, refunding, refunded, replace, replaced, replacing, refund_refused, replace_refused 订单
+     *
+     */
 
-    // 订单处理
-    for(var i=0; i<$scope.books.length; i++){
-        $scope.order.number += $scope.books[i].number;
-        $scope.order.price += $scope.books[i].price * $scope.books[i].number;
-        if(i !== $scope.books.length-1){
-            $scope.cart_list += $scope.books[i].id + ",";
-        }
-        else {
-            $scope.cart_list += $scope.books[i].id;
-        }
+    // 非法参数，返回
+    if($stateParams.status !== "pending"
+        && $stateParams.status !== "all"
+        && $stateParams.status !== "commenting"
+        && $stateParams.status !== "waiting"
+        && $stateParams.status !== "return"
+        && $stateParams.status !== "done"
+    ) {
+        history.back();
     }
-
-    // 获取默认地址
-    $http({
-        method: 'GET',
-        url: host + '/user_address',
-        params: {
-            type: "default"
-        }
-    }).success(function(response){
-        $scope.x = response[0];
-        $scope.no_address = false;
-        $scope.wait = false;
-    }).error(function(){
-        $scope.wait = false;
-        $scope.no_address = true;
-    });
-
-    // todo提交订单
-    $scope.make = function(){
-        $scope.wait = true;
+    else if($stateParams.status == "return") {
+        // todo 获取正在申请售后服务的订单
         $http({
-            method: 'POST',
-            url: host + '/billing',
-            data: {
-                cart_list: $scope.cart_list,
-                address_id: $scope.x.id
+            method: 'GET',
+            url: host + '/user_billings',
+            params: {
+                status: "on_return"
             }
         }).success(function(response){
-            // * 防止后退回到订单生成页面
-            $location.path('/order/'+response+'/detail').replace();
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait = false;
-                });
-            }, 500);
+            $scope.orders_return = response;
+            for(var x in $scope.orders_return){
+                if($scope.orders_return.hasOwnProperty(x)){
+                    $scope.orders_return[x].status = statusDict[$scope.orders_return[x].status];
+                }
+            }
+        });
+    }
+
+    // 获取订单
+    $http({
+        method: 'GET',
+        url: host + '/user_billings',
+        params: {
+            status: $stateParams.status
+        }
+    }).success(function(response){
+        $scope.orders = response;
+        for(var x in $scope.orders){
+            if($scope.orders.hasOwnProperty(x)){
+                $scope.orders[x].status = statusDict[$scope.orders[x].status];
+            }
+        }
+        $scope.busy = false;
+    });
+
+    // todo 取消售后
+    $scope.stop = function(order){
+        order.wait2 = true;
+    };
+
+    // 取消订单    pending -> canceled
+    $scope.cancel = function(order){
+        order.wait2 = true;
+        $http({
+            method: 'DELETE',
+            url: host + '/billing',
+            data: {
+                "id": order.id
+            }
+        }).success(function(){
+            order.wait2 = false;
+            order.status = "已取消";
         });
     };
+
+    // 确认收货    waiting -> commenting
+    $scope.receipt = function(order){
+        order.wait2 = true;
+        $http({
+            method: 'PUT',
+            url: host + '/billing',
+            data: {
+                "id": order.id,
+                "status": "commenting"
+            }
+        }).success(function(){
+            order.wait2 = false;
+            order.status = "待评价";
+        });
+    };
+
 }]);
+
+routeApp.controller('OrderCommentsCtrl', ["$scope", "$http", "$stateParams", function($scope, $http, $stateParams){
+
+    $scope.busy = true;
+    $scope.wait = false;        // 等待
+    $scope.alert = false;       // 错误提示
+
+    // 获取待评价订单的详细信息, todo 订单待评价才允许继续
+   $http({
+       method: 'GET',
+       url: host + '/billing',
+       params: {
+           id: $stateParams.id
+       }
+   }).success(function(response){
+       $scope.order = response;
+       $scope.busy = false;
+   }).error(function(){
+       history.back();
+   });
+
+    // todo 订单评价
+    $scope.comment = function(){
+        $scope.wait = true;
+        if(!this.commentForm.$valid) {
+            $scope.wait = false;
+            $scope.alert = true;
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.alert = false;
+                });
+            }, 4000);
+        }
+        else {
+            for(var i in $scope.order.carts){
+                if($scope.order.carts.hasOwnProperty(i)){
+                    $scope.commentBook($scope.order.carts[i].book);
+                }
+            }
+        }
+        // todo 平台评分
+        $http({
+            method: 'POST',
+            url: host + '/user_billing',
+            data: {
+                stars1: $scope.stars1,
+                stars2: $scope.stars2,
+                stars3: $scope.stars3
+            }
+        }).success(function(response){
+
+        });
+    };
+
+    // 书籍评价
+    $scope.commentBook = function(book){
+        console.log(book);
+        $http({
+            method: 'POST',
+            url: host + '/comment',
+            data: {
+                content: book.content,
+                isbn: book.isbn,
+                star: book.star*2
+            }
+        });
+    };
+    
+}]);
+
 routeApp.controller('SettingsCtrl', ["$http", "$scope", function($http, $scope){
 
     $scope.user = JSON.parse(sessionStorage.user);
 
-}]);
-
-routeApp.controller('RecommendMoreCtrl',["$scope", "BL", function($scope, BL) {
-
-    // 获取更多推荐书籍
-    var url = host + '/pop_book';
-    var params = {
-        page: 1
-    };
-    $scope.books = new BL(url, params);
-    
 }]);
 
 routeApp.controller('AddressCtrl', ["$http", "$scope", "$state", "User", function ($http, $scope, $state, User) {
@@ -1735,6 +1732,17 @@ routeApp.controller('AddressCtrl', ["$http", "$scope", "$state", "User", functio
         history.back();
     };
 }]);
+routeApp.controller('RecommendMoreCtrl',["$scope", "BL", function($scope, BL) {
+
+    // 获取更多推荐书籍
+    var url = host + '/pop_book';
+    var params = {
+        page: 1
+    };
+    $scope.books = new BL(url, params);
+    
+}]);
+
 routeApp.controller('AddressAddCtrl', ["$http", "$scope", "$location", "$state", "User", function($http, $scope, $location, $state, User){
 
     var data = User.getTemp();
@@ -1927,25 +1935,47 @@ routeApp.controller('TagBooklistsCtrl', ["$scope", "BL", "$stateParams", functio
 
 }]);
 
-routeApp.controller('SignatureCtrl', ["$http", "$scope", "$stateParams", "$location", function ($http, $scope, $stateParams, $location) {
+routeApp.controller('SuggestCtrl', ["$http", "$scope", function($http, $scope){
 
-    $scope.signature = $stateParams.signature;
+    $scope.required = true;     // 必填
+    $scope.wait = false;        // 提交反馈wait
+    $scope.wait2 = false;       // 提交反馈动画时延
 
-    // 修改签名
-    $scope.post = function() {
+    if(sessionStorage.user != undefined) {
+        $scope.user = JSON.parse(sessionStorage.user);
+    }
+    else {
+        $http({
+            method: 'GET',
+            url: host + '/user_info'
+        }).success(function(response){
+            $scope.user = response;
+            sessionStorage.user = JSON.stringify(response);
+        });
+    }
+
+    // 发布建议和看法
+    $scope.post = function(){
+        if(this.suggestBox.suggestion.$invalid) {
+            return;
+        }
+        $scope.wait = true;
         $http({
             method: 'POST',
-            url: host + '/signature',
+            url: host + '/user_feedback',
             data: {
-                signature: this.signature
+                content: $scope.suggestion
             }
-        }).success(function () {
-            $location.path('/settings').replace();
+        }).success(function(){
+            $scope.wait = false;
+            $scope.wait2 = true;
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait2 = false;
+                    history.back();
+                });
+            }, 2000);
         });
-    };
-    
-    $scope.return = function() {
-        $location.path('/settings').replace();
     };
 
 }]);
@@ -1962,36 +1992,6 @@ routeApp.controller('PointCtrl', ["$http", "$scope", function($http, $scope){
         $scope.busy = false;
     });
     
-}]);
-
-routeApp.controller('PopularMoreCtrl',["$scope", "BL", function($scope, BL) {
-
-    // 获取更多热门书单
-    var url = host + '/booklist';
-    var params = {
-        type: "hot",
-        page: 1
-    };
-    $scope.booklists = new BL(url,params);
-
-}]);
-
-routeApp.controller('TagsCtrl', ["$scope", "$http", function($scope, $http){
-
-    $scope.busy = true;
-
-    // 获取全部标签
-    $http({
-        method: 'GET',
-        url: host + '/tags',
-        params: {
-            type: "all"
-        }
-    }).success(function(response){
-        $scope.busy = false;
-        $scope.allTags = response;
-    });
-
 }]);
 
 routeApp.controller('UserCommentsCtrl', ["$http", "$scope", function($http, $scope){
@@ -2066,47 +2066,55 @@ routeApp.controller('UserCommentsCtrl', ["$http", "$scope", function($http, $sco
     };
 }]);
 
-routeApp.controller('SuggestCtrl', ["$http", "$scope", function($http, $scope){
+routeApp.controller('TagsCtrl', ["$scope", "$http", function($scope, $http){
 
-    $scope.required = true;     // 必填
-    $scope.wait = false;        // 提交反馈wait
-    $scope.wait2 = false;       // 提交反馈动画时延
+    $scope.busy = true;
 
-    if(sessionStorage.user != undefined) {
-        $scope.user = JSON.parse(sessionStorage.user);
-    }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/user_info'
-        }).success(function(response){
-            $scope.user = response;
-            sessionStorage.user = JSON.stringify(response);
-        });
-    }
-
-    // 发布建议和看法
-    $scope.post = function(){
-        if(this.suggestBox.suggestion.$invalid) {
-            return;
+    // 获取全部标签
+    $http({
+        method: 'GET',
+        url: host + '/tags',
+        params: {
+            type: "all"
         }
-        $scope.wait = true;
+    }).success(function(response){
+        $scope.busy = false;
+        $scope.allTags = response;
+    });
+
+}]);
+
+routeApp.controller('PopularMoreCtrl',["$scope", "BL", function($scope, BL) {
+
+    // 获取更多热门书单
+    var url = host + '/booklist';
+    var params = {
+        type: "hot",
+        page: 1
+    };
+    $scope.booklists = new BL(url,params);
+
+}]);
+
+routeApp.controller('SignatureCtrl', ["$http", "$scope", "$stateParams", "$location", function ($http, $scope, $stateParams, $location) {
+
+    $scope.signature = $stateParams.signature;
+
+    // 修改签名
+    $scope.post = function() {
         $http({
             method: 'POST',
-            url: host + '/user_feedback',
+            url: host + '/signature',
             data: {
-                content: $scope.suggestion
+                signature: this.signature
             }
-        }).success(function(){
-            $scope.wait = false;
-            $scope.wait2 = true;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait2 = false;
-                    history.back();
-                });
-            }, 2000);
+        }).success(function () {
+            $location.path('/settings').replace();
         });
+    };
+    
+    $scope.return = function() {
+        $location.path('/settings').replace();
     };
 
 }]);

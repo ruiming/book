@@ -1365,14 +1365,16 @@ a {
         span {
           padding-left: 10px;
           display: block;
+          margin: 5px 0;
         }
       }
       button,
       a {
         border-radius: 0;
         float: right;
-        padding: 8.5px;
-        font-size: 15px;
+        padding: 6px 12px;
+        margin: 6px;
+        font-size: 14px;
       }
     }
     .order-meta-fix-bottom {

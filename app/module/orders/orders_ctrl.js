@@ -41,8 +41,7 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
         method: 'GET',
         url: host + '/user_billings',
         params: {
-            // todo 多个状态返回
-            status: "commenting"
+            status: $stateParams.status
         }
     }).success(function(response){
         $scope.orders = response;

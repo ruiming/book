@@ -22,7 +22,7 @@
             if (r != null) return unescape(r[2]); return null;
         }
         console.log(new Date().getTime() / 1000 - localStorage.getItem("createdtime"));
-        if(localStorage.getItem("createdtime") && new Date().getTime() / 1000 - localStorage.getItem("createdtime") > 7000){
+        if(localStorage.getItem("createdtime") && new Date().getTime() / 1000 - localStorage.getItem("createdtime") > 7200){
             console.log(new Date().getTime() / 1000 - localStorage.getItem("createdtime"));
             localStorage.setItem("token", getQueryString("token"));
             localStorage.setItem("user_id", getQueryString("user_id"));

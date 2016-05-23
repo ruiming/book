@@ -9,8 +9,19 @@ var ngTemplate = require('gulp-ng-template');
 var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
 var usemin = require('gulp-usemin');
-var rev = require('gulp-rev');
 var runSequence  = require('gulp-run-sequence');
+
+/*
+ *
+ * app Angular控制器和模板
+ * backend 后端，生产环境
+ * bower_components bower管理前端JS,CSS,FONTS等源码
+ * node_modules npm管理前端npm插件
+ * src 开发环境部署用
+ * static 自己写的CSS, JS以及引入的IMG等等
+ *
+ */
+
 
 // 打包js依赖文件如angularJS文件和jquery等
 // 该文件无需维护

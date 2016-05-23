@@ -101,11 +101,11 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
             if(sessionStorage.verify === "true") {
                 var timestamp = new Date().getTime() / 1000;
                 // 时间超过7000s，需要重新验证
-                if (timestamp - sessionStorage.createdtime >= 7000){
+                if (timestamp - localStorage.getItem("createdtime") >= 7000){
                     sessionStorage.verify = false;
                 }
-                config.headers['token'] = sessionStorage.token;
-                config.headers['userid'] = sessionStorage.user_id;
+                config.headers['token'] = localStorage.getItem("token");
+                config.headers['userid'] = localStorage.getItem("user_id");
                 deferred.resolve(config);
             }
             else {
@@ -114,15 +114,15 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                     method: 'GET',
                     url: url,
                     params: {
-                        token: sessionStorage.token,
-                        user_id: sessionStorage.user_id
+                        token: localStorage.getItem("token"),
+                        user_id: localStorage.getItem("user_id")
                     }
                 }).success(function(response){
-                    sessionStorage.token = response.token;
-                    sessionStorage.createdtime = response.time;
+                    localStorage.setItem("token", response.token);
+                    localStorage.setItem("createdtime", response.time);
                     sessionStorage.verify = "true";
-                    config.headers['token'] = sessionStorage.token;
-                    config.headers['userid'] = sessionStorage.user_id;
+                    config.headers['token'] = localStorage.getItem("token");
+                    config.headers['userid'] = localStorage.getItem("user_id");
                     console.log("verify OK");
                     deferred.resolve(config);
                 }).error(function(){

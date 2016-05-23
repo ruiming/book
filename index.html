@@ -37,8 +37,8 @@
             var r = window.location.search.substr(1).match(reg);
             if (r != null) return unescape(r[2]); return null;
         }
-        sessionStorage.token = getQueryString("token");
-        sessionStorage.user_id = getQueryString("user_id");
+        localStorage.setItem("token", getQueryString("token"));
+        localStorage.setItem("user_id", getQueryString("user_id"));
     </script>
 </body>
 </html>

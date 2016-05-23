@@ -596,11 +596,11 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
             if(sessionStorage.verify === "true") {
                 var timestamp = new Date().getTime() / 1000;
                 // 时间超过7000s，需要重新验证
-                if (timestamp - sessionStorage.createdtime >= 7000){
+                if (timestamp - localStorage.getItem("createdtime") >= 7000){
                     sessionStorage.verify = false;
                 }
-                config.headers['token'] = sessionStorage.token;
-                config.headers['userid'] = sessionStorage.user_id;
+                config.headers['token'] = localStorage.getItem("token");
+                config.headers['userid'] = localStorage.getItem("user_id");
                 deferred.resolve(config);
             }
             else {
@@ -609,15 +609,15 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
                     method: 'GET',
                     url: url,
                     params: {
-                        token: sessionStorage.token,
-                        user_id: sessionStorage.user_id
+                        token: localStorage.getItem("token"),
+                        user_id: localStorage.getItem("user_id")
                     }
                 }).success(function(response){
-                    sessionStorage.token = response.token;
-                    sessionStorage.createdtime = response.time;
+                    localStorage.setItem("token", response.token);
+                    localStorage.setItem("createdtime", response.time);
                     sessionStorage.verify = "true";
-                    config.headers['token'] = sessionStorage.token;
-                    config.headers['userid'] = sessionStorage.user_id;
+                    config.headers['token'] = localStorage.getItem("token");
+                    config.headers['userid'] = localStorage.getItem("user_id");
                     console.log("verify OK");
                     deferred.resolve(config);
                 }).error(function(){
@@ -963,70 +963,6 @@ routeApp.controller('BookInfoCtrl', ["$http", "$scope", "$stateParams", function
     });
 }]);
 
-routeApp.controller('Cart2OrderCtrl', ["$http", "$scope", "TEMP", "$location", function($http, $scope, TEMP, $location){
-
-    $scope.wait = true;            // 确认订单等待
-    $scope.no_address = true;      // 地址必须有
-
-    // 从单体获取
-    $scope.books = TEMP.getList();
-    
-    
-    $scope.cart_list = "";
-    $scope.order = {
-        number: 0,
-        price: 0
-    };
-
-    // 订单处理
-    for(var i=0; i<$scope.books.length; i++){
-        $scope.order.number += $scope.books[i].number;
-        $scope.order.price += $scope.books[i].price * $scope.books[i].number;
-        if(i !== $scope.books.length-1){
-            $scope.cart_list += $scope.books[i].id + ",";
-        }
-        else {
-            $scope.cart_list += $scope.books[i].id;
-        }
-    }
-
-    // 获取默认地址
-    $http({
-        method: 'GET',
-        url: host + '/user_address',
-        params: {
-            type: "default"
-        }
-    }).success(function(response){
-        $scope.x = response[0];
-        $scope.no_address = false;
-        $scope.wait = false;
-    }).error(function(){
-        $scope.wait = false;
-        $scope.no_address = true;
-    });
-
-    // todo提交订单
-    $scope.make = function(){
-        $scope.wait = true;
-        $http({
-            method: 'POST',
-            url: host + '/billing',
-            data: {
-                cart_list: $scope.cart_list,
-                address_id: $scope.x.id
-            }
-        }).success(function(response){
-            // * 防止后退回到订单生成页面
-            $location.path('/order/'+response+'/detail').replace();
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait = false;
-                });
-            }, 500);
-        });
-    };
-}]);
 routeApp.controller('CartCtrl',["$scope", "$http", "$state", "TEMP", function($scope, $http, $state, TEMP) {
     $scope.price = 0;
     $scope.busy = true;
@@ -1254,6 +1190,70 @@ routeApp.controller('CartCtrl',["$scope", "$http", "$state", "TEMP", function($s
     
 }]);
 
+routeApp.controller('Cart2OrderCtrl', ["$http", "$scope", "TEMP", "$location", function($http, $scope, TEMP, $location){
+
+    $scope.wait = true;            // 确认订单等待
+    $scope.no_address = true;      // 地址必须有
+
+    // 从单体获取
+    $scope.books = TEMP.getList();
+    
+    
+    $scope.cart_list = "";
+    $scope.order = {
+        number: 0,
+        price: 0
+    };
+
+    // 订单处理
+    for(var i=0; i<$scope.books.length; i++){
+        $scope.order.number += $scope.books[i].number;
+        $scope.order.price += $scope.books[i].price * $scope.books[i].number;
+        if(i !== $scope.books.length-1){
+            $scope.cart_list += $scope.books[i].id + ",";
+        }
+        else {
+            $scope.cart_list += $scope.books[i].id;
+        }
+    }
+
+    // 获取默认地址
+    $http({
+        method: 'GET',
+        url: host + '/user_address',
+        params: {
+            type: "default"
+        }
+    }).success(function(response){
+        $scope.x = response[0];
+        $scope.no_address = false;
+        $scope.wait = false;
+    }).error(function(){
+        $scope.wait = false;
+        $scope.no_address = true;
+    });
+
+    // todo提交订单
+    $scope.make = function(){
+        $scope.wait = true;
+        $http({
+            method: 'POST',
+            url: host + '/billing',
+            data: {
+                cart_list: $scope.cart_list,
+                address_id: $scope.x.id
+            }
+        }).success(function(response){
+            // * 防止后退回到订单生成页面
+            $location.path('/order/'+response+'/detail').replace();
+            window.setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.wait = false;
+                });
+            }, 500);
+        });
+    };
+}]);
 routeApp.controller('CollectBookListsCtrl', ["$http", "$scope", function($http, $scope){
 
     $scope.busy = true;
@@ -1303,61 +1303,6 @@ routeApp.controller('CollectBooksCtrl', ["$http", "$scope", function($http, $sco
             $scope.books.splice(index, 1);
         });
     };
-}]);
-
-routeApp.controller('IndexCtrl',["$scope", "$http", function($scope, $http) {
-
-    $scope.myInterval = 5000;
-    $scope.noWrapSlides = true;
-    $scope.active = 0;
-
-    // 获取书籍推荐
-    if(sessionStorage.books != undefined){
-        $scope.books = JSON.parse(sessionStorage.books);
-    }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/pop_book'
-        }).success(function(response){
-            $scope.books = response;
-            for(var i=0;i<$scope.books.length;i++){
-                $scope.books[i].star = Math.ceil($scope.books[i].rate/2);
-            }
-            sessionStorage.books = JSON.stringify($scope.books);
-        });
-    }
-
-    // 获取热门书单
-    if(sessionStorage.booklists != undefined){
-        $scope.booklists = JSON.parse(sessionStorage.booklists);
-    }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/booklist',
-            params: {
-                type: "hot"
-            }
-        }).success(function(response){
-            $scope.booklists = response;
-            sessionStorage.booklists = JSON.stringify($scope.booklists);
-        });
-    }
-
-    // 获取活动轮播
-    if(sessionStorage.slides != undefined) {
-        $scope.slides = JSON.parse(sessionStorage.slides);
-    }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/slides'
-        }).success(function(response){
-            $scope.slides = response;
-            sessionStorage.slides = JSON.stringify($scope.slides);
-        });
-    }
 }]);
 
 routeApp.controller('CommentsCtrl',["$scope", "$http", "$stateParams", "TEMP", function($scope, $http, $stateParams, TEMP) {
@@ -1430,6 +1375,61 @@ routeApp.controller('CommentsCtrl',["$scope", "$http", "$stateParams", "TEMP", f
     
 }]);
 
+routeApp.controller('IndexCtrl',["$scope", "$http", function($scope, $http) {
+
+    $scope.myInterval = 5000;
+    $scope.noWrapSlides = true;
+    $scope.active = 0;
+
+    // 获取书籍推荐
+    if(sessionStorage.books != undefined){
+        $scope.books = JSON.parse(sessionStorage.books);
+    }
+    else {
+        $http({
+            method: 'GET',
+            url: host + '/pop_book'
+        }).success(function(response){
+            $scope.books = response;
+            for(var i=0;i<$scope.books.length;i++){
+                $scope.books[i].star = Math.ceil($scope.books[i].rate/2);
+            }
+            sessionStorage.books = JSON.stringify($scope.books);
+        });
+    }
+
+    // 获取热门书单
+    if(sessionStorage.booklists != undefined){
+        $scope.booklists = JSON.parse(sessionStorage.booklists);
+    }
+    else {
+        $http({
+            method: 'GET',
+            url: host + '/booklist',
+            params: {
+                type: "hot"
+            }
+        }).success(function(response){
+            $scope.booklists = response;
+            sessionStorage.booklists = JSON.stringify($scope.booklists);
+        });
+    }
+
+    // 获取活动轮播
+    if(sessionStorage.slides != undefined) {
+        $scope.slides = JSON.parse(sessionStorage.slides);
+    }
+    else {
+        $http({
+            method: 'GET',
+            url: host + '/slides'
+        }).success(function(response){
+            $scope.slides = response;
+            sessionStorage.slides = JSON.stringify($scope.slides);
+        });
+    }
+}]);
+
 routeApp.controller('MeCtrl',["$scope", "$http", function($scope, $http) {
 
     // 返回用户信息，gravatar,name,cart,order{wait,received}
@@ -1445,6 +1445,21 @@ routeApp.controller('MeCtrl',["$scope", "$http", function($scope, $http) {
     else {
         $scope.user = angular.fromJson(sessionStorage.user);
     }
+    
+}]);
+
+routeApp.controller('NoticesCtrl', ["$http", "$scope", function($http, $scope){
+
+    $scope.busy = true;
+
+    // 获取全部消息
+    $http({
+        method: 'GET',
+        url: host + '/user_notices'
+    }).success(function(response){
+        $scope.notices = response;
+        $scope.busy = false;
+    });
     
 }]);
 
@@ -1540,21 +1555,6 @@ routeApp.controller('OrdersCtrl',["$scope", "$http", "$stateParams", function($s
         });
     };
 
-}]);
-
-routeApp.controller('NoticesCtrl', ["$http", "$scope", function($http, $scope){
-
-    $scope.busy = true;
-
-    // 获取全部消息
-    $http({
-        method: 'GET',
-        url: host + '/user_notices'
-    }).success(function(response){
-        $scope.notices = response;
-        $scope.busy = false;
-    });
-    
 }]);
 
 routeApp.controller('OrderCommentsCtrl', ["$scope", "$http", "$stateParams", function($scope, $http, $stateParams){
@@ -1696,18 +1696,6 @@ routeApp.controller('OrderDetailCtrl',["$scope", "$http", "$stateParams", functi
     };
 }]);
 
-routeApp.controller('PopularMoreCtrl',["$scope", "BL", function($scope, BL) {
-
-    // 获取更多热门书单
-    var url = host + '/booklist';
-    var params = {
-        type: "hot",
-        page: 1
-    };
-    $scope.booklists = new BL(url,params);
-
-}]);
-
 routeApp.controller('PointCtrl', ["$http", "$scope", function($http, $scope){
 
     $scope.busy = true;
@@ -1723,9 +1711,15 @@ routeApp.controller('PointCtrl', ["$http", "$scope", function($http, $scope){
     
 }]);
 
-routeApp.controller('SettingsCtrl', ["$http", "$scope", function($http, $scope){
+routeApp.controller('PopularMoreCtrl',["$scope", "BL", function($scope, BL) {
 
-    $scope.user = JSON.parse(sessionStorage.user);
+    // 获取更多热门书单
+    var url = host + '/booklist';
+    var params = {
+        type: "hot",
+        page: 1
+    };
+    $scope.booklists = new BL(url,params);
 
 }]);
 
@@ -1740,6 +1734,35 @@ routeApp.controller('RecommendMoreCtrl',["$scope", "BL", function($scope, BL) {
     
 }]);
 
+routeApp.controller('SettingsCtrl', ["$http", "$scope", function($http, $scope){
+
+    $scope.user = JSON.parse(sessionStorage.user);
+
+}]);
+
+routeApp.controller('AddressCtrl', ["$http", "$scope", "$state", "User", function ($http, $scope, $state, User) {
+
+    $scope.wait = true;
+
+    // 获取用户地址信息
+    $http({
+        method: 'GET',
+        url: host + '/user_address'
+    }).success(function(response){
+        $scope.address = response;
+        $scope.wait = false;
+    });
+
+    $scope.edit = function(){
+        User.setTemp(this.x);
+        $state.go('AddressAdd');
+    };
+
+    // 返回上层
+    $scope.back = function() {
+        history.back();
+    };
+}]);
 routeApp.controller('AddressAddCtrl', ["$http", "$scope", "$location", "$state", "User", function($http, $scope, $location, $state, User){
 
     var data = User.getTemp();
@@ -1896,29 +1919,6 @@ routeApp.controller('AddressAddCtrl', ["$http", "$scope", "$location", "$state",
     
 }]);
 
-routeApp.controller('AddressCtrl', ["$http", "$scope", "$state", "User", function ($http, $scope, $state, User) {
-
-    $scope.wait = true;
-
-    // 获取用户地址信息
-    $http({
-        method: 'GET',
-        url: host + '/user_address'
-    }).success(function(response){
-        $scope.address = response;
-        $scope.wait = false;
-    });
-
-    $scope.edit = function(){
-        User.setTemp(this.x);
-        $state.go('AddressAdd');
-    };
-
-    // 返回上层
-    $scope.back = function() {
-        history.back();
-    };
-}]);
 routeApp.controller('SignatureCtrl', ["$http", "$scope", "$stateParams", "$location", function ($http, $scope, $stateParams, $location) {
 
     $scope.signature = $stateParams.signature;

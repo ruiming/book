@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/boooook/boooook#readme",
   "devDependencies": {
+    "bower": "^1.7.9",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.0.6",
     "gulp-concat": "^2.6.0",

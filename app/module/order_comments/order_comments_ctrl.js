@@ -37,6 +37,18 @@ routeApp.controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
                 }
             }
         }
+        // todo 平台评分
+        $http({
+            method: 'POST',
+            url: host + '/user_billing',
+            data: {
+                stars1: $scope.stars1,
+                stars2: $scope.stars2,
+                stars3: $scope.stars3
+            }
+        }).success(function(response){
+
+        });
     };
 
     // 书籍评价

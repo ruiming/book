@@ -37,7 +37,7 @@
         <div class="empty-alert" ng-if="orders.length==0 && type=='waiting'">
             <p>您还没有待收货订单，快去逛逛吧</p>
         </div>
-        <div class="empty-alert" ng-if="!orders.length && !orders_after.length">
+        <div class="empty-alert" ng-if="orders_after.length==0 || type=='after'">
             <p>您还没有订单，快去逛逛吧</p>
         </div>
         <li class="order-list-one" ng-repeat="order in orders">

@@ -11,36 +11,38 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
         && $stateParams.status !== "all"
         && $stateParams.status !== "commenting"
         && $stateParams.status !== "waiting"
-        && $stateParams.status !== "after"
+        && $stateParams.status !== "return"
         && $stateParams.status !== "done"
     ) {
         history.back();
     }
-    else if($stateParams.status == "after") {
+    else if($stateParams.status == "return") {
         // todo 获取正在申请售后服务的订单
         $http({
             method: 'GET',
             url: host + '/user_billings',
             params: {
-                status: "after"
+                // 多个状态返回
+                status: "refunding"
             }
         }).success(function(response){
-            $scope.orders_after = response;
-            for(var x in $scope.orders_after){
-                if($scope.orders_after.hasOwnProperty(x)){
-                    $scope.orders_after[x].status = statusDict[$scope.orders_after[x].status];
+            $scope.orders_return = response;
+            for(var x in $scope.orders_return){
+                if($scope.orders_return.hasOwnProperty(x)){
+                    $scope.orders_return[x].status = statusDict[$scope.orders_return[x].status];
                 }
             }
         });
     }
 
     // 获取订单
-    // todo 为after时返回已收货的订单，包括待评价和已评价订单
+    // todo 为return时返回已收货的订单，包括待评价和已评价订单
     $http({
         method: 'GET',
         url: host + '/user_billings',
         params: {
-            status: $stateParams.status
+            // todo 多个状态返回
+            status: "commenting"
         }
     }).success(function(response){
         $scope.orders = response;

@@ -33,9 +33,7 @@ gulp.task('angular', function(cb){
             'bower_components/angular-animate/angular-animate.min.js',
             'bower_components/angular-touch/angular-touch.min.js',
             'bower_components/angular-sanitize/angular-sanitize.min.js',
-            'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
-            'bower_components/Snap.svg/dist/snap.svg-min.js',
-            'bower_components/me-pageloading/me-pageloading.js'])
+            'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
         .pipe(concat('dependence.min.js'))
@@ -70,8 +68,7 @@ gulp.task('templates:dist', function(cb) {
 // 打包合并css
 gulp.task('css', function(cb){
     gulp.src(['bower_components/bootstrap/dist/css/bootstrap.min.css',
-            'bower_components/font-awesome/css/font-awesome.min.css',
-            'bower_components/me-pageloading/me-pageloading.min.css'])
+            'bower_components/font-awesome/css/font-awesome.min.css'])
         .pipe(concat('app.min.css'))
         .pipe(cleanCSS())
         .pipe(gulp.dest('src/css/'))

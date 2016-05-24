@@ -1,6 +1,8 @@
-var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngSanitize','ngTouch','infinite-scroll']);
+var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngSanitize','ngTouch','infinite-scroll','me-pageloading']);
 
-routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRouterProvider',function ($stateProvider,$locationProvider,$httpProvider,$urlRouterProvider) {
+routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRouterProvider', 'mePageLoadingProvider', function ($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, mePageLoadingProvider) {
+
+    mePageLoadingProvider.effect = 'Frame it';
 
     // modify response from transformResponse and alert error
     $httpProvider.defaults.transformResponse.push(function (response) {

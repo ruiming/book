@@ -1,4 +1,4 @@
-var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngSanitize','ngTouch','infinite-scroll','me-pageloading']);
+var routeApp = angular.module('index',['ui.router','ui.bootstrap','ngAnimate','ngSanitize','ngTouch','infinite-scroll']);
 
 routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRouterProvider', function ($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider) {
 
@@ -16,9 +16,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
         }
         return response;
     });
-
-    $httpProvider.defaults.useXDomain = true;
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
     // push timestampMaker into httpProvider
     $httpProvider.interceptors.push('timestampMarker');

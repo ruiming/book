@@ -46,9 +46,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     templateUrl: 'index/index_tpl.html',
                     controller: 'IndexCtrl'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -58,9 +55,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'RecommendMoreCtrl',
                     templateUrl: 'recommend_more/recommend_more_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -70,9 +64,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'BooklistsCtrl',
                     templateUrl: 'booklists/booklists_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -82,9 +73,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'PopularMoreCtrl',
                     templateUrl: 'popular_more/popular_more_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -94,9 +82,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'BookCtrl',
                     templateUrl: 'book/book_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -106,9 +91,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'BookInfoCtrl',
                     templateUrl: 'book_info/book_info_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -118,9 +100,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'BookListCtrl',
                     templateUrl: 'booklist/booklist_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -130,9 +109,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'TagBooklistsCtrl',
                     templateUrl: 'tag-booklists/tag-booklists_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -142,9 +118,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'CommentsCtrl',
                     templateUrl: 'comments/comments_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -154,9 +127,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'TagsCtrl',
                     templateUrl: 'tags/tags_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -166,9 +136,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'MeCtrl',
                     templateUrl: 'me/me_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -178,9 +145,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'CartCtrl',
                     templateUrl: 'cart/cart_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -190,9 +154,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'OrdersCtrl',
                     templateUrl: 'orders/orders_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -202,6 +163,9 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'OrderDetailCtrl',
                     templateUrl: 'order_detail/order_detail_tpl.html'
+                },
+                'nav': {
+                    template: '<span></span>'
                 }
             }
         })
@@ -211,6 +175,9 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'OrderCommentsCtrl',
                     templateUrl: 'order_comments/order_comments_tpl.html'
+                },
+                'nav': {
+                    template: '<span></span>'
                 }
             }
         })
@@ -220,9 +187,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'OrdersCommentedCtrl',
                     templateUrl: 'orders_commented/orders_commented_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -232,9 +196,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'UserCommentsCtrl',
                     templateUrl: 'user_comments/user_comments_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -244,9 +205,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'CollectBookListsCtrl',
                     templateUrl: 'collect_booklists/collect_booklists_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -256,9 +214,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'CollectBooksCtrl',
                     templateUrl: 'collect_books/collect_books_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -268,9 +223,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'PointCtrl',
                     templateUrl: 'point/point_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -280,9 +232,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'NoticesCtrl',
                     templateUrl: 'notices/notices_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -292,9 +241,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'SettingsCtrl',
                     templateUrl: 'settings/settings_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -304,9 +250,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'SignatureCtrl',
                     templateUrl: 'setting_signature/setting_signature_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -316,9 +259,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'AddressCtrl',
                     templateUrl: 'setting_address/setting_address_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -328,9 +268,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'AddressAddCtrl',
                     templateUrl: 'setting_address_add/setting_address_add_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         })
@@ -340,6 +277,9 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'Cart2OrderCtrl',
                     templateUrl: 'cart2order/cart2order_tpl.html'
+                },
+                'nav': {
+                    template: '<span></span>'
                 }
             }
         })
@@ -349,9 +289,6 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
                 'main': {
                     controller: 'SuggestCtrl',
                     templateUrl: 'suggest/suggest_tpl.html'
-                },
-                'nav': {
-                    templateUrl: 'navbar/navbar_tpl.html'
                 }
             }
         });

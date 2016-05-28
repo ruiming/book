@@ -23,7 +23,7 @@
                     <a ui-sref="book({isbn: item.book.isbn})">{{item.book.title}}</a>
                 </div>
                 <p class="cart-book-price"> ¥ {{item.price | number:2 }}</p>
-                <span class="cart-book-count" ng-show="!editStatu"> X {{ item.number }}</span>
+                <span class="cart-book-count" ng-if="!editStatu"> X {{ item.number }}</span>
                 <div class="cart-book-edit" ng-if="editStatu">
                     <i class="fa fa-trash-o fa-1x" ng-click="removeBook(item, $index)" aria-hidden="true"></i>
                     <div class="cart-book-edit-count">

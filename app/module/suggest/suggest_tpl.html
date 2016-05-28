@@ -9,8 +9,8 @@
         </div>
         <form class="suggestion" name="suggestBox">
             <textarea class="form-control" name="suggestion" ng-model="suggestion" ng-required="required"></textarea>
-            <button type="submit" class="btn btn-block btn-info" ng-show="!wait" ng-click="post()" ng-disabled="wait2">提交</button>
-            <button class="btn btn-block btn-info" ng-show="wait" disabled><wait></wait></button>
+            <button type="submit" class="btn btn-block btn-info" ng-if="!wait" ng-click="post()" ng-disabled="wait2">提交</button>
+            <button class="btn btn-block btn-info" ng-if="wait" disabled><wait></wait></button>
         </form>
     </div>
 </div>

@@ -1,5 +1,5 @@
-<loading ng-show="busy"></loading>
-<div class="tags" ng-show="!busy">
+<loading ng-if="busy"></loading>
+<div class="tags" ng-if="!busy">
     <span>全部标签</span>
     <div class="tags-group" ng-repeat="oneTags in allTags">
         <div class="tags-group-one">

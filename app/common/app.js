@@ -5,6 +5,10 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
 
     // modify response from transformResponse and alert error
     $httpProvider.defaults.transformResponse.push(function (response) {
+        // todo 全局提示 20160528
+        if(response.message != undefined)
+            notie.alert(1, response.message, 0.3);
+
         if(typeof(response.data) != "undefined" && response.status == "success") {
             response = response.data;
             return response;

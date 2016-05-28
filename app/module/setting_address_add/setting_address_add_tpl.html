@@ -3,17 +3,17 @@
         <div class="form-group">
             <label>收货人</label>
             <input type="text" name="name" maxlength=10
-                   ng-required=true ng-model="name" focus-me="{{correct_name}}" class="form-control" placeholder="姓名">
+                   ng-required=true ng-model="name" class="form-control" placeholder="姓名">
         </div>
         <div class="form-group">
             <label>手机号码</label>
-            <input type="text" name="phone" ng-model="phone" class="form-control" placeholder="11位手机号"
-                   ng-required=true ng-minlength="11" ng-maxlength="11" minlength=11 maxlength=11 focus-me="{{correct_phone}}" ng-change="check()">
+            <input type="tel" name="phone" ng-model="phone" class="form-control" placeholder="11位手机号" my-maxlength="11"
+                   ng-required=true ng-minlength="11" ng-maxlength="11" minlength='11' maxlength='11' ng-change="check()">
         </div>
         <div class="form-group">
             <label>宿舍地址</label>
             <input type="text" name="dorm" ng-model="dorm" maxlength=30 class="form-control"
-                   ng-required=true focus-me="{{correct_dorm}}" placeholder="宿舍位置">
+                   ng-required=true placeholder="宿舍位置">
         </div>
         <div class="btn-group">
             <button class="btn btn-success" type="submit" ng-if="!edit&&!wait1" ng-click="add()" ng-disabled="ok1">添加</button>
@@ -28,10 +28,3 @@
         </div>
     </form>
 </div>
-<div ng-if="correct_name" class="animate-if"><p>姓名信息有误</p></div>
-<div ng-if="correct_phone" class="animate-if"><p>手机信息有误</p></div>
-<div ng-if="correct_dorm" class="animate-if"><p>宿舍信息有误</p></div>
-<div ng-if="ok1" class="animate-if"><p>添加成功</p></div>
-<div ng-if="ok2" class="animate-if"><p>修改成功</p></div>
-<div ng-if="ok3" class="animate-if"><p>删除成功</p></div>
-<div ng-if="ok4" class="animate-if"><p>设置成功</p></div>

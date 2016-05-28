@@ -1,4 +1,5 @@
 routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
+    // todo 在苹果下加入购物车，收藏出现延迟问题
     $scope.more = false;            // 默认不加载更多书籍信息介绍
     $scope.busy = true;             // 页面加载动画Loading
     $scope.wait = false;            // 发表评论wait

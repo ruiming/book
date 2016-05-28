@@ -6,13 +6,13 @@
         <p class="booklist-intro">{{booklist.description}}</p>
         <img class="avatar" ng-src="{{booklist.author.avatar}}">
         <small>{{booklist.author.name}} / {{booklist.collect}}人收藏</small>
-        <button class="btn btn-info" ng-click="collect()" ng-show="!booklist.collect_already&&!wait">
+        <button class="btn btn-info" ng-click="collect()" ng-if="!booklist.collect_already&&!wait">
             <i class="fa fa-bookmark-o"></i> 收藏书单
         </button>
-        <button class="btn btn-info" ng-show="wait" disabled>
+        <button class="btn btn-info" ng-if="wait" disabled>
             <wait></wait>
         </button>
-        <button class="btn btn-info" ng-click="collect()" ng-show="booklist.collect_already&&!wait">
+        <button class="btn btn-info" ng-click="collect()" ng-if="booklist.collect_already&&!wait">
             <i class="fa fa-bookmark"></i> 已收藏
         </button>
     </div>

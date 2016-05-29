@@ -7,7 +7,7 @@ var host = "http://www.bookist.org";        // API url
 // var host = "http://192.168.1.231";
 
 var statusDict = {                       // 订单状态转换
-    "create": "创建",                    // 订单创建，等同于待发货
+    "create": "创建/待付款",                    // 订单创建，等同于待发货
     "pending": "待发货",                 // 订单创建后就处于待发货状态，用户可以取消订单
     "waiting": "待收货",                 // 订单已发货，待用户收货，不能取消订单
     "commenting": "待评价",              // 用户确认收货，进入待评价状态，用户可以申请售后
@@ -27,8 +27,8 @@ var statusDict = {                       // 订单状态转换
  *                                                            -> refund_refused
  *                                                            -> closed    -> refund_refused
  *                                          ->  ->  -> refund -> refunding -> refunded
- * create(pending) -> waiting -> commenting -> done ->
- *                 -> canceled              ->  ->  -> replace -> replacing -> replaced(commenting/done) -> ...
+ * create->pending -> waiting -> commenting -> done ->
+ *                  -> canceled              ->  ->  -> replace -> replacing -> replaced(commenting/done) -> ...
  *                                                             -> closed    -> replace_refused
  *                                                             -> replaced_refused
  */

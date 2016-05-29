@@ -6,7 +6,7 @@
 {% block tail %}
 {{ super() }}
 {{ lib.form_js() }}
-
+<script src="/static/js/base64.js"></script>
 <script>
     function get_info(){
         $.getJSON("/douban/"+$("#isbn").val(), function(result){
@@ -24,7 +24,7 @@
             var price = result['price'].match(/\d+(\.\d+)?/g);
             $("#price").val(price[0]);
 
-            $("#catelog").val(result['catelog']);
+            $("#catelog").val(result['catalog']);
             $("#publish_time").val(result['pubdate']);
             for(var i = 0; i<result['author'].length; i++){
                 faForm.addInlineField($("#author-button"), 'author');
@@ -41,8 +41,9 @@
                 var fieldname = "textarea#tag-"+ i.toString() +"-name";
                 $(fieldname).val(result['tags'][i].name);
             }
+            $.get("/saveimg/"+base64.encode(result['images']['large']), { isbn: $("#isbn").val()} );
+        });
 
-        })
 
     }
 

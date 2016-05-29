@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request
 
 from app.auth.model import User, UserAddress
 from app.book.model import Book, BookList
-from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback
+from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback, BillingStatus
 
 from app.lib.common_function import return_message, token_verify
 from app.lib.api_function import allow_cross_domain
@@ -233,9 +233,9 @@ def collect():
         """
         提交收藏信息
         """
-        type = request.form.get('type', None)
-        id = request.form.get('id', None)
-        isbn = request.form.get('isbn', None)
+        type = request.form.get('type', None)  # 收藏类型
+        id = request.form.get('id', None)  # booklist 所需
+        isbn = request.form.get('isbn', None)  # book 所需
 
 
         if type not in ['book', 'booklist']:
@@ -244,35 +244,45 @@ def collect():
         if type == 'book':
             id = isbn
 
-        if id == '' or not istance_objects(type, id):
-            return return_message('error', 'missing id')
-
         this_user = User.get_one_user(openid=request.headers['userid'])
 
-        is_inserted = Collect.objects(user=this_user, type=type, type_id=id).count()
+        insert_list = []
+        cancel_list = []
+        try:
+            id_list = id.split(',')
+            for one_id in id_list:
 
-        if is_inserted == 0:
-            # 添加收藏
-            Collect(user=this_user, type=type, type_id=id).save()
+                if not istance_objects(type, one_id):
+                    raise Exception
+
+                collect = Collect.objects(user=this_user, type=type, type_id=one_id)
+
+                if collect.count() == 0:
+                    insert_list.append(one_id)
+                elif collect.count() == 1:
+                    cancel_list.append(collect.first())
+                else:
+                    raise Exception
+        except:
+            return return_message('error', 'unknown id')
+
+        for one in insert_list:
+            Collect(user=this_user, type=type, type_id=one).save()
+
+            # TODO: 重新设计 书单的收藏数。
             if type == 'booklist':
                 this_booklist = BookList.objects(pk=id).first()
                 this_booklist.collect += 1
                 this_booklist.save()
-            return return_message('success', 'collect submit successfully')
 
-        elif is_inserted == 1:
-            # 取消收藏
-            this_collect = Collect.objects(user=this_user, type=type, type_id=id).first()
-            if this_collect.type == 'booklist':
+        for one in cancel_list:
+            if one.type == 'booklist':
                 this_booklist = BookList.objects(pk=id).first()
                 this_booklist.collect -= 1
                 this_booklist.save()
-            this_collect.delete()
+            one.delete()
 
-            return return_message('success', 'discollect submit successfully')
-        else:
-            # logger
-            return return_message('error', 'unknown error')
+        return return_message('success', 'collect submit successfully')
 
     elif request.method == 'DELETE':
         # 抛弃
@@ -312,7 +322,6 @@ def cart():
         """
         提交一个购物车
         """
-        # TODO: 重复当作数量修改
 
         isbn = request.form.get('isbn', None)
         if not isbn:
@@ -396,19 +405,28 @@ def cart():
         isbn = request.form.get('isbn', None)
         if not isbn:
             return return_message('error', 'unknown book isbn')
-        this_book = Book.objects(isbn=isbn)
-        if this_book.count() != 1:
-            return return_message('error', 'unknown book')
-        else:
-            this_book = this_book.first()
 
-        this_cart = Cart.objects(book=this_book, status=1, user=this_user)
-        if this_cart.count() != 1:
-            return return_message('error', 'unknown cart')
-        this_cart = this_cart.first()
 
-        this_cart.status = 0
-        this_cart.save()
+        all_cart = []
+
+        try:
+            isbn_list = isbn.split(',')
+            for one_isbn in isbn_list:
+                if Book.objects(isbn=one_isbn).count() != 1:
+                    raise Exception
+
+                this_cart = Cart.objects(book=Book.objects(isbn=one_isbn).first(), status=1, user=this_user)
+                if this_cart.count() != 1:
+                    raise Exception
+                this_cart = this_cart.first()
+
+                all_cart.append(this_cart)
+        except:
+            return return_message('error', 'unknown cart id')
+
+        for one_cart in all_cart:
+            one_cart.status = 0
+            one_cart.save()
 
         return return_message('success', 'DELETE cart')
 
@@ -424,7 +442,6 @@ def billing():
         """
         查看一个订单状态
         """
-        # TODO: 继续完成查看函数
 
         id = request.args.get('id', None)
 
@@ -440,7 +457,12 @@ def billing():
         this_billing_json = {
             'id': str(this_billing.pk),
             'status': this_billing.status,
-            'status_list': [one for one in this_billing.status_list],
+            'status_list': [{
+                'status': one.status,
+                'content': one.content,
+                'time': str(one.time),
+                'backend': one.backend_operator
+                            } for one in this_billing.status_list],
             'carts': [{
                 'id': str(one_cart.pk),
                 'number': one_cart.number,
@@ -489,6 +511,7 @@ def billing():
         except:
             return return_message('error', 'unknown cart id')
 
+        # 计算订单总价
         price_sum = 0
 
         for one_cart in all_cart:
@@ -497,13 +520,20 @@ def billing():
             one_cart.status = 2
             one_cart.save()
 
+        # 入库
         this_billing = Billing(
             user=this_user,
             status='pending',
             list=all_cart,
             address=this_user_address,
             price=price_sum,
-            status_list=['create|{}'.format(int(time()))]
+            status_list=[BillingStatus(
+                status='create',
+                content=u'创建订单'
+            ),BillingStatus(
+                status='pending',
+                content=u'待付款'
+            )]
         ).save()
         return return_message('success', {'data': str(this_billing.pk)})
 
@@ -526,31 +556,13 @@ def billing():
         if status not in ['waiting', 'commenting', 'done', 'refund']:
             return return_message('error', 'unknown type')
 
-        if status == 'waiting':
-            if this_billing.status != 'pending':
-                return return_message('error', 'error operation')
 
-            # TODO 待付款 -> 已付款，待发货 的状态判断
 
-        elif status == 'commenting':
-            if this_billing.status != 'waiting':
-                return return_message('error', 'error operation')
+        try:
+            this_billing.change_status(status)
+        except Billing.BillingErrorOperator:
+            return return_message('error', 'error operator')
 
-            # TODO 已付款，待发货 -> 已收获，待评价 的状态判断
-
-        elif status == 'done':
-            if this_billing.status != 'commenting':
-                return return_message('error', 'error operation')
-
-            # TODO 已收获，待评价 -> 账单完成 的状态判断
-
-        elif status == 'refund':
-            pass
-            # TODO 退货 的状态判断
-
-        this_billing.status = status
-        this_billing.status_list.append('{}|{}'.format(status, str(int(time()))))
-        this_billing.save()
         return return_message('success', 'PUT Billing')
 
     elif request.method == 'DELETE':
@@ -566,9 +578,10 @@ def billing():
         except:
             return return_message('error', 'unknown billing id')
 
-        this_billing.status = 'canceled'
-        this_billing.status_list.append('canceled|{}'.format(int(time())))
-        this_billing.save()
+        try:
+            this_billing.change_status('canceled')
+        except:
+            return return_message('error', 'unknown error')
 
         return return_message('success', 'delete billing')
 
@@ -824,7 +837,6 @@ def user_collects():
     for one in all_collect:
         if type == 'book':
             one_book = Book.objects(isbn=one.type_id).first()
-            # TODO: 收藏API 书本信息补全
             all_collect_json.append({
                 'title': one_book.title,
                 'isbn': one_book.isbn,
@@ -834,7 +846,6 @@ def user_collects():
             })
         elif type == 'booklist':
             one_booklist = BookList.objects(pk=one.type_id).first()
-            # todo: 收藏API 书单信息补全
             all_collect_json.append({
                 'id': str(one_booklist.pk),
                 'title': one_booklist.title,
@@ -877,14 +888,24 @@ def user_billings():
     """
     返回用户订单
     """
-    status = request.args.get('status', 'all')
+    status = request.args.get('status', None)
 
-    if status not in ['pending', 'waiting', 'commenting', 'done', 'canceled', 'all']:
+    if status not in ['create', 'pending', 'waiting', 'commenting', 'done', 'canceled', 'refund', 'refunding',
+                      'refunded', 'replace', 'replacing', 'replaced', 'refunded_refused', 'replace_refunsed',
+                      'closed',
+                      'return', 'on_return']:
+
         return return_message('error', 'unknown order status')
 
     this_user = User.get_one_user(openid=request.headers['userid'])
-    if status == 'all':
-        all_billing = Billing.objects(user=this_user)
+
+    if status == 'return':
+        all_billing = Billing.objects(user=this_user, status__in=['commenting', 'done'])
+    elif status == 'on_return':
+        all_billing = Billing.objects(user=this_user, status__in=['refund', 'refunding', 'refunded', 'replace',
+                                                                  'replacing', 'replaced',
+                                                                  'refund_refused', 'replace_refused'])
+
     else:
         all_billing = Billing.objects(user=this_user, status=status)
 
@@ -907,9 +928,11 @@ def user_billings():
                 'price': float(one_cart.price),
             } for one_cart in one_billing.list],
             'status_list': [{
-                'status': one_status.split('|')[0],
-                'time': int(one_status.split('|')[1])
-                            } for one_status in one_billing.status_list],
+                'status': one.status,
+                'content': one.content,
+                'time': str(one.time),
+                'backend': one.backend_operator
+                            } for one in one_billing.status_list],
             'create_time': one_billing.create_time,
             'edit_time': one_billing.edit_time
         })

@@ -3,6 +3,7 @@ celery
 flask-mongoengine
 flask-admin
 flask-login
+flask-security
 requests
 gunicorn
 pycrypto

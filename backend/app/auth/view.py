@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import app, wechat
-from flask import Blueprint, jsonify, request, render_template, redirect
+from flask import Blueprint, jsonify, request, render_template, redirect, abort, url_for
+from flask.ext.security import login_user, current_user, login_required, utils, logout_user
 from app.auth.model import User, WechatOAuth
 from app.auth.function import random_str
 from time import time
@@ -130,3 +131,30 @@ def code2token():
                 return redirect("http://www.bookist.org/?token={}&user_id={}".format(token['access_token'], token['openid'])), 301
 
     return 'failure get code'
+
+
+@auth_module.route('/admin-auth', methods=['GET', 'POST'])
+def admin_auth():
+    if request.method == 'GET':
+
+        return render_template('admin/admin-login.html')
+
+    elif request.method == 'POST':
+        username = request.form.get("username", None)
+        password = request.form.get("password", None)
+        if not username or not password:
+            abort(403)
+
+        user = User.objects(email=username, password=password)
+        if user.count() == 1:
+            login_user(user.first(), False)
+            return redirect(url_for('admin.index'))
+
+        else:
+            abort(403)
+
+
+@auth_module.route('/admin-auth-out', methods=['GET'])
+def admin_auth_out():
+    logout_user()
+    return 'done'

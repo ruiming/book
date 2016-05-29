@@ -3,7 +3,7 @@ import os
 import sys
 
 from flask import Flask
-from flask.ext.mongoengine import MongoEngine
+from flask_mongoengine import  MongoEngine
 from flask.ext.admin import Admin
 from flask.ext.security import Security, MongoEngineUserDatastore
 from wechatpy.oauth import WeChatOAuth

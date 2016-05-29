@@ -155,7 +155,7 @@ class UserAddress(db.Document):
     name = db.StringField(required=True)
     phone = db.StringField(required=True)
     dormitory = db.StringField(required=True)
-    enable = db.BooleanField(required=True, default=True)
+    enabled = db.BooleanField(required=True, default=True)
     user = db.ReferenceField(User)
     is_default = db.BooleanField(required=True, default=False)
 

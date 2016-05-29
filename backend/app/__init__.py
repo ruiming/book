@@ -4,8 +4,8 @@ import sys
 
 from flask import Flask
 from flask_mongoengine import  MongoEngine
-from flask.ext.admin import Admin
-from flask.ext.security import Security, MongoEngineUserDatastore
+from flask_admin import Admin
+from flask_security import Security, MongoEngineUserDatastore
 from wechatpy.oauth import WeChatOAuth
 from qiniu import Auth, BucketManager
 

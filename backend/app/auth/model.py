@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import db
 from time import time
-from flask.ext.security import RoleMixin, UserMixin
+from flask_security import RoleMixin, UserMixin
 
 
 class UserRole(db.Document, RoleMixin):

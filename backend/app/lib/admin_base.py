@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from flask.ext.admin.contrib.mongoengine import ModelView
-from flask.ext.admin import BaseView, expose, AdminIndexView
-from flask.ext.security import current_user
+from flask_admin.contrib.mongoengine import ModelView
+from flask_admin import BaseView, expose, AdminIndexView
+from flask_security import current_user
 
 from time import localtime, strftime
 

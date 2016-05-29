@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import app, wechat
 from flask import Blueprint, jsonify, request, render_template, redirect, abort, url_for
-from flask.ext.security import login_user, current_user, login_required, utils, logout_user
+from flask_security import login_user, current_user, login_required, utils, logout_user
 from app.auth.model import User, WechatOAuth
 from app.auth.function import random_str
 from time import time

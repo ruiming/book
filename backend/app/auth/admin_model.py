@@ -4,9 +4,6 @@ from app.book.model import Book
 from app.auth.model import User
 
 from app.lib.admin_base import AdminBaseModelView
-from flask.ext.admin.contrib.mongoengine import ModelView
-from flask_admin.form import rules
-from flask.ext.security import current_user
 
 
 from app.user.model import Billing

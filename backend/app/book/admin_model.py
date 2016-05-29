@@ -5,7 +5,7 @@ from jinja2 import Markup
 from app.book.model import Book
 from app.user.model import Collect
 from flask_admin import form
-from flask.ext.admin.contrib.mongoengine import ModelView
+from flask_admin.contrib.mongoengine import ModelView
 from app.lib.admin_base import AdminBaseModelView
 from app.book.model import BookTag, Tag, Activity
 from app.auth.model import User

@@ -7,7 +7,6 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
     $scope.wait = false;
     $scope.required = true;
     $scope.wait2 = false;            // 删除等待
-    $scope.wait3 = false;            // 删除提示时延
 
     // 用户所有评论
     $http({
@@ -59,13 +58,7 @@ routeApp.controller('UserCommentsCtrl', function($http, $scope){
             }
         }).success(function(){
             $scope.wait2 = false;
-            $scope.wait3 = true;
             $scope.comments.splice(index, 1);
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait3 = false;
-                });
-            }, delay);
         });
     };
 });

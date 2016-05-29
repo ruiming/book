@@ -982,12 +982,19 @@ a {
   background-color: white;
   bottom: 0;
   button {
-    padding: 15px 20px;
+    border-radius: 0;
+    float: right;
+    padding: 6px 12px;
+    margin: 6px;
+    font-size: 14px;
   }
   .cart-count {
+    line-height: 2.2;
     padding-left: 20px;
     float: left;
-    line-height: 2.2;
+    label {
+      margin-bottom: 0;
+    }
   }
 }
 .collect-box {
@@ -2018,4 +2025,10 @@ a {
   100%{
     -webkit-transform:scale(.3);
   }
+}
+#notie-confirm-inner,
+#notie-input-inner,
+#notie-select-inner,
+#notie-alert-inner{
+  padding: 10px !important;
 }

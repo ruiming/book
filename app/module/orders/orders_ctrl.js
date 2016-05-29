@@ -8,7 +8,7 @@ routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
 
     /*
      * 备注:
-     * return 传回可退换订单
+     * return    传回 commenting, done订单
      * on_return 传回 refund, refunding, refunded, replace, replaced, replacing, refund_refused, replace_refused 订单
      *
      */

@@ -3,7 +3,6 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
     $scope.price = 0;
     $scope.busy = true;
     $scope.status_list = [];
-    $scope.wait = false;            // 取消订单提示
     $scope.wait2 = false;           // 操作时延
 
     // 获取订单详细信息
@@ -31,7 +30,6 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
 
     // 取消订单
     $scope.cancel = function(order){
-        $scope.wait = true;
         $scope.wait2 = true;
         $http({
             method: 'DELETE',
@@ -43,11 +41,6 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
             $scope.wait2 = false;
             $scope.order.status = "已取消";
             $scope.status_list.push({'status':'已取消','time': Date.parse(new Date())/1000});
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait = false;
-                });
-            }, delay);
         });
     };
 

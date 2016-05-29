@@ -3,13 +3,6 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
     var data = User.getTemp();
     $scope.edit = false;
 
-    $scope.correct_name = false;
-    $scope.correct_dorm = false;
-    $scope.correct_phone = false;
-    $scope.ok1 = false;                  // 添加成功提示
-    $scope.ok2 = false;                 // 修改成功提示
-    $scope.ok3 = false;                 // 删除成功提示
-    $scope.ok4 = false;                 // 设置默认地址成功提示
     $scope.wait1 = false;               // 添加等待动画
     $scope.wait2 = false;               // 修改等待动画
     $scope.wait3 = false;               // 删除等待动画
@@ -29,27 +22,15 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
         if(this.addressForm.$invalid) {
             if(this.addressForm.name.$invalid)  {
                 $scope.correct_name = true;
-                window.setTimeout(function() {
-                    $scope.$apply(function() {
-                        $scope.correct_name = false;
-                    });
-                }, 2500);
+                notie.alert(1, "收货人信息有误", 0.3);
             }
             else if(this.addressForm.phone.$invalid)  {
                 $scope.correct_phone = true;
-                window.setTimeout(function() {
-                    $scope.$apply(function() {
-                        $scope.correct_phone = false;
-                    });
-                }, 2500);
+                notie.alert(1, "手机信息有误", 0.3);
             }
             else if(this.addressForm.dorm.$invalid)  {
                 $scope.correct_dorm = true;
-                window.setTimeout(function() {
-                    $scope.$apply(function() {
-                        $scope.correct_dorm = false;
-                    });
-                }, 2500);
+                notie.alert(1, "宿舍信息有误", 0.3);
             }
         }
         else{
@@ -67,10 +48,8 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
                     }
                 }).success(function(){
                     $scope.wait2 = false;
-                    $scope.ok2 = true;
                     window.setTimeout(function() {
                         $scope.$apply(function() {
-                            $scope.ok2 = false;
                             $scope.back();
                         });
                     }, 1000);
@@ -89,10 +68,8 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
                     }
                 }).success(function(){
                     $scope.wait1 = false;
-                    $scope.ok1 = true;
                     window.setTimeout(function() {
                         $scope.$apply(function() {
-                            $scope.ok1 = false;
                             $scope.back();
                         });
                     }, 1000);
@@ -111,11 +88,9 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
                 id: id
             }
         }).success(function(){
-            $scope.ok3 = true;
             $scope.wait3 = false;
             window.setTimeout(function() {
                 $scope.$apply(function() {
-                    $scope.ok3 = false;
                     $scope.back();
                 });
             }, 1000);
@@ -136,11 +111,9 @@ routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state,
                 type: "default"
             }
         }).success(function(){
-            $scope.ok4 = true;
             $scope.wait4 = false;
             window.setTimeout(function() {
                 $scope.$apply(function() {
-                    $scope.ok4 = false;
                     $scope.back();
                 })
             }, 1000);

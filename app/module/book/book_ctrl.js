@@ -1,13 +1,10 @@
 routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
+    // todo 在苹果下加入购物车，收藏出现延迟问题
     $scope.more = false;            // 默认不加载更多书籍信息介绍
     $scope.busy = true;             // 页面加载动画Loading
     $scope.wait = false;            // 发表评论wait
     $scope.wait2 = false;           // 收藏图书wait
     $scope.wait3 = false;           // 加入购物车wait
-    $scope.wait4 = false;           // 加入购物车提醒延迟
-    $scope.wait5 = false;           // 收藏提醒延迟
-    $scope.wait6 = false;           // 取消收藏延迟
-    $scope.wait7 = false;           // 发布评论延迟
     $scope.required = true;         // 必填
     $scope.content = "";            // 初始评论
     $scope.star = 5;                // 默认星星数
@@ -23,12 +20,6 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             }
         }).success(function(){
             $scope.wait3 = false;
-            $scope.wait4 = true;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait4 = false;
-                });
-            }, 1500);
         });
     };
 
@@ -78,18 +69,6 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
         }).success(function () {
             $scope.book.collect_already = !$scope.book.collect_already;
             $scope.wait2 = false;
-            if($scope.book.collect_already) {
-                $scope.wait5 = true;
-            }
-            else {
-                $scope.wait6 = true;
-            }
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait5 = false;
-                    $scope.wait6 = false;
-                });
-            }, delay);
         });
     };
 
@@ -181,7 +160,6 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             }
         }).success(function(response){
             $scope.commentBox = false;
-            $scope.wait7 = true;
             response.user = {
                 avatar: $scope.user.avatar,
                 username: $scope.user.username
@@ -191,11 +169,6 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             $scope.book.comments.push(response);
             $scope.wait = false;
             $scope.content = "";
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait7 = false;
-                });
-            }, delay);
         });
     };
 });

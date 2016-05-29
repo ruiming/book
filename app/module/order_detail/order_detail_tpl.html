@@ -39,8 +39,7 @@
             <div class="order-detail-clear"></div>
             <div class="order-meta order-meta-fix-bottom">
                 <div class="order-meta-price">
-                    <span class="order-method">货到付款</span>
-                    <span class="order-price">实付款 {{price}} 元</span>
+                    <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{price}}</em> 元</span>
                 </div>
                 <a class="btn btn-danger" ng-if="order.status=='待评价'&&!wait2" style="width: 95px;" ui-sref="orderComments({id: order.id})">评价</a>
                 <button class="btn btn-danger" ng-if="order.status=='待收货'&&!wait2" ng-click="receipt(order)">确认收货</button>
@@ -51,4 +50,3 @@
         </li>
     </ul>
 </div>
-<div ng-if="wait" class="animate-if" style="bottom: 58px;"><p>订单取消成功</p></div>

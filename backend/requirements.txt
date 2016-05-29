@@ -8,3 +8,5 @@ requests
 gunicorn
 pycrypto
 wechatpy[pycrypto]
+qiniu
+flask-security

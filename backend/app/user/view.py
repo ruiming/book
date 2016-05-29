@@ -491,7 +491,7 @@ def billing():
         if not address_id or len(address_id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=address_id, user=this_user,  enable=True)
+        this_user_address = UserAddress.objects(pk=address_id, user=this_user,  enabled=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
@@ -614,18 +614,18 @@ def user_address():
 
         type = request.args.get('type', None)
         if type == 'default':
-            all_user_address = UserAddress.objects(user=this_user, enable=True, is_default=True)
+            all_user_address = UserAddress.objects(user=this_user, enabled=True, is_default=True)
 
             if all_user_address.count() == 0:
-                all_user_address = UserAddress.objects(user=this_user, enable=True)
+                all_user_address = UserAddress.objects(user=this_user, enabled=True)
 
             all_user_address = [all_user_address.first()]
         else:
-            all_user_address = UserAddress.objects(user=this_user, enable=True)
+            all_user_address = UserAddress.objects(user=this_user, enabled=True)
 
         address_list = []
         for one_address in all_user_address:
-            if one_address.enable:
+            if one_address.enabled:
                 address_list.append({
                     'id': str(one_address.pk),
                     'name': one_address.name,
@@ -656,7 +656,7 @@ def user_address():
 
         type = request.form.get('type', None)
 
-        if UserAddress.objects(user=this_user, enable=True, is_default=True).count() == 0:
+        if UserAddress.objects(user=this_user, enabled=True, is_default=True).count() == 0:
             this_user_address = UserAddress(
                 name=name,
                 phone=str(phone),
@@ -676,7 +676,7 @@ def user_address():
 
 
         if type == 'default':
-            all_default_address = UserAddress.objects(user=this_user, enable=True, is_default=True)
+            all_default_address = UserAddress.objects(user=this_user, enabled=True, is_default=True)
             for one in all_default_address:
                 one.is_default = False
                 one.save()
@@ -708,7 +708,7 @@ def user_address():
         if not id or len(id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=id, user=this_user, enable=True)
+        this_user_address = UserAddress.objects(pk=id, user=this_user, enabled=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
@@ -724,7 +724,7 @@ def user_address():
         this_user_address.dormitory = dormitory
 
         if type == 'default':
-            all_default_address = UserAddress.objects(user=this_user, enable=True, is_default=True)
+            all_default_address = UserAddress.objects(user=this_user, enabled=True, is_default=True)
             for one in all_default_address:
                 one.is_default = False
                 one.save()
@@ -739,18 +739,18 @@ def user_address():
         if not id or len(id) != 24:
             return return_message('error', 'unknown address id')
 
-        this_user_address = UserAddress.objects(pk=id, user=this_user, enable=True)
+        this_user_address = UserAddress.objects(pk=id, user=this_user, enabled=True)
         if this_user_address.count() != 1:
             return return_message('error', 'unknown address id')
         else:
             this_user_address = this_user_address.first()
 
-        this_user_address.enable = False
+        this_user_address.enabled = False
         this_user_address.save()
 
         if this_user_address.is_default:
             this_user_address.is_default = False
-            all_not_default_address = UserAddress.objects(user=this_user, enable=True, is_default=False)
+            all_not_default_address = UserAddress.objects(user=this_user, enabled=True, is_default=False)
 
             if all_not_default_address.count() >=1:
                 all_not_default_address = all_not_default_address.first()

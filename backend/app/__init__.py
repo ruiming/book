@@ -47,8 +47,8 @@ app.register_blueprint(outline_module)
 
 # Flask-Admin
 
-from flask.ext.admin.contrib.mongoengine import ModelView
-from flask.ext.admin.contrib.fileadmin import FileAdmin
+from flask_admin.contrib.mongoengine import ModelView
+from flask_admin.contrib.fileadmin import FileAdmin
 
 from app.lib.admin_base import AdminView, AdminBaseModelView
 from app.book.model import BookList, Activity, Book, Tag, Applacation

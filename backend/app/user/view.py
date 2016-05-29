@@ -10,7 +10,6 @@ from app.lib.common_function import return_message, token_verify
 from app.lib.api_function import allow_cross_domain
 from app.lib.wechat import oauth4api
 
-from datetime import datetime
 from time import time
 
 
@@ -893,13 +892,14 @@ def user_billings():
     if status not in ['create', 'pending', 'waiting', 'commenting', 'done', 'canceled', 'refund', 'refunding',
                       'refunded', 'replace', 'replacing', 'replaced', 'refunded_refused', 'replace_refunsed',
                       'closed',
-                      'return', 'on_return']:
+                      'return', 'on_return', 'all']:
 
         return return_message('error', 'unknown order status')
 
     this_user = User.get_one_user(openid=request.headers['userid'])
-
-    if status == 'return':
+    if status == 'all':
+        all_billing = Billing.objects(user=this_user, status__not__in=['close', 'canceled'])
+    elif status == 'return':
         all_billing = Billing.objects(user=this_user, status__in=['commenting', 'done'])
     elif status == 'on_return':
         all_billing = Billing.objects(user=this_user, status__in=['refund', 'refunding', 'refunded', 'replace',

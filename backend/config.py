@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from celery.schedules import timedelta
+
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 

@@ -107,6 +107,21 @@ class Billing(db.Document):
             ))
         self.save()
 
+    def add_log_backend(self, status, content=""):
+        """
+        向status_list中添加纪录
+        :param status:
+        :return:
+        """
+        self.status_list.append(BillingStatus(
+                status=status,
+                content=content,
+                backend_operator=True,
+            ))
+        self.status = status
+        self.edit_time = int(time())
+        self.save()
+
     def change_status_force(self, status, content):
         """
         修改订单状态
@@ -149,7 +164,8 @@ class Billing(db.Document):
 
             if next_status in ['refund', 'replace']:  # 进入 退款、退货 状态
                 # done, replaced, refund_refused, replace_refused
-                # TODO: refund_refused, replace_refused 是否还能重新进入售后
+                # TODO: refund_refused, replace_refused 是否还能重新进入售后   可以 重复进入 . 进入 commenting
+
                 if self.status in ['done', 'replaced']:
                     self.status = next_status
                     self._add_log(next_status, content)

@@ -3,7 +3,6 @@ from app import db
 from time import time
 from flask_security import RoleMixin, UserMixin
 
-
 class UserRole(db.Document, RoleMixin):
     """
     用户权限
@@ -124,36 +123,6 @@ class User(db.Document, UserMixin):
     def active(self):
         return True
 
-
-    def read_book_list(self, booklist):
-        """
-        用户行为记录 - 记录书单
-        :param booklist: BookList实例
-        :return:
-        """
-        if not isinstance(booklist, BookList):
-            raise BookList.NotBookListInstance
-
-        for tag in booklist.tag:
-            UserTypeBookList.new_or_add(tag.name, self)
-
-    def read_book(self, book):
-        """
-        用户行为记录 - 记录书本
-        :param book: Book实例
-        :return: None
-        """
-        if not isinstance(book, Book):
-            raise Book.NotBookInstance
-
-        for author in book.author:
-            UserTypeBook.new_or_add(UserTypeBook.RecordType.Author, author, self)
-
-        for translator in book.translator:
-            UserTypeBook.new_or_add(UserTypeBook.RecordType.Translator, translator, self)
-
-        for tag in book.tag:
-            UserTypeBook.new_or_add(UserTypeBook.RecordType.Tag, tag.name, self)
 
 
     @classmethod

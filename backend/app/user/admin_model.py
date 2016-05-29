@@ -45,26 +45,85 @@ class BillingView(AdminBaseView):
     def next(self, billing_id, status):
         print request.form
         billing = Billing.objects(pk=billing_id).first()
-        if status == 'pending':
-            billing.status_list.append(BillingStatus(
-                status='waiting',
-                content=u"已发货，信息：{}".format(request.form.get('content', None)),
-                backend_operator=True,
-            ))
-            billing.status = 'waiting'
-            billing.edit_time = int(time())
-            billing.save()
 
+        if status == 'pending':
+            content = request.form.get('content', None)
+
+            billing.add_log_backend(
+                status='waiting',
+                content=u"已发货，信息：{}".format(content) if content != '' else u"已发货",
+            )
 
         if status == 'refund':
-            pass
+            is_ok = request.form.get('is_ok', 'no')
+            content = request.form.get('content', None)
+
+            if is_ok == 'no':  # 拒绝退款/退货
+
+                billing.add_log_backend(
+                    status='refund_refused',
+                    content=u"拒绝退款(退货)，原因：{}".format(content) if content != '' else u"拒绝退款(退货)",
+                )
+
+            elif is_ok == 'on':  # 同意退款/退货
+
+                billing.add_log_backend(
+                    status='refunding',
+                    content=u"同意退款(退货)，原因：{}".format(content) if content != '' else u"同意退款(退货)",
+                )
 
         if status == 'refunding':
-            pass
+            is_ok = request.form.get('is_ok', 'no')
+            content = request.form.get('content', None)
+
+            if is_ok == 'no':  # 拒绝 确认退款处理
+
+                billing.add_log_backend(
+                    status='refund_refused',
+                    content=u"退款(退货)失败，原因：{}".format(content) if content != '' else u"退款(退货)失败",
+                )
+
+            elif is_ok == 'on':  # 同意 确认退款处理
+
+                billing.add_log_backend(
+                    status='refunded',
+                    content=u"退款(退货)成功，原因：{}".format(content) if content != '' else u"退款(退货)成功",
+                )
 
         if status == 'replace':
-            pass
+            is_ok = request.form.get('is_ok', 'no')
+            content = request.form.get('content', None)
+
+            if is_ok == 'no':  # 拒绝 换货
+
+                billing.add_log_backend(
+                    status='replace_refused',
+                    content=u"拒绝换货，原因：{}".format(content) if content != '' else u"拒绝换货",
+                )
+
+            elif is_ok == 'on':  # 同意 换货
+
+                billing.add_log_backend(
+                    status='replacing',
+                    content=u"同意换货，原因：{}".format(content) if content != '' else u"同意换货",
+                )
 
         if status == 'replacing':
-            pass
+            is_ok = request.form.get('is_ok', 'no')
+            content = request.form.get('content', None)
+
+            if is_ok == 'no':  # 拒绝 确认换货处理
+
+                billing.add_log_backend(
+                    status='replace_refused',
+                    content=u"换货失败，原因：{}".format(content) if content != '' else u"换货失败",
+                )
+
+            elif is_ok == 'on':  # 同意 确认换货处理
+
+                billing.add_log_backend(
+                    status='replaced',
+                    content=u"换货成功，原因：{}".format(content) if content != '' else u"换货成功",
+                )
+
         return redirect(url_for('billingview.detail', billing_id=str(billing.pk)))

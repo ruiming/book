@@ -5,7 +5,6 @@ import urllib2, base64, unicodedata
 from urllib import unquote
 from app import b
 
-from qiniu import put_file, etag, urlsafe_base64_encode
 
 outline_module = Blueprint("outline_module", __name__)
 

@@ -9,8 +9,6 @@ from flask_security import Security, MongoEngineUserDatastore
 from wechatpy.oauth import WeChatOAuth
 from qiniu import Auth, BucketManager
 
-from celery import Celery
-
 app = Flask(__name__)
 app.config.from_object('config')
 

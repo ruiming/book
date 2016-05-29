@@ -58,7 +58,6 @@ def booklist():
 
             this_user = User.get_one_user(openid=request.headers['userid'])
 
-            this_user.read_book_list(this_book_list)
 
             this_book_list_json = {
                 'title': this_book_list.title,
@@ -269,7 +268,6 @@ def book():
 
     this_user = User.get_one_user(openid=request.headers['userid'])
 
-    this_user.read_book(this_book)
 
     if type == 'summary':
         this_book_json = {

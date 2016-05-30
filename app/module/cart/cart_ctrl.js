@@ -84,8 +84,19 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
     // 添加书籍数量
     $scope.plus = function(item) {
         if(item.number < 10) {
-            item.number ++;
-            $scope.recount();
+            item.number++;
+            $http({
+                method: 'PUT',
+                url: host + '/cart',
+                data: {
+                    isbn: item.book.isbn,
+                    number: item.number
+                }
+            }).success(function () {
+                $scope.recount();
+            }).error(function () {
+                $state.reload();
+            });
         }
     };
 
@@ -93,7 +104,18 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
     $scope.minus = function(item) {
         if(item.number > 1) {
             item.number --;
-            $scope.recount();
+            $http({
+                method: 'PUT',
+                url: host + '/cart',
+                data: {
+                    isbn: item.book.isbn,
+                    number: item.number
+                }
+            }).success(function () {
+                $scope.recount();
+            }).error(function () {
+                $state.reload();
+            });
         }
     };
 

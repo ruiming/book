@@ -4,8 +4,25 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
     $scope.noWrapSlides = false;
     $scope.active = 0;
 
-    // 获取书籍推荐
+    // 获取活动轮播
+    if(sessionStorage.slides != undefined) {
+        $scope.slides = JSON.parse(sessionStorage.slides);
+    }
+    else {
+        $http({
+            method: 'GET',
+            url: host + '/slides'
+        }).success(function(response){
+            $scope.slides = response;
+            sessionStorage.slides = JSON.stringify($scope.slides);
+        });
+    }
 
+    // 获取书籍推荐
+    //if(sessionStorage.books != undefined){
+    //    $scope.books = JSON.parse(sessionStorage.books);
+    //}
+    //else {
         $http({
             method: 'GET',
             url: host + '/pop_book'
@@ -16,10 +33,13 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
             }
             sessionStorage.books = JSON.stringify($scope.books);
         });
-
+    //}
 
     // 获取热门书单
-
+    //if(sessionStorage.booklists != undefined){
+    //    $scope.booklists = JSON.parse(sessionStorage.booklists);
+    //}
+    //else {
         $http({
             method: 'GET',
             url: host + '/booklist',
@@ -30,16 +50,7 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
             $scope.booklists = response;
             sessionStorage.booklists = JSON.stringify($scope.booklists);
         });
+    //}
 
-
-    // 获取活动轮播
-
-        $http({
-            method: 'GET',
-            url: host + '/slides'
-        }).success(function(response){
-            $scope.slides = response;
-            sessionStorage.slides = JSON.stringify($scope.slides);
-        });
 
 });

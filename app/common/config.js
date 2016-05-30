@@ -3,7 +3,7 @@
  */
 
 var delay = 2800;                           // time delay for message animate
-var host = "http://www.bookist.org";        // API url
+var host = "https://www.bookist.org";        // API url
 // var host = "http://192.168.1.231";
 
 var statusDict = {                       // 订单状态转换

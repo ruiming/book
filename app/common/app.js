@@ -13,11 +13,7 @@ routeApp.config(['$stateProvider','$locationProvider','$httpProvider', '$urlRout
             response = response.data;
             return response;
         }
-        if(response.status == "error") {
-            // todo change to alert when product
-            console.log("----------------Error----------------: " + response.message);
-            return;
-        }
+        
         return response;
     });
 

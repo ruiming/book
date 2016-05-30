@@ -529,9 +529,9 @@ def billing():
             status_list=[BillingStatus(
                 status='create',
                 content=u'创建订单'
-            ),BillingStatus(
+            ), BillingStatus(
                 status='pending',
-                content=u'待付款'
+                content=u'待发货'
             )]
         ).save()
         return return_message('success', {'data': str(this_billing.pk)})

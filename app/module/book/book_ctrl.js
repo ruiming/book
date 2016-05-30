@@ -157,7 +157,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             method: 'POST',
             url: host + '/comment',
             data: {
-                content: $scope.content,
+                content: this.content,
                 isbn: $stateParams.isbn,
                 star: $scope.star*2
             }

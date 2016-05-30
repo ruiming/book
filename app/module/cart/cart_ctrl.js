@@ -145,6 +145,15 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
     $scope.removeBook = function(item) {
         item.checked = false;
         item.deleted = true;
+        $http({
+            method: 'DELETE',
+            url: host + '/cart',
+            data: {
+                isbn: item.book.isbn
+            }
+        }).success(function(){
+            $scope.recount();
+        });
     };
 
     // 删除多本选中书籍

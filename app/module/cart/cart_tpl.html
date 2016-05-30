@@ -6,7 +6,7 @@
         <span ng-click="editOk()" ng-if="editStatu">完成</span>
     </div>
     <ul class="shop-cart-list">
-        <div class="empty-alert" ng-if="items.length==0">
+        <div class="empty-alert" ng-if="empty">
             <p>购物车为空，快去逛逛吧</p>
         </div>
         <li ng-repeat="item in items" ng-if="!item.deleted">

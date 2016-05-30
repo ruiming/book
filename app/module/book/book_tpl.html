@@ -55,7 +55,10 @@
         </div>
         <div class="book-comments">
             <span>评论</span>
-            <div class="book-comment" ng-repeat="comment in book.comments">
+            <div class="book-no-comment" ng-if="book.comments.length == 0">
+                <p>征集评论</p>
+            </div>
+            <div class="book-comment" ng-repeat="comment in book.comments" ng-if="book.comments.length != 0">
                 <div class="book-comment-origin">
                     <img ng-src="{{comment.user.avatar}}">
                     <span>{{comment.user.username}}</span>
@@ -91,7 +94,8 @@
                 </div>
             </form>
         </div>
-        <div class="books-similarity">
+        <!-- todo -->
+        <div class="books-similarity" ng-if="booksBought.length != 0">
             <span>购买此书的人最近也购买</span>
             <div class="slides-book-content">
                 <a ng-repeat="book in booksBought" ui-sref="book({isbn: book.isbn})">
@@ -102,8 +106,8 @@
                 </a>
             </div>
         </div>
-        <div class="booklists-box">
-            <span>被以下书单收集</span>
+        <div class="booklists-box" ng-if="booklists.length != 0">
+            <span>被以下书单收录</span>
             <div class="booklists-box-content">
                 <a ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
                     <img ng-src="{{booklist.image}}">

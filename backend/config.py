@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from celery.schedules import timedelta
+
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -31,3 +31,13 @@ CSRF_SESSION_KEY = SECRET_KEY
 CORP_ID = os.environ.get('WECHAT_CORP_ID', 'wx83be5ba2bc5d468f')
 SECRET = os.environ.get('WECHAT_SECRET', 'ae9586ca3821b6f3f1ceb2a760857a9d')
 TOKEN = os.environ.get('WECHAT_TOKEN', '123456')
+
+
+# QINIU
+QINIU_ACCESS_KEY = os.environ.get('QINIU_ACCESS_KEY', 'rIku3cj75WrKEprUEf2YPDto8aPVDUe8iQ3Al2Q1')
+QINIU_SECRET_KEY = os.environ.get('QINIU_SECRET_KEY', 'x5nPZqGt6lYBoKY1XVMEjY70VPCWRljmbaPtK4SJ')
+
+
+# Flask-Security
+SECURITY_PASSWORD_HASH = 'pbkdf2_sha512'
+SECURITY_PASSWORD_SALT = 'some key'

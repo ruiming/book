@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from app.book.model import BookList, Activity, Tag, Book, BookTag
-from app.user.model import Comment, Collect, UserCommentLove
+from app.user.model import Comment, Collect, UserCommentLove, Cart
 from app.auth.model import User
 
 from app.lib.common_function import return_message
@@ -57,6 +57,7 @@ def booklist():
         else:
 
             this_user = User.get_one_user(openid=request.headers['userid'])
+
 
             this_book_list_json = {
                 'title': this_book_list.title,
@@ -242,20 +243,14 @@ def pop_book():
 
     all_book_json = all_book_json[5*(page-1):5*page]
 
-    return return_message('success',all_book_json)
+    return return_message('success', all_book_json)
 
-
-
-
-    return return_message('success', 'no data')
 
 
 @book_modules.route('/book', methods=['GET'])
 @allow_cross_domain
 @oauth4api
 def book():
-    # TODO: 下面的评论是否被点过赞
-    # TODO： 评论同时返回
     isbn = request.args.get('isbn', None)
     type = request.args.get('type', 'summary')
 
@@ -272,6 +267,7 @@ def book():
         return return_message('error', 'book do not exist')
 
     this_user = User.get_one_user(openid=request.headers['userid'])
+
 
     if type == 'summary':
         this_book_json = {
@@ -388,3 +384,56 @@ def tags():
             all_tag_json.append(one_tag[1].name)
 
     return return_message('success', all_tag_json)
+
+
+@book_modules.route('/similar_book', methods=['GET'])
+@allow_cross_domain
+@oauth4api
+def similar_book():
+    """
+    购买此书的人也购买了。。。
+    :return:
+    """
+    page = request.args.get("page", 1)
+    try:
+        page = int(page)
+    except:
+        return return_message('error', 'unknown page')
+
+    isbn = request.args.get('isbn', None)
+
+    if not isbn or Book.objects(isbn=isbn).count() != 1:
+        return return_message('error', 'unknown isbn')
+
+    book = Book.objects(isbn=isbn).first()
+
+    carts = Cart.objects(book=book, status=2)
+
+    users = []
+
+    for cart in carts:
+        user = cart.user
+        if user not in users:
+            users.append(user)
+
+    carts = Cart.objects(user__in=users, status=2)
+
+    books = []
+
+    for cart in carts:
+        if cart.book not in books:
+            books.append([cart.book, 1])
+        # TODO: 算法优化
+
+    books = books[:6]
+
+    books_json = [{
+        'title': book.title,
+        'isbn': book.isbn,
+        'subtitle': book.subtitle,
+        'image': book.image,
+        'rate': book.rate,
+        'reason': book.reason
+    }for book in books]
+
+    return return_message('success', books_json)

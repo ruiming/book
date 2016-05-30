@@ -43,11 +43,15 @@ class Book(db.Document):
     rate = db.FloatField()
     reason = db.StringField()
 
+    class NotBookInstance(Exception):
+        pass
+
     def __unicode__(self):
         return u'《{}》'.format(self.title)
 
 
 class BookList(db.Document):
+
     title = db.StringField(required=True)
     subtitle = db.StringField()
     description = db.StringField()
@@ -59,6 +63,9 @@ class BookList(db.Document):
     collect = db.IntField(default=0, required=True)
     create_time = db.IntField(default=int(time()), required=True)
     last_edit_time = db.IntField(default=int(time()), required=True)
+
+    class NotBookListInstance(Exception):
+        pass
 
 
 class Activity(db.Document):

@@ -64,6 +64,18 @@ class Cart(db.Document):
     create_time = db.IntField(required=True, default=int(time()))
     edit_time = db.IntField(required=True, default=int(time()))
 
+    def __unicode__(self):
+        return u"《{}》*{}".format(self.book.title, self.number)
+
+
+class BillingStatus(db.EmbeddedDocument):
+    status = db.StringField()
+    time = db.IntField(required=True, default=int(time()))
+    content = db.StringField()
+    backend_operator = db.BooleanField(default=False)
+
+    def __unicode__(self):
+        return u'{}|{}|{}'.format(self.status, self.content, self.time)
 
 
 class Billing(db.Document):
@@ -73,12 +85,96 @@ class Billing(db.Document):
     user = db.ReferenceField(User)
     status = db.StringField()
     # 待付款 pending ; 代收货 waiting 带评价 commenting 已评价 done 已取消 canceled
-    status_list = db.ListField(db.StringField())
+    status_list = db.ListField(db.EmbeddedDocumentField(BillingStatus))
     list = db.ListField(db.ReferenceField(Cart))
     address = db.ReferenceField(UserAddress)
     price = db.DecimalField(required=True, default=0.00)
     create_time = db.IntField(required=True, default=int(time()))
     edit_time = db.IntField(required=True, default=int(time()))
+
+    class BillingErrorOperator(Exception):
+        pass
+
+    def _add_log(self, status, content=""):
+        """
+        向status_list中添加纪录
+        :param status:
+        :return:
+        """
+        self.status_list.append(BillingStatus(
+                status=status,
+                content=content
+            ))
+        self.save()
+
+    def add_log_backend(self, status, content=""):
+        """
+        向status_list中添加纪录
+        :param status:
+        :return:
+        """
+        self.status_list.append(BillingStatus(
+                status=status,
+                content=content,
+                backend_operator=True,
+            ))
+        self.status = status
+        self.edit_time = int(time())
+        self.save()
+
+    def change_status_force(self, status, content):
+        """
+        修改订单状态
+        :param status: 强制转换的状态
+        :param content: 记录的信息
+        :return:
+        """
+        self._add_log(status, content)
+        self.status = status
+        self.edit_time = int(time())
+        self.save()
+
+    def change_status(self, next_status, content="", backend=False):
+        """
+        修改订单状态
+        :param next_status: 下一个状态
+        :param content: 状态信息
+        :param backend: 是否后台操作，区分用户合管理操作
+        :return: True or BillingErrorOperator
+        """
+        # TODO: 完善状态更新的内容
+        if backend:
+            pass
+        else:
+            if next_status == 'canceled':  # 取消订单
+                # pending
+                if self.status in ['pending']:
+                    self.status = next_status
+                    self._add_log(next_status, content)
+                    self.save()
+                    return True
+
+            if next_status == 'commenting':  # 进入 已收货/待评价 状态
+                # waiting
+                if self.status in ['waiting']:
+                    self.status = next_status
+                    self._add_log(next_status, content)
+                    self.save()
+                    return True
+
+            if next_status in ['refund', 'replace']:  # 进入 退款、退货 状态
+                # done, replaced, refund_refused, replace_refused
+                # TODO: refund_refused, replace_refused 是否还能重新进入售后   可以 重复进入 . 进入 commenting
+
+                if self.status in ['done', 'replaced']:
+                    self.status = next_status
+                    self._add_log(next_status, content)
+                    self.save()
+                    return True
+
+
+
+            raise self.BillingErrorOperator
 
 
 class Notice(db.Document):

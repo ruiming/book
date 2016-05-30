@@ -3,21 +3,21 @@ import os
 import sys
 
 from flask import Flask
-from flask.ext.mongoengine import MongoEngine
-from flask.ext.admin import Admin
+from flask_mongoengine import  MongoEngine
+from flask_admin import Admin
+from flask_security import Security, MongoEngineUserDatastore
 from wechatpy.oauth import WeChatOAuth
-
-from celery import Celery
+from qiniu import Auth, BucketManager
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-
-admin = Admin(app, template_mode='bootstrap3')
 db = MongoEngine(app)
 
 wechat = WeChatOAuth(app.config['CORP_ID'], app.config['SECRET'], "http://www.bookist.org/code2token", scope='snsapi_userinfo', state='55555')
 
+q = Auth(app.config['QINIU_ACCESS_KEY'], app.config['QINIU_SECRET_KEY'])
+b = BucketManager(q)
 
 @app.errorhandler(404)
 def not_found(error):
@@ -45,25 +45,37 @@ app.register_blueprint(outline_module)
 
 # Flask-Admin
 
-from flask.ext.admin.contrib.mongoengine import ModelView
-from flask.ext.admin.contrib.fileadmin import FileAdmin
+from flask_admin.contrib.mongoengine import ModelView
+from flask_admin.contrib.fileadmin import FileAdmin
 
+from app.lib.admin_base import AdminView, AdminBaseModelView
 from app.book.model import BookList, Activity, Book, Tag, Applacation
 from app.book.admin_model import BookView, TagView, BookListView, ActivityView
 from app.auth.admin_model import UserView
-from app.auth.model import User
-from app.user.model import Comment, Points, Billing, Collect, Notice, Feedback
+from app.user.admin_model import BillingView
+from app.auth.model import User, UserRole
+from app.user.model import Comment, Points, Billing, Collect, Notice, Feedback, Cart
 
 
-admin.add_view(BookListView(BookList, name=u'书单管理'))
+admin = Admin(app, template_mode='bootstrap3', name=u'Bookist.org 后台', index_view=AdminView(endpoint="admin"))
+
+admin.add_view(BookListView(BookList, name=u'书单管理', category=u"书单相关"))
 admin.add_view(ActivityView(Activity, name=u'活动管理'))
 admin.add_view(BookView(Book, name=u'书籍管理'))
-admin.add_view(TagView(Tag, name=u'书单标签'))
-admin.add_view(ModelView(Applacation))
-admin.add_view(UserView(User, name=u'用户管理'))
-admin.add_view(ModelView(Comment))
-admin.add_view(ModelView(Points))
-admin.add_view(ModelView(Billing))
-admin.add_view(ModelView(Collect))
-admin.add_view(ModelView(Notice))
-admin.add_view(ModelView(Feedback))
+admin.add_view(TagView(Tag, name=u'书单标签', category=u"书单相关"))
+admin.add_view(UserView(User, name=u'用户管理', category=u"用户相关"))
+admin.add_view(AdminBaseModelView(UserRole, name=u'用户组', category=u"用户相关"))
+admin.add_view(AdminBaseModelView(Cart, name=u'购物车', category=u"用户相关"))
+admin.add_view(AdminBaseModelView(Comment, name=u"评论", category=u"用户相关"))
+admin.add_view(AdminBaseModelView(Points, name=u"积分", category=u"用户相关"))
+admin.add_view(AdminBaseModelView(Billing, name=u"订单"))
+admin.add_view(BillingView(name=u"订单"))
+admin.add_view(AdminBaseModelView(Collect, name=u"收藏", category=u"用户相关"))
+admin.add_view(AdminBaseModelView(Notice, name=u"通知", category=u"用户相关"))
+admin.add_view(AdminBaseModelView(Feedback, name=u"反馈信息"))
+
+
+# Flask-Security
+
+user_datastore = MongoEngineUserDatastore(db, User, UserRole)
+security = Security(app, user_datastore)

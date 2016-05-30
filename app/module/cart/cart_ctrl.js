@@ -20,7 +20,7 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
             if($scope.items.hasOwnProperty(i)){
                 $scope.items[i].checked = false;
                 $scope.items[i].index = i;
-                $scope.items[i]._index = i;     // 替代$index便于删除操作
+                $scope.items[i].deleted = false;
                 $scope.items[i].status = "";
             }
         }
@@ -34,8 +34,11 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
         $scope.status = "active";
         $scope.checked = true;
         $scope.number = 0;
+        $scope.empty = true;
         for(var i in $scope.items){
-            if($scope.items.hasOwnProperty(i)){
+            // 不考虑已删除的
+            if($scope.items.hasOwnProperty(i) && !$scope.items[i].deleted){
+                $scope.empty = false;
                 $scope.price += $scope.items[i].price*$scope.items[i].number*$scope.items[i].checked;
                 $scope.count += $scope.items[i].number*$scope.items[i].checked;
                 if(!$scope.items[i].checked) {
@@ -47,7 +50,7 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
                 }
             }
         }
-        if($scope.items.length == 0){
+        if($scope.empty){
             $scope.message = true;
         }
     };
@@ -138,60 +141,71 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
         }
     };
 
-    // 删除多本选中书籍
-    $scope.delete = function() {
-        for(var i in $scope.items) {
-            if($scope.items.hasOwnProperty(i) && $scope.items[i].checked){
-                $scope.removeBook($scope.items[i]);
-                for(var j = i+1; j<$scope.items.length; j++) {
-                    $scope.items[j]._index --;
-                }
-            }
-        }
-        $scope.recount();
+    // 删除一本书籍
+    $scope.removeBook = function(item) {
+        item.checked = false;
+        item.deleted = true;
     };
 
-    // 从购物车删除单个书籍
-    $scope.removeBook = function(item){
+    // 删除多本选中书籍
+    $scope.delete = function() {
+        $scope.isbn_list = "";
+        for(var i in $scope.items) {
+            if($scope.items.hasOwnProperty(i) && $scope.items[i].checked && !$scope.items[i].deleted){
+                if($scope.isbn_list == "")  $scope.isbn_list = $scope.items[i].book.isbn;
+                else $scope.isbn_list = $scope.isbn_list + "," + $scope.items[i].book.isbn;
+                $scope.items[i].deleted = true;
+                $scope.items[i].checked = false;
+            }
+        }
         $http({
             method: 'DELETE',
             url: host + '/cart',
             data: {
-                isbn: item.book.isbn
+                isbn: $scope.isbn_list
             }
         }).success(function () {
-            $scope.items.splice(item._index, 1);
-            $scope.checkArr.splice(item.index, 1);
             $scope.recount();
         });
     };
 
+
     // 移入多本图书到收藏夹
     $scope.collect = function() {
-        for(var i=0; i<$scope.items.length; i++) {
-            if($scope.items[i].checked) {
-                if(!$scope.items[i].book.is_collection){
-                    $scope.collectBook($scope.items[i]);
-                }
-                $scope.removeBook($scope.items[i]);
-                for(var j = i+1; j<$scope.items.length; j++) {
-                    $scope.items[j]._index --;
-                }
+        $scope.isbn_list = "";
+        $scope.isbn_list_collect = "";
+        for(var i in $scope.items) {
+            if($scope.items.hasOwnProperty(i) && $scope.items[i].checked && !$scope.items[i].deleted){
+                // 加入删除isbn列表
+                if($scope.isbn_list == "")  $scope.isbn_list = $scope.items[i].book.isbn;
+                else $scope.isbn_list = $scope.isbn_list + "," + $scope.items[i].book.isbn;
+                // 加入收藏isbn列表，需排除已经收藏的
+                if($scope.items[i].book.is_collection && $scope.isbn_list_collect == "")    $scope.isbn_list_collect = $scope.items[i].book.isbn;
+                else $scope.isbn_list_collect = $scope.isbn_list_collect + "," +$scope.items[i].book.isbn;
+                // 置为已删除状态和未勾选状态
+                $scope.items[i].deleted = true;
+                $scope.items[i].checked = false;
             }
         }
-    };
-
-    // 收藏图书
-    $scope.collectBook = function(item) {
+        $http({
+            method: 'DELETE',
+            url: host + '/cart',
+            data: {
+                isbn: $scope.isbn_list
+            }
+        }).success(function () {
+            $scope.recount();
+        });
         $http({
             method: 'POST',
             url: host + '/collect',
             data: {
-                isbn: item.book.isbn,
+                isbn: $scope.isbn_list,
                 type: "book"
             }
         });
     };
+
 
     // 编辑书籍数量
     $scope.editBook = function(item){
@@ -222,5 +236,5 @@ routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
         }
         $state.go('cart2order');
     };
-    
+
 });

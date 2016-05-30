@@ -58,7 +58,6 @@ def booklist():
 
             this_user = User.get_one_user(openid=request.headers['userid'])
 
-
             this_book_list_json = {
                 'title': this_book_list.title,
                 'subtitle': this_book_list.subtitle,
@@ -422,7 +421,7 @@ def similar_book():
 
     for cart in carts:
         if cart.book not in books:
-            books.append([cart.book, 1])
+            books.append(cart.book)
         # TODO: 算法优化
 
     books = books[:6]

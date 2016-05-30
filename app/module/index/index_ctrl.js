@@ -4,20 +4,6 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
     $scope.noWrapSlides = false;
     $scope.active = 0;
 
-    // 获取活动轮播
-    if(sessionStorage.slides != undefined) {
-        $scope.slides = JSON.parse(sessionStorage.slides);
-    }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/slides'
-        }).success(function(response){
-            $scope.slides = response;
-            sessionStorage.slides = JSON.stringify($scope.slides);
-        });
-    }
-
         $http({
             method: 'GET',
             url: host + '/pop_book'
@@ -37,7 +23,19 @@ routeApp.controller('IndexCtrl',function($scope, $http) {
         }).success(function(response){
             $scope.booklists = response;
         });
-    //}
 
+    // 获取活动轮播
+    if(sessionStorage.slides != undefined) {
+        $scope.slides = JSON.parse(sessionStorage.slides);
+    }
+    else {
+        $http({
+            method: 'GET',
+            url: host + '/slides'
+        }).success(function(response){
+            $scope.slides = response;
+            sessionStorage.slides = JSON.stringify($scope.slides);
+        });
+    }
 
 });

@@ -1,0 +1,16 @@
+{% extends 'admin/master.html' %}
+
+
+{% block body %}
+    <form action="" method="POST">
+        <textarea name="content" id="" cols="30" rows="10" placeholder="Notice Content"></textarea>
+        <input type="text" placeholder="URL" name="url">
+        <button>提交</button>
+
+        <div class="user-list">
+            {% for user in users %}
+            <label for="{{ user.pk }}"><input type="checkbox" id="{{ user.pk }}" name="{{ user.pk }}">{{ user.username }}</label>
+            {% endfor %}
+        </div>
+    </form>
+{% endblock %}

@@ -3,6 +3,11 @@ from app import db
 from time import time
 from flask_security import RoleMixin, UserMixin
 
+
+class User(db.Document):
+    pass
+
+
 class UserRole(db.Document, RoleMixin):
     """
     用户权限
@@ -13,11 +18,6 @@ class UserRole(db.Document, RoleMixin):
     def __unicode__(self):
 
         return u'{}'.format(self.description)
-
-class User(db.Document, UserMixin): pass
-
-
-class UserTypeBookList(db.Document): pass
 
 
 class WechatOAuth(db.EmbeddedDocument):

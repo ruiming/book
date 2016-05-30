@@ -41,6 +41,16 @@ class Points(db.Document):
     time = db.IntField(required=True, default=int(time()))
     user = db.ReferenceField(User)
 
+    @classmethod
+    def add_record(cls, content, point, user, type=0):
+        cls(type=type,
+            content=content,
+            point=point,
+            user=user).save()
+
+        user.credits += point
+        user.save()
+
 
 class Collect(db.Document):
     """
@@ -171,8 +181,6 @@ class Billing(db.Document):
                     self._add_log(next_status, content)
                     self.save()
                     return True
-
-
 
             raise self.BillingErrorOperator
 

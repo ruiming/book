@@ -23,6 +23,10 @@ var statusDict = {                       // 订单状态转换
     "replace_refused": "换货失败",       // 同上
     "closed": "已关闭"                   // 因某些原因被关闭的订单
 };
+
+var NoticeDict = {
+    "unknown type": "未知类型"
+};
 /* 状态流程
  *                                                            -> refund_refused
  *                                                            -> closed    -> refund_refused
@@ -41,10 +45,6 @@ var statusDict = {                       // 订单状态转换
  * 评价一本图书：        2/5分        购买后评价5分，未购买评价2分
  * 评价获置顶:           20分         人工置顶，自动发消息通知并加分
  * 系统奖励:             xx分         提供接口，推送消息通知并发放奖励
- */
-
-/*
- * 错误码 todo
  */
 
 notie.setOptions({

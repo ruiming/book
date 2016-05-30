@@ -6,10 +6,10 @@
         <span ng-click="editOk()" ng-if="editStatu">完成</span>
     </div>
     <ul class="shop-cart-list">
-        <div class="empty-alert" ng-if="items.length==0">
+        <div class="empty-alert" ng-if="empty">
             <p>购物车为空，快去逛逛吧</p>
         </div>
-        <li ng-repeat="item in items">
+        <li ng-repeat="item in items" ng-if="!item.deleted">
             <div class="shop-cart-item">
                 <div class="checkbox">
                     <label><span ng-class="item.status">
@@ -25,7 +25,7 @@
                 <p class="cart-book-price"> ¥ {{item.price | number:2 }}</p>
                 <span class="cart-book-count" ng-if="!editStatu"> X {{ item.number }}</span>
                 <div class="cart-book-edit" ng-if="editStatu">
-                    <i class="fa fa-trash-o fa-1x" ng-click="removeBook(item, $index)" aria-hidden="true"></i>
+                    <i class="fa fa-trash-o fa-1x" ng-click="removeBook(item)" aria-hidden="true"></i>
                     <div class="cart-book-edit-count">
                         <i class="fa fa-minus" aria-hidden="true" ng-click="minus(item)"></i>
                         <input type="number" ng-model="item.number" ng-change="editBook(item)">

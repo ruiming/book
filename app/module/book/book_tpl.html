@@ -55,7 +55,10 @@
         </div>
         <div class="book-comments">
             <span>评论</span>
-            <div class="book-comment" ng-repeat="comment in book.comments">
+            <div class="book-no-comment" ng-if="book.comments.length == 0">
+                <p>征集评论</p>
+            </div>
+            <div class="book-comment" ng-repeat="comment in book.comments" ng-if="book.comments.length != 0">
                 <div class="book-comment-origin">
                     <img ng-src="{{comment.user.avatar}}">
                     <span>{{comment.user.username}}</span>
@@ -83,7 +86,7 @@
                     <uib-rating class="star red-star" state-on="'fa fa-star'" state-off="'fa fa-star-o'"
                                 ng-model="$parent.star" max="5" read-only="false"></uib-rating>
                 </div>
-                <textarea ng-model="$parent.content" focus-me="{{$parent.commentBox}}" name="content" class="form-control" rows="3" ng-required="required"></textarea>
+                <textarea ng-model="content" focus-me="{{$parent.commentBox}}" name="content" class="form-control" rows="3" ng-required="required"></textarea>
                 <div class="book-comment-post">
                     <p>评价 "{{book.title}}"</p>
                     <button class="btn btn-success" type="submit" ng-click="postComment()" ng-if="!wait">发表</button>
@@ -91,7 +94,7 @@
                 </div>
             </form>
         </div>
-        <div class="books-similarity">
+        <div class="books-similarity" ng-if="booksBought.length != 0">
             <span>购买此书的人最近也购买</span>
             <div class="slides-book-content">
                 <a ng-repeat="book in booksBought" ui-sref="book({isbn: book.isbn})">
@@ -102,8 +105,8 @@
                 </a>
             </div>
         </div>
-        <div class="booklists-box">
-            <span>被以下书单收集</span>
+        <div class="booklists-box" ng-if="booklists.length != 0">
+            <span>被以下书单收录</span>
             <div class="booklists-box-content">
                 <a ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
                     <img ng-src="{{booklist.image}}">

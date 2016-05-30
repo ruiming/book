@@ -4,7 +4,7 @@ routeApp.controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
     $scope.wait = false;        // 等待
     $scope.alert = false;       // 错误提示
 
-    // 获取待评价订单的详细信息, todo 订单待评价才允许继续
+    // 获取待评价订单的详细信息
    $http({
        method: 'GET',
        url: host + '/billing',
@@ -14,8 +14,10 @@ routeApp.controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
    }).success(function(response){
        $scope.order = response;
        $scope.busy = false;
-   }).error(function(){
-       history.back();
+       // todo check here
+       if($scope.status != "commenting"){
+           history.back();
+       }
    });
 
     // todo 订单评价

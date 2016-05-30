@@ -80,12 +80,13 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             isbn: $stateParams.isbn
         }
     }).success(function(response){
-        $scope.booksBought = response.books;
+        $scope.booksBought = response;
         for(var i in $scope.booksBought){
             if($scope.booksBought.hasOwnProperty(i)){
                 $scope.booksBought[i].star = Math.ceil($scope.booksBought[i].rate/2);
             }
         }
+        console.log($scope.booksBought);
     });
     
     // 获取该书被收录的书单
@@ -97,6 +98,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
         }
     }).success(function(response){
         $scope.booklists = response;
+        console.log($scope.booklists.length);
     });
 
     // 顶
@@ -155,7 +157,7 @@ routeApp.controller('BookCtrl', function($scope, $http, $stateParams, TEMP) {
             method: 'POST',
             url: host + '/comment',
             data: {
-                content: $scope.content,
+                content: this.content,
                 isbn: $stateParams.isbn,
                 star: $scope.star*2
             }

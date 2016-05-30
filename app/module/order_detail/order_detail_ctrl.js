@@ -19,10 +19,10 @@ routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
             $scope.price += $scope.order.carts[i].number * $scope.order.carts[i].price;
         }
         for(var j=0; j<$scope.order.status_list.length; j++) {
-            var temp = $scope.order.status_list[j].split('|');
             $scope.status_list.push({
-                "status": statusDict[temp[0]],
-                "time": temp[1]
+                "status": statusDict[$scope.order.status_list[j].status],
+                "content": $scope.order.status_list[j].content,
+                "time": $scope.order.status_list[j].time
             });
         }
         $scope.busy = false;

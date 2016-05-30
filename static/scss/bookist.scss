@@ -649,7 +649,6 @@ a {
     margin-top: 10px;
   }
   .books-similarity {
-    border-bottom: 1px solid #eee;
     margin-bottom: 20px;
     span:first-child {
       display: block;
@@ -715,6 +714,11 @@ a {
       border-bottom: 0;
       padding-bottom: 0;
     }
+  }
+  .book-no-comment {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
   }
 }
 .book-comment-origin{

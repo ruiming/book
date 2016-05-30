@@ -364,6 +364,7 @@ def cart():
         number = request.form.get('number', None)
         try:
             number = int(number)
+            number = min(10, number)
         except:
             return return_message('error', 'unknown number')
 

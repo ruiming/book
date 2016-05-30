@@ -128,7 +128,7 @@ def code2token():
                 )
                 this_user.wechat.save()
                 this_user.save()
-                return redirect("http://www.bookist.org/?token={}&user_id={}".format(token['access_token'], token['openid'])), 301
+                return redirect("https://www.bookist.org/?token={}&user_id={}".format(token['access_token'], token['openid'])), 301
 
     return 'failure get code'
 

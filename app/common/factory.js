@@ -100,8 +100,8 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
 
             if(sessionStorage.verify === "true") {
                 var timestamp = new Date().getTime() / 1000;
-                // 时间超过7000s，需要重新验证
-                if (timestamp - localStorage.getItem("createdtime") >= 7000){
+                // 时间超过7100s，需要重新验证
+                if (timestamp - localStorage.getItem("createdtime") >= 7100){
                     sessionStorage.verify = false;
                 }
                 config.headers['token'] = localStorage.getItem("token");

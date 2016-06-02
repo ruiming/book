@@ -611,6 +611,14 @@ a {
         line-height: 1.6;
       }
     }
+    .books-similarity {
+      span:first-child {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 0;
+        color: grey;
+      }
+    }
     .book-intro {
       font-size: 12px;
       .book-intro-less {

@@ -26,6 +26,17 @@ $star: red;
   display: none;
 }
 
+.btn-blue {
+  color: #fff;
+  background-color: #2196F3;
+  border-color: #2196F3;
+  border-radius: 0;
+}
+.btn-default {
+  color: black !important;
+}
+
+
 body {
   font-family: $font;
   background-color: $bgColor;
@@ -264,6 +275,9 @@ a {
   .booklist-header {
     padding: 10px;
     text-align: center;
+    button {
+      margin: 0 10px;
+    }
     .booklist-intro {
       font-size: 12px;
       padding: 0 10px 5px;
@@ -581,15 +595,16 @@ a {
     .book-intro,
     .book-comments,
     .book-tags,
-    .booklists-box{
+    .books-similarity,
+    .booklists-box {
       overflow: hidden;
       display: block;
       margin-bottom: 20px;
-      border-bottom: 1px solid #eee;
       span:first-child {
         display: block;
         font-weight: bold;
         margin-bottom: 10px;
+        color: grey;
       }
       p {
         word-wrap: break-word;
@@ -597,18 +612,19 @@ a {
       }
     }
     .book-intro {
+      font-size: 12px;
       .book-intro-less {
-        max-height: 110px;
+        max-height: 60px;
         overflow: hidden;
       }
       .book-intro-more {
         max-height: 2000px;
         overflow: hidden;
       }
-      button {
-        padding: 10px 6px;
+      span {
+        padding: 6px;
         border: none;
-        color: #4CAF50;
+        color: grey;
       }
     }
     .book-comments-more {

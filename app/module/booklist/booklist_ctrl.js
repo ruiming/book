@@ -1,6 +1,7 @@
 routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
     $scope.busy = true;
     $scope.wait = false;
+    $scope.wait2 = false;
 
     // 获取书单信息
     $http({
@@ -40,4 +41,5 @@ routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
             $scope.wait = false;
         });
     };
+
 });

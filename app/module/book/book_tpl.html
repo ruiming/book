@@ -46,17 +46,17 @@
         <div class="book-intro">
             <span>简介</span>
             <p ng-bind-html="book.description" ng-class="{'book-intro-less':!more,'book-intro-more':more}"></p>
-            <button class="btn btn-block btn-default" ng-if="!more" ng-click="more=!more">
+            <span class="btn btn-block btn-default" ng-show="!more" ng-click="more=!more">
                 更多
-            </button>
-            <button class="btn btn-block btn-default" ng-if="more" ng-click="more=!more">
+            </span>
+            <span class="btn btn-block btn-default" ng-show="more" ng-click="more=!more">
                 收起
-            </button>
+            </span>
         </div>
         <div class="book-comments">
             <span>评论</span>
             <div class="book-no-comment" ng-if="book.comments.length == 0">
-                <p>征集评论</p>
+                <p style="color: grey">征集评论</p>
             </div>
             <div class="book-comment" ng-repeat="comment in book.comments" ng-if="book.comments.length != 0">
                 <div class="book-comment-origin">

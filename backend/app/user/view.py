@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request
 
 from app.auth.model import User, UserAddress
 from app.book.model import Book, BookList
-from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback, BillingStatus
+from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback, BillingStatus, UserBookListLove
 
 from app.lib.common_function import return_message, token_verify
 from app.lib.api_function import allow_cross_domain
@@ -584,6 +584,41 @@ def billing():
             return return_message('error', 'unknown error')
 
         return return_message('success', 'delete billing')
+
+
+@user_module.route('/booklist_love', methods=['POST'])
+@allow_cross_domain
+@oauth4api
+def booklist_love():
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
+    if request.method == 'POST':
+        booklist_id = request.form.get('id', None)
+        if not booklist_id or len(booklist_id) != 24:
+            return return_message('error', 'unknown booklist id')
+
+        this_booklist = BookList.objects(pk=booklist_id)
+        if this_booklist.count() != 1:
+            return return_message('error', 'unknown booklist id')
+
+        this_booklist = this_booklist.first()
+
+        is_love = UserBookListLove.objects(book_list=this_booklist, user=this_user)
+
+        if is_love.count() == 1:
+            # 已点赞 应该取消
+            this = is_love.first()
+            this.delete()
+            return return_message('success', 'cancel love this book list')
+
+        elif is_love.count() == 0:
+            # 未点赞 应该添加
+            UserBookListLove(book_list=this_booklist, user=this_user).save()
+            return return_message('success', 'submit love this book list')
+        else:
+            # 异常 logger
+            return return_message('error', 'unknown error')
 
 
 @user_module.route('/user_info', methods=['GET'])

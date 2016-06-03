@@ -2,7 +2,7 @@
 
 from app import db
 from app.auth.model import User, UserAddress
-from app.book.model import Book
+from app.book.model import Book, BookList
 from time import time
 
 
@@ -29,6 +29,15 @@ class UserCommentLove(db.Document):
     comment = db.ReferenceField(Comment, required=True)
     type = db.StringField(required=True, default=u'none')
     time = db.IntField(required=True, default=int(time()))
+
+
+class UserBookListLove(db.Document):
+    """
+    用户书单点赞
+    """
+    book_list = db.ReferenceField(BookList)
+    time = db.IntField(required=True, default=int(time()))
+    user = db.ReferenceField(User, required=True)
 
 
 class Points(db.Document):

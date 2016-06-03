@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from app.book.model import BookList, Activity, Tag, Book, BookTag
-from app.user.model import Comment, Collect, UserCommentLove, Cart
+from app.user.model import Comment, Collect, UserCommentLove, Cart, UserBookListLove
 from app.auth.model import User
 
 from app.lib.common_function import return_message
@@ -71,6 +71,8 @@ def booklist():
                 'collect': this_book_list.collect,
                 'tags': [],
                 "collect_already": True if Collect.objects(user=this_user, type='booklist', type_id=str(this_book_list.pk)).count() == 1 else False,
+                'love': UserBookListLove.objects(book_list=this_book_list).count(),
+                'love_already': True if UserBookListLove.objects(book_list=this_book_list, user=this_user).count() == 1 else False,
                 'books': []
             }
 

@@ -46,14 +46,14 @@ def booklist():
     if id is not None:
         # 单书单查询
         if len(id) != 24:
-            return return_message('error', 'unknown id')
+            return return_message('error', 101)
 
         this_book_list = BookList.objects(pk=id)
         this_book_list = this_book_list.first() if this_book_list.count() == 1 else None
 
         if this_book_list is None:
             # 无此书单
-            return return_message('error', 'booklist not found')
+            return return_message('error', 102)
         else:
 
             this_user = User.get_one_user(openid=request.headers['userid'])
@@ -94,18 +94,18 @@ def booklist():
                     'author': [one_author for one_author in one_book.author]
                 })
 
-            return return_message('success', {'data': this_book_list_json})
+            return return_message('success', 103, this_book_list_json)
 
 
 
     # 多书籍查询
     if type not in ['all', 'hot', 'time', 'collect']:
         # 非法索引参数传入
-        return return_message('error', 'unknown type')
+        return return_message('error', 104)
 
     if tag is not None and isbn is not None:
         # 不允许 tag 和 isbn 同时传入
-        return return_message('error', 'tag and isbn could not be existed at a same time')
+        return return_message('error', 105)
 
     if tag is not None:
         # 按 tag 进行搜索
@@ -171,7 +171,7 @@ def booklist():
             'tags': [one_tag.name for one_tag in x.tag][:3]
         })
 
-    return return_message('success', {'data': all_book_list_json})
+    return return_message('success', 103, all_book_list_json)
 
 
 @book_modules.route('/slides', methods=['GET'])
@@ -196,7 +196,7 @@ def slides():
             'url': activity.url if activity.url != '' else '/activity?id={}'.format(activity.pk)
         })
 
-    return return_message('success', {'data': all_activity_json})
+    return return_message('success', 106, all_activity_json)
 
 
 @book_modules.route('/pop_book', methods=['GET'])
@@ -211,7 +211,7 @@ def pop_book():
     try:
         page = int(page)
     except:
-        return return_message('error', 'unknown page')
+        return return_message('error', 107)
 
     all_user_tag = []
     all_book_isbn = []
@@ -244,7 +244,7 @@ def pop_book():
 
     all_book_json = all_book_json[5*(page-1):5*page]
 
-    return return_message('success', all_book_json)
+    return return_message('success', 108, all_book_json)
 
 
 
@@ -256,16 +256,16 @@ def book():
     type = request.args.get('type', 'summary')
 
     if type not in ['summary', 'detail']:
-        return return_message('error', 'unknown type')
+        return return_message('error', 109, 'unknown type')
 
     if isbn is None or isbn == '':
-        return return_message('error', 'isbn could not be empty')
+        return return_message('error', 110)
 
     this_book = Book.objects(isbn=isbn)
     this_book = this_book.first() if len(this_book) == 1 else None
 
     if this_book is None:
-        return return_message('error', 'book do not exist')
+        return return_message('error', 111)
 
     this_user = User.get_one_user(openid=request.headers['userid'])
 
@@ -332,7 +332,7 @@ def book():
             'reason': this_book.reason
         }
 
-    return return_message('success', {'data': this_book_json})
+    return return_message('success', 112, this_book_json)
 
 
 @book_modules.route('/tags', methods=['GET'])
@@ -344,7 +344,7 @@ def tags():
     type = request.args.get('type', 'all')
 
     if type not in ['hot', 'all']:
-        return return_message('error', 'unknown type')
+        return return_message('error', 113)
 
     if type == 'all':
         all_tag = Tag.objects()
@@ -384,7 +384,7 @@ def tags():
         for one_tag in all_tag_sorted:
             all_tag_json.append(one_tag[1].name)
 
-    return return_message('success', all_tag_json)
+    return return_message('success', 114, all_tag_json)
 
 
 @book_modules.route('/similar_book', methods=['GET'])
@@ -399,12 +399,12 @@ def similar_book():
     try:
         page = int(page)
     except:
-        return return_message('error', 'unknown page')
+        return return_message('error', 107)
 
     isbn = request.args.get('isbn', None)
 
     if not isbn or Book.objects(isbn=isbn).count() != 1:
-        return return_message('error', 'unknown isbn')
+        return return_message('error', 110)
 
     book = Book.objects(isbn=isbn).first()
 
@@ -437,4 +437,4 @@ def similar_book():
         'reason': book.reason
     }for book in books]
 
-    return return_message('success', books_json)
+    return return_message('success', 112, books_json)

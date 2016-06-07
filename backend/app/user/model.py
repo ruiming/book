@@ -50,15 +50,84 @@ class Points(db.Document):
     time = db.IntField(required=True, default=int(time()))
     user = db.ReferenceField(User)
 
-    @classmethod
-    def add_record(cls, content, point, user, type=0):
-        cls(type=type,
-            content=content,
-            point=point,
-            user=user).save()
 
-        user.credits += point
-        user.save()
+    class PointType:
+        DEFAULT = 0
+        FIRST_LOGIN = 1
+        FIRST_BUY = 2
+        BUY_A_BOOK = 3
+        COMMENT = 4
+        COMMENT_TO_TOP = 5
+
+        content_array = {
+            DEFAULT: {
+                "one_time_behavior": False,
+                "point": 0,
+                "content": u"系统奖励"
+            },
+
+            FIRST_LOGIN: {
+                "one_time_behavior": True,
+                "point": 100,
+                "content": u"首次登录"
+            },
+            FIRST_BUY: {
+                "one_time_behavior": True,
+                "point": 50,
+                "content": u"首次购书"
+            },
+            BUY_A_BOOK: {
+                "one_time_behavior": False,
+                "point": 10,
+                "content": u"购书"
+            },
+            COMMENT: {
+                "one_time_behavior": False,
+                "point": 2,
+                "content": u"评论"
+            },
+            COMMENT_TO_TOP: {
+                "one_time_behavior": False,
+                "point": 20,
+                "content": u"评论被置顶"
+            },
+        }
+
+        @classmethod
+        def is_one_time_behavior(cls, record_type):
+            return cls.content_array[record_type].get('one_time_behavior', None)
+
+        @classmethod
+        def type_content(cls, record_type):
+            return cls.content_array[record_type].get('content', None)
+
+        @classmethod
+        def type_point(cls, record_type):
+            return cls.content_array[record_type].get('point', None)
+
+    @classmethod
+    def add_record(cls, user, record_type, point=0, content=u""):
+
+        if cls.PointType.is_one_time_behavior(record_type):
+            if cls.objects(type=record_type, user=user).count == 0:
+                cls(
+                    type=record_type,
+                    cotent=content or cls.PointType.type_content(record_type),
+                    point=point or cls.PointType.type_point(record_type),
+                    user=user
+                ).save()
+                user.credits += point
+                user.save()
+
+        else:
+            cls(
+                type=record_type,
+                content=content or cls.PointType.type_content(record_type),
+                point=point or cls.PointType.type_point(record_type),
+                user=user
+            ).save()
+            user.credits += point
+            user.save()
 
 
 class Collect(db.Document):
@@ -183,8 +252,6 @@ class Billing(db.Document):
 
             if next_status in ['refund', 'replace']:  # 进入 退款、退货 状态
                 # done, replaced, refund_refused, replace_refused
-                # TODO: refund_refused, replace_refused 是否还能重新进入售后   可以 重复进入 . 进入 commenting
-
                 if self.status in ['done', 'replaced']:
                     self.status = next_status
                     self._add_log(next_status, content)

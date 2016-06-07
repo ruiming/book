@@ -28,13 +28,13 @@ def comments():
     this_book = Book.objects(isbn=isbn)
     this_book = this_book.first() if this_book.count() == 1 else None
     if this_book is None:
-        return return_message('error', 'book do not exist')
+        return return_message('error', 111)
 
     page = request.args.get('page', 1)
     try:
         page = int(page)
     except:
-        return return_message('error', 'unknown page')
+        return return_message('error', 107)
 
     this_user = User.get_one_user(openid=request.headers['userid'])
 
@@ -60,7 +60,7 @@ def comments():
             'create_time': one.create_time
         })
 
-    return return_message('success', all_comment_json)
+    return return_message('success', 201, all_comment_json)
 
 
 @user_module.route('/comment', methods=['POST', 'PUT', 'DELETE'])
@@ -79,16 +79,16 @@ def comment():
             star = min(int(star), 10)
 
         if not star:
-            return return_message('success', 'unknown star')
+            return return_message('error', 202)
 
         if isbn is None or content is None or star is None:
-            return return_message('error', 'missing comment data')
+            return return_message('error', 203)
 
         this_book = Book.objects(isbn=isbn)
         this_book = this_book.first() if this_book.count() == 1 else None
 
         if this_book is None:
-            return return_message('error', 'book do not exist')
+            return return_message('error', 111)
 
         this_user = User.get_one_user(openid=request.headers['userid'])
 
@@ -100,6 +100,11 @@ def comment():
 
         ).save()
 
+        Points.add_record(
+            user=this_user,
+            record_type=Points.PointType.COMMENT,
+        )
+
         this_comment_json = {
             'id': str(this_comment.pk),
             'content': this_comment.content,
@@ -110,7 +115,7 @@ def comment():
             'down_already': False,
             'create_time': this_comment.create_time
         }
-        return return_message('success', {'data': this_comment_json})
+        return return_message('success', 204, this_comment_json)
 
     elif request.method == 'PUT':
         """
@@ -125,15 +130,15 @@ def comment():
                 id = None
 
         if type not in ['up', 'down', 'edit']:
-            return return_message('error', 'unknown type')
+            return return_message('error', 205)
 
         if id is None:
-            return return_message('error', 'unknown comment')
+            return return_message('error', 206)
         else:
 
             this_comment = Comment.objects(pk=id)
             if this_comment.count() != 1:
-                return return_message('error', 'unknown comment')
+                return return_message('error', 206)
             else:
                 this_comment = this_comment.first()
 
@@ -147,15 +152,14 @@ def comment():
             try:
                 star = min(int(star), 10)
             except:
-                return return_message("error", 'unknown star')
+                return return_message("error", 202)
 
             this_comment.content = content
             this_comment.star = star
             this_comment.edit_time = int(time())
             this_comment.save()
 
-            return return_message('success', 'change comment')
-
+            return return_message('success', 207)
 
         this_user_comment_love = UserCommentLove.objects(user=this_user, comment=this_comment)
 
@@ -168,7 +172,7 @@ def comment():
                 this_comment[this_user_comment_love.type] -= 1
                 this_comment.save()
                 this_user_comment_love.delete()
-                return return_message('success', 'submit cancel {}'.format(type))
+                return return_message('success', 208)
             else:
                 # 与数据库的不相同
                 this_comment[this_user_comment_love.type] -= 1
@@ -178,7 +182,7 @@ def comment():
 
                 this_comment.save()
                 this_user_comment_love.save()
-                return return_message('success', 'submit change type to {}'.format(type))
+                return return_message('success', 209)
         else:
             # 不存在记录，添加纪录
 
@@ -189,7 +193,7 @@ def comment():
             ).save()
             this_comment[type] += 1
             this_comment.save()
-            return return_message('success', 'submit {}'.format(type))
+            return return_message('success', 210)
 
     elif request.method == 'DELETE':
 
@@ -198,7 +202,7 @@ def comment():
         this_user = User.get_one_user(openid=request.headers['userid'])
 
         if not id or len(id) != 24 or Comment.objects(pk=id).count() != 1:
-            return return_message('error', 'unknown id')
+            return return_message('error', 206)
 
         this_comment = Comment.objects(user=this_user, pk=id).first()
         if isinstance(this_comment, Comment):
@@ -207,7 +211,7 @@ def comment():
                 one_love.delete()
 
             this_comment.delete()
-        return return_message('success', 'delete comment')
+        return return_message('success', 211)
 
 
 @user_module.route('/collect', methods=['POST', 'DELETE'])
@@ -236,9 +240,8 @@ def collect():
         id = request.form.get('id', None)  # booklist 所需
         isbn = request.form.get('isbn', None)  # book 所需
 
-
         if type not in ['book', 'booklist']:
-            return return_message('error', 'unknown type')
+            return return_message('error', 212)
 
         if type == 'book':
             id = isbn
@@ -263,7 +266,7 @@ def collect():
                 else:
                     raise Exception
         except:
-            return return_message('error', 'unknown id')
+            return return_message('error', 213)
 
         for one in insert_list:
             Collect(user=this_user, type=type, type_id=one).save()
@@ -281,7 +284,7 @@ def collect():
                 this_booklist.save()
             one.delete()
 
-        return return_message('success', 'collect submit successfully')
+        return return_message('success', 214)
 
     elif request.method == 'DELETE':
         # 抛弃
@@ -291,14 +294,14 @@ def collect():
         id = request.form.get('id', None)
 
         if len(id) != 24:
-            return return_message('error', 'unknown id')
+            return return_message('error', 213)
 
         this_user = User.get_one_user(openid=request.headers['userid'])
 
         is_inserted = Collect.objects(pk=id).count()
 
         if is_inserted == 0:
-            return return_message('success', 'submit successfully')
+            return return_message('success', 215)
         elif is_inserted == 1:
             this_collect = Collect.objects(pk=id).first()
             if this_collect.type == 'booklist':
@@ -307,10 +310,10 @@ def collect():
                 this_booklist.save()
             Collect.objects(pk=id).delete()
 
-            return return_message('success', 'submit successfully')
+            return return_message('success', 215)
         else:
             # logger
-            return return_message('error', 'unknown error')
+            return return_message('error', 400)
 
 
 @user_module.route('/cart', methods=['POST', 'PUT', 'DELETE'])
@@ -324,10 +327,10 @@ def cart():
 
         isbn = request.form.get('isbn', None)
         if not isbn:
-            return return_message('error', 'unknown book isbn')
+            return return_message('error', 110)
         this_book = Book.objects(isbn=isbn)
         if this_book.count() != 1:
-            return return_message('error', 'unknown book')
+            return return_message('error', 111)
         else:
             this_book = this_book.first()
 
@@ -355,7 +358,7 @@ def cart():
             )
             this_cart.save()
 
-        return return_message('success', 'post cart id {}'.format(this_cart.pk))
+        return return_message('success', 216, str(this_cart.pk))
 
     elif request.method == 'PUT':
         """
@@ -366,34 +369,34 @@ def cart():
             number = int(number)
             number = min(10, number)
         except:
-            return return_message('error', 'unknown number')
+            return return_message('error', 217)
 
         status = request.form.get('status', 1)
 
         if status not in [0, 1]:
-            return return_message('error', 'unknown status')
+            return return_message('error', 218)
 
         this_user = User.get_one_user(openid=request.headers['userid'])
 
         isbn = request.form.get('isbn', None)
         if not isbn:
-            return return_message('error', 'unknown book isbn')
+            return return_message('error', 110)
         this_book = Book.objects(isbn=isbn)
         if this_book.count() != 1:
-            return return_message('error', 'unknown book')
+            return return_message('error', 111)
         else:
             this_book = this_book.first()
 
         this_cart = Cart.objects(book=this_book, status=1, user=this_user)
         if this_cart.count() != 1:
-            return return_message('error', 'unknown cart')
+            return return_message('error', 219)
         this_cart = this_cart.first()
 
         this_cart.status = status
         this_cart.number = number
         this_cart.save()
 
-        return return_message('success', 'PUT cart')
+        return return_message('success', 220)
 
     elif request.method == 'DELETE':
         """
@@ -404,7 +407,7 @@ def cart():
 
         isbn = request.form.get('isbn', None)
         if not isbn:
-            return return_message('error', 'unknown book isbn')
+            return return_message('error', 110)
 
 
         all_cart = []
@@ -422,13 +425,13 @@ def cart():
 
                 all_cart.append(this_cart)
         except:
-            return return_message('error', 'unknown cart id')
+            return return_message('error', 219)
 
         for one_cart in all_cart:
             one_cart.status = 0
             one_cart.save()
 
-        return return_message('success', 'DELETE cart')
+        return return_message('success', 221)
 
 
 @user_module.route('/billing', methods=['GET', 'POST', 'PUT', 'DELETE'])
@@ -446,11 +449,11 @@ def billing():
         id = request.args.get('id', None)
 
         if not id or len(id) != 24:
-            return return_message('error', 'unknown billing id')
+            return return_message('error', 222)
 
         this_billing = Billing.objects(pk=id, user=this_user)
         if this_billing.count() != 1:
-            return return_message('error', 'unknown billing id')
+            return return_message('error', 222)
         else:
             this_billing = this_billing.first()
 
@@ -480,21 +483,21 @@ def billing():
                 'dormitory': this_billing.address.dormitory
             }
         }
-        return return_message('success', {'data': this_billing_json})
+        return return_message('success', 223, this_billing_json)
 
     elif request.method == 'POST':
         """
-        提交/修改一个订单
+        提交一个订单
         """
         carts = request.form.get('cart_list', None)
 
         address_id = request.form.get('address_id', None)
         if not address_id or len(address_id) != 24:
-            return return_message('error', 'unknown address id')
+            return return_message('error', 224)
 
         this_user_address = UserAddress.objects(pk=address_id, user=this_user,  enabled=True)
         if this_user_address.count() != 1:
-            return return_message('error', 'unknown address id')
+            return return_message('error', 224)
         else:
             this_user_address = this_user_address.first()
 
@@ -509,7 +512,7 @@ def billing():
                 this_cart = this_cart.first()
                 all_cart.append(this_cart)
         except:
-            return return_message('error', 'unknown cart id')
+            return return_message('error', 222)
 
         # 计算订单总价
         price_sum = 0
@@ -535,7 +538,7 @@ def billing():
                 content=u'待发货'
             )]
         ).save()
-        return return_message('success', {'data': str(this_billing.pk)})
+        return return_message('success', 225, str(this_billing.pk))
 
     elif request.method == 'PUT':
         """
@@ -549,21 +552,19 @@ def billing():
                 raise Exception
             this_billing = this_billing.first()
         except:
-            return return_message('error', 'unknown billing id')
+            return return_message('error', 222)
 
         status = request.form.get('status', None)
 
         if status not in ['waiting', 'commenting', 'done', 'refund']:
-            return return_message('error', 'unknown type')
-
-
+            return return_message('error', 226)
 
         try:
             this_billing.change_status(status)
         except Billing.BillingErrorOperator:
-            return return_message('error', 'error operator')
+            return return_message('error', 227)
 
-        return return_message('success', 'PUT Billing')
+        return return_message('success', 228)
 
     elif request.method == 'DELETE':
         """
@@ -576,14 +577,14 @@ def billing():
                 raise Exception
             this_billing = this_billing.first()
         except:
-            return return_message('error', 'unknown billing id')
+            return return_message('error', 222)
 
         try:
             this_billing.change_status('canceled')
         except:
-            return return_message('error', 'unknown error')
+            return return_message('error', 229)
 
-        return return_message('success', 'delete billing')
+        return return_message('success', 230)
 
 
 @user_module.route('/booklist_love', methods=['POST'])
@@ -596,11 +597,11 @@ def booklist_love():
     if request.method == 'POST':
         booklist_id = request.form.get('id', None)
         if not booklist_id or len(booklist_id) != 24:
-            return return_message('error', 'unknown booklist id')
+            return return_message('error', 115)
 
         this_booklist = BookList.objects(pk=booklist_id)
         if this_booklist.count() != 1:
-            return return_message('error', 'unknown booklist id')
+            return return_message('error', 115)
 
         this_booklist = this_booklist.first()
 
@@ -610,15 +611,15 @@ def booklist_love():
             # 已点赞 应该取消
             this = is_love.first()
             this.delete()
-            return return_message('success', 'cancel love this book list')
+            return return_message('success', 231)
 
         elif is_love.count() == 0:
             # 未点赞 应该添加
             UserBookListLove(book_list=this_booklist, user=this_user).save()
-            return return_message('success', 'submit love this book list')
+            return return_message('success', 232)
         else:
             # 异常 logger
-            return return_message('error', 'unknown error')
+            return return_message('error', 400)
 
 
 @user_module.route('/user_info', methods=['GET'])
@@ -636,7 +637,7 @@ def user_info():
         'billing_pending_num': Billing.objects(user=this_user, status='pending').count(),
         'billing_commenting_num': Billing.objects(user=this_user, status='commenting').count()
     }
-    return return_message('success', {'data': this_user_info})
+    return return_message('success', 233, this_user_info)
 
 
 @user_module.route('/user_address', methods=['GET', 'POST', 'PUT', 'DELETE'])
@@ -670,7 +671,7 @@ def user_address():
                     'is_default': one_address.is_default
                 })
 
-        return return_message('success', address_list)
+        return return_message('success', 234, address_list)
 
     elif request.method == 'POST':
 
@@ -683,12 +684,12 @@ def user_address():
             phone = int(phone)
 
         except:
-            return return_message('error', 'unknown phone')
+            return return_message('error', 235)
 
         dormitory = request.form.get('dormitory', None)
 
         if not name or not phone or not dormitory:
-            return return_message('error', 'missing data')
+            return return_message('error', 236)
 
         type = request.form.get('type', None)
 
@@ -720,8 +721,7 @@ def user_address():
             this_user_address.is_default = True
             this_user_address.save()
 
-
-        return return_message('success', 'add user address')
+        return return_message('success', 237)
 
     elif request.method == 'PUT':
         """
@@ -736,22 +736,22 @@ def user_address():
             phone = int(phone)
 
         except:
-            return return_message('error', 'unknown phone')
+            return return_message('error', 235)
 
         dormitory = request.form.get('dormitory', None)
 
         id = request.form.get('id', None)
         if not id or len(id) != 24:
-            return return_message('error', 'unknown address id')
+            return return_message('error', 238)
 
         this_user_address = UserAddress.objects(pk=id, user=this_user, enabled=True)
         if this_user_address.count() != 1:
-            return return_message('error', 'unknown address id')
+            return return_message('error', 238)
         else:
             this_user_address = this_user_address.first()
 
         if not name or not phone or not dormitory:
-            return return_message('error', 'missing data')
+            return return_message('error', 236)
 
         type = request.form.get('type', None)
 
@@ -767,17 +767,17 @@ def user_address():
             this_user_address.is_default = True
         this_user_address.save()
 
-        return return_message('success', 'put user address')
+        return return_message('success', 239)
 
     elif request.method == 'DELETE':
 
         id = request.form.get('id', None)
         if not id or len(id) != 24:
-            return return_message('error', 'unknown address id')
+            return return_message('error', 238)
 
         this_user_address = UserAddress.objects(pk=id, user=this_user, enabled=True)
         if this_user_address.count() != 1:
-            return return_message('error', 'unknown address id')
+            return return_message('error', 238)
         else:
             this_user_address = this_user_address.first()
 
@@ -793,7 +793,7 @@ def user_address():
                 all_not_default_address.is_default = True
                 all_not_default_address.save()
 
-        return return_message('success', 'delete user address')
+        return return_message('success', 240)
 
 
 @user_module.route('/user_comments', methods=['GET'])
@@ -821,7 +821,7 @@ def user_comment():
             }
         })
 
-    return return_message('success', all_comment_json)
+    return return_message('success', 201, all_comment_json)
 
 
 @user_module.route('/user_points', methods=['GET'])
@@ -852,7 +852,7 @@ def user_points():
             'content': one_credits.content
         })
 
-    return return_message('success', all_user_credits_json)
+    return return_message('success', 241, all_user_credits_json)
 
 
 @user_module.route('/user_collects', methods=['GET'])
@@ -862,7 +862,7 @@ def user_collects():
     type = request.args.get('type', 'book')
 
     if type not in ['book', 'booklist']:
-        return return_message('error', 'unknown type')
+        return return_message('error', 212)
 
     this_user = User.get_one_user(openid=request.headers['userid'])
 
@@ -889,7 +889,7 @@ def user_collects():
                 'tags': [one_tag.name for one_tag in one_booklist.tag]
             })
 
-    return return_message('success', all_collect_json)
+    return return_message('success', 242, all_collect_json)
 
 
 @user_module.route('/user_carts', methods=['GET'])
@@ -913,7 +913,7 @@ def user_carts():
                 'is_collection': True if Collect.objects(user=this_user, type='book', type_id=one_cart.book.isbn).count() == 1 else False
             }
         })
-    return return_message('success', all_cart_json)
+    return return_message('success', 243, all_cart_json)
 
 
 @user_module.route('/user_billings', methods=['GET'])
@@ -930,7 +930,7 @@ def user_billings():
                       'closed',
                       'return', 'on_return', 'all']:
 
-        return return_message('error', 'unknown order status')
+        return return_message('error', 226)
 
     this_user = User.get_one_user(openid=request.headers['userid'])
     if status == 'all':
@@ -973,7 +973,7 @@ def user_billings():
             'edit_time': one_billing.edit_time
         })
 
-    return return_message('success', all_billing_json)
+    return return_message('success', 223, all_billing_json)
 
 
 @user_module.route('/user_notices', methods=['GET', 'POST'])
@@ -1003,7 +1003,7 @@ def user_notices():
                 'is_read': one_notice.is_read
             })
 
-        return return_message('success', all_user_notices_json)
+        return return_message('success', 244, all_user_notices_json)
 
     elif request.method == 'POST':
         pass
@@ -1027,7 +1027,7 @@ def user_feedback():
     content = request.form.get('content', None)
 
     if not content or content == '':
-        return return_message('error', 'empty content')
+        return return_message('error', 236)
 
     this_user = User.get_one_user(openid=request.headers['userid'])
 
@@ -1036,4 +1036,4 @@ def user_feedback():
         user=this_user
     ).save()
 
-    return return_message('success', 'feedback')
+    return return_message('success', 245)

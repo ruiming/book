@@ -61,6 +61,7 @@ def oauth4api(method):
             verify_message += 'get data'
 
         if not verify:
+
                 return 'failure '+verify_message, 403
 
         return method(*args, **kwargs)

@@ -4,6 +4,8 @@ from flask import Blueprint, jsonify, request, render_template, redirect, abort,
 from flask_security import login_user, current_user, login_required, utils, logout_user
 from app.auth.model import User, WechatOAuth
 from app.auth.function import random_str
+
+from app.user.model import Points
 from time import time
 
 
@@ -60,13 +62,13 @@ def auth_verify():
         this_user = this_user.first() if this_user.count() == 1 else None
 
         if not this_user:
-            return 'failure unknown user', 403
+            return return_message('error', 2)
 
         if not (this_user.wechat.access_token == token and this_user.wechat.token_time + this_user.wechat.expires_in > int(time())):
             try:
                 res = wechat.refresh_access_token(this_user.wechat.refresh_token)
             except Exception as e:
-                return 'failure refresh', 403
+                return return_message('error', 3)
             else:
                 this_user.wechat.access_token = res['access_token']
                 this_user.wechat.expires_in = res['expires_in']
@@ -74,8 +76,8 @@ def auth_verify():
                 this_user.wechat.token_time = int(time())
                 this_user.save()
 
-        return return_message('success', {'token': this_user.wechat.access_token, 'time': this_user.wechat.token_time})
-    return 'failure data', 403
+        return return_message('success', 4, {'token': this_user.wechat.access_token, 'time': this_user.wechat.token_time})
+    return return_message('error', 1)
 
 
 @auth_module.route('/code2token', methods=['GET'])
@@ -89,7 +91,7 @@ def code2token():
         except WeChatOAuthException as e:
             # logger
             print e
-            return 'failure get token'
+            return return_message('error', 5)
         else:
 
             this_user = User.objects(id=token['openid'])
@@ -98,7 +100,7 @@ def code2token():
             try:
                 user_info = wechat.get_user_info(openid=token['openid'], access_token=token['access_token'])
             except Exception as e:
-                return 'failure get info'
+                return return_message('error', 6)
             else:
                 if not this_user:
                     print user_info
@@ -128,9 +130,15 @@ def code2token():
                 )
                 this_user.wechat.save()
                 this_user.save()
+
+                Points.add_record(
+                    user=this_user,
+                    record_type=Points.PointType.FIRST_LOGIN,
+                )
+
                 return redirect("https://www.bookist.org/?token={}&user_id={}".format(token['access_token'], token['openid'])), 301
 
-    return 'failure get code'
+    return return_message('error', 1)
 
 
 @auth_module.route('/admin-auth', methods=['GET', 'POST'])

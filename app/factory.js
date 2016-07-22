@@ -1,4 +1,6 @@
-routeApp.factory('BL', function($http){
+angular
+    .module('index')
+    .factory('BL', function($http){
     var BL = function(url,params){
         this.list = [];
         this.busy = false;
@@ -34,7 +36,9 @@ routeApp.factory('BL', function($http){
     };
     return BL;
 });
-routeApp.factory('TEMP', function(){
+angular
+    .module('index')
+    .factory('TEMP', function(){
     var _list = [];
     var _dict = {};
     return {
@@ -55,7 +59,9 @@ routeApp.factory('TEMP', function(){
         }
     };
 });
-routeApp.factory('User', function () {
+angular
+    .module('index')
+    .factory('User', function () {
 
     var _signature = '';
     var _temp = {};
@@ -75,7 +81,9 @@ routeApp.factory('User', function () {
         }
     };
 });
-routeApp.factory('timestampMarker', [function() {
+angular
+    .module('index')
+    .factory('timestampMarker', [function() {
     var timestampMarker = {
         request: function(config) {
             config.requestTimestamp = new Date().getTime();
@@ -88,7 +96,9 @@ routeApp.factory('timestampMarker', [function() {
     };
     return timestampMarker;
 }]);
-routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($injector,$q){
+angular
+    .module('index')
+    .factory('tokenInjector', ['$injector','$q', '$location', function($injector,$q){
     var tokenInjector = {
         request: function(config){
 
@@ -137,7 +147,9 @@ routeApp.factory('tokenInjector', ['$injector','$q', '$location', function($inje
     };
     return tokenInjector;
 }]);
-routeApp.filter('nl2br', ['$sanitize', function($sanitize) {
+angular
+    .module('index')
+    .filter('nl2br', ['$sanitize', function($sanitize) {
     var tag = (/xhtml/i).test(document.doctype) ? '<br />' : '<br>';
     return function(msg) {
         // ngSanitize's linky filter changes \r and \n to &#10; and &#13; respectively

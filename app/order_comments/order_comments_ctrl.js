@@ -1,4 +1,6 @@
-routeApp.controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
+angular
+    .module('index')
+    .controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
 
     $scope.busy = true;
     $scope.wait = false;        // 等待

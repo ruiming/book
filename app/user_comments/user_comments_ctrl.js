@@ -1,4 +1,6 @@
-routeApp.controller('UserCommentsCtrl', function($http, $scope){
+angular
+    .module('index')
+    .controller('UserCommentsCtrl', function($http, $scope){
     
     $scope.deleteBox = false;       // 删除确认框
     $scope.edit = false;            // 可编辑

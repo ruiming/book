@@ -1,4 +1,6 @@
-routeApp.controller('PointCtrl', function($http, $scope){
+angular
+    .module('index')
+    .controller('PointCtrl', function($http, $scope){
 
     $scope.busy = true;
 

@@ -1,4 +1,6 @@
-routeApp.controller('AddressCtrl', function ($http, $scope, $state, User) {
+angular
+    .module('index')
+    .controller('AddressCtrl', function ($http, $scope, $state, User) {
 
     $scope.wait = true;
 

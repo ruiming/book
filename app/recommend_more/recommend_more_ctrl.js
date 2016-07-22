@@ -1,4 +1,6 @@
-routeApp.controller('RecommendMoreCtrl',function($scope, BL) {
+angular
+    .module('index')
+    .controller('RecommendMoreCtrl',function($scope, BL) {
 
     // 获取更多推荐书籍
     var url = host + '/pop_book';

@@ -1,4 +1,6 @@
-routeApp.controller('NoticesCtrl', function($http, $scope){
+angular
+    .module('index')
+    .controller('NoticesCtrl', function($http, $scope){
 
     $scope.busy = true;
 

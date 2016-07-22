@@ -1,4 +1,6 @@
-routeApp.controller('SignatureCtrl', function ($http, $scope, $stateParams, $location) {
+angular
+    .module('index')
+    .controller('SignatureCtrl', function ($http, $scope, $stateParams, $location) {
 
     $scope.signature = $stateParams.signature;
 

@@ -1,4 +1,6 @@
-routeApp.controller('BooklistsCtrl',function($scope, $http, BL) {
+angular
+    .module('index')
+    .controller('BooklistsCtrl',function($scope, $http, BL) {
     var url = host + '/booklist';
     var params = {
         type: "all",

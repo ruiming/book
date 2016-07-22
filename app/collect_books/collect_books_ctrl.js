@@ -1,4 +1,6 @@
-routeApp.controller('CollectBooksCtrl', function($http, $scope){
+angular
+    .module('index')
+    .controller('CollectBooksCtrl', function($http, $scope){
 
     $scope.busy = true;
 

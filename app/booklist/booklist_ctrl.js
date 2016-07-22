@@ -1,4 +1,6 @@
-routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
+angular
+    .module('index')
+    .controller('BookListCtrl',function($scope, $http, $stateParams) {
     $scope.busy = true;
     $scope.wait = false;
     $scope.wait2 = false;

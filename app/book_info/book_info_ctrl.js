@@ -1,4 +1,6 @@
-routeApp.controller('BookInfoCtrl', function($http, $scope, $stateParams){
+angular
+    .module('index')
+    .controller('BookInfoCtrl', function($http, $scope, $stateParams){
     $scope.busy = true;
     
     // 获取图书信息(包含评论和标签)

@@ -1,4 +1,6 @@
-routeApp.controller('TagBooklistsCtrl', function($scope, BL, $stateParams){
+angular
+    .module('index')
+    .controller('TagBooklistsCtrl', function($scope, BL, $stateParams){
 
     // 获取指定标签的书单
     var url = host + '/booklist';

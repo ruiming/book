@@ -1,4 +1,6 @@
-routeApp.directive('currentTime', function($timeout, dateFilter) {
+angular
+    .module('index')
+    .directive('currentTime', function($timeout, dateFilter) {
 // 实时显示指定规格化的时间
     return {
         scope: {
@@ -33,7 +35,9 @@ routeApp.directive('currentTime', function($timeout, dateFilter) {
         }
     };
 });
-routeApp.directive('focusMe', function($timeout) {
+angular
+    .module('index')
+    .directive('focusMe', function($timeout) {
     return {
         scope: { trigger: '@focusMe' },
         link: function(scope, element) {
@@ -47,28 +51,36 @@ routeApp.directive('focusMe', function($timeout) {
         }
     };
 });
-routeApp.directive('navbar', function(){
+angular
+    .module('index')
+    .directive('navbar', function(){
    return {
        restrict: 'AE',  //推荐使用A
        replace: true,   //template会覆盖掉自定义标签
        templateUrl: 'navbar/navbar_tpl.html'
    };
 });
-routeApp.directive('loading', function(){
+angular
+    .module('index')
+    .directive('loading', function(){
     return {
         restrict: 'AE',
         replace: true,
         template: '<div class="cssload-thecube"><div class="cssload-cube cssload-c1"></div><div class="cssload-cube cssload-c2"></div><div class="cssload-cube cssload-c4"></div><div class="cssload-cube cssload-c3"></div></div>'
     };
 });
-routeApp.directive('wait', function(){
+angular
+    .module('index')
+    .directive('wait', function(){
    return {
        restrict: 'AE',
        replace: true,
        template: '<div id="circularG"><div id="circularG_1" class="circularG"></div><div id="circularG_2" class="circularG"></div><div id="circularG_3" class="circularG"></div><div id="circularG_4" class="circularG"></div><div id="circularG_5" class="circularG"></div><div id="circularG_6" class="circularG"></div><div id="circularG_7" class="circularG"></div><div id="circularG_8" class="circularG"></div></div>'
    };
 });
-routeApp.directive('myMaxlength', function() {
+angular
+    .module('index')
+    .directive('myMaxlength', function() {
     return {
         require: 'ngModel',
         link: function (scope, element, attrs, ngModelCtrl) {

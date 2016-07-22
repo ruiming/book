@@ -1,4 +1,6 @@
-routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
+angular
+    .module('index')
+    .controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
 
     $scope.wait = true;            // 确认订单等待
     $scope.no_address = true;      // 地址必须有

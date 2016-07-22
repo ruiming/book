@@ -1,4 +1,6 @@
-routeApp.controller('IndexCtrl',function($scope, $http) {
+angular
+    .module('index')
+    .controller('IndexCtrl',function($scope, $http) {
 
     $scope.myInterval = 5000;
     $scope.noWrapSlides = false;

@@ -1,4 +1,6 @@
-routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state, User){
+angular
+    .module('index')
+    .controller('AddressAddCtrl', function($http, $scope, $location, $state, User){
 
     var data = User.getTemp();
     $scope.edit = false;

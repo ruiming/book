@@ -1,4 +1,6 @@
-routeApp.controller('OrderDetailCtrl',function($scope, $http, $stateParams){
+angular
+    .module('index')
+    .controller('OrderDetailCtrl',function($scope, $http, $stateParams){
 
     $scope.price = 0;
     $scope.busy = true;

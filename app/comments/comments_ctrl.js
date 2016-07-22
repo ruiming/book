@@ -1,4 +1,6 @@
-routeApp.controller('CommentsCtrl',function($scope, $http, $stateParams, TEMP) {
+angular
+    .module('index')
+    .controller('CommentsCtrl',function($scope, $http, $stateParams, TEMP) {
 
     $scope.busy = true;
     $scope.title = TEMP.getDict().title;

@@ -1,4 +1,6 @@
-routeApp.controller('CartCtrl',function($scope, $http, $state, TEMP) {
+angular
+    .module('index')
+    .controller('CartCtrl',function($scope, $http, $state, TEMP) {
     $scope.price = 0;
     $scope.busy = true;
     $scope.checked = false;         // 默认全选

@@ -1,4 +1,6 @@
-routeApp.controller('SuggestCtrl', function($http, $scope){
+angular
+    .module('index')
+    .controller('SuggestCtrl', function($http, $scope){
 
     $scope.required = true;     // 必填
     $scope.wait = false;        // 提交反馈wait

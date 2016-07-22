@@ -1,4 +1,6 @@
-routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
+angular
+    .module('index')
+    .controller('OrdersCtrl',function($scope, $http, $stateParams) {
 
     $scope.message = false;
     $scope.busy = true;

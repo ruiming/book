@@ -1,4 +1,6 @@
-routeApp.controller('PopularMoreCtrl',function($scope, BL) {
+angular
+    .module('index')
+    .controller('PopularMoreCtrl',function($scope, BL) {
 
     // 获取更多热门书单
     var url = host + '/booklist';

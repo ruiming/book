@@ -1,4 +1,6 @@
-routeApp.controller('TagsCtrl', function($scope, $http){
+angular
+    .module('index')
+    .controller('TagsCtrl', function($scope, $http){
 
     $scope.busy = true;
 

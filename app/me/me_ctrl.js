@@ -1,4 +1,6 @@
-routeApp.controller('MeCtrl',function($scope, $http) {
+angular
+    .module('index')
+    .controller('MeCtrl',function($scope, $http) {
 
     // 返回用户信息，gravatar,name,cart,order{wait,received}
     if(angular.isUndefined(sessionStorage.user)) {

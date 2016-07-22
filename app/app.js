@@ -13,30 +13,29 @@
         .config(config);
 
     function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider) {
-        $httpProvider.defaults.transformResponse.push(function (response) {
-            if(response.message != undefined)
+        $httpProvider.defaults.transformResponse.push(response => {
+            if(response.message !== undefined) {
                 notie.alert(1, response.message, 0.3);
-
-            if(typeof(response.data) != "undefined" && response.status == "success") {
+            }
+            if(typeof(response.data) != "undefined" && response.status === "success") {
                 response = response.data;
                 return response;
             }
-
             return response;
         });
 
-        // push timestampMaker into httpProvider
         $httpProvider.interceptors.push('timestampMarker');
 
         $httpProvider.interceptors.push('tokenInjector');
 
-        $httpProvider.defaults.transformRequest = function(obj){
+        $httpProvider.defaults.transformRequest = obj => {
             var str = [];
             for(var p in obj){
                 str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
             }
             return str.join("&");
         };
+
         $httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.put = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};

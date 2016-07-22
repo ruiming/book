@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var babel = require('gulp-babel');
 var uglify = require('gulp-uglify');
 var ngAnnotate = require('gulp-ng-annotate');
 var concat = require('gulp-concat');
@@ -50,6 +51,9 @@ gulp.task('js', function(cb){
         .pipe(plumber())
         .pipe(ngAnnotate())
         .pipe(concat('app.js'))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
         .pipe(gulp.dest('src/js/'))
         .on('end',cb);
 });

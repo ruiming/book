@@ -1,43 +1,26 @@
-angular
-    .module('index')
-    .controller('IndexCtrl',function($scope, $http) {
+(function() {
+    "use strict";
 
-    $scope.myInterval = 5000;
-    $scope.noWrapSlides = false;
-    $scope.active = 0;
+    angular
+        .module('index')
+        .controller('IndexCtrl',function($scope, $http, bookservice, booklistservice, slideservice) {
 
-        $http({
-            method: 'GET',
-            url: host + '/pop_book'
-        }).success(function(response){
-            $scope.books = response;
-            for(var i=0;i<$scope.books.length;i++){
-                $scope.books[i].star = Math.ceil($scope.books[i].rate/2);
-            }
+            var vm = this;
+            vm.myInterval = 5000;
+            vm.noWrapSlides = false;
+            vm.active = 0;
+
+            bookservice.getPopularBooks().then(response => {
+                vm.books = response;
+            });
+
+            booklistservice.getHotBooklists().then(response => {
+                vm.booklists = response;
+            });
+
+            slideservice.getSlides().then(response => {
+                vm.slides = response;
+            });
+
         });
-
-        $http({
-            method: 'GET',
-            url: host + '/booklist',
-            params: {
-                type: "hot"
-            }
-        }).success(function(response){
-            $scope.booklists = response;
-        });
-
-    // 获取活动轮播
-    if(sessionStorage.slides != undefined) {
-        $scope.slides = JSON.parse(sessionStorage.slides);
-    }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/slides'
-        }).success(function(response){
-            $scope.slides = response;
-            sessionStorage.slides = JSON.stringify($scope.slides);
-        });
-    }
-
-});
+})();

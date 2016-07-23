@@ -130,7 +130,7 @@ gulp.task('move', function(){
                 .pipe(gulp.dest('backend/app/templates/'));
 });
 
-gulp.watch('static/scss/*.scss',['sass']);                                      // sass自动部署
+gulp.watch('[static/scss/*.scss, app/**/*.scss]',['sass']);                                      // sass自动部署
 gulp.watch(['app/**/*.js'], ['js']);                                            // angularJS自动部署
 gulp.watch('static/img/*.*', ['img']);                                          // 图片自动部署
 gulp.watch('app/**/*.html',['templates:dist']);                                 // 模板自动部署

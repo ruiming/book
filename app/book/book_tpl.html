@@ -3,7 +3,6 @@
     <div class="book-head" ng-include="'book/book_head_part.html'"></div>
     <div class="book-section" ng-include="'book/book_section_part.html'"></div>
     <div class="book">
-        <div class="clearfix"></div>
         <div class="book-intro">
             <span>简介</span>
             <p ng-bind-html="vm.book.description"
@@ -85,22 +84,6 @@
                 </div>
             </form>
         </div>
-        <div class="books-similarity" ng-if="vm.booksBought.length != 0">
-            <span>购买此书的人最近也购买</span>
-            <book-slide ng-init="vm.booksBought=[]" books=vm.booksBought></book-slide>
         </div>
-        <div class="booklists-box" ng-if="vm.booklists.length != 0">
-            <span>被以下书单收录</span>
-            <div class="booklists-box-content">
-                <a ng-repeat="booklist in vm.booklists" ui-sref="booklist({id: booklist.id})">
-                    <img ng-src="{{booklist.image}}">
-                    <span class="title">{{booklist.title}}</span>
-                    <span class="collect">{{booklist.collect}}人收藏</span>
-                    <div class="booklist-tag">
-                        <div class="tag" ng-repeat="tag in booklist.tags">{{tag}}</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
+    <div class="book" ng-include="'book/book_other_part.html'"></div>
 </div>

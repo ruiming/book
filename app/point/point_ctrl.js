@@ -1,16 +1,17 @@
-angular
-    .module('index')
-    .controller('PointCtrl', function($http, $scope){
+(function(){
+    "use strict";
 
-    $scope.busy = true;
+    angular
+        .module('index')
+        .controller('PointCtrl', function($http, $scope, userservice){
 
-    // 获取积分记录
-    $http({
-        method: 'GET',
-        url: host + '/user_points'
-    }).success(function(response){
-        $scope.points = response;
-        $scope.busy = false;
-    });
-    
-});
+            $scope.busy = true;
+
+            userservice.getUserPoints().then(response => {
+                $scope.points = response;
+                $scope.busy = false;
+            });
+
+        });
+
+})();

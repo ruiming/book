@@ -11,7 +11,7 @@
 
         return {
             getHotBooklists: getHotBooklists,
-            getBoolists: getBoolists
+            getBooklists: getBooklists
         };
 
         function getHotBooklists() {
@@ -19,7 +19,7 @@
                 .then(response => response.data);
         }
 
-        function getBoolists(url, params) {
+        function getBooklists(url, params) {
             this.list = [];
             this.busy = false;
             this.url = url;

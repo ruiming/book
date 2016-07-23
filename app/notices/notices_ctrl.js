@@ -1,16 +1,17 @@
-angular
-    .module('index')
-    .controller('NoticesCtrl', function($http, $scope){
+(function() {
+    "use strict";
 
-    $scope.busy = true;
+    angular
+        .module('index')
+        .controller('NoticesCtrl', function($http, $scope, userservice){
 
-    // 获取全部消息
-    $http({
-        method: 'GET',
-        url: host + '/user_notices'
-    }).success(function(response){
-        $scope.notices = response;
-        $scope.busy = false;
-    });
-    
+            $scope.busy = true;
+
+            userservice.getUserNotices().then(response => {
+                $scope.notices = response;
+                $scope.busy = false;
+            });
+
+        });
+
 });

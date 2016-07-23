@@ -16,8 +16,45 @@
             getBookDetail: getBookDetail,
             collectBook: collectBook,
             getSimilarBook: getSimilarBook,
-            getBookBelongs: getBookBelongs
+            getBookBelongs: getBookBelongs,
+            getBooks: getBooks
         };
+
+        function getBooks(url, params) {
+            this.list = [];
+            this.busy = false;
+            this.url = url;
+            this.params = params;
+            this.continue = true;
+            this.nextPage = function() {
+                if(!this.continue){
+                    this.busy = false;
+                    return;
+                }
+                if(this.busy) {
+                    return;
+                }
+                this.busy = true;
+                $http({
+                    method: 'GET',
+                    url: this.url,
+                    params: this.params
+                }).success(function(response){
+                    var list = response;
+                    if(list.length < 5 ) {
+                        this.continue = false;
+                    }
+                    for (var i = 0 ;i < list.length; i++){
+                        list[i].star = Math.ceil(list[i].rate/2);
+                        this.list.push(list[i]);
+                    }
+                    this.busy = false;
+                    this.params.page += 1;
+                }.bind(this));
+            }.bind(this);
+            this.nextPage();
+            return this;
+        }
 
         function getBookDetail(isbn) {
             return $http.get(host + '/book?type=detail&isbn=' + isbn)

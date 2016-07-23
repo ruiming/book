@@ -1,19 +1,14 @@
-angular
-    .module('index')
-    .controller('MeCtrl',function($scope, $http) {
+(function(){
+    "use strict";
 
-    // 返回用户信息，gravatar,name,cart,order{wait,received}
-    if(angular.isUndefined(sessionStorage.user)) {
-        $http({
-            method: 'GET',
-            url: host + '/user_info'
-        }).success(function(response){
-            $scope.user = response;
-            sessionStorage.user = angular.toJson(response);
+    angular
+        .module('index')
+        .controller('MeCtrl',function($scope, $http, userservice) {
+
+            userservice.getUserInfo().then(response => {
+                $scope.user = response;
+            });
+
         });
-    }
-    else {
-        $scope.user = angular.fromJson(sessionStorage.user);
-    }
-    
-});
+
+})();

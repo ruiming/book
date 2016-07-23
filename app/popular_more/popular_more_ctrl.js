@@ -1,13 +1,13 @@
-angular
-    .module('index')
-    .controller('PopularMoreCtrl',function($scope, BL) {
+(function(){
+    "use strict";
 
-    // 获取更多热门书单
-    var url = host + '/booklist';
-    var params = {
-        type: "hot",
-        page: 1
-    };
-    $scope.booklists = new BL(url,params);
+    angular
+        .module('index')
+        .controller('PopularMoreCtrl',function($scope, BL, booklistservice) {
+            let url = host + '/booklist';
+            let params = { type: "all", page: 1 };
+            $scope.booklists = new booklistservice.getBooklists(url, params);
+            $scope.booklists.nextPage();
 
-});
+        });
+})();

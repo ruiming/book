@@ -10,14 +10,26 @@
     function userservice($http) {
 
         return {
-            getUserInfo: getUserInfo
+            getUserInfo: getUserInfo,
+            getUserNotices: getUserNotices,
+            getUserPoints: getUserPoints
         };
+
+        function getUserPoint() {
+            return $http.get(host + '/user_points')
+                .then(response => response.data);
+        }
 
         function getUserInfo() {
             return $http.get(host + '/user_info')
                 .then(response => response.data);
         }
-        
+
+        function getUserNotices() {
+            return $http.get(host + '/user_notices')
+                .then(response => response.data);
+        }
+
     }
 
 })();

@@ -15,8 +15,17 @@
             postComment: postComment,
             editComment: editComment,
             deleteComment: deleteComment,
-            getComment: getComment
+            getComment: getComment,
+            platformComment: platformComment
         };
+
+        function platformComment(stars1, stars2, stars3) {
+            return $http.post(host + '/user_billing', {
+                stars1: stars1,
+                stars2: stars2,
+                stars3: stars3
+            }).then(response => response.data);
+        }
 
         function getComment(isbn) {
             return $http.get(host + '/comments?isbn=' + isbn)

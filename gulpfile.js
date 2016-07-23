@@ -28,14 +28,14 @@ var runSequence  = require('gulp-run-sequence');
 // 该文件无需维护
 gulp.task('angular', function(cb){
     gulp.src(['bower_components/jquery/dist/jquery.min.js',
+            'bower_components/notie/dist/notie.min.js',
             'bower_components/angular/angular.min.js',
             'bower_components/angular-ui-router/release/angular-ui-router.min.js',
             'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'bower_components/angular-animate/angular-animate.min.js',
             'bower_components/angular-touch/angular-touch.min.js',
             'bower_components/angular-sanitize/angular-sanitize.min.js',
-            'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
-            'bower_components/notie/dist/notie.min.js'])
+            'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
         .pipe(concat('dependence.min.js'))
@@ -103,8 +103,9 @@ gulp.task('img', function(cb){
 
 // 编译sass得到bookist.css
 gulp.task('sass', function(cb){
-    gulp.src('static/scss/*.scss')
+    gulp.src(['static/scss/*.scss', 'app/**/*.scss'])
         .pipe(plumber())
+        .pipe(concat('bookist.scss'))
         .pipe(sass())
         .pipe(cleanCSS())
         .pipe(gulp.dest('src/css/'))

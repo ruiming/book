@@ -87,7 +87,11 @@
 
         function getBook(isbn) {
             return $http.get(host + '/book?isbn=' + isbn)
-                .then(response => changeStars(response.data))
+                .then(response => {
+                    console.log(response);
+                    console.log(response.data);
+                    return changeStars(response.data);
+                })
         }
 
         /**
@@ -96,12 +100,14 @@
          * @returns {*}
          */
         function changeStars(books) {
-            if(books.rate !== void 0) {
-                books.star = Math.ceil(books.rate/2);
+            if(books instanceof Array) {
+                for(let book of books) {
+                    book.star = Math.ceil(book.rate/2);
+                }
                 return books;
             }
-            for(let book of books) {
-                book.star = Math.ceil(book.rate/2);
+            if(books.rate !== void 0) {
+                books.star = Math.ceil(books.rate/2);
             }
             return books;
         }

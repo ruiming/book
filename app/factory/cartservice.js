@@ -16,6 +16,12 @@
             deleteCart: deleteCart
         };
 
+        function addCart(isbn) {
+            return $http.post(host + '/cart', {
+                isbn: isbn
+            }).then(response => response.data)
+        }
+
         function getCart() {
             return $http.get(host + '/user_carts')
                 .then(response => response.data);

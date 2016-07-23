@@ -90,7 +90,8 @@
                 views: {
                     'main': {
                         controller: 'BookCtrl',
-                        templateUrl: 'book/book_tpl.html'
+                        templateUrl: 'book/book_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

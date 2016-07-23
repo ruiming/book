@@ -1,7 +1,12 @@
-angular
-    .module('index')
-    .controller('SettingsCtrl', function($http, $scope){
+(function(){
+    "use strict";
+    angular
+        .module('index')
+        .controller('SettingsCtrl', function($http, $scope, userservice){
 
-    $scope.user = JSON.parse(sessionStorage.user);
+            userservice.getUserInfo().then(response => {
+                $scope.user = response;
+            });
+        });
 
-});
+})();

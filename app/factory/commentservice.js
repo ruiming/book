@@ -12,8 +12,25 @@
         return {
             up: up,
             down: down,
-            postComment: postComment
+            postComment: postComment,
+            editComment: editComment,
+            deleteComment: deleteComment
         };
+
+        function deleteComment(id) {
+            return $http.delete(host + '/comment', {
+                id: id
+            }).then(response => response.data);
+        }
+
+        function editComment(id, star, content) {
+            return $http.put(host + '/comment', {
+                id: id,
+                star: star,
+                content: content,
+                type: 'edit'
+            }).then(response => response.data);
+        }
 
         function postComment(isbn, star, content) {
             return $http.post(host + '/comment', {

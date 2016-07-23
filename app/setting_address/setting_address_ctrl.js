@@ -1,25 +1,25 @@
-angular
-    .module('index')
-    .controller('AddressCtrl', function ($http, $scope, $state, User) {
+(function() {
+    "use strict";
 
-    $scope.wait = true;
+    angular
+        .module('index')
+        .controller('AddressCtrl', function ($http, $scope, $state, User, userservice) {
 
-    // 获取用户地址信息
-    $http({
-        method: 'GET',
-        url: host + '/user_address'
-    }).success(function(response){
-        $scope.address = response;
-        $scope.wait = false;
-    });
+            $scope.wait = true;
 
-    $scope.edit = function(){
-        User.setTemp(this.x);
-        $state.go('AddressAdd');
-    };
+            userservice.getUserAddress().then(response => {
+                $scope.address = response;
+                $scope.wait = false;
+            });
 
-    // 返回上层
-    $scope.back = function() {
-        history.back();
-    };
-});
+            $scope.edit = function(){
+                userservice.setAddress(this.x);
+                $state.go('AddressAdd');
+            };
+
+            // 返回上层
+            $scope.back = function() {
+                history.back();
+            };
+        });
+})();

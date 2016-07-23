@@ -11,7 +11,6 @@
 
         let address = null;
 
-
         return {
             getUserInfo: getUserInfo,
             getUserNotices: getUserNotices,
@@ -25,14 +24,20 @@
             deleteUserAddress: deleteUserAddress,
             addUserAddress: addUserAddress,
             setUserDefaultAddress: setUserDefaultAddress,
+            getUserDefaultAddress: getUserDefaultAddress,
 
             setAddress: setAddress,
             getAddress: getAddress
         };
 
+        function getUserDefaultAddress() {
+            return $http.get(host + '/user_address?type=default')
+                .then((response) => response.data)
+        }
+
         function getUserCollect(type) {
             return $http.get(host + '/user_collect?type=' + type)
-                .then(response => response.data);
+                .then(response => response.data)
         }
 
         function setUserDefaultAddress(name, phone, dorimitory, id) {

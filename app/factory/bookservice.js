@@ -11,7 +11,6 @@
 
         return {
             getPopularBooks: getPopularBooks,
-            addToCart: addToCart,
             getBook: getBook,
             getBookDetail: getBookDetail,
             collectBook: collectBook,
@@ -116,10 +115,5 @@
                 .then(response => changeStars(response.data));
         }
 
-        function addToCart(isbn) {
-            return $http.post(host + '/cart', {
-                isbn: isbn
-            });
-        }
     }
 })();

@@ -6,9 +6,7 @@
         .controller('AddressAddCtrl', function($http, $scope, $location, $state, User, userservice){
 
             $scope.edit = false;
-            userservice.getAddress().then(response => {
-                data = response;
-            });
+            data = userservice.getAddress();
 
             $scope.wait1 = false;               // 添加等待动画
             $scope.wait2 = false;               // 修改等待动画

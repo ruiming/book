@@ -3,7 +3,7 @@
 
     angular
         .module('index')
-        .controller('IndexCtrl',function($scope, $http, bookservice, booklistservice, slideservice) {
+        .controller('IndexCtrl',function($http, bookservice, booklistservice, slideservice) {
 
             var vm = this;
             vm.myInterval = 5000;

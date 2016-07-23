@@ -3,26 +3,27 @@
 
     angular
         .module('index')
-        .controller('BooklistsCtrl', function ($scope, $http, booklistservice, tagservice) {
+        .controller('BooklistsCtrl', function ($http, booklistservice, tagservice) {
 
+            let vm = this;
             let url = host + '/booklist';
             let params = { type: "all", page: 1 };
-            $scope.booklists = new booklistservice.getBoolists(url, params);
+            vm.booklists = new booklistservice.getBoolists(url, params);
 
             tagservice.getHotTags().then(response => {
-                $scope.tags = response;
+                vm.tags = response;
             });
 
-            $scope.timeOrder = function () {
+            vm.timeOrder = function () {
                 let params = { type: "time", page: 1 };
-                $scope.booklists = new booklistservice.getBoolists(url, params);
-                $scope.booklists.nextPage();
+                vm.booklists = new booklistservice.getBoolists(url, params);
+                vm.booklists.nextPage();
             };
 
-            $scope.collectOrder = function () {
+            vm.collectOrder = function () {
                 let params = { type: "collect", page: 1 };
-                $scope.booklists = new booklistservice.getBoolists(url, params);
-                $scope.booklists.nextPage();
+                vm.booklists = new booklistservice.getBoolists(url, params);
+                vm.booklists.nextPage();
             };
         });
 })();

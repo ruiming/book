@@ -71,7 +71,8 @@
                 views: {
                     'main': {
                         controller: 'BooklistsCtrl',
-                        templateUrl: 'booklists/booklists_tpl.html'
+                        templateUrl: 'booklists/booklists_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

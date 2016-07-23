@@ -253,15 +253,6 @@
                     }
                 }
             })
-            .state('signature', {
-                url: '/setting/signature/{signature}',
-                views: {
-                    'main': {
-                        controller: 'SignatureCtrl',
-                        templateUrl: 'setting_signature/setting_signature_tpl.html'
-                    }
-                }
-            })
             .state('address', {
                 url: '/setting/address',
                 views: {

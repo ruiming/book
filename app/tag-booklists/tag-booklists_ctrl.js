@@ -1,37 +1,41 @@
-angular
-    .module('index')
-    .controller('TagBooklistsCtrl', function($scope, BL, $stateParams){
+(function() {
+    "use strict";
 
-    // 获取指定标签的书单
-    var url = host + '/booklist';
-    var params = {
-        tag: $stateParams.tag,
-        page: 1
-    };
-    $scope.booklists = new BL(url,params);
-    
-    // 时间优先
-    $scope.timeOrder = function(){
-        var url = host + '/booklist';
-        var params = {
-            tag: $stateParams.tag,
-            page: 1,
-            type: "time"
-        };
-        $scope.booklists = new BL(url,params);
-        $scope.booklists.nextPage();
-    };
+    angular
+        .module('index')
+        .controller('TagBooklistsCtrl', function($scope, BL, $stateParams, booklistservice){
 
-    // 收藏优先
-    $scope.collectOrder = function(){
-        var url = host + '/booklist';
-        var params = {
-            tag: $stateParams.tag,
-            page: 1,
-            type: "collect"
-        };
-        $scope.booklists = new BL(url,params);
-        $scope.booklists.nextPage();
-    };
+            // 获取指定标签的书单
+            var url = host + '/booklist';
+            var params = {
+                tag: $stateParams.tag,
+                page: 1
+            };
+            $scope.booklists = new booklistservice.getBooklists(url,params);
+            $scope.booklists.nextPage();
 
-});
+            // 时间优先
+            $scope.timeOrder = function(){
+                var params = {
+                    tag: $stateParams.tag,
+                    page: 1,
+                    type: "time"
+                };
+                $scope.booklists = new booklistservice.getBooklists(url,params);
+                $scope.booklists.nextPage();
+            };
+
+            // 收藏优先
+            $scope.collectOrder = function(){
+                var params = {
+                    tag: $stateParams.tag,
+                    page: 1,
+                    type: "collect"
+                };
+                $scope.booklists = new booklistservice.getBooklists(url,params);
+                $scope.booklists.nextPage();
+            };
+
+        });
+
+})();

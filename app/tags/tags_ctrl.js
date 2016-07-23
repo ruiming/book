@@ -1,19 +1,18 @@
-angular
-    .module('index')
-    .controller('TagsCtrl', function($scope, $http){
+(function(){
+    "use strict";
 
-    $scope.busy = true;
+    angular
+        .module('index')
+        .controller('TagsCtrl', function($scope, $http, tagservice){
 
-    // 获取全部标签
-    $http({
-        method: 'GET',
-        url: host + '/tags',
-        params: {
-            type: "all"
-        }
-    }).success(function(response){
-        $scope.busy = false;
-        $scope.allTags = response;
-    });
+            $scope.busy = true;
 
-});
+            tagservice.getAllTags().then(response => {
+                $scope.busy = false;
+                $scope.allTags = response;
+            });
+
+        });
+
+
+})();

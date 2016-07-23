@@ -12,10 +12,17 @@
         return {
             getUserInfo: getUserInfo,
             getUserNotices: getUserNotices,
-            getUserPoints: getUserPoints
+            getUserPoints: getUserPoints,
+            postSuggestion: postSuggestion
         };
 
-        function getUserPoint() {
+        function postSuggestion(content) {
+            return $http.post(host + '/user_feedback', {
+                content: content
+            }).then(response => response.data);
+        }
+
+        function getUserPoints() {
             return $http.get(host + '/user_points')
                 .then(response => response.data);
         }

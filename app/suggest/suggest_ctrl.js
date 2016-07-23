@@ -1,46 +1,35 @@
-angular
-    .module('index')
-    .controller('SuggestCtrl', function($http, $scope){
+(function(){
+    "use strict";
 
-    $scope.required = true;     // 必填
-    $scope.wait = false;        // 提交反馈wait
-    $scope.wait2 = false;       // 提交反馈动画时延
+    angular
+        .module('index')
+        .controller('SuggestCtrl', function($http, $scope, userservice){
 
-    if(sessionStorage.user != undefined) {
-        $scope.user = JSON.parse(sessionStorage.user);
-    }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/user_info'
-        }).success(function(response){
-            $scope.user = response;
-            sessionStorage.user = JSON.stringify(response);
-        });
-    }
+            $scope.required = true;     // 必填
+            $scope.wait = false;        // 提交反馈wait
+            $scope.wait2 = false;       // 提交反馈动画时延
 
-    // 发布建议和看法
-    $scope.post = function(){
-        if(this.suggestBox.suggestion.$invalid) {
-            return;
-        }
-        $scope.wait = true;
-        $http({
-            method: 'POST',
-            url: host + '/user_feedback',
-            data: {
-                content: $scope.suggestion
-            }
-        }).success(function(){
-            $scope.wait = false;
-            $scope.wait2 = true;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait2 = false;
-                    history.back();
+            userservice.getUserInfo().then(response => {
+                $scope.user = response;
+            });
+
+            // 发布建议和看法
+            $scope.post = function(){
+                if(this.suggestBox.suggestion.$invalid) {
+                    return;
+                }
+                $scope.wait = true;
+                userservice.postSuggestion($scope.suggestion).then(() => {
+                    $scope.wait = false;
+                    $scope.wait2 = true;
+                    window.setTimeout(function() {
+                        $scope.$apply(function() {
+                            $scope.wait2 = false;
+                            history.back();
+                        });
+                    }, 2000);
                 });
-            }, 2000);
-        });
-    };
+            };
 
-});
+        });
+})();

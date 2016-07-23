@@ -87,21 +87,7 @@
         </div>
         <div class="books-similarity" ng-if="vm.booksBought.length != 0">
             <span>购买此书的人最近也购买</span>
-            <div class="slides-book-content">
-                <a ng-repeat="book in vm.booksBought" ui-sref="book({isbn: book.isbn})">
-                    <img ng-src="{{book.image}}">
-                    <p>
-                        {{book.title | limitTo : 8}}
-                        <span ng-if="book.title.length>8">...</span>
-                    </p>
-                    <uib-rating ng-model="book.star"
-                                class="red-star wechat-fix"
-                                state-on="'fa fa-star'"
-                                state-off="'fa fa-star-o'"
-                                max="5" read-only="true"></uib-rating>
-                    <span>{{book.rate}}</span>
-                </a>
-            </div>
+            <book-slide ng-init="vm.booksBought=[]" books=vm.booksBought></book-slide>
         </div>
         <div class="booklists-box" ng-if="vm.booklists.length != 0">
             <span>被以下书单收录</span>

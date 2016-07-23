@@ -17,15 +17,23 @@
             getUserNotices: getUserNotices,
             getUserPoints: getUserPoints,
             getUserComments: getUserComments,
+            getUserCollect: getUserCollect,
             postSuggestion: postSuggestion,
+
             getUserAddress: getUserAddress,
             updateUserAddress: updateUserAddress,
             deleteUserAddress: deleteUserAddress,
             addUserAddress: addUserAddress,
             setUserDefaultAddress: setUserDefaultAddress,
+
             setAddress: setAddress,
             getAddress: getAddress
         };
+
+        function getUserCollect(type) {
+            return $http.get(host + '/user_collect?type=' + type)
+                .then(response => response.data);
+        }
 
         function setUserDefaultAddress(name, phone, dorimitory, id) {
             return $http.put(host + '/user_address', {

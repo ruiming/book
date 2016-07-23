@@ -15,6 +15,7 @@
             getBook: getBook,
             getBookDetail: getBookDetail,
             collectBook: collectBook,
+            discollectBook: discollectBook,
             getSimilarBook: getSimilarBook,
             getBookBelongs: getBookBelongs,
             getBooks: getBooks
@@ -75,6 +76,13 @@
             return $http.post(host + '/collect', {
                 isbn: isbn,
                 type: 'book'
+            }).then(response => response.data)
+        }
+
+        function discollectBook(isbn) {
+            return $http.post(host + '/collect', {
+                type: 'book',
+                isbn: isbn
             }).then(response => response.data)
         }
 

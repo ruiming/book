@@ -8,13 +8,13 @@
             'ngAnimate',
             'ngSanitize',
             'ngTouch',
-            'infinite-scroll'
         ])
         .config(config);
 
+    config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider'];
     function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider) {
         $httpProvider.defaults.transformResponse.push(response => {
-            if(response.message !== undefined) {
+            if(response.message !== void 0) {
                 notie.alert(1, response.message, 0.3);
             }
             if(typeof(response.data) != "undefined" && response.status === "success") {
@@ -52,7 +52,8 @@
                 views: {
                     'main': {
                         templateUrl: 'index/index_tpl.html',
-                        controller: 'IndexCtrl'
+                        controller: 'IndexCtrl',
+                        controllerAs: 'vm'
                     }
                 }
             })

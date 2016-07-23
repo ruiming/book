@@ -13,10 +13,16 @@
             getPopularBooks: getPopularBooks,
             addToCart: addToCart,
             getBook: getBook,
+            getBookDetail: getBookDetail,
             collectBook: collectBook,
             getSimilarBook: getSimilarBook,
             getBookBelongs: getBookBelongs
         };
+
+        function getBookDetail(isbn) {
+            return $http.get(host + '/book?type=detail&isbn=' + isbn)
+                .then(response => response.data);
+        }
 
         function getBookBelongs(isbn) {
             return $http.get(host + '/booklist?isbn=' + isbn)

@@ -212,6 +212,7 @@ a {
       position: relative;
       img {
         width: $width;
+        min-height: 120px;
         float: right;
         margin-left: 10px;
       }

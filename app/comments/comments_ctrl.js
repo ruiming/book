@@ -1,71 +1,38 @@
-angular
-    .module('index')
-    .controller('CommentsCtrl',function($scope, $http, $stateParams, TEMP) {
+(function(){
+    "use strict";
+    angular
+        .module('index')
+        .controller('CommentsCtrl',function($scope, $http, $stateParams, TEMP, commentservice) {
 
-    $scope.busy = true;
-    $scope.title = TEMP.getDict().title;
+            $scope.busy = true;
+            $scope.title = TEMP.getDict().title;
 
-    // 获取该书的评论
-    $http({
-        method: 'GET',
-        url: host + '/comments',
-        params: {
-            isbn: $stateParams.isbn
-        }
-    }).success(function(response){
-        $scope.comments = response;
-        $scope.busy = false;
-        for (var i=0; i< response.comments.length; i++){
-            $scope.comments[i].star = Math.ceil($scope.comments[i].star/2);
-        }
-    });
+            commentservice.getComment($stateParams.isbn).then(response => {
+                $scope.comments = response;
+                $scope.busy = false;
+                for( comment of $scope.comments ) {
+                    comment.star = Math.ceil(comment.star / 2);
+                }
+            });
 
-    // 顶
-    $scope.up = function(comment){
-        $http({
-            method: 'PUT',
-            url: host + '/comment',
-            data: {
-                id: comment.id,
-                type: "up"
-            }
-        }).success(function(){
-            if(comment.down_already) {
-                comment.down--;
-            }
-            comment.up_already = !comment.up_already;
-            comment.down_already = false;
-            if(comment.up_already) {
-                comment.up++;
-            }
-            else {
-                comment.up--;
-            }
+            $scope.up = function(comment) {
+                commentservice.up(comment.id).then(() => {
+                    comment.down = comment.down_already ? --comment.down : comment.down;
+                    comment.up_already = !comment.up_already;
+                    comment.down_already = false;
+                    comment.up = comment.up_already ? ++comment.up : --comment.up;
+                });
+            };
+
+            $scope.down = function(comment) {
+                commentservice.down(comment.id).then(() => {
+                    comment.up = comment.up_already ? --comment.up : comment.up;
+                    comment.down_already = !comment.down_already;
+                    comment.up_already = false;
+                    comment.down = comment.down_already ? ++comment.down : --comment.down;
+                });
+            };
+
         });
-    };
 
-    // 踩
-    $scope.down = function(comment){
-        $http({
-            method: 'PUT',
-            url: host + '/comment',
-            data: {
-                id: comment.id,
-                type: "down"
-            }
-        }).success(function(){
-            if(comment.up_already) {
-                comment.up--;
-            }
-            comment.down_already = !comment.down_already;
-            comment.up_already = false;
-            if(comment.down_already)  {
-                comment.down++;
-            }
-            else {
-                comment.down--;
-            }
-        });
-    };
-    
-});
+})();

@@ -14,8 +14,14 @@
             down: down,
             postComment: postComment,
             editComment: editComment,
-            deleteComment: deleteComment
+            deleteComment: deleteComment,
+            getComment: getComment
         };
+
+        function getComment(isbn) {
+            return $http.get(host + '/comments?isbn=' + isbn)
+                .then(response => response.data);
+        }
 
         function deleteComment(id) {
             return $http.delete(host + '/comment', {

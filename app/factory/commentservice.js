@@ -9,6 +9,9 @@
 
     function commentservice($http) {
 
+        // 暂存进入全部评论页面的标题
+        let title = null;
+
         return {
             up: up,
             down: down,
@@ -16,8 +19,18 @@
             editComment: editComment,
             deleteComment: deleteComment,
             getComment: getComment,
-            platformComment: platformComment
+            platformComment: platformComment,
+            getTitle: getTitle,
+            setTitle: setTitle
         };
+
+        function getTitle() {
+            return title;
+        }
+
+        function setTitle(value) {
+            title = value;
+        }
 
         function platformComment(stars1, stars2, stars3) {
             return $http.post(host + '/user_billing', {

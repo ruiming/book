@@ -2,36 +2,41 @@
     "use strict";
     angular
         .module('index')
-        .controller('CommentsCtrl',function($scope, $http, $stateParams, TEMP, commentservice) {
+        .controller('CommentsCtrl',function($stateParams, commentservice) {
+            let vm = this;
+            vm.title = commentservice.getTitle();
+            vm.up = up;
+            vm.down = down;
 
-            $scope.busy = true;
-            $scope.title = TEMP.getDict().title;
+            getComment();
 
-            commentservice.getComment($stateParams.isbn).then(response => {
-                $scope.comments = response;
-                $scope.busy = false;
-                for( comment of $scope.comments ) {
-                    comment.star = Math.ceil(comment.star / 2);
-                }
-            });
+            function getComment() {
+                commentservice.getComment($stateParams.isbn).then(response => {
+                    vm.comments = response;
+                    vm.busy = false;
+                    for( comment of vm.comments ) {
+                        comment.star = Math.ceil(comment.star / 2);
+                    }
+                });
+            }
 
-            $scope.up = function(comment) {
+            function up(comment) {
                 commentservice.up(comment.id).then(() => {
                     comment.down = comment.down_already ? --comment.down : comment.down;
                     comment.up_already = !comment.up_already;
                     comment.down_already = false;
                     comment.up = comment.up_already ? ++comment.up : --comment.up;
                 });
-            };
+            }
 
-            $scope.down = function(comment) {
+            function down(comment){
                 commentservice.down(comment.id).then(() => {
                     comment.up = comment.up_already ? --comment.up : comment.up;
                     comment.down_already = !comment.down_already;
                     comment.up_already = false;
                     comment.down = comment.down_already ? ++comment.down : --comment.down;
                 });
-            };
+            }
 
         });
 

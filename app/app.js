@@ -127,7 +127,8 @@
                 views: {
                     'main': {
                         controller: 'CommentsCtrl',
-                        templateUrl: 'comments/comments_tpl.html'
+                        templateUrl: 'comments/comments_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

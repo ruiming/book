@@ -10,17 +10,27 @@
             vm.noWrapSlides = false;
             vm.active = 0;
 
-            bookservice.getPopularBooks().then(response => {
-                vm.books = response;
-            });
+            getPopularBooks();
+            getHotBooklists();
+            getSlides();
 
-            booklistservice.getHotBooklists().then(response => {
-                vm.booklists = response;
-            });
+            function getPopularBooks() {
+                bookservice.getPopularBooks().then(response => {
+                    vm.books = response;
+                });
+            }
 
-            slideservice.getSlides().then(response => {
-                vm.slides = response;
-            });
+            function getHotBooklists() {
+                booklistservice.getHotBooklists().then(response => {
+                    vm.booklists = response;
+                });
+            }
+
+            function getSlides() {
+                slideservice.getSlides().then(response => {
+                    vm.slides = response;
+                });
+            }
 
         });
 })();

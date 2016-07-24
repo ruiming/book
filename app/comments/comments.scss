@@ -1,0 +1,21 @@
+.book-comments-all {
+  overflow: hidden;
+  .navbar {
+    box-shadow: none;
+    padding: 0;
+    min-height: 30px;
+    border-radius: 0;
+    background-color: #FFF;
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    a {
+      padding: 12px;
+      height: auto;
+    }
+  }
+  .book-comments-list {
+    margin-top: 45px;
+    padding: 10px 10px 0 10px;
+    background-color: #ffffff;
+  }
+}

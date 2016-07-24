@@ -96,71 +96,6 @@ a {
     }
   }
 }
-.slides {
-  height: 160px;
-  background-color: #ffffff;
-  margin-bottom: 20px;
-  img {
-    min-height: 160px !important;
-    width: 100%;
-  }
-  a[role="button"]{
-    background-image: linear-gradient(to right,rgba(0,0,0,.0001) 0,rgba(0, 0, 0, 0.0001) 100%);
-    height: 180px;
-  }
-  .carousel-inner {
-    height: 160px !important;
-  }
-  .carousel-indicators{
-    display: none;
-  }
-}
-.slides-book {
-  margin-bottom: 14px;
-  background-color: #ffffff;
-  .slides-book-header {
-    @extend .header;
-    i {
-      float: left;
-      padding-right: 5px;
-      line-height: 1.4;
-    }
-    span {
-      float: left;
-    }
-    a {
-      color: #009688;
-      font-weight: 500;
-      font-size: 13px;
-      float: right;
-    }
-  }
-}
-.slides-book-content {
-  $imgHeight: 150px;
-  padding: 0 10px;
-  width: 100%;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  overflow-x: auto;
-  a {
-    padding: 0 5px;
-    font-size: 12px;
-    display: inline-block;
-    max-width: 120px;
-    img {
-      height: $imgHeight;
-      width: 105px;
-    }
-    p {
-      margin: 5px 0 0;
-      overflow: hidden;
-    }
-    i {
-      color: $star;
-    }
-  }
-}
 .wechat-fix {
   i:before{
     padding: 0 1px;
@@ -170,78 +105,6 @@ a {
   }
 }
 
-.booklists-box {
-  background: #ffffff;
-  .booklists-order {
-    width: 100%;
-    border-bottom: 1px solid #eee;
-    button {
-      border: none;
-      border-radius: 0;
-      width: 50%;
-      padding: 10px;
-    }
-  }
-  .booklists-box-header {
-    @extend .header;
-    i {
-      float: left;
-      padding-right: 5px;
-      line-height: 1.4;
-      span {
-        float: left;
-      }
-    }
-    a {
-      color: #009688;
-      font-weight: 500;
-      font-size: 13px;
-      float: right;
-    }
-  }
-  .booklists-box-content {
-    $width: 100px;
-    overflow: hidden;
-    padding: 0 10px;
-    a {
-      float: left;
-      display: block;
-      width: 100%;
-      border-bottom: 1px solid #eee;
-      padding: 5px;
-      position: relative;
-      img {
-        width: $width;
-        min-height: 120px;
-        float: right;
-        margin-left: 10px;
-      }
-      .title {
-        font: {
-          size: 16px;
-          weight: 500;
-        }
-        margin: 5px 0;
-        display: block;
-      }
-      .collect {
-        color: $grayColor;
-      }
-      .booklist-tag {
-        display: block;
-        overflow: hidden;
-        bottom: 10px;
-        position: absolute;
-        .tag {
-          float: left;
-          font-size: 12px;
-          padding-right: 5px;
-          color: $grayColor;
-        }
-      }
-    }
-  }
-}
 .tags-hot {
   background-color: #fff;
   margin-bottom: 20px;
@@ -427,27 +290,6 @@ a {
   .star {
     float: right;
     line-height: 2.5;
-  }
-}
-.book-comments-all {
-  overflow: hidden;
-  .navbar {
-    box-shadow: none;
-    padding: 0;
-    min-height: 30px;
-    border-radius: 0;
-    background-color: #FFF;
-    border-bottom: 1px solid #eee;
-    margin: 0;
-    a {
-      padding: 12px;
-      height: auto;
-    }
-  }
-  .book-comments-list {
-    margin-top: 45px;
-    padding: 10px 10px 0 10px;
-    background-color: #ffffff;
   }
 }
 .cart-to-order {

@@ -27,6 +27,7 @@
 
         bookservice.getBook($stateParams.isbn).then(response => {
             vm.book = response;
+            commentservice.setTitle(vm.book.title);
         });
 
         userservice.getUserInfo().then(response => {
@@ -35,7 +36,6 @@
 
         bookservice.getSimilarBook($stateParams.isbn).then(response => {
             vm.booksBought = response;
-            console.log(response);
         });
 
         bookservice.getBookBelongs($stateParams.isbn).then(response => {

@@ -1,18 +1,17 @@
-<loading ng-if="busy"></loading>
-<div class="booklist" ng-if="!busy">
+<div class="booklist">
     <div class="booklist-header">
-        <img class="booklist-image-cover" ng-src="{{booklist.image}}">
-        <h3>{{booklist.title}}</h3>
-        <p class="booklist-intro">{{booklist.description}}</p>
-        <img class="avatar" ng-src="{{booklist.author.avatar}}">
-        <small>{{booklist.author.name}} / {{booklist.collect}}人收藏</small>
-        <button class="btn btn-blue" ng-click="collect()" ng-if="!booklist.collect_already&&!wait">
+        <img class="booklist-image-cover" ng-src="{{vm.booklist.image}}">
+        <h3>{{vm.booklist.title}}</h3>
+        <p class="booklist-intro">{{vm.booklist.description}}</p>
+        <img class="avatar" ng-src="{{vm.booklist.author.avatar}}">
+        <small>{{vm.booklist.author.name}} / {{vm.booklist.collect}}人收藏</small>
+        <button class="btn btn-blue" ng-click="collect()" ng-if="!vm.booklist.collect_already&&!vm.wait">
             <i class="fa fa-bookmark-o"></i> 收藏书单
         </button>
-        <button class="btn btn-blue" ng-if="wait" disabled>
+        <button class="btn btn-blue" ng-if="vm.wait" disabled>
             <wait></wait>
         </button>
-        <button class="btn btn-blue" ng-click="collect()" ng-if="booklist.collect_already&&!wait">
+        <button class="btn btn-blue" ng-click="collect()" ng-if="vm.booklist.collect_already&&!vm.wait">
             <i class="fa fa-bookmark"></i> 已收藏
         </button>
     </div>
@@ -20,12 +19,12 @@
         <div class="booklist-tags-outer">
             <div class="booklist-tags-inner">
                 <span class="tag">标签</span>
-                <a class="tag" ng-repeat="tag in booklist.tags" ui-sref="tagBooklists({tag: tag})">{{tag}}</a>
+                <a class="tag" ng-repeat="tag in vm.booklist.tags" ui-sref="tagBooklists({tag: tag})">{{tag}}</a>
             </div>
         </div>
     </div>
     <div class="booklist-books slides-box-content">
-        <a ng-repeat="book in booklist.books" ui-sref="book({isbn: book.isbn})">
+        <a ng-repeat="book in vm.booklist.books" ui-sref="book({isbn: book.isbn})">
             <div class="book-image">
                 <img class="cover cover-sm" ng-src="{{book.image}}">
                 <img class="cover-bg" ng-src="{{book.image}}">

@@ -10,13 +10,27 @@
     function booklistservice($http) {
 
         return {
+            collectBooklist: collectBooklist,
             getHotBooklists: getHotBooklists,
+            getBooklistDetail: getBooklistDetail,
             getBooklists: getBooklists
         };
 
+        function collectBooklist(id) {
+            return $http.post(host + '/collect', {
+                type: 'booklist',
+                id: id
+            }).then(response => response.data);
+        }
+
+        function getBooklistDetail(id) {
+            return $http.get(host + '/booklist?id=' + id)
+                .then(response => response.data)
+        }
+
         function getHotBooklists() {
             return $http.get(host + '/booklist?type=hot')
-                .then(response => response.data);
+                .then(response => response.data)
         }
 
         function getBooklists(url, params) {

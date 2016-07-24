@@ -100,7 +100,8 @@
                 views: {
                     'main': {
                         controller: 'BookInfoCtrl',
-                        templateUrl: 'book_info/book_info_tpl.html'
+                        templateUrl: 'book_info/book_info_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -109,7 +110,8 @@
                 views: {
                     'main': {
                         controller: 'BookListCtrl',
-                        templateUrl: 'booklist/booklist_tpl.html'
+                        templateUrl: 'booklist/booklist_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

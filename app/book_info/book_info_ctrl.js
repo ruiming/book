@@ -3,12 +3,10 @@
 
     angular
         .module('index')
-        .controller('BookInfoCtrl', function($http, $scope, bookservice, $stateParams) {
-            $scope.busy = true;
-
+        .controller('BookInfoCtrl', function($http, bookservice, $stateParams) {
+            let vm = this;
             bookservice.getBookDetail($stateParams.isbn).then(response => {
-                $scope.book = response;
-                $scope.busy = false;
+                vm.book = response;
             });
         });
 

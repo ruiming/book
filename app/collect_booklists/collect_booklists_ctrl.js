@@ -3,14 +3,15 @@
 
     angular
         .module('index')
-        .controller('CollectBookListsCtrl', function($http, $scope, userservice){
+        .controller('CollectBookListsCtrl', function(userservice){
 
-            $scope.busy = true;
-            userservice.getUserCollect('booklist').then((response) => {
-                $scope.booklists = response;
-                $scope.busy = false;
-            });
+            getUserCollect();
 
+            function getUserCollect() {
+                userservice.getUserCollect('booklist').then((response) => {
+                    vm.booklists = response;
+                });
+            }
         });
 
 })();

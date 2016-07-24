@@ -5,9 +5,11 @@
         .module('index')
         .factory('userservice', userservice);
 
-    userservice.$inject = ['$http'];
+    userservice.$inject = ['$http', 'commonservice'];
 
-    function userservice($http) {
+    function userservice($http, commonservice) {
+
+        let changeStars = commonservice.changeStars;
 
         let address = null;
 
@@ -36,8 +38,8 @@
         }
 
         function getUserCollect(type) {
-            return $http.get(host + '/user_collect?type=' + type)
-                .then(response => response.data)
+            return $http.get(host + '/user_collects?type=' + type)
+                .then(response => changeStars(response.data))
         }
 
         function setUserDefaultAddress(name, phone, dorimitory, id) {

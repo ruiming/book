@@ -215,7 +215,8 @@
                 views: {
                     'main': {
                         controller: 'CollectBookListsCtrl',
-                        templateUrl: 'collect_booklists/collect_booklists_tpl.html'
+                        templateUrl: 'collect_booklists/collect_booklists_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

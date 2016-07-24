@@ -5,9 +5,11 @@
         .module('index')
         .factory('bookservice', bookservice);
 
-    bookservice.$inject = ['$http'];
+    bookservice.$inject = ['$http', 'commonservice'];
 
-    function bookservice($http) {
+    function bookservice($http, commonservice) {
+
+        let changeStars = commonservice.changeStars;
 
         return {
             getPopularBooks: getPopularBooks,
@@ -92,24 +94,6 @@
                     console.log(response.data);
                     return changeStars(response.data);
                 })
-        }
-
-        /**
-         * 书籍评星转化
-         * @param books
-         * @returns {*}
-         */
-        function changeStars(books) {
-            if(books instanceof Array) {
-                for(let book of books) {
-                    book.star = Math.ceil(book.rate/2);
-                }
-                return books;
-            }
-            if(books.rate !== void 0) {
-                books.star = Math.ceil(books.rate/2);
-            }
-            return books;
         }
 
         /**

@@ -1,0 +1,38 @@
+.books {
+  background-color: #fff;
+  overflow: hidden;
+  .books-content {
+    margin: 10px 0;
+    overflow: hidden;
+    list-style: none;
+    padding: 0 10px;
+    .books-content-list {
+      border-bottom: 1px solid #F7F7F7;
+      margin-bottom: 10px;
+      display: block;
+      overflow: hidden;
+      padding: 0;
+      float: left;
+      width: 100%;
+      img {
+        margin: 0 10px 0 0;
+        max-width: 80px;
+        float: left;
+        box-shadow: 0 0 4px rgba(0,0,0,.1);
+        border: 1px solid #dadada;
+      }
+      .title {
+        display: block;
+      }
+      blockquote {
+        padding: 10px;
+        margin: 6px 0 6px 90px;
+        color: #555;
+        font-size: 13px;
+        line-height: 1.5;
+        border-left: 1px solid #4CAF50;
+        background: #F5F5F5;
+      }
+    }
+  }
+}

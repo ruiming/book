@@ -1,0 +1,26 @@
+.collect-box {
+  .booklists-box-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    a,
+    button {
+      border: none;
+      border-radius: 0;
+      width: 50%;
+      padding: 10px;
+    }
+  }
+  .booklists-box-content,
+  .books {
+    margin-top: 40px;
+  }
+  .books .title i {
+    float: right;
+  }
+}

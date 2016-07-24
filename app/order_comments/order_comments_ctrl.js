@@ -2,40 +2,35 @@
     "use strict";
     angular
         .module('index')
-        .controller('OrderCommentsCtrl', function($scope, $http, $stateParams, orderservice){
+        .controller('OrderCommentsCtrl', function($stateParams, orderservice){
 
-            $scope.busy = true;
-            $scope.wait = false;        // 等待
-            $scope.alert = false;       // 错误提示
+            vm.WAIT_COMMENT = false;
 
-            // 获取待评价订单的详细信息
-            orderservice.getOrderDetail($stateParams).then(response => {
-                $scope.order = response;
-                $scope.busy = false;
-                if($scope.status !== 'commenting') {
-                    history.back();
-                }
-            });
+            vm.comment = comment;
 
-            // todo 订单评价
-            $scope.comment = function(){
-                $scope.wait = true;
+            getOrderDetail();
+
+            function getOrderDetail() {
+                orderservice.getOrderDetail($stateParams).then(response => {
+                    vm.order = response;
+                    if(vm.status !== 'commenting') {
+                        history.back();
+                    }
+                });
+            }
+
+            function comment(){
+                vm.WAIT_COMMENT = true;
                 if(!this.commentForm.$valid) {
-                    $scope.wait = false;
-                    $scope.alert = true;
-                    window.setTimeout(function() {
-                        $scope.$apply(function() {
-                            $scope.alert = false;
-                        });
-                    }, 4000);
+                    vm.WAIT_COMMENT = false;
                 }
                 else {
-                    for(let book of $scope.order.carts) {
+                    for(let book of vm.order.carts) {
                         commentservice.postComment(book.isbn, book.star*2, book.content);
                     }
                 }
-                commentservice.platformComment($scope.stars1, $scope.stars2, $scope.stars3);
-            };
+                commentservice.platformComment(vm.stars1, vm.stars2, vm.stars3);
+            }
 
         });
 

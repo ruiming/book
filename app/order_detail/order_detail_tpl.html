@@ -1,13 +1,13 @@
-<loading ng-if="busy"></loading>
-<div class="order-group" ng-if="!busy">
+<div class="order-group">
     <ul class="order-list">
         <li class="order-list-one">
             <div class="order-title">
                 <span class="order-head">订单详细信息</span>
-                <span class="order-status">共{{price}}元</span>
+                <span class="order-status">共{{vm.price}}元</span>
             </div>
             <ul class="order-books">
-                <a class="order-book" ui-sref="book({isbn: z.book.isbn})" ng-repeat="z in order.carts">
+                <a class="order-book" ng-repeat="z in vm.order.carts"
+                   ui-sref="book({isbn: z.book.isbn})">
                     <img ng-src="{{z.book.image}}">
                     <p>{{z.book.title}}</p>
                     <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
@@ -17,10 +17,10 @@
             <div class="order-detail">
                 <div class="order-title">
                     <span class="order-head">订单状态</span>
-                    <span class="order-status">{{order.status}}</span>
+                    <span class="order-status">{{vm.order.status}}</span>
                 </div>
                 <ul class="order-process">
-                    <li ng-repeat="x in status_list">
+                    <li ng-repeat="x in vm.status_list">
                         <span>{{x.status}}</span>
                         <span>{{x.time*1000 | date:'yyyy-MM-dd HH:mm'}}</span>
                     </li>
@@ -31,21 +31,41 @@
                     <span class="order-head">订单收货信息</span>
                 </div>
                 <div class="order-receipt-meta">
-                    <p>收货人: {{order.address.name}}</p>
-                    <p>联系电话: {{order.address.phone}}</p>
-                    <p>收货地址: {{order.address.dormitory}}</p>
+                    <p>收货人: {{vm.order.address.name}}</p>
+                    <p>联系电话: {{vm.order.address.phone}}</p>
+                    <p>收货地址: {{vm.order.address.dormitory}}</p>
                 </div>
             </div>
             <div class="order-detail-clear"></div>
             <div class="order-meta order-meta-fix-bottom">
                 <div class="order-meta-price">
-                    <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{price}}</em> 元</span>
+                    <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.price}}</em> 元</span>
                 </div>
-                <a class="btn btn-danger" ng-if="order.status=='待评价'&&!wait2" style="width: 95px;" ui-sref="orderComments({id: order.id})">评价</a>
-                <button class="btn btn-danger" ng-if="order.status=='待收货'&&!wait2" ng-click="receipt(order)">确认收货</button>
-                <button class="btn btn-danger" ng-if="order.status=='待发货'&&!wait2" ng-click="cancel(order)">取消订单</button>
-                <button class="btn btn-danger" ng-if="order.status=='已取消'" style="width: 95px;" disabled>已取消</button>
-                <button class="btn btn-danger" ng-if="wait2" disabled style="width: 95px;"><wait></wait></button>
+                <a class="btn btn-danger"
+                   ng-if="vm.order.status=='待评价'&&!vm.WAIT_OPERATING"
+                   style="width: 95px;" ui-sref="orderComments({id: vm.order.id})">
+                    评价
+                </a>
+                <button class="btn btn-danger"
+                        ng-if="vm.order.status=='待收货'&&!vm.WAIT_OPERATING"
+                        ng-click="vm.receipt(order)">
+                    确认收货
+                </button>
+                <button class="btn btn-danger"
+                        ng-if="vm.order.status=='待发货'&&!vm.WAIT_OPERATING"
+                        ng-click="vm.cancel(order)">
+                    取消订单
+                </button>
+                <button class="btn btn-danger"
+                        ng-if="vm.order.status=='已取消'"
+                        style="width: 95px;" disabled>
+                    已取消
+                </button>
+                <button class="btn btn-danger"
+                        ng-if="vm.WAIT_OPERATING" disabled
+                        style="width: 95px;">
+                    <wait></wait>
+                </button>
             </div>
         </li>
     </ul>

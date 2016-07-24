@@ -175,7 +175,8 @@
                 views: {
                     'main': {
                         controller: 'OrderDetailCtrl',
-                        templateUrl: 'order_detail/order_detail_tpl.html'
+                        templateUrl: 'order_detail/order_detail_tpl.html',
+                        controllerAs: 'vm'
                     },
                     'nav': {
                         template: '<span></span>'
@@ -187,7 +188,8 @@
                 views: {
                     'main': {
                         controller: 'OrderCommentsCtrl',
-                        templateUrl: 'order_comments/order_comments_tpl.html'
+                        templateUrl: 'order_comments/order_comments_tpl.html',
+                        controllerAs: 'vm'
                     },
                     'nav': {
                         template: '<span></span>'

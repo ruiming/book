@@ -9,6 +9,7 @@
 
     function orderservice($http) {
 
+        // 暂存进入订单生成页面时的勾选书籍
         let store = null;
 
         return {
@@ -40,9 +41,9 @@
         }
 
         function cancelOrder(id) {
-            return $http.delete(host + '/billing', {
+            return $http.delete(host + '/billing', {data:{
                 id: id
-            }).then(response => response.data);
+            }}).then(response => response.data);
         }
 
         function getOrderDetail(id) {

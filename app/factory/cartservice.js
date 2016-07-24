@@ -35,9 +35,9 @@
         }
 
         function deleteCart(isbn) {
-            return $http.delete(host + '/cart',{
+            return $http.delete(host + '/cart', {data:{
                 isbn: isbn
-            }).then(response => response.data)
+            }}).then(response => response.data)
         }
 
     }

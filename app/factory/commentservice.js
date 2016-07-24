@@ -33,9 +33,9 @@
         }
 
         function deleteComment(id) {
-            return $http.delete(host + '/comment', {
+            return $http.delete(host + '/comment', {data:{
                 id: id
-            }).then(response => response.data);
+            }}).then(response => response.data);
         }
 
         function editComment(id, star, content) {

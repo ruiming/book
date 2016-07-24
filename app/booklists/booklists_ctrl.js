@@ -4,26 +4,30 @@
     angular
         .module('index')
         .controller('BooklistsCtrl', function ($http, booklistservice, tagservice) {
-
             let vm = this;
-            let url = host + '/booklist';
-            let params = { type: "all", page: 1 };
-            vm.booklists = new booklistservice.getBooklists(url, params);
+            vm.booklists = new booklistservice.getBooklists('all');
 
-            tagservice.getHotTags().then(response => {
-                vm.tags = response;
-            });
+            getHotTags();
 
-            vm.timeOrder = function () {
-                let params = { type: "time", page: 1 };
-                vm.booklists = new booklistservice.getBooklists(url, params);
+            vm.timeOrder = getBooklistOrderByTime;
+            vm.collectOrder = getBooklistOrderByCollect;
+
+            function getHotTags() {
+                tagservice.getHotTags().then(response => {
+                    vm.tags = response;
+                });
+            }
+
+            function getBooklistOrderByTime() {
+                vm.booklists = new booklistservice.getBooklists('time');
                 vm.booklists.nextPage();
-            };
+            }
 
-            vm.collectOrder = function () {
-                let params = { type: "collect", page: 1 };
-                vm.booklists = new booklistservice.getBooklists(url, params);
+            function getBooklistOrderByCollect() {
+                vm.booklists = new booklistservice.getBooklists('collect');
                 vm.booklists.nextPage();
-            };
+            }
+
+
         });
 })();

@@ -36,12 +36,10 @@
             return str.join("&");
         };
 
+        $locationProvider.html5Mode(true);
         $httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.put = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};
-
-        $locationProvider.html5Mode(true);
-
         // redirect to "/" if not match
         $urlRouterProvider.otherwise("/");
 
@@ -156,7 +154,8 @@
                 views: {
                     'main': {
                         controller: 'CartCtrl',
-                        templateUrl: 'cart/cart_tpl.html'
+                        templateUrl: 'cart/cart_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

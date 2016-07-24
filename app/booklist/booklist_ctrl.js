@@ -3,7 +3,7 @@
 
     angular
         .module('index')
-        .controller('BookListCtrl',function($http, $stateParams, booklistservice) {
+        .controller('BookListCtrl',function($stateParams, booklistservice) {
             let vm = this;
             vm.wait = false;
             vm.wait2 = false;

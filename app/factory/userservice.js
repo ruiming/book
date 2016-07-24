@@ -51,9 +51,9 @@
         }
 
         function deleteUserAddress(id) {
-            return $http.delete(host + '/user_address', {
+            return $http.delete(host + '/user_address', {data:{
                 id: id
-            }).then(response => response.data);
+            }}).then(response => response.data);
         }
 
         function updateUserAddress(name, phone, dorimitory, id) {

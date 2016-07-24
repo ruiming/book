@@ -33,11 +33,14 @@
                 .then(response => response.data)
         }
 
-        function getBooklists(url, params) {
+        function getBooklists(type) {
             this.list = [];
             this.busy = false;
-            this.url = url;
-            this.params = params;
+            this.url = host + '/booklist';
+            this.params =  {
+                type: type,
+                page: 1
+            };
             this.continue = true;
             this.nextPage = function() {
                 if(!this.continue){

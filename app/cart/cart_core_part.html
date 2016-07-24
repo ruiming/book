@@ -1,0 +1,39 @@
+<ul class="shop-cart-list">
+    <li ng-repeat="item in vm.items" ng-if="!item.deleted">
+        <div class="shop-cart-item">
+            <div class="checkbox">
+                <label>
+                    <span ng-class="{true: 'active', false: ''}[item.checked]">
+                        <input type="checkbox"
+                               ng-model="item.checked"
+                               ng-click="vm.recount()">
+                    </span>
+                </label>
+            </div>
+            <a class="cart-book-image" ui-sref="book({isbn: item.book.isbn})">
+                <img ng-src="{{item.book.image}}">
+            </a>
+            <div class="cart-book-name">
+                <a ui-sref="book({isbn: item.book.isbn})">
+                    {{item.book.title}}
+                </a>
+            </div>
+            <p class="cart-book-price"> ¥ {{item.price | number:2 }}</p>
+            <span class="cart-book-count" ng-if="!vm.editStatu">
+                X {{ item.number }}
+            </span>
+            <div class="cart-book-edit" ng-if="vm.editStatu">
+                <i class="fa fa-trash-o fa-1x" ng-click="vm.removeBook(item)"></i>
+                <div class="cart-book-edit-count">
+                    <i class="fa fa-minus"
+                       ng-click="vm.minus(item)"></i>
+                    <input type="number"
+                           ng-model="item.number"
+                           ng-change="vm.editBook(item)">
+                    <i class="fa fa-plus"
+                       ng-click="vm.plus(item)"></i>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>

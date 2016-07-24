@@ -1,0 +1,134 @@
+.booklist {
+  .booklist-header {
+    padding: 10px;
+    text-align: center;
+    button {
+      margin: 0 10px;
+    }
+    .booklist-intro {
+      font-size: 12px;
+      padding: 0 10px 5px;
+    }
+    .booklist-image-cover {
+      position: absolute;
+      top: -5%;
+      left: 0;
+      width: 100%;
+      z-index: -1;
+      background: #fff;
+      border: 0;
+      vertical-align: middle;
+      display: block;
+      height: auto;
+      @include blur(1rem);
+      opacity: 0.3;
+    }
+    .avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    small {
+      display: block;
+      margin-bottom: 10px;
+    }
+    button {
+      width: 130px;
+    }
+  }
+  .booklist-tags {
+    background-color: #fff;
+    .booklist-tags-outer {
+      overflow-y: hidden;
+      overflow-x: scroll;
+      height: 43px;
+      .booklist-tags-inner {
+        width: 1200px;
+        .tag {
+          float: left;
+          padding: 12px;
+          &:first-child {
+            border-right: 1px solid #eee;
+          }
+        }
+      }
+    }
+  }
+  .booklist-books {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    a {
+      display: block;
+      margin-bottom: 10px;
+      overflow: hidden;
+      &:last-child {
+        margin: 0;
+      }
+      .book-image {
+        z-index: 0;
+        position: relative;
+        overflow: hidden;
+        .cover {
+          display: block;
+          z-index: 1;
+          margin: 8px auto;
+          height: 200px;
+          box-shadow: 1px 1px 1px #4A4A4A;
+        }
+        .cover-bg {
+          position: absolute;
+          top: -5%;
+          z-index: -1;
+          left: -5%;
+          width: 110%;
+          opacity: 0.8;
+          @include blur(1rem);
+        }
+      }
+      .book-message {
+        padding: 10px 10px 0;
+        display: block;
+        overflow: hidden;
+        .book-message-top {
+          float: left;
+          display: block;
+          width: 100%;
+          .book-message-top-title {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            float: left;
+          }
+          .book-message-top-rate {
+            float: right;
+            span {
+              float: right;
+              margin-left: 0;
+            }
+            span:last-child {
+              line-height: 1.4;
+              color: $star;
+            }
+          }
+        }
+        .book-message-author {
+          margin: 5px 0;
+          font-size: 12px;
+          float: left;
+          font-weight: 300;
+        }
+      }
+      .book-reason {
+        color: #555;
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 10px;
+        display: block;
+        overflow: hidden;
+      }
+    }
+  }
+}

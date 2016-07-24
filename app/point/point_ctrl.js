@@ -3,14 +3,16 @@
 
     angular
         .module('index')
-        .controller('PointCtrl', function($http, $scope, userservice){
+        .controller('PointCtrl', function(userservice){
 
-            $scope.busy = true;
+            let vm = this;
+            getUserPoint();
 
-            userservice.getUserPoints().then(response => {
-                $scope.points = response;
-                $scope.busy = false;
-            });
+            function getUserPoint() {
+                userservice.getUserPoints().then(response => {
+                    vm.points = response;
+                });
+            }
 
         });
 

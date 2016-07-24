@@ -2,72 +2,60 @@
     "use strict";
     angular
         .module('index')
-        .controller('OrdersCtrl',function($scope, $http, $stateParams, orderservice) {
+        .controller('OrdersCtrl',function($stateParams, orderservice) {
 
-            $scope.message = false;
-            $scope.busy = true;
-            $scope.wait = false;        // 取消订单提示
-            $scope.type = $stateParams.status;
+            let vm = this;
+            vm.WAIT_OPERATING = false;
+            vm.type = $stateParams.status;
+            let status = ['pending', 'all', 'commenting', 'waiting', 'return', 'done'];
 
-            /*
-             * 备注:
-             * return    传回 commenting, done订单
-             * on_return 传回 refund, refunding, refunded, replace, replaced, replacing, refund_refused, replace_refused 订单
-             *
-             */
+            vm.cancelReturn = cancelReturn;
+            vm.cancel = cancel;
+            vm.receipt = receipt;
+            
+            getOrder();
 
-            // 非法参数，返回
-            if($stateParams.status !== "pending"
-                && $stateParams.status !== "all"
-                && $stateParams.status !== "commenting"
-                && $stateParams.status !== "waiting"
-                && $stateParams.status !== "return"
-                && $stateParams.status !== "done"
-            ) {
+            if(status.indexOf(vm.type) === -1) {
                 history.back();
             }
-            else if($stateParams.status == "return") {
-                // todo 获取正在申请售后服务的订单
+            else if(vm.type === 'return') {
                 orderservice.getReturnOrder().then(response => {
-                    $scope.orders_return = response;
-                    for(let order of $scope.orders_return) {
+                    vm.orders_return = response;
+                    for(let order of vm.orders_return) {
                         order.status = statusDict[order.status];
                     }
                 });
             }
 
-            // 获取订单
-            orderservice.getOrder($stateParams.status).then(response => {
-                $scope.orders = response;
-                for(order of $scope.orders) {
-                    order.status = statusDict[order.status];
-                }
-                $scope.busy = false;
-            });
+            function getOrder() {
+                orderservice.getOrder($stateParams.status).then(response => {
+                    vm.orders = response;
+                    for(order of vm.orders) {
+                        order.status = statusDict[order.status];
+                    }
+                });
+            }
 
-            // todo 取消售后
-            $scope.stop = function(order){
-                order.wait2 = true;
-            };
+            // TODO 取消售后
+            function cancelReturn(order) {
+                order.WAIT_OPERATING = true;
+            }
 
-            // 取消订单    pending -> canceled
-            $scope.cancel = function(order){
-                order.wait2 = true;
+            function cancel(order) {
+                order.WAIT_OPERATING = true;
                 orderservice.cancelOrder(order.id).then(() => {
-                    order.wait2 = false;
+                    order.WAIT_OPERATING = false;
                     order.status = '已取消'
                 });
-            };
+            }
 
-            // 确认收货    waiting -> commenting
-            $scope.receipt = function(order){
-                order.wait2 = true;
+            function receipt(order){
+                order.WAIT_OPERATING = true;
                 orderservice.receiptOrder(order.id).then(() => {
-                    order.wait2 = false;
+                    order.WAIT_OPERATING = false;
                     order.status = '待评价'
                 });
-            };
+            }
 
         });
-
 })();

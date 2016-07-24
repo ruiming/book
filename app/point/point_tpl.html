@@ -1,11 +1,10 @@
-<loading ng-if="busy"></loading>
-<div class="points" ng-if="!busy">
+<div class="points">
     <div class="point-history">
         <div class="point-header">
-            <span>当前积分: {{points.now_points}}</span>
+            <span>当前积分: {{vm.points.now_points}}</span>
         </div>
         <ul class="point-list">
-            <li ng-repeat="x in points.logs">
+            <li ng-repeat="x in vm.points.logs">
                 <span class="point-title" ng-bind-html="x.content"></span>
                 <span class="point-result" ng-if="x.point>0">+ {{x.point}}</span>
                 <span class="point-result" ng-if="x.point<0">- {{-x.point}}</span>

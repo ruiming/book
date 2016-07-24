@@ -60,7 +60,8 @@
                 views: {
                     'main': {
                         controller: 'RecommendMoreCtrl',
-                        templateUrl: 'recommend_more/recommend_more_tpl.html'
+                        templateUrl: 'recommend_more/recommend_more_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -79,7 +80,8 @@
                 views: {
                     'main': {
                         controller: 'PopularMoreCtrl',
-                        templateUrl: 'popular_more/popular_more_tpl.html'
+                        templateUrl: 'popular_more/popular_more_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -166,7 +168,8 @@
                 views: {
                     'main': {
                         controller: 'OrdersCtrl',
-                        templateUrl: 'orders/orders_tpl.html'
+                        templateUrl: 'orders/orders_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -238,7 +241,8 @@
                 views: {
                     'main': {
                         controller: 'PointCtrl',
-                        templateUrl: 'point/point_tpl.html'
+                        templateUrl: 'point/point_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

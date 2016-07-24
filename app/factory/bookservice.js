@@ -22,11 +22,13 @@
             getBooks: getBooks
         };
 
-        function getBooks(url, params) {
+        function getBooks() {
             this.list = [];
             this.busy = false;
-            this.url = url;
-            this.params = params;
+            this.url = host + '/pop_book';
+            this.params = {
+                page: 1
+            };
             this.continue = true;
             this.nextPage = function() {
                 if(!this.continue){

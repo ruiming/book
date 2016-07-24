@@ -3,11 +3,10 @@
 
     angular
         .module('index')
-        .controller('PopularMoreCtrl',function($scope, BL, booklistservice) {
-            let url = host + '/booklist';
-            let params = { type: "all", page: 1 };
-            $scope.booklists = new booklistservice.getBooklists(url, params);
-            $scope.booklists.nextPage();
+        .controller('PopularMoreCtrl',function(booklistservice) {
+            let vm = this;
+            vm.booklists = new booklistservice.getBooklists('all');
+            vm.booklists.nextPage();
 
         });
 })();

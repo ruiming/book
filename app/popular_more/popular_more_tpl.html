@@ -1,6 +1,9 @@
 <div class="booklists-box">
-    <div class="booklists-box-content" infinite-scroll='booklists.nextPage()' infinite-scroll-disabled='booklists.busy' infinite-scroll-distance='1'>
-        <a ng-repeat="booklist in booklists.list" ui-sref="booklist({id: booklist.id})">
+    <div class="booklists-box-content"
+         infinite-scroll='vm.booklists.nextPage()'
+         infinite-scroll-disabled='vm.booklists.busy'
+         infinite-scroll-distance='1'>
+        <a ng-repeat="booklist in vm.booklists.list" ui-sref="booklist({id: booklist.id})">
             <img ng-src="{{booklist.image}}">
             <span class="title">{{booklist.title}}</span>
             <span class="collect">{{booklist.collect}}人收藏</span>
@@ -8,6 +11,6 @@
                 <div class="tag" ng-repeat="tag in booklist.tags">{{tag}}</div>
             </div>
         </a>
-        <div class="loading-more" ng-if="booklists.busy"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
+        <div class="loading-more" ng-if="vm.booklists.busy"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
     </div>
 </div>

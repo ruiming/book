@@ -42,11 +42,11 @@
                 .then(response => changeStars(response.data))
         }
 
-        function setUserDefaultAddress(name, phone, dorimitory, id) {
+        function setUserDefaultAddress(name, phone, dormitory, id) {
             return $http.put(host + '/user_address', {
                 name: name,
                 phone: phone,
-                dorimitory: dorimitory,
+                dormitory: dormitory,
                 type: 'default',
                 id: id
             }).then(response => response.data);
@@ -58,20 +58,20 @@
             }}).then(response => response.data);
         }
 
-        function updateUserAddress(name, phone, dorimitory, id) {
+        function updateUserAddress(name, phone, dormitory, id) {
             return $http.put(host + '/user_address', {
                 name: name,
                 phone: phone,
-                dorimitory: dorimitory,
+                dormitory: dormitory,
                 id: id
             }).then(response => response.data);
         }
 
-        function addUserAddress(name, phone, dorimitory) {
+        function addUserAddress(name, phone, dormitory) {
             return $http.post(host + '/user_address', {
                 name: name,
                 phone: phone,
-                dorimitory: dorimitory
+                dormitory: dormitory
             }).then(response => response.data);
         }
 

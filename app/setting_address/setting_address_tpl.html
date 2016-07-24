@@ -1,15 +1,15 @@
 <div class="setting">
-    <div class="empty-alert" ng-if="address.length==0">
+    <div class="empty-alert" ng-if="vm.ddress.length==0">
         <p>您还没有添加地址</p>
     </div>
-    <div class="loading-more" ng-if="wait"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
-    <div class="address-list" ng-repeat="x in address" ng-click="edit()">
+    <div class="loading-more" ng-if="vm.WAIT_LOADING"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
+    <div class="address-list" ng-repeat="x in vm.address" ng-click="vm.edit()">
         <p>{{x.name}}, {{x.phone}}</p>
         <small>{{x.dormitory}}</small>
         <span ng-if="x.is_default">默认地址</span>
     </div>
     <div class="btn-group">
         <button class="btn btn-success" ui-sref="AddressAdd">添加</button>
-        <button class="btn btn-default" ng-click="back()">返回</button>
+        <button class="btn btn-default" ng-click="vm.back()">返回</button>
     </div>
 </div>

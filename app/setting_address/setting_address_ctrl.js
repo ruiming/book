@@ -3,23 +3,31 @@
 
     angular
         .module('index')
-        .controller('AddressCtrl', function ($http, $scope, $state, User, userservice) {
+        .controller('AddressCtrl', function ($state, userservice) {
+            let vm = this;
+            vm.WAIT_LOADING = true;
 
-            $scope.wait = true;
+            vm.edit = edit;
+            vm.back = back;
 
-            userservice.getUserAddress().then(response => {
-                $scope.address = response;
-                $scope.wait = false;
-            });
+            getUserAddress();
 
-            $scope.edit = function(){
-                userservice.setAddress(this.x);
-                $state.go('AddressAdd');
-            };
+            function getUserAddress() {
+                userservice.getUserAddress().then(response => {
+                    vm.address = response;
+                    vm.WAIT_LOADING = false;
+                });
+            }
 
-            // 返回上层
-            $scope.back = function() {
+            function edit() {
+                vm.edit = function(){
+                    userservice.setAddress(this.x);
+                    $state.go('AddressAdd');
+                };
+            }
+
+            function back() {
                 history.back();
-            };
+            }
         });
 })();

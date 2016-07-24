@@ -3,93 +3,89 @@
 
     angular
         .module('index')
-        .controller('AddressAddCtrl', function($http, $scope, $location, $state, User, userservice){
+        .controller('AddressAddCtrl', function($location, $state, User, userservice){
 
-            $scope.edit = false;
-            data = userservice.getAddress();
+            let vm = this;
+            vm.edit = false;
+            vm.data = userservice.getAddress();
 
-            $scope.wait1 = false;               // 添加等待动画
-            $scope.wait2 = false;               // 修改等待动画
-            $scope.wait3 = false;               // 删除等待动画
-            $scope.wait4 = false;               //　设置默认地址成功动画
+            vm.WAIT_ADD = false;
+            vm.WAIT_UPDATE = false;
+            vm.WAIT_DELETE = false;
+            vm.WAIT_RETURN = false;
+
+            vm.addAddress = addAddress;
+            vm.updatAddress = updateAddress;
+            vm.deleteAddress = deleteAddress;
+            vm.setDefaultAddress = setDefaultAddress;
+            vm.back = back;
 
 
-            // 添加和修改地址
-            $scope.add = function(){
-                if(this.addressForm.$invalid) {
-                    if(this.addressForm.name.$invalid)  {
-                        $scope.correct_name = true;
+            function updateAddress() {
+                if(!checkForm())    return false;
+                vm.WAIT_UPDATE = vm.edit;
+                userservice.updateUserAddress(vm.name, vm.phone, vm.dorm, vm.id).then(() => {
+                    vm.WAIT_UPDATE = !vm.edit;
+                    vm.back();
+                });
+            }
+
+            function addAddress() {
+                if(!checkForm())    return false;
+                vm.WAIT_ADD = !vm.edit;
+                userservice.addUserAddress(vm.name, vm.phone, vm.dorm).then(() => {
+                    vm.WAIT_ADD = vm.edit;
+                    vm.back();
+                });
+            }
+
+
+            function deleteAddress(id) {
+                vm.WAIT_DELETE = true;
+                userservice.deleteUserAddress(id).then(() => {
+                    vm.WAIT_DELETE = false;
+                    vm.back();
+                });
+            }
+
+            function setDefaultAddress(id) {
+                vm.WAIT_RETURN = true;
+                userservice.setUserDefaultAddress(vm.name, vm.phone, vm.dorm, id).then(() => {
+                    vm.WAIT_RETURN = false;
+                    vm.back();
+                });
+            }
+
+            function back() {
+                history.back();
+            }
+
+            function checkForm() {
+                console.log(+vm.addressForm.phone.$viewValue);
+                if(!+vm.addressForm.phone.$viewValue) {
+                    vm.correct_phone = true;
+                    notie.alert(1, "手机信息有误", 0.3);
+                    return false;
+                }
+                if(vm.addressForm.$invalid) {
+                    if(vm.addressForm.name.$invalid)  {
+                        vm.correct_name = true;
                         notie.alert(1, "收货人信息有误", 0.3);
                     }
-                    else if(this.addressForm.phone.$invalid)  {
-                        $scope.correct_phone = true;
+                    else if(vm.addressForm.phone.$invalid)  {
+                        vm.correct_phone = true;
                         notie.alert(1, "手机信息有误", 0.3);
                     }
-                    else if(this.addressForm.dorm.$invalid)  {
-                        $scope.correct_dorm = true;
+                    else if(vm.addressForm.dorm.$invalid)  {
+                        vm.correct_dorm = true;
                         notie.alert(1, "宿舍信息有误", 0.3);
                     }
+                    return false;
                 }
-                else{
-                    // 编辑状态
-                    if($scope.edit) {
-                        $scope.wait2 = true;
-                        userservice.updateUserAddress($scope.name, $scope.phone, $scope.dorimitory, $scope.id)
-                            .then(() => {
-                                $scope.wait2 = false;
-                                window.setTimeout(function() {
-                                    $scope.$apply(function() {
-                                        $scope.back();
-                                    });
-                                }, 1000);
-                            });
-                    }
-                    // 添加状态
-                    else {
-                        $scope.wait1 = true;
-                        userservice.updateUserAddress($scope.name, $scope.phone, $scope.dormitory).then(() => {
-                            $scope.wait1 = false;
-                            window.setTimeout(function() {
-                                $scope.$apply(function() {
-                                    $scope.back();
-                                });
-                            }, 1000);
-                        });
-                    }
+                else {
+                    return true;
                 }
-            };
-
-            // 删除地址
-            $scope.delete = function(id) {
-                $scope.wait3 = true;
-                userservice.deleteUserAddress(id).then(() => {
-                    $scope.wait3 = false;
-                    window.setTimeout(function() {
-                        $scope.$apply(function() {
-                            $scope.back();
-                        });
-                    }, 1000);
-                });
-            };
-
-            // 设置默认地址
-            $scope.setDefault = function(id) {
-                $scope.wait4 = true;
-                userservice.setUserDefaultAddress($scope.name, $scope.phone, $scope.dorimitory, id).then(() => {
-                    $scope.wait4 = false;
-                    window.setTimeout(function() {
-                        $scope.$apply(function() {
-                            $scope.back();
-                        })
-                    }, 1000);
-                });
-            };
-
-            // 返回上层
-            $scope.back = function() {
-                history.back();
-            };
+            }
 
         });
-
 })();

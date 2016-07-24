@@ -270,7 +270,8 @@
                 views: {
                     'main': {
                         controller: 'AddressCtrl',
-                        templateUrl: 'setting_address/setting_address_tpl.html'
+                        templateUrl: 'setting_address/setting_address_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -279,7 +280,8 @@
                 views: {
                     'main': {
                         controller: 'AddressAddCtrl',
-                        templateUrl: 'setting_address_add/setting_address_add_tpl.html'
+                        templateUrl: 'setting_address_add/setting_address_add_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

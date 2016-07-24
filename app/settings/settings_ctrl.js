@@ -2,10 +2,12 @@
     "use strict";
     angular
         .module('index')
-        .controller('SettingsCtrl', function($http, $scope, userservice){
+        .controller('SettingsCtrl', function(userservice){
+
+            let vm = this;
 
             userservice.getUserInfo().then(response => {
-                $scope.user = response;
+                vm.user = response;
             });
         });
 

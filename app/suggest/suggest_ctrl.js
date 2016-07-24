@@ -3,33 +3,35 @@
 
     angular
         .module('index')
-        .controller('SuggestCtrl', function($http, $scope, userservice){
+        .controller('SuggestCtrl', function(userservice, $timeout){
 
-            $scope.required = true;     // 必填
-            $scope.wait = false;        // 提交反馈wait
-            $scope.wait2 = false;       // 提交反馈动画时延
+            let vm = this;
+            
+            vm.required = true;
+            vm.WAIT_OPERATING = false;
 
-            userservice.getUserInfo().then(response => {
-                $scope.user = response;
-            });
+            getUserInfo();
+            vm.post = post;
 
-            // 发布建议和看法
-            $scope.post = function(){
+            function getUserInfo() {
+                userservice.getUserInfo().then(response => {
+                    vm.user = response;
+                });
+            }
+
+            function post(){
                 if(this.suggestBox.suggestion.$invalid) {
                     return;
                 }
-                $scope.wait = true;
-                userservice.postSuggestion($scope.suggestion).then(() => {
-                    $scope.wait = false;
-                    $scope.wait2 = true;
-                    window.setTimeout(function() {
-                        $scope.$apply(function() {
-                            $scope.wait2 = false;
-                            history.back();
-                        });
-                    }, 2000);
+                vm.WAIT_OPERATING = true;
+                userservice.postSuggestion(vm.suggestion).then(() => {
+                    notie.alert(1, '谢谢您的反馈！', 0.3);
+                    $timeout(() => {
+                        vm.WAIT_OPERATING = false;
+                        history.back();
+                    }, 300)
                 });
-            };
+            }
 
         });
 })();

@@ -3,16 +3,14 @@
 
     angular
         .module('index')
-        .controller('TagsCtrl', function($scope, $http, tagservice){
+        .controller('TagsCtrl', function(tagservice){
 
-            $scope.busy = true;
+            let vm = this;
 
             tagservice.getAllTags().then(response => {
-                $scope.busy = false;
-                $scope.allTags = response;
+                vm.allTags = response;
             });
 
         });
-
 
 })();

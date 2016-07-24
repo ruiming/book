@@ -1,7 +1,7 @@
 <div class="booklist">
     <div ng-include="'booklist/booklist_head_part.html'"></div>
     <div class="booklist-books slides-box-content">
-        <a ng-repeat="book in vm.booklist.books" ui-sref="book({isbn: book.isbn})">
+        <a ng-repeat="book in vm.booklist.books track by book.isbn" ui-sref="book({isbn: book.isbn})">
             <div class="book-image">
                 <img class="cover cover-sm" ng-src="{{book.image}}">
                 <img class="cover-bg" ng-src="{{book.image}}">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <span class="book-message-author" ng-if='book.author!=""'>
-                    <span ng-repeat="x in book.author">{{x}} </span>
+                    <span ng-repeat="x in book.author track by $index">{{x}} </span>
                 </span>
             </div>
             <div class="book-reason">

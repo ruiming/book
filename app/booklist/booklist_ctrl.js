@@ -22,7 +22,7 @@
 
             function　collect(){
                 vm.wait = true;
-                booklistservice.collectBooklist($stateParams).then(() => {
+                booklistservice.collectBooklist($stateParams.id).then(() => {
                     vm.booklist.collect_already = !vm.booklist.collect_already;
                     vm.booklist.collect = vm.booklist.collect_already ?
                         ++vm.booklist.collect : --vm.booklist.collect;

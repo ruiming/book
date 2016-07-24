@@ -120,7 +120,8 @@
                 views: {
                     'main': {
                         controller: 'TagBooklistsCtrl',
-                        templateUrl: 'tag-booklists/tag-booklists_tpl.html'
+                        templateUrl: 'tag-booklists/tag-booklists_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -139,7 +140,8 @@
                 views: {
                     'main': {
                         controller: 'TagsCtrl',
-                        templateUrl: 'tags/tags_tpl.html'
+                        templateUrl: 'tags/tags_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -213,7 +215,8 @@
                 views: {
                     'main': {
                         controller: 'UserCommentsCtrl',
-                        templateUrl: 'user_comments/user_comments_tpl.html'
+                        templateUrl: 'user_comments/user_comments_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -261,7 +264,8 @@
                 views: {
                     'main': {
                         controller: 'SettingsCtrl',
-                        templateUrl: 'settings/settings_tpl.html'
+                        templateUrl: 'settings/settings_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -303,7 +307,8 @@
                 views: {
                     'main': {
                         controller: 'SuggestCtrl',
-                        templateUrl: 'suggest/suggest_tpl.html'
+                        templateUrl: 'suggest/suggest_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             });

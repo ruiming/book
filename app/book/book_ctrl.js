@@ -16,7 +16,6 @@
         vm.wait2 = false;           // 收藏图书wait
         vm.wait3 = false;           // 加入购物车wait
         vm.required = true;         // 必填
-        vm.content = "";            // 初始评论
         vm.star = 5;                // 默认星星数
 
         vm.addCart = addCart;
@@ -71,8 +70,8 @@
         }
 
         function postComment(){
-            if(!this.commentForm.content.$valid) return;
-            commentservice.postComment($stateParams.isbn, vm.star*2, this.content).then((response) => {
+            if(vm.content === void 0) return;
+            commentservice.postComment($stateParams.isbn, vm.star*2, vm.content).then((response) => {
                 vm.commentBox = false;
                 response.user = {
                     avatar: vm.user.avatar,

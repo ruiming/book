@@ -3,50 +3,52 @@
 
     angular
         .module('index')
-        .controller('UserCommentsCtrl', function($http, $scope, userservice, commentservice){
+        .controller('UserCommentsCtrl', function($http, userservice, commentservice){
 
-            $scope.deleteBox = false;       // 删除确认框
-            $scope.edit = false;            // 可编辑
-            $scope.readonly = true;         // 只读
-            $scope.busy = true;
-            $scope.wait = false;
-            $scope.required = true;
-            $scope.wait2 = false;            // 删除等待
+            let vm = this;
 
-            userservice.getUserComments().then(response => {
-                $scope.comments = response;
-                for(let comment of $scope.comments) {
-                    comment.star = Math.ceil(comment.star/2);
-                }
-                $scope.busy = false;
-            });
+            vm.deleteBox = false;
+            vm.edit = false;
+            vm.readonly = true;
+            vm.busy = true;
+            vm.WAIT_OPERATING = false;
 
-            $scope.focus = function(obj){
-                obj.readonly = false;
-                obj.edit = true;
-            };
+            vm.focus = focus;
+            vm.submit = submit;
+            vm.delete = deleteComment;
+            getUserComments();
+            
+            function getUserComments() {
+                userservice.getUserComments().then(response => {
+                    vm.comments = response;
+                });
+            }
 
-            // 修改评论
-            $scope.submit = function(obj){
-                if(!obj.commentForm.content.$valid){
+            function focus(comment){
+                comment.readonly = false;
+                comment.edit = true;
+            }
+
+            function submit(comment){
+                if(comment.content === void 0) {
                     return;
                 }
-                obj.wait = true;
-                commentservice.editComment(obj.comment.id, obj.comment.star, obj.comment.content).then(() => {
-                    obj.wait = false;
-                    obj.readonly = true;
-                    obj.edit = false;
+                vm.WAIT_OPERATING = true;
+                commentservice.editComment(comment.id, comment.star, comment.content).then(() => {
+                    comment.readonly = true;
+                    comment.edit = false;
+                    vm.WAIT_OPERATING = false;
                 });
-            };
+            }
 
-            // 删除评论
-            $scope.delete = function(id, index){
-                $scope.wait2 = true;
-                commentservice.deleteComment(id).then(() => {
-                    $scope.wait2 = false;
-                    $scope.comments.splice(index, 1);
+            function deleteComment(comment){
+                vm.WAIT_OPERATING = true;
+                commentservice.deleteComment(comment.id).then(() => {
+                    vm.WAIT_OPERATING = false;
+                    vm.comments.splice(vm.comments.indexOf(comment), 1);
+                    vm.deleteBox = false;
                 });
-            };
-        });
+            }
+        })
 
 })();

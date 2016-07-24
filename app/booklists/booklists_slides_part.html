@@ -1,0 +1,27 @@
+<div class="booklists-box">
+    <div class="btn-group booklists-order">
+        <button class="btn btn-default" ng-click="vm.timeOrder()">
+            时间优先
+        </button>
+        <button class="btn btn-default" ng-click="vm.collectOrder()">
+            收藏优先
+        </button>
+    </div>
+    <div class="booklists-box-content"
+         infinite-scroll='vm.booklists.nextPage()'
+         infinite-scroll-disabled='vm.booklists.busy'
+         infinite-scroll-distance='1'>
+        <a ng-repeat="booklist in vm.booklists.list track by $index"
+           ui-sref="booklist({id: booklist.id})">
+            <img ng-src="{{booklist.image}}">
+            <span class="title">{{booklist.title}}</span>
+            <span class="collect">{{booklist.collect}}人收藏</span>
+            <div class="booklist-tag">
+                <div class="tag" ng-repeat="tag in vm.booklist.tags">{{tag}}</div>
+            </div>
+        </a>
+        <div class="loading-more" ng-if="vm.booklists.busy">
+            <i class="fa fa-spinner fa-pulse fa-2x"></i>
+        </div>
+    </div>
+</div>

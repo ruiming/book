@@ -267,39 +267,6 @@ a {
     float: right;
   }
 }
-.tags {
-  padding: 10px 10px 0;
-  overflow: hidden;
-  margin-bottom: 20px;
-  background-color: #fff;
-  span {
-    font-size: 16px;
-  }
-  .tags-group {
-    border: 1px solid #fff;
-    margin: 10px 0;
-    border-radius: 3px;
-    box-shadow: 0 0 2px 0 rgba(0,0,0,.2);
-    word-wrap: break-word;
-    overflow: hidden;
-    .tags-group-one {
-      overflow: hidden;
-      margin: 10px;
-      p {
-        padding: 5px;
-        font-weight: 700;
-      }
-      a {
-        margin: 0 15px 10px 0;
-        border: 1px dashed #DADADA;
-        color: #000000;
-        font-weight: bold;
-        font-size: 12px;
-        border-radius: 0;
-      }
-    }
-  }
-}
 .comments {
   margin-bottom: 0;
   overflow: hidden;
@@ -590,40 +557,6 @@ a {
       overflow: hidden;
       list-style-type: disc;
       padding: 10px 10px 10px 20px;
-    }
-  }
-}
-
-.suggest {
-  overflow: hidden;
-  .i-suggest {
-    overflow: hidden;
-    .input-group {
-      text-align: center;
-      margin: 0 auto;
-    }
-    img {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto;
-      float: left;
-      border-radius: 50%;
-      border: 2px solid #FFF;
-    }
-    .suggest-header {
-      margin: 30px 0 10px;
-      overflow: hidden;
-      text-align: center;
-    }
-    .suggestion {
-      padding: 20px 10px;
-      textarea {
-        min-height: 140px;
-        resize: none;
-      }
-      button {
-        margin-top: 25px;
-      }
     }
   }
 }

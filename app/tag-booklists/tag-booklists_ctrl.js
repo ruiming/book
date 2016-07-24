@@ -3,39 +3,28 @@
 
     angular
         .module('index')
-        .controller('TagBooklistsCtrl', function($scope, BL, $stateParams, booklistservice){
+        .controller('TagBooklistsCtrl', function($stateParams, booklistservice){
 
-            // 获取指定标签的书单
-            var url = host + '/booklist';
-            var params = {
-                tag: $stateParams.tag,
-                page: 1
-            };
-            $scope.booklists = new booklistservice.getBooklists(url,params);
-            $scope.booklists.nextPage();
+            let vm = this;
 
-            // 时间优先
-            $scope.timeOrder = function(){
-                var params = {
-                    tag: $stateParams.tag,
-                    page: 1,
-                    type: "time"
-                };
-                $scope.booklists = new booklistservice.getBooklists(url,params);
-                $scope.booklists.nextPage();
-            };
+            getAllBook();
 
-            // 收藏优先
-            $scope.collectOrder = function(){
-                var params = {
-                    tag: $stateParams.tag,
-                    page: 1,
-                    type: "collect"
-                };
-                $scope.booklists = new booklistservice.getBooklists(url,params);
-                $scope.booklists.nextPage();
-            };
+            vm.timeOrder = timeOrder;
+            vm.collectOrder = collectOrder;
+            
+            function getAllBook() {
+                vm.booklists = new booklistservice.getBooklists('all', $stateParams.tag);
+                vm.booklists.nextPage();
+            }
 
-        });
+            function timeOrder() {
+                vm.booklists = new booklistservice.getBooklists('time', $stateParams.tag);
+                vm.booklists.nextPage();
+            }
 
+            function collectOrder() {
+                vm.booklists = new booklistservice.getBooklists('collect', $stateParams.tag);
+                vm.booklists.nextPage();
+            }
+        })
 })();

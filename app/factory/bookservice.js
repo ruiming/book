@@ -92,8 +92,6 @@
         function getBook(isbn) {
             return $http.get(host + '/book?isbn=' + isbn)
                 .then(response => {
-                    console.log(response);
-                    console.log(response.data);
                     return changeStars(response.data);
                 })
         }

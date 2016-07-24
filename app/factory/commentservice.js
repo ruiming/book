@@ -5,12 +5,14 @@
         .module('index')
         .factory('commentservice', commentservice);
 
-    commentservice.$inject = ['$http'];
+    commentservice.$inject = ['$http', 'commonservice'];
 
-    function commentservice($http) {
+    function commentservice($http, commonservice) {
 
         // 暂存进入全部评论页面的标题
         let title = null;
+
+        let changeStars = commonservice.changeStars;
 
         return {
             up: up,
@@ -42,7 +44,7 @@
 
         function getComment(isbn) {
             return $http.get(host + '/comments?isbn=' + isbn)
-                .then(response => response.data);
+                .then(response => changeStars(response.data));
         }
 
         function deleteComment(id) {

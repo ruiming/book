@@ -3,15 +3,15 @@
 
     angular
         .module('index')
-        .controller('NoticesCtrl', function($http, $scope, userservice){
+        .controller('NoticesCtrl', function(userservice){
 
-            $scope.busy = true;
+            getUserNotices();
 
-            userservice.getUserNotices().then(response => {
-                $scope.notices = response;
-                $scope.busy = false;
-            });
+            function getUserNotices() {
+                userservice.getUserNotices().then(response => {
+                    vm.notices = response;
+                });
+            }
 
         });
-
-});
+})();

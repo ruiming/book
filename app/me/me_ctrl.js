@@ -3,11 +3,15 @@
 
     angular
         .module('index')
-        .controller('MeCtrl',function($scope, $http, userservice) {
+        .controller('MeCtrl',function(userservice) {
+            let vm = this;
+            getUserInfo();
 
-            userservice.getUserInfo().then(response => {
-                $scope.user = response;
-            });
+            function getUserInfo() {
+                userservice.getUserInfo().then(response => {
+                    vm.user = response;
+                });
+            }
 
         });
 

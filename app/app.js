@@ -146,7 +146,8 @@
                 views: {
                     'main': {
                         controller: 'MeCtrl',
-                        templateUrl: 'me/me_tpl.html'
+                        templateUrl: 'me/me_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -244,7 +245,8 @@
                 views: {
                     'main': {
                         controller: 'NoticesCtrl',
-                        templateUrl: 'notices/notices_tpl.html'
+                        templateUrl: 'notices/notices_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

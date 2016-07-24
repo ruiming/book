@@ -278,7 +278,8 @@
                 views: {
                     'main': {
                         controller: 'Cart2OrderCtrl',
-                        templateUrl: 'cart2order/cart2order_tpl.html'
+                        templateUrl: 'cart2order/cart2order_tpl.html',
+                        controllerAs: 'vm'
                     },
                     'nav': {
                         template: '<span></span>'

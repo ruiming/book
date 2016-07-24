@@ -54,10 +54,8 @@
             }
 
             function selectAll() {
-                let status = vm.checked;
-                vm.checked = !status;
                 for(let item of vm.items) {
-                    item.checked = !status;
+                    item.checked = vm.checked;
                 }
                 vm.recount();
             }

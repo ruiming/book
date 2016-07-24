@@ -8,18 +8,18 @@
             <div class="order-cart">
                 <div class="colorBar"></div>
                 <div class="order-address rarrow" ui-sref="address()">
-                    <p class="name" ng-if="x!=undefined">收货人:{{x.name}}<em>{{x.phone}}</em></p>
-                    <p class="address" ng-if="x!=undefined">{{x.dormitory}}</p>
-                    <p class="empty" ng-if="x===undefined">你还没有添加地址信息</p>
+                    <p class="name" ng-if="vm.x!=undefined">收货人:{{vm.x.name}}<em>{{vm.x.phone}}</em></p>
+                    <p class="address" ng-if="vm.x!=undefined">{{vm.x.dormitory}}</p>
+                    <p class="empty" ng-if="vm.x===undefined">你还没有添加地址信息</p>
                 </div>
                 <div class="colorBar"></div>
                 <div class="order-books">
-                    <div class="cart2order-book order-book" ng-repeat="item in books">
+                    <div class="cart2order-book order-book" ng-repeat="item in vm.books">
                         <img ng-src="{{item.book.image}}">
                     </div>
                     <div class="cart2order-sum">
-                        <p>共{{order.number}}件</p>
-                        <p>小计: <span> ¥ {{order.price | number:2}}</span></p>
+                        <p>共{{vm.order.number}}件</p>
+                        <p>小计: <span> ¥ {{vm.order.price | number:2}}</span></p>
                     </div>
                 </div>
                 <div class="order-tip">
@@ -35,9 +35,7 @@
             </div>
         </div>
         <div class="cart-message">
-            <p>平台承诺书籍为全新正版, 两日内送达。</p>
-            <p>自2016年5月到2016年7月，平台提供免费的送书上门服务。</p>
-            <p>平台仍然在不断完善，将很快推出微信支付功能，敬请等待，谢谢您的支持。</p>
+            <p>庄瑞铭到次一游！</p>
         </div>
     </div>
 </div>

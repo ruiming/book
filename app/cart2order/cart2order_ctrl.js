@@ -3,45 +3,50 @@
 
     angular
         .module('index')
-        .controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location, cartservice){
+        .controller('Cart2OrderCtrl', function($http, $location, userservice, orderservice){
+            let vm = this;
+            vm.wait = true;            // 确认订单等待
+            vm.no_address = true;      // 地址必须有
+            vm.cart_list = '';
+            vm.order = {　number: 0, price: 0　};
+            vm.make = make;
 
-            $scope.wait = true;            // 确认订单等待
-            $scope.no_address = true;      // 地址必须有
+            /**
+             * 从orderservice获取订单数据
+             */
+            vm.books = orderservice.getStore();
+            for(let book of vm.books) {
+                vm.order.number += book.number;
+                vm.order.price += book.price * book.number;
+                vm.cart_list += vm.cart_list ? ',' + book.id : book.id;
+            }
+            getUserDefaultAddress();
 
-            $scope.books = cartservice.getStore();
 
-            $scope.cart_list = '';
-            $scope.order = {
-                number: 0,
-                price: 0
-            };
-
-            for(let book of $scope.books) {
-                $scope.order.number += book.number;
-                $scope.order.price += book.price * book.number;
-                $scope.cart_list += $scope.cart_list ? ',' + book.id : book.id;
+            // TODO 等待地址问题修复
+            function getUserDefaultAddress() {
+                userservice.getUserDefaultAddress().then(response => {
+                    console.log(response);
+                    vm.x = response[0];
+                    vm.no_address = false;
+                    vm.wait = false;
+                }).catch(() => {
+                    vm.wait = false;
+                    vm.no_address = true;
+                });
             }
 
-            userservice.getUserDefaultAddress().then(response => {
-                $scope.x = response[0];
-                $scope.no_address = false;
-                $scope.wait = false;
-            }).catch(() => {
-                $scope.wait = false;
-                $scope.no_address = true;
-            });
-
-            // todo提交订单
-            $scope.make = function(){
-                $scope.wait = true;
-                orderservice.makeOrder($scope.cart_list, $scope.x.id).then((response) => {
+            // TODO　等待地址问题修复
+            function make() {
+                vm.wait = true;
+                orderservice.makeOrder(vm.cart_list, vm.x.id).then((response) => {
                     $location.path('/order/'+response+'/detail').replace();
                     window.setTimeout(function() {
-                        $scope.$apply(function() {
-                            $scope.wait = false;
+                        vm.$apply(function() {
+                            vm.wait = false;
                         });
                     }, 300);
                 });
-            };
+            }
         });
 })();

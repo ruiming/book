@@ -39,13 +39,8 @@
             // TODO　等待地址问题修复
             function make() {
                 vm.wait = true;
-                orderservice.makeOrder(vm.cart_list, vm.x.id).then((response) => {
+                return orderservice.makeOrder(vm.cart_list, vm.x.id).then((response) => {
                     $location.path('/order/'+response+'/detail').replace();
-                    window.setTimeout(function() {
-                        vm.$apply(function() {
-                            vm.wait = false;
-                        });
-                    }, 300);
                 });
             }
         });

@@ -31,12 +31,12 @@
             <p>{{comment.create_time*1000 | date:'yyyy-MM-dd HH:mm'}}</p>
             <i class="fa"
                ng-class={false:'fa-thumbs-o-down',true:'fa-thumbs-down'}[comment.down_already]
-               ng-click="down(comment)">
+               ng-click="vm.down(comment)">
                 {{comment.down}}
             </i>
             <i class="fa"
                ng-class={false:'fa-thumbs-o-up',true:'fa-thumbs-up'}[comment.up_already]
-               ng-click="up(comment)">
+               ng-click="vm.up(comment)">
                 {{comment.up}}
             </i>
         </div>

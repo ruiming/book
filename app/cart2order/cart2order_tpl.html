@@ -9,9 +9,9 @@
                 <div class="order-cart">
                     <div class="colorBar"></div>
                     <div class="order-address rarrow" ui-sref="address()">
-                        <p class="name" ng-if="vm.x!=undefined">收货人:{{vm.x.name}}<em>{{vm.x.phone}}</em></p>
-                        <p class="address" ng-if="vm.x!=undefined">{{vm.x.dormitory}}</p>
-                        <p class="empty" ng-if="vm.x===undefined">你还没有添加地址信息</p>
+                        <p class="name" ng-if="vm.x!==void 0">收货人:{{vm.x.name}}<em>{{vm.x.phone}}</em></p>
+                        <p class="address" ng-if="vm.x!==void 0">{{vm.x.dormitory}}</p>
+                        <p class="empty" ng-if="vm.x===void 0">你还没有添加地址信息</p>
                     </div>
                     <div class="colorBar"></div>
                     <div class="order-books">
@@ -41,7 +41,10 @@
         </div>
     </div>
     <div class="make-order">
-        <button class="btn btn-danger" ng-if="!vm.wait" ng-disabled="vm.no_address" ng-click="vm.make()">提交订单</button>
+        <button class="btn btn-danger" ng-if="!vm.wait"
+                ng-disabled="vm.no_address"
+                promise-btn
+                ng-click="vm.make()">提交订单</button>
         <button class="btn btn-danger" ng-if="vm.wait" style="width: 98px;"><wait></wait></button>
         <div class="cart-count">
             <label> 总额: ¥ {{vm.order.price | number: 2}}</label>

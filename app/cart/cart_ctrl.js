@@ -110,7 +110,7 @@
                     item.deleted = true;
                 }
             }
-            cartservice.deleteCart(vm.isbn_list).then(() => {
+            return cartservice.deleteCart(vm.isbn_list).then(() => {
                 vm.recount();
             });
         }
@@ -129,8 +129,8 @@
                 }
             }
             cartservice.deleteCart(vm.isbn_list);
-            bookservice.collectBook(vm.isbn_list);
             vm.recount();
+            return bookservice.collectBook(vm.isbn_list);
         }
 
         function editBook(item){

@@ -11,6 +11,7 @@
 
         let popularBooks = null;
         let bookDetail = [];
+        let similarBook = [];
         let changeStars = commonservice.changeStars;
 
         return {
@@ -83,8 +84,18 @@
         }
 
         function getSimilarBook(isbn) {
-            return $http.get(host + '/similar_book?isbn=' + isbn)
-                .then(response => changeStars(response.data))
+            if(similarBook == null) {
+                return $http.get(host + '/similar_book?isbn=' + isbn)
+                    .then(response => {
+                        similarBook = changeStars(response.data);
+                        return similarBook;
+                    })
+            }
+            else {
+                let deferred = $q.defer();
+                deferred.resolve(similarBook);
+                return deferred.promise;
+            }
         }
 
         function collectBook(isbn) {

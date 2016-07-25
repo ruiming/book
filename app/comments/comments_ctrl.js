@@ -17,11 +17,8 @@
 
         function getComment() {
             commentservice.getComment($stateParams.isbn).then(response => {
+                console.log(response)
                 vm.comments = response;
-                vm.busy = false;
-                for(let comment of vm.comments ) {
-                    comment.star = Math.ceil(comment.star / 2);
-                }
             });
         }
 

@@ -1,4 +1,4 @@
-.shop-group  {
+.cart-page  {
   background-color: $bgColor;
   margin-bottom: 82px;
   .checkbox {
@@ -47,7 +47,7 @@
       }
     }
   }
-  .shop-cart-head {
+  .cart-head {
     position: fixed;
     top: 0;
     left: 0;
@@ -66,82 +66,79 @@
       }
     }
   }
-  ul {
+  .cart-list {
     margin-top: 47px;
     padding: 0 0 10px;
     list-style: none;
     display: block;
-    li {
+    .book {
       display: block;
       overflow: hidden;
       padding: 10px 0;
       border-bottom: 1px solid #e3e3e3;
-      .shop-cart-item {
-        position: relative;
-        margin-left: 15px;
-        overflow: hidden;
-        .cart-book-image {
+      position: relative;
+      margin-left: 15px;
+      .book-image {
+        float: left;
+        img {
+          height: 130px;
           float: left;
-          img {
-            height: 130px;
+          margin-right: 10px;
+        }
+      }
+      .book-title {
+        font-size: 14px;
+        display: block;
+        overflow: hidden;
+        a {
+          font-weight: 700;
+        }
+      }
+      .book-price {
+        color: #F92828;
+        margin: 5px 0 5px 0;
+      }
+      .book-count {
+        position: absolute;
+        bottom: 0;
+        color: black;
+        font-size: 12px;
+      }
+      .book-edit {
+        display: block;
+        overflow: hidden;
+        .book-edit-count {
+          margin-right: 50px;
+          i {
+            background-color: white;
+            padding: 4.5px 10px;
             float: left;
-            margin-right: 10px;
-          }
-        }
-        .cart-book-name {
-          font-size: 14px;
-          display: block;
-          overflow: hidden;
-          a {
-            font-weight: 700;
-          }
-        }
-        .cart-book-price {
-          color: #F92828;
-          margin: 5px 0 5px 0;
-        }
-        .cart-book-count {
-          position: absolute;
-          bottom: 0;
-          color: black;
-          font-size: 12px;
-        }
-        .cart-book-edit {
-          display: block;
-          overflow: hidden;
-          .cart-book-edit-count {
-            margin-right: 50px;
-            i {
-              background-color: white;
-              padding: 4.5px 10px;
-              float: left;
-              color: #B6B6B6;
-              border: 0;
-              border-right: 1px solid #F0F0F0;
-              &:last-child {
-                float: none;
-                border-left: 1px solid #F0F0F0;
-                border-right: 0;
-              }
-            }
-            input,
-            input:active {
-              width: 60px;
-              text-align: center;
-              padding: 3px 5px;
-              font-size: 12px;
-              border: 0;
-              outline: none;
-              border-radius: 0;
-              float: left;
+            color: #B6B6B6;
+            border: 0;
+            border-right: 1px solid #F0F0F0;
+            &:last-child {
+              float: none;
+              border-left: 1px solid #F0F0F0;
+              border-right: 0;
             }
           }
-          .fa-trash-o {
-            float: right;
-            font-size: 1.3em;
-            padding-top: 2px;
-            margin-right: 10px;
+          input,
+          input:active {
+            width: 60px;
+            text-align: center;
+            padding: 3px 5px;
+            font-size: 12px;
+            border: 0;
+            outline: none;
+            border-radius: 0;
+            float: left;
           }
+        }
+        .fa-trash-o {
+          float: right;
+          font-size: 1.3em;
+          padding-top: 2px;
+          margin-right: 10px;
         }
       }
     }

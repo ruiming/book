@@ -1,5 +1,5 @@
-<div class="booklists-box">
-    <div class="btn-group booklists-order">
+<div class="booklists">
+    <div class="btn-group order">
         <button class="btn btn-default" ng-click="vm.timeOrder()">
             时间优先
         </button>
@@ -7,11 +7,11 @@
             收藏优先
         </button>
     </div>
-    <div class="booklists-box-content"
+    <div class="booklists-list"
          infinite-scroll='vm.booklists.nextPage()'
          infinite-scroll-disabled='vm.booklists.busy'
          infinite-scroll-distance='1'>
-        <a ng-repeat="booklist in vm.booklists.list track by $index"
+        <a class="booklist" ng-repeat="booklist in vm.booklists.list track by $index"
            ui-sref="booklist({id: booklist.id})">
             <img ng-src="{{booklist.image}}">
             <span class="title">{{booklist.title}}</span>

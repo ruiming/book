@@ -1,4 +1,4 @@
-.booklist {
+.booklist-page {
   .booklist-header {
     padding: 10px;
     text-align: center;
@@ -37,13 +37,13 @@
       width: 130px;
     }
   }
-  .booklist-tags {
+  .tags {
     background-color: #fff;
-    .booklist-tags-outer {
+    .tags-outer {
       overflow-y: hidden;
       overflow-x: scroll;
       height: 43px;
-      .booklist-tags-inner {
+      .tags-inner {
         width: 1200px;
         .tag {
           float: left;
@@ -55,12 +55,12 @@
       }
     }
   }
-  .booklist-books {
+  .books {
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #ffffff;
-    a {
+    .book {
       display: block;
       margin-bottom: 10px;
       overflow: hidden;
@@ -88,21 +88,21 @@
           @include blur(1rem);
         }
       }
-      .book-message {
+      .book-info {
         padding: 10px 10px 0;
         display: block;
         overflow: hidden;
-        .book-message-top {
+        .book-info-top {
           float: left;
           display: block;
           width: 100%;
-          .book-message-top-title {
+          .title {
             display: block;
             font-size: 15px;
             font-weight: 500;
             float: left;
           }
-          .book-message-top-rate {
+          .rate {
             float: right;
             span {
               float: right;
@@ -114,14 +114,14 @@
             }
           }
         }
-        .book-message-author {
+        .author {
           margin: 5px 0;
           font-size: 12px;
           float: left;
           font-weight: 300;
         }
       }
-      .book-reason {
+      .reason {
         color: #555;
         font-size: 13px;
         line-height: 1.5;

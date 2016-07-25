@@ -9,9 +9,10 @@
 
     function BooklistsCtrl(booklistservice, tagservice) {
         let vm = this;
+        vm.booklists = new booklistservice.getBooklists('all');
+
         vm.timeOrder = getBooklistOrderByTime;
         vm.collectOrder = getBooklistOrderByCollect;
-        vm.booklists = new booklistservice.getBooklists('all');
 
         getHotTags();
 

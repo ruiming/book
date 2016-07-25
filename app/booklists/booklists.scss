@@ -1,101 +1,61 @@
-.tags-hot {
-  background-color: #fff;
-  margin-bottom: 20px;
-  .tags-hot-header {
-    @extend .header;
-    p {
-      float: left;
-      margin-bottom: 0;
-    }
-    a {
-      font-weight: 500;
-      font-size: 13px;
-      border-radius: 0;
-      float: right;
-    }
-  }
-  .tags-hot-list {
-    margin: 0 10px 10px 10px;
-    display: block;
-    overflow: hidden;
-    a {
-      margin: 0 15px 10px 0;
-      border: 1px dashed #DADADA;
-      color: #000000;
-      font-weight: bold;
-      font-size: 12px;
-      border-radius: 0;
-    }
-  }
-}
-.booklists-box {
-  background: #ffffff;
-  .booklists-order {
-    width: 100%;
-    border-bottom: 1px solid #eee;
-    button {
-      border: none;
-      border-radius: 0;
-      width: 50%;
-      padding: 10px;
-    }
-  }
-  .booklists-box-header {
-    @extend .header;
-    i {
-      float: left;
-      padding-right: 5px;
-      line-height: 1.4;
-      span {
+.booklists-page {
+  .tags {
+    background-color: #fff;
+    margin-bottom: 20px;
+    .tags-header {
+      @extend .header;
+      p {
         float: left;
+        margin-bottom: 0;
+      }
+      a {
+        font-weight: 500;
+        font-size: 13px;
+        border-radius: 0;
+        float: right;
       }
     }
-    a {
-      color: #009688;
-      font-weight: 500;
-      font-size: 13px;
-      float: right;
+    .tags-list {
+      margin: 0 10px 10px 10px;
+      display: block;
+      overflow: hidden;
+      .tag {
+        margin: 0 15px 10px 0;
+        border: 1px dashed #DADADA;
+        color: #000000;
+        font-weight: bold;
+        font-size: 12px;
+        border-radius: 0;
+      }
     }
   }
-  .booklists-box-content {
-    $width: 100px;
-    overflow: hidden;
-    padding: 0 10px;
-    a {
-      float: left;
-      display: block;
+  .booklists {
+    background: #ffffff;
+    .order {
       width: 100%;
       border-bottom: 1px solid #eee;
-      padding: 5px;
-      position: relative;
-      img {
-        width: $width;
-        min-height: 120px;
-        float: right;
-        margin-left: 10px;
+      button {
+        border: none;
+        border-radius: 0;
+        width: 50%;
+        padding: 10px;
       }
-      .title {
-        font: {
-          size: 16px;
-          weight: 500;
-        }
-        margin: 5px 0;
-        display: block;
-      }
-      .collect {
-        color: $grayColor;
-      }
-      .booklist-tag {
-        display: block;
-        overflow: hidden;
-        bottom: 10px;
-        position: absolute;
-        .tag {
+    }
+    .booklists-list {
+      @extend .header;
+      i {
+        float: left;
+        padding-right: 5px;
+        line-height: 1.4;
+        span {
           float: left;
-          font-size: 12px;
-          padding-right: 5px;
-          color: $grayColor;
         }
+      }
+      .booklist {
+        color: #009688;
+        font-weight: 500;
+        font-size: 13px;
+        float: right;
       }
     }
   }

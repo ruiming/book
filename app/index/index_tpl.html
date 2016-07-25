@@ -1,30 +1,31 @@
-<div ng-include="'index/index_slides_part.html'"></div>
-<div class="slides-book">
-    <div class="slides-book-header">
-        <i class="fa fa-book"></i>
-        <span>书籍推荐</span>
-        <a ui-sref="recommend">更多 > </a>
+<div class="index-page">
+    <div ng-include="'index/index_slides_part.html'"></div>
+    <div class="books">
+        <div class="books-header">
+            <i class="fa fa-book"></i>
+            <span>书籍推荐</span>
+            <a ui-sref="recommend">更多 > </a>
+        </div>
+        <book-slide ng-init="vm.books=[]" books=vm.books></book-slide>
     </div>
-    <book-slide ng-init="vm.books=[]" books=vm.books></book-slide>
-</div>
-<div class="booklists-box" style="min-height: 400px;">
-    <div class="booklists-box-header">
-        <i class="fa fa-list"></i>
-        <span>热门书单</span>
-        <a ui-sref="popular">更多 > </a>
-    </div>
-    <div class="booklists-box-content">
-        <a ng-repeat="booklist in vm.booklists"
-           ui-sref="booklist({id: booklist.id})">
-            <img ng-src="{{booklist.image}}">
-            <span class="title">{{booklist.title}}</span>
-            <span class="collect">{{booklist.collect}}人收藏</span>
-            <div class="booklist-tag">
-                <div class="tag"
-                     ng-repeat="tag in booklist.tags">
-                    {{tag}}
+    <div class="booklists" style="min-height: 400px;">
+        <div class="booklists-header">
+            <i class="fa fa-list"></i>
+            <span>热门书单</span>
+            <a ui-sref="popular">更多 > </a>
+        </div>
+        <div class="booklists-content">
+            <a class="booklist" ng-repeat="booklist in vm.booklists"
+               ui-sref="booklist({id: booklist.id})">
+                <img ng-src="{{booklist.image}}">
+                <span class="title">{{booklist.title}}</span>
+                <span class="collect">{{booklist.collect}}人收藏</span>
+                <div class="tags">
+                    <div class="tag" ng-repeat="tag in booklist.tags">
+                        {{tag}}
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
 </div>

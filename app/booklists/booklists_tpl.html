@@ -1,14 +1,17 @@
-<div class="tags-hot">
-    <div class="tags-hot-header">
-        <p>选书单</p>
-        <a ui-sref="tags">查看全部标签 > </a>
+<div class="booklists-page">
+    <div class="tags">
+        <div class="tags-header">
+            <p>选书单</p>
+            <a ui-sref="tags">查看全部标签 > </a>
+        </div>
+        <div class="tags-list">
+            <a class="btn btn-default" class="tag"
+               ng-repeat="tag in vm.tags track by $index"
+               ui-sref="tagBooklists({tag: tag})">
+                {{tag}}
+            </a>
+        </div>
     </div>
-    <div class="tags-hot-list">
-        <a class="btn btn-default"
-           ng-repeat="tag in vm.tags track by $index"
-           ui-sref="tagBooklists({tag: tag})">
-            {{tag}}
-        </a>
-    </div>
+    <div ng-include="'booklists/booklists_slides_part.html'"></div>
+
 </div>
-<div ng-include="'booklists/booklists_slides_part.html'"></div>

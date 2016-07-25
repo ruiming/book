@@ -96,6 +96,71 @@ a {
     }
   }
 }
+.slides {
+  height: 160px;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  img {
+    min-height: 160px !important;
+    width: 100%;
+  }
+  a[role="button"]{
+    background-image: linear-gradient(to right,rgba(0,0,0,.0001) 0,rgba(0, 0, 0, 0.0001) 100%);
+    height: 180px;
+  }
+  .carousel-inner {
+    height: 160px !important;
+  }
+  .carousel-indicators{
+    display: none;
+  }
+}
+.slides-book {
+  margin-bottom: 14px;
+  background-color: #ffffff;
+  .slides-book-header {
+    @extend .header;
+    i {
+      float: left;
+      padding-right: 5px;
+      line-height: 1.4;
+    }
+    span {
+      float: left;
+    }
+    a {
+      color: #009688;
+      font-weight: 500;
+      font-size: 13px;
+      float: right;
+    }
+  }
+}
+.slides-book-content {
+  $imgHeight: 150px;
+  padding: 0 10px;
+  width: 100%;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  a {
+    padding: 0 5px;
+    font-size: 12px;
+    display: inline-block;
+    max-width: 120px;
+    img {
+      height: $imgHeight;
+      width: 105px;
+    }
+    p {
+      margin: 5px 0 0;
+      overflow: hidden;
+    }
+    i {
+      color: $star;
+    }
+  }
+}
 .wechat-fix {
   i:before{
     padding: 0 1px;
@@ -105,6 +170,551 @@ a {
   }
 }
 
+.booklists-box {
+  background: #ffffff;
+  .booklists-order {
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    button {
+      border: none;
+      border-radius: 0;
+      width: 50%;
+      padding: 10px;
+    }
+  }
+  .booklists-box-header {
+    @extend .header;
+    i {
+      float: left;
+      padding-right: 5px;
+      line-height: 1.4;
+      span {
+        float: left;
+      }
+    }
+    a {
+      color: #009688;
+      font-weight: 500;
+      font-size: 13px;
+      float: right;
+    }
+  }
+  .booklists-box-content {
+    $width: 100px;
+    overflow: hidden;
+    padding: 0 10px;
+    a {
+      float: left;
+      display: block;
+      width: 100%;
+      border-bottom: 1px solid #eee;
+      padding: 5px;
+      position: relative;
+      img {
+        width: $width;
+        float: right;
+        margin-left: 10px;
+      }
+      .title {
+        font: {
+          size: 16px;
+          weight: 500;
+        }
+        margin: 5px 0;
+        display: block;
+      }
+      .collect {
+        color: $grayColor;
+      }
+      .booklist-tag {
+        display: block;
+        overflow: hidden;
+        bottom: 10px;
+        position: absolute;
+        .tag {
+          float: left;
+          font-size: 12px;
+          padding-right: 5px;
+          color: $grayColor;
+        }
+      }
+    }
+  }
+}
+.tags-hot {
+  background-color: #fff;
+  margin-bottom: 20px;
+  .tags-hot-header {
+    @extend .header;
+    p {
+      float: left;
+      margin-bottom: 0;
+    }
+    a {
+      font-weight: 500;
+      font-size: 13px;
+      border-radius: 0;
+      float: right;
+    }
+  }
+  .tags-hot-list {
+    margin: 0 10px 10px 10px;
+    display: block;
+    overflow: hidden;
+    a {
+      margin: 0 15px 10px 0;
+      border: 1px dashed #DADADA;
+      color: #000000;
+      font-weight: bold;
+      font-size: 12px;
+      border-radius: 0;
+    }
+  }
+}
+.booklist {
+  .booklist-header {
+    padding: 10px;
+    text-align: center;
+    button {
+      margin: 0 10px;
+    }
+    .booklist-intro {
+      font-size: 12px;
+      padding: 0 10px 5px;
+    }
+    .booklist-image-cover {
+      position: absolute;
+      top: -5%;
+      left: 0;
+      width: 100%;
+      z-index: -1;
+      background: #fff;
+      border: 0;
+      vertical-align: middle;
+      display: block;
+      height: auto;
+      @include blur(1rem);
+      opacity: 0.3;
+    }
+    .avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    small {
+      display: block;
+      margin-bottom: 10px;
+    }
+    button {
+      width: 130px;
+    }
+  }
+  .booklist-tags {
+    background-color: #fff;
+    .booklist-tags-outer {
+      overflow-y: hidden;
+      overflow-x: scroll;
+      height: 43px;
+      .booklist-tags-inner {
+        width: 1200px;
+        .tag {
+          float: left;
+          padding: 12px;
+          &:first-child {
+            border-right: 1px solid #eee;
+          }
+        }
+      }
+    }
+  }
+  .booklist-books {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    a {
+      display: block;
+      margin-bottom: 10px;
+      overflow: hidden;
+      &:last-child {
+        margin: 0;
+      }
+      .book-image {
+        z-index: 0;
+        position: relative;
+        overflow: hidden;
+        .cover {
+          display: block;
+          z-index: 1;
+          margin: 8px auto;
+          height: 200px;
+          box-shadow: 1px 1px 1px #4A4A4A;
+        }
+        .cover-bg {
+          position: absolute;
+          top: -5%;
+          z-index: -1;
+          left: -5%;
+          width: 110%;
+          opacity: 0.8;
+          @include blur(1rem);
+        }
+      }
+      .book-message {
+        padding: 10px 10px 0;
+        display: block;
+        overflow: hidden;
+        .book-message-top {
+          float: left;
+          display: block;
+          width: 100%;
+          .book-message-top-title {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            float: left;
+          }
+          .book-message-top-rate {
+            float: right;
+            span {
+              float: right;
+              margin-left: 0;
+            }
+            span:last-child {
+              line-height: 1.4;
+              color: $star;
+            }
+          }
+        }
+        .book-message-author {
+          margin: 5px 0;
+          font-size: 12px;
+          float: left;
+          font-weight: 300;
+        }
+      }
+      .book-reason {
+        color: #555;
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 10px;
+        display: block;
+        overflow: hidden;
+      }
+    }
+  }
+}
+.me {
+  .user {
+    background-size: cover;
+    padding: 30px 10px;
+    overflow: hidden;
+    background: {
+      image: url(../images/images.jpg);
+      color: #FFFFFF;
+    }
+    img {
+      width: 60px;
+      height: 60px;
+      margin: 15px;
+      float: left;
+      border-radius: 50%;
+    }
+    .user-name {
+      overflow: hidden;
+      float: left;
+      margin: 0 auto;
+      line-height: 6.45;
+      p {
+        margin: 0;
+        color: #fff;
+      }
+    }
+    a {
+      i {
+        float: right;
+        line-height: 4.85;
+        color: #e3e3e3;
+        padding: 0 10px;
+        font-weight: 700;
+      }
+    }
+  }
+  .order-panel {
+    margin-bottom: 15px;
+    background-color: #FFF;
+    overflow: hidden;
+    .order-head {
+      i {
+        padding-right: 15px;
+      }
+      display: block;
+      padding: 10px;
+      overflow: hidden;
+      border-bottom: 1px solid #F5F5F5;
+    }
+    img {
+      width: 20px;
+      padding: 5px 0;
+    }
+    a {
+      width: 25%;
+      float: left;
+      font-size: 13px;
+      padding: 5px 0;
+      text-align: center;
+      color: #2B2B2B;
+      span {
+        display: block;
+        line-height: 1.3;
+      }
+    }
+  }
+}
+.user-items {
+  margin-bottom: 15px;
+  background-color: #FFF;
+  overflow: hidden;
+  a,
+  button {
+    display: block;
+    padding: 15px;
+    overflow: hidden;
+    border-bottom: 1px solid #F5F5F5;
+    .fa-mars,
+    .fa-venus {
+      float: right;
+      padding-right: 0;
+    }
+    .user-item-gravatar {
+      line-height: 50px;
+    }
+    i {
+      padding-right: 15px;
+      span {
+        font-family: $font;
+        padding-left: 15px;
+        color: #000;
+      }
+    }
+    span {
+      float: right;
+      color: #777777;
+    }
+    p {
+      margin: 10px 0 0;
+      color: #777;
+    }
+    img {
+      float: right;
+      width: 50px;
+    }
+  }
+}
+.book-detail {
+  .book-head {
+    .book-image {
+      z-index: 0;
+      height: auto;
+      overflow: hidden;
+      position: relative;
+      .cover {
+        display: block;
+        z-index: 1;
+        margin: 0 auto;
+        height: 250px;
+      }
+      .cover-bg {
+        position: absolute;
+        top: -5%;
+        z-index: -1;
+        background: #fff;
+        border: 0;
+        vertical-align: middle;
+        display: block;
+        left: -5%;
+        width: 110%;
+        opacity: 0.8;
+        @include blur(1rem);
+      }
+    }
+    .book-info {
+      background-color: #ffffff;
+      overflow: hidden;
+      display: block;
+      padding: 0 10px 15px 10px;
+      h3 {
+        font-weight: 700;
+      }
+      .book-info-rate {
+        display: block;
+        .star {
+          color: $star;
+        }
+        .rate {
+          padding-right: 5px;
+        }
+        .collect {
+          color: #a6a6a6;
+        }
+        a {
+          float: right;
+        }
+      }
+      .book-info-basic span{
+        color: #a6a6a6;
+        font-size: 12px;
+        margin-bottom: 2px;
+      }
+    }
+  }
+  .book-section {
+    padding: 0 10px;
+    background-color: #ffffff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    span {
+      padding: 12px 0;
+      float: left;
+      color: #F44336;
+    }
+    button {
+      float: right;
+      border: none;
+      padding: 12px 10px;
+      border-radius: 0;
+    }
+    .btn-collect {
+      width: 76px;
+    }
+    .btn-collected {
+      width: 62px;
+    }
+  }
+  .book {
+    padding: 0 10px;
+    background-color: #ffffff;
+    .book-intro,
+    .book-comments,
+    .book-tags,
+    .books-similarity,
+    .booklists-box {
+      overflow: hidden;
+      display: block;
+      margin-bottom: 20px;
+      span:first-child {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: grey;
+      }
+      p {
+        word-wrap: break-word;
+        line-height: 1.6;
+      }
+    }
+    .books-similarity {
+      span:first-child {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 0;
+        color: grey;
+      }
+    }
+    .book-intro {
+      font-size: 12px;
+      .book-intro-less {
+        max-height: 60px;
+        overflow: hidden;
+      }
+      .book-intro-more {
+        max-height: 2000px;
+        overflow: hidden;
+      }
+      span {
+        padding: 6px;
+        border: none;
+        color: grey;
+      }
+    }
+    .book-comments-more {
+      text-align: center;
+      padding-bottom: 10px;
+      a,
+      button {
+        margin: 5px 25px;
+        border: 1px solid #eee;
+        color: #4CAF50;
+      }
+    }
+    .book-comment-post {
+      overflow: hidden;
+      margin: 10px 0;
+      p {
+        line-height: 2.5;
+        margin: 0;
+        float: left;
+      }
+      button {
+        float: right;
+      }
+    }
+    .book-tags-list {
+      margin: 10px 0;
+      overflow: hidden;
+      button {
+        float: left;
+        border-radius: 0;
+        margin: 0 10px 5px 0;
+      }
+    }
+  }
+  .booklists-box-content,
+  .slides-book-content{
+    padding: 0;
+    margin-top: 10px;
+  }
+  .books-similarity {
+    margin-bottom: 20px;
+    span:first-child {
+      display: block;
+      font-weight: bold;
+    }
+  }
+}
+.book-box-outer {
+  padding: 0 10px 10px;
+  .book-box {
+    display: block;
+    overflow: hidden;
+    margin: 10px;
+    header {
+      padding: 0;
+      color: #8e8e8e;
+      font-size: 15px;
+      margin: 10px 0;
+    }
+    article {
+      word-wrap: break-word;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      color: #252525;
+      background-color: #fff;
+      section {
+        margin: 0 15px;
+        padding: 15px 0;
+        font-size: 13px;
+        .info {
+          display: block;
+          padding: 3px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
 .book-comments {
   .book-comment {
     padding-bottom: 5px;
@@ -153,6 +763,214 @@ a {
   .star {
     float: right;
     line-height: 2.5;
+  }
+}
+.books {
+  background-color: #fff;
+  overflow: hidden;
+  .books-content {
+    margin: 10px 0;
+    overflow: hidden;
+    list-style: none;
+    padding: 0 10px;
+    .books-content-list {
+      border-bottom: 1px solid #F7F7F7;
+      margin-bottom: 10px;
+      display: block;
+      overflow: hidden;
+      padding: 0;
+      float: left;
+      width: 100%;
+      img {
+        margin: 0 10px 0 0;
+        max-width: 80px;
+        float: left;
+        box-shadow: 0 0 4px rgba(0,0,0,.1);
+        border: 1px solid #dadada;
+      }
+      .title {
+        display: block;
+      }
+      blockquote {
+        padding: 10px;
+        margin: 6px 0 6px 90px;
+        color: #555;
+        font-size: 13px;
+        line-height: 1.5;
+        border-left: 1px solid #4CAF50;
+        background: #F5F5F5;
+      }
+    }
+  }
+}
+.book-comments-all {
+  overflow: hidden;
+  .navbar {
+    box-shadow: none;
+    padding: 0;
+    min-height: 30px;
+    border-radius: 0;
+    background-color: #FFF;
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    a {
+      padding: 12px;
+      height: auto;
+    }
+  }
+  .book-comments-list {
+    margin-top: 45px;
+    padding: 10px 10px 0 10px;
+    background-color: #ffffff;
+  }
+}
+.shop-group  {
+  background-color: $bgColor;
+  margin-bottom: 82px;
+  .checkbox {
+    float: left;
+    height: 110px;
+    overflow: hidden;
+    margin-right: 10px;
+    label {
+      top: 45px;
+      position: relative;
+      padding-left: 0;
+      span {
+        display: inline-block;
+        border: 1px solid #d9d9d9;
+        width: 1.375em;
+        height: 1.375em;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        @include box-sizing(border-box);
+        &.active {
+          background: #ff5252;
+          position: relative;
+          border-color: #ff5252;
+          &:after {
+            position: absolute;
+            content: '';
+            width: 0.75em;
+            height: 0.41em;
+            border: 2px solid #ffffff;
+            border-top: none;
+            border-right: none;
+            left: 0.3em;
+            top: 0.35em;
+            @include box-sizing(border-box);
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+          }
+        }
+      }
+      input {
+        visibility: hidden;
+      }
+    }
+  }
+  .shop-cart-head {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid #C9302C;
+    padding: 15px 10px 10px;
+    font-size: 15px;
+    background-color: #fff;
+    overflow: hidden;
+    text-align: center;
+    z-index: 99;
+    span {
+      &:last-child {
+        right: 10px;
+        position: absolute;
+      }
+    }
+  }
+  ul {
+    margin-top: 47px;
+    padding: 0 0 10px;
+    list-style: none;
+    display: block;
+    li {
+      display: block;
+      overflow: hidden;
+      padding: 10px 0;
+      border-bottom: 1px solid #e3e3e3;
+      .shop-cart-item {
+        position: relative;
+        margin-left: 15px;
+        overflow: hidden;
+        .cart-book-image {
+          float: left;
+          img {
+            height: 130px;
+            float: left;
+            margin-right: 10px;
+          }
+        }
+        .cart-book-name {
+          font-size: 14px;
+          display: block;
+          overflow: hidden;
+          a {
+            font-weight: 700;
+          }
+        }
+        .cart-book-price {
+          color: #F92828;
+          margin: 5px 0 5px 0;
+        }
+        .cart-book-count {
+          position: absolute;
+          bottom: 0;
+          color: black;
+          font-size: 12px;
+        }
+        .cart-book-edit {
+          display: block;
+          overflow: hidden;
+          .cart-book-edit-count {
+            margin-right: 50px;
+            i {
+              background-color: white;
+              padding: 4.5px 10px;
+              float: left;
+              color: #B6B6B6;
+              border: 0;
+              border-right: 1px solid #F0F0F0;
+              &:last-child {
+                float: none;
+                border-left: 1px solid #F0F0F0;
+                border-right: 0;
+              }
+            }
+            input,
+            input:active {
+              width: 60px;
+              text-align: center;
+              padding: 3px 5px;
+              font-size: 12px;
+              border: 0;
+              outline: none;
+              border-radius: 0;
+              float: left;
+            }
+          }
+          .fa-trash-o {
+            float: right;
+            font-size: 1.3em;
+            padding-top: 2px;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
   }
 }
 .cart-to-order {
@@ -235,6 +1053,111 @@ a {
   }
   .books .title i {
     float: right;
+  }
+}
+.notices {
+  overflow: hidden;
+  padding: 0;
+  .notice {
+    border: 1px solid #EEE;
+    border-radius: 10px;
+    display: block;
+    overflow: hidden;
+    background-color: #FFF;
+    margin: 10px;
+    .notice-title,
+    .notice-read {
+      overflow: hidden;
+      display: block;
+      padding: 10px;
+    }
+    .notice-title {
+      p {
+        margin-bottom: 5px;
+        font-size: 16px;
+      }
+      span {
+        display: block;
+        font-size: 12px;
+        color: #CACACA;
+      }
+    }
+    .notice-content {
+      font-size: 12px;
+      padding: 0 10px;
+    }
+    .notice-read {
+      border-top: 1px solid #eee;
+      span {
+        float: left;
+      }
+      i {
+        float: right;
+      }
+    }
+  }
+}
+.tags {
+  padding: 10px 10px 0;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background-color: #fff;
+  span {
+    font-size: 16px;
+  }
+  .tags-group {
+    border: 1px solid #fff;
+    margin: 10px 0;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,.2);
+    word-wrap: break-word;
+    overflow: hidden;
+    .tags-group-one {
+      overflow: hidden;
+      margin: 10px;
+      p {
+        padding: 5px;
+        font-weight: 700;
+      }
+      a {
+        margin: 0 15px 10px 0;
+        border: 1px dashed #DADADA;
+        color: #000000;
+        font-weight: bold;
+        font-size: 12px;
+        border-radius: 0;
+      }
+    }
+  }
+}
+.points {
+  .point-history {
+    background-color: #fff;
+    .point-header {
+      padding: 15px 10px;
+      font-size: 16px;
+      display: block;
+      border-bottom: 1px solid #0F9E5E;
+      overflow: hidden;
+    }
+    .point-list {
+      padding: 0 10px;
+      list-style: none;
+      display: block;
+      overflow: hidden;
+      li {
+        border-bottom: 1px solid #EEE;
+        display: block;
+        overflow: hidden;
+        padding: 10px 5px;
+        .point-title {
+          float: left;
+        }
+        .point-result {
+          float: right;
+        }
+      }
+    }
   }
 }
 .comments {
@@ -369,6 +1292,200 @@ a {
     }
   }
 }
+.order-group {
+  .order-list {
+    padding: 0;
+  }
+  .order-list-one {
+    background-color: $bgColor;
+    margin-bottom: 20px;
+    overflow: hidden;
+    .order-title,
+    .order-meta,
+    .order-books,
+    .order-detail{
+      overflow: hidden;
+      display: block;
+      border-bottom: 1px solid #EEE;
+      background-color: #ffffff;
+    }
+    .order-books,
+    .order-detail,
+    .order-receipt {
+      margin-bottom: 10px;
+    }
+    .order-title {
+      padding: 10px;
+      .order-head {
+        float: left;
+      }
+      .order-status {
+        float: right;
+        color: #b12704;
+      }
+    }
+    a {
+      display: block;
+      overflow: hidden;
+    }
+    .order-books {
+      padding: 0;
+      .order-book {
+        background-color: #ffffff;
+        overflow: hidden;
+        display: block;
+        padding: 10px;
+        position: relative;
+        img {
+          height: 120px;
+          float: left;
+          margin-right: 10px;
+        }
+        p,
+        small{
+          display: block;
+        }
+        p {
+          font-weight: 700;
+        }
+        .count {
+          float: right;
+          font-size: 13px;
+          color: #636363;
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+        }
+        .order-img {
+          float: left;
+        }
+        .order-comment {
+          overflow: hidden;
+          padding: 0;
+          display: block;
+          textarea {
+            float: left;
+            padding: 0;
+            border: 0;
+            box-shadow: none;
+            overflow: auto;
+            resize: none;
+            height: 150px;
+            outline: 0;
+          }
+        }
+        .order-star{
+          display: block;
+          overflow: hidden;
+          border-top: 1px solid #F7F7F7;
+          border-bottom: 1px solid #F7F7F7;
+          padding: 10px;
+          .star {
+            float: right;
+          }
+        }
+      }
+    }
+    .order-comments {
+      .order-book {
+        padding: 0;
+        margin-bottom: 10px;
+      }
+      .order-img,
+      .order-comment{
+        padding: 10px !important;
+      }
+    }
+    .order-meta {
+      .order-meta-price {
+        padding: 8px;
+        display: block;
+        float: left;
+        span {
+          padding-left: 10px;
+          display: block;
+          margin: 5px 0;
+        }
+      }
+      button,
+      a {
+        border-radius: 0;
+        float: right;
+        padding: 6px 12px;
+        margin: 6px;
+        font-size: 14px;
+      }
+    }
+    .order-meta-fix-bottom {
+      border-top: 1px solid #E7E7E7;
+      background-color: #fff;
+      position: fixed;
+      z-index: 9999;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .order-process {
+      overflow: hidden;
+      list-style-type: disc;
+      padding: 10px 10px 10px 35px;
+      li {
+        padding: 5px 0;
+        color: #03A9F4;
+        &:last-child {
+          color: #B12704;
+        }
+        span {
+          &:first-child {
+            float: left;
+          }
+          &:last-child {
+            float: right;
+          }
+        }
+      }
+    }
+    .order-receipt-meta {
+      background-color: #ffffff;
+      overflow: hidden;
+      list-style-type: disc;
+      padding: 10px 10px 10px 20px;
+    }
+  }
+}
+.suggest {
+  overflow: hidden;
+  .i-suggest {
+    overflow: hidden;
+    .input-group {
+      text-align: center;
+      margin: 0 auto;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      float: left;
+      border-radius: 50%;
+      border: 2px solid #FFF;
+    }
+    .suggest-header {
+      margin: 30px 0 10px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .suggestion {
+      padding: 20px 10px;
+      textarea {
+        min-height: 140px;
+        resize: none;
+      }
+      button {
+        margin-top: 25px;
+      }
+    }
+  }
+}
 .order-comment-fix-bottom {
   background-color: #fff;
   border-top: 1px solid #D9534F;
@@ -478,6 +1595,114 @@ a {
   background: url(/static/images/arrow_r.png) no-repeat right center;
   -webkit-background-size: 18px 15px;
 }
+.cart2order {
+  .order-cart,
+  .order-books {
+    margin: 5px 0;
+  }
+  .order-books {
+    border: {
+      top: 1px solid #EEE;
+      bottom: 1px solid #EEE;
+    }
+    .cart2order-sum {
+      margin: {
+        top: 10px;
+        bottom: 10px;
+      }
+      display: block;
+      overflow: hidden;
+      width: 100%;
+      p {
+        margin: 0;
+        line-height: 30px;
+        font-size: 14px;
+        padding: 0 25px 0 20px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        background-color: #fff;
+        color: #464646;
+        span {
+          color: darkred;
+        }
+      }
+    }
+  }
+  .cart-message {
+    background-color: white;
+    overflow: hidden;
+    display: block;
+    padding: 10px;
+    color: #828282;
+    font-size: 15px;
+  }
+  .order-tip {
+    line-height: 46px;
+    font-size: 14px;
+    padding: 0 25px 0 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: #fff;
+    color: #464646;
+    .order-tip-1 {
+      display: block;
+      overflow: hidden;
+      border-bottom: 1px solid #dcdcdc;
+      &:last-child {
+        border-bottom: 0;
+      }
+      span {
+        color: #787878;
+        font-size: 14px;
+        &:first-child {
+          padding-right: 10px;
+          float: left;
+        }
+        &:last-child {
+          float: right;
+        }
+      }
+    }
+  }
+  .order-address {
+    padding: 5px 25px 5px 20px;
+    color: #464646;
+    font-size: 14px;
+    position: relative;
+    background-color: #fff;
+    p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 26px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      em {
+        font-style: normal;
+        display: inline-block;
+        float: right;
+        padding-right: 11px;
+      }
+    }
+    .address {
+      font-size: 14px;
+    }
+    .empty {
+      text-align: center;
+      padding: 10px;
+    }
+  }
+  .cart2order-book {
+    float: left;
+    padding-right: 0 !important;
+    img {
+      height: 100px !important;
+      margin-right: 0 !important;
+    }
+  }
+}
 .animate-if {
   position: fixed;
   background-color: #FFF;
@@ -554,6 +1779,266 @@ a {
     width: 200px;
   }
 }
+.cssload-thecube {
+  width: 73px;
+  height: 73px;
+  margin: 50% auto 49px;
+  position: relative;
+  transform: rotateZ(45deg);
+  -o-transform: rotateZ(45deg);
+  -ms-transform: rotateZ(45deg);
+  -webkit-transform: rotateZ(45deg);
+  -moz-transform: rotateZ(45deg);
+}
+.cssload-thecube .cssload-cube {
+  position: relative;
+  transform: rotateZ(45deg);
+  -o-transform: rotateZ(45deg);
+  -ms-transform: rotateZ(45deg);
+  -webkit-transform: rotateZ(45deg);
+  -moz-transform: rotateZ(45deg);
+}
+.cssload-thecube .cssload-cube {
+  float: left;
+  width: 50%;
+  height: 50%;
+  position: relative;
+  transform: scale(1.1);
+  -o-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+}
+.cssload-thecube .cssload-cube:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(43,160,199);
+  animation: cssload-fold-thecube 2.76s infinite linear both;
+  -o-animation: cssload-fold-thecube 2.76s infinite linear both;
+  -ms-animation: cssload-fold-thecube 2.76s infinite linear both;
+  -webkit-animation: cssload-fold-thecube 2.76s infinite linear both;
+  -moz-animation: cssload-fold-thecube 2.76s infinite linear both;
+  transform-origin: 100% 100%;
+  -o-transform-origin: 100% 100%;
+  -ms-transform-origin: 100% 100%;
+  -webkit-transform-origin: 100% 100%;
+  -moz-transform-origin: 100% 100%;
+}
+.cssload-thecube .cssload-c2 {
+  transform: scale(1.1) rotateZ(90deg);
+  -o-transform: scale(1.1) rotateZ(90deg);
+  -ms-transform: scale(1.1) rotateZ(90deg);
+  -webkit-transform: scale(1.1) rotateZ(90deg);
+  -moz-transform: scale(1.1) rotateZ(90deg);
+}
+.cssload-thecube .cssload-c3 {
+  transform: scale(1.1) rotateZ(180deg);
+  -o-transform: scale(1.1) rotateZ(180deg);
+  -ms-transform: scale(1.1) rotateZ(180deg);
+  -webkit-transform: scale(1.1) rotateZ(180deg);
+  -moz-transform: scale(1.1) rotateZ(180deg);
+}
+.cssload-thecube .cssload-c4 {
+  transform: scale(1.1) rotateZ(270deg);
+  -o-transform: scale(1.1) rotateZ(270deg);
+  -ms-transform: scale(1.1) rotateZ(270deg);
+  -webkit-transform: scale(1.1) rotateZ(270deg);
+  -moz-transform: scale(1.1) rotateZ(270deg);
+}
+.cssload-thecube .cssload-c2:before {
+  animation-delay: 0.35s;
+  -o-animation-delay: 0.35s;
+  -ms-animation-delay: 0.35s;
+  -webkit-animation-delay: 0.35s;
+  -moz-animation-delay: 0.35s;
+}
+.cssload-thecube .cssload-c3:before {
+  animation-delay: 0.69s;
+  -o-animation-delay: 0.69s;
+  -ms-animation-delay: 0.69s;
+  -webkit-animation-delay: 0.69s;
+  -moz-animation-delay: 0.69s;
+}
+.cssload-thecube .cssload-c4:before {
+  animation-delay: 1.04s;
+  -o-animation-delay: 1.04s;
+  -ms-animation-delay: 1.04s;
+  -webkit-animation-delay: 1.04s;
+  -moz-animation-delay: 1.04s;
+}
+
+
+
+@keyframes cssload-fold-thecube {
+  0%, 10% {
+    transform: perspective(136px) rotateX(-180deg);
+    opacity: 0;
+  }
+  25%,
+  75% {
+    transform: perspective(136px) rotateX(0deg);
+    opacity: 1;
+  }
+  90%,
+  100% {
+    transform: perspective(136px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+@-o-keyframes cssload-fold-thecube {
+  0%, 10% {
+    -o-transform: perspective(136px) rotateX(-180deg);
+    opacity: 0;
+  }
+  25%,
+  75% {
+    -o-transform: perspective(136px) rotateX(0deg);
+    opacity: 1;
+  }
+  90%,
+  100% {
+    -o-transform: perspective(136px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+@-ms-keyframes cssload-fold-thecube {
+  0%, 10% {
+    -ms-transform: perspective(136px) rotateX(-180deg);
+    opacity: 0;
+  }
+  25%,
+  75% {
+    -ms-transform: perspective(136px) rotateX(0deg);
+    opacity: 1;
+  }
+  90%,
+  100% {
+    -ms-transform: perspective(136px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes cssload-fold-thecube {
+  0%, 10% {
+    -webkit-transform: perspective(136px) rotateX(-180deg);
+    opacity: 0;
+  }
+  25%,
+  75% {
+    -webkit-transform: perspective(136px) rotateX(0deg);
+    opacity: 1;
+  }
+  90%,
+  100% {
+    -webkit-transform: perspective(136px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes cssload-fold-thecube {
+  0%, 10% {
+    -moz-transform: perspective(136px) rotateX(-180deg);
+    opacity: 0;
+  }
+  25%,
+  75% {
+    -moz-transform: perspective(136px) rotateX(0deg);
+    opacity: 1;
+  }
+  90%,
+  100% {
+    -moz-transform: perspective(136px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+#circularG{
+  position:relative;
+  width:20px;
+  height:20px;
+  margin: auto;
+}
+
+.circularG{
+  position:absolute;
+  background-color:rgb(255,255,255);
+  width:5px;
+  height:5px;
+  border-radius:3px;
+  -webkit-border-radius:3px;
+  animation-name:bounce_circularG;
+  -webkit-animation-name:bounce_circularG;
+  animation-duration:1.1s;
+  -webkit-animation-duration:1.1s;
+  animation-iteration-count:infinite;
+  -webkit-animation-iteration-count:infinite;
+  animation-direction:normal;
+  -webkit-animation-direction:normal;
+}
+
+#circularG_1{
+  left:0;
+  top:8px;
+  animation-delay:0.41s;
+  -webkit-animation-delay:0.41s;
+}
+
+#circularG_2{
+  left:2px;
+  top:2px;
+  animation-delay:0.55s;
+  -webkit-animation-delay:0.55s;
+}
+
+#circularG_3{
+  top:0;
+  left:8px;
+  animation-delay:0.69s;
+  -webkit-animation-delay:0.69s;
+}
+
+#circularG_4{
+  right:2px;
+  top:2px;
+  animation-delay:0.83s;
+  -webkit-animation-delay:0.83s;
+}
+
+#circularG_5{
+  right:0;
+  top:8px;
+  animation-delay:0.97s;
+  -webkit-animation-delay:0.97s;
+}
+
+#circularG_6{
+  right:2px;
+  bottom:2px;
+  animation-delay:1.1s;
+  -webkit-animation-delay:1.1s;
+}
+
+#circularG_7{
+  left:8px;
+  bottom:0;
+  animation-delay:1.24s;
+  -webkit-animation-delay:1.24s;
+}
+
+#circularG_8{
+  left:2px;
+  bottom:2px;
+  animation-delay:1.38s;
+  -webkit-animation-delay:1.38s;
+}
+
+
+
 @keyframes bounce_circularG{
   0%{
     transform:scale(1);

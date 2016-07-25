@@ -1,7 +1,7 @@
-<div class="book-box-outer">
-    <div class="book-box">
-        <header class="book-box-head">出版信息</header>
-        <article class="book-box-article">
+<div class="book-info-page">
+    <div class="book">
+        <header>出版信息</header>
+        <article>
             <section>
                 <span class="info" ng-if='vm.book.title!=""'>标题: {{vm.book.title}}</span>
                 <span class="info" ng-if='vm.book.subtitle!=""'>副标题: {{vm.book.subtitle}}</span>
@@ -17,7 +17,7 @@
             </section>
         </article>
     </div>
-    <div class="book-box" ng-if='vm.book.description!=""'>
+    <div class="book" ng-if='vm.book.description!=""'>
         <header>书籍内容介绍</header>
         <article >
             <section>
@@ -25,7 +25,7 @@
             </section>
         </article>
     </div>
-    <div class="book-box" ng-if='vm.book.author_intro!=""'>
+    <div class="book" ng-if='vm.book.author_intro!=""'>
         <header>作者介绍</header>
         <article>
             <section>
@@ -33,7 +33,7 @@
             </section>
         </article>
     </div>
-    <div class="book-box" ng-if='vm.book.catelog!=""'>
+    <div class="book" ng-if='vm.book.catelog!=""'>
         <header>目录</header>
         <article>
             <section>

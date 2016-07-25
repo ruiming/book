@@ -1,15 +1,17 @@
-<div class="booklist">
+<div class="booklis-page">
     <div ng-include="'booklist/booklist_head_part.html'"></div>
-    <div class="booklist-books slides-box-content">
-        <a ng-repeat="book in vm.booklist.books track by book.isbn" ui-sref="book({isbn: book.isbn})">
+    <div class="books">
+        <a class="book"
+           ng-repeat="book in vm.booklist.books track by book.isbn"
+           ui-sref="book({isbn: book.isbn})">
             <div class="book-image">
                 <img class="cover cover-sm" ng-src="{{book.image}}">
                 <img class="cover-bg" ng-src="{{book.image}}">
             </div>
-            <div class="book-message">
-                <div class="book-message-top">
-                    <span class="book-message-top-title">{{book.title}}</span>
-                    <div class="book-message-top-rate">
+            <div class="book-info">
+                <div class="book-info-top">
+                    <span class="title">{{book.title}}</span>
+                    <div class="rate">
                         <span>&nbsp;{{book.rate}}</span>
                         <uib-rating class="red-star"
                                     ng-model="book.star"
@@ -19,12 +21,12 @@
                                     state-off="'fa fa-star-o'"></uib-rating>
                     </div>
                 </div>
-                <span class="book-message-author" ng-if='book.author!=""'>
+                <span class="author" ng-if='book.author!=""'>
                     <span ng-repeat="x in book.author track by $index">{{x}} </span>
                 </span>
             </div>
-            <div class="book-reason">
-                <p name="reason" ng-bind-html="book.reason"></p>
+            <div class="reason">
+                <p ng-bind-html="book.reason"></p>
             </div>
         </a>
     </div>

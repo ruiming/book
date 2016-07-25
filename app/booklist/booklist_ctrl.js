@@ -11,6 +11,7 @@
         let vm = this;
         vm.wait = false;
         vm.wait2 = false;
+
         vm.collect = collect;
 
         getBooklistDetail();

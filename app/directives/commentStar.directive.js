@@ -25,5 +25,4 @@
     angular
         .module('index')
         .directive('commentStar', commentStar);
-
 })();

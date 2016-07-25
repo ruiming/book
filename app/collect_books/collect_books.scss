@@ -1,11 +1,14 @@
-.books {
+.collect-books-page {
   background-color: #fff;
   overflow: hidden;
+  .books {
+    margin-top: 40px;
+  }
   .books-content {
     margin: 10px 0;
     overflow: hidden;
     list-style: none;
-    padding: 0 10px;
+    padding: 10px;
     .books-content-list {
       border-bottom: 1px solid #F7F7F7;
       margin-bottom: 10px;
@@ -23,6 +26,9 @@
       }
       .title {
         display: block;
+        i {
+          float: right;
+        }
       }
       blockquote {
         padding: 10px;

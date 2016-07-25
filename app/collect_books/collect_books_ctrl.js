@@ -9,6 +9,7 @@
     
     function CollectBooksCtrl(userservice, bookservice) {
         let vm = this;
+
         vm.remove = remove;
 
         getUserCollect();
@@ -16,7 +17,7 @@
         function getUserCollect() {
             userservice.getUserCollect('book').then(response => {
                 vm.books = response;
-                for(book of vm.books) {
+                for(let book of vm.books) {
                     book.star = Math.ceil(book.rate/2);
                 }
             });

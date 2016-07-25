@@ -14,18 +14,6 @@
             <span>热门书单</span>
             <a ui-sref="popular">更多 > </a>
         </div>
-        <div class="booklists-content">
-            <a class="booklist" ng-repeat="booklist in vm.booklists"
-               ui-sref="booklist({id: booklist.id})">
-                <img ng-src="{{booklist.image}}">
-                <span class="title">{{booklist.title}}</span>
-                <span class="collect">{{booklist.collect}}人收藏</span>
-                <div class="tags">
-                    <div class="tag" ng-repeat="tag in booklist.tags">
-                        {{tag}}
-                    </div>
-                </div>
-            </a>
-        </div>
+        <booklist-row booklists=vm.booklists></booklist-row>
     </div>
 </div>

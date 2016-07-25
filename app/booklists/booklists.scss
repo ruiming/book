@@ -2,8 +2,12 @@
   .tags {
     background-color: #fff;
     margin-bottom: 20px;
+    padding: 0;
     .tags-header {
-      @extend .header;
+      padding: 10px 5px;
+      overflow: hidden;
+      margin: 0 12px;
+      font-size: 15px;
       p {
         float: left;
         margin-bottom: 0;
@@ -26,36 +30,6 @@
         font-weight: bold;
         font-size: 12px;
         border-radius: 0;
-      }
-    }
-  }
-  .booklists {
-    background: #ffffff;
-    .order {
-      width: 100%;
-      border-bottom: 1px solid #eee;
-      button {
-        border: none;
-        border-radius: 0;
-        width: 50%;
-        padding: 10px;
-      }
-    }
-    .booklists-list {
-      @extend .header;
-      i {
-        float: left;
-        padding-right: 5px;
-        line-height: 1.4;
-        span {
-          float: left;
-        }
-      }
-      .booklist {
-        color: #009688;
-        font-weight: 500;
-        font-size: 13px;
-        float: right;
       }
     }
   }

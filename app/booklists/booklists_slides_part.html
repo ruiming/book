@@ -7,21 +7,5 @@
             收藏优先
         </button>
     </div>
-    <div class="booklists-list"
-         infinite-scroll='vm.booklists.nextPage()'
-         infinite-scroll-disabled='vm.booklists.busy'
-         infinite-scroll-distance='1'>
-        <a class="booklist" ng-repeat="booklist in vm.booklists.list track by $index"
-           ui-sref="booklist({id: booklist.id})">
-            <img ng-src="{{booklist.image}}">
-            <span class="title">{{booklist.title}}</span>
-            <span class="collect">{{booklist.collect}}人收藏</span>
-            <div class="booklist-tag">
-                <div class="tag" ng-repeat="tag in vm.booklist.tags">{{tag}}</div>
-            </div>
-        </a>
-        <div class="loading-more" ng-if="vm.booklists.busy">
-            <i class="fa fa-spinner fa-pulse fa-2x"></i>
-        </div>
-    </div>
+    <booklist-row booklists=vm.booklists.list scroll=vm.booklists></booklist-row>
 </div>

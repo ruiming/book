@@ -6,9 +6,10 @@
 
     CommentsCtrl.$inject = ['$stateParams', 'commentservice'];
 
-    function CommentsCtrl() {
+    function CommentsCtrl($stateParams, commentservice) {
         let vm = this;
         vm.title = commentservice.getTitle();
+
         vm.up = up;
         vm.down = down;
 
@@ -18,7 +19,7 @@
             commentservice.getComment($stateParams.isbn).then(response => {
                 vm.comments = response;
                 vm.busy = false;
-                for( comment of vm.comments ) {
+                for(let comment of vm.comments ) {
                     comment.star = Math.ceil(comment.star / 2);
                 }
             });

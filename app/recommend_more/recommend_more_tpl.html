@@ -1,17 +1,3 @@
-<div class="books">
-    <div class="books-content" infinite-scroll='vm.books.nextPage()'
-         infinite-scroll-disabled='books.busy'
-         infinite-scroll-distance='1'>
-        <a class="books-content-list" ng-repeat="book in vm.books.list" ui-sref="book({isbn: book.isbn})">
-            <img ng-src="{{book.image}}">
-            <span class="title">{{book.title}}</span>
-            <uib-rating class="star red-star wechat-fix"
-                        ng-model="book.star"
-                        max="5" read-only="true"
-                        state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
-            <span class="rate">&nbsp;{{book.rate}}</span>
-            <blockquote class="reason" ng-bind-html="book.reason"></blockquote>
-        </a>
-        <div class="loading-more" ng-if="vm.books.busy"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
-    </div>
+<div class="recommend-more-page">
+    <book-row books=vm.books.list scroll=vm.book></book-row>
 </div>

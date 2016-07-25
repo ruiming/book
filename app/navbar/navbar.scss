@@ -1,0 +1,29 @@
+.bookist-nav {
+  background-color: #ffffff;
+  margin: 0;
+  border-width: 0;
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1030;
+  ul {
+    margin: 0;
+    width: 100%;
+    padding-left: 0;
+    li {
+      text-align: center;
+      float: left;
+      width: 25%;
+      a {
+        padding: 5px;
+        i:before {
+          height: 19px;
+        }
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

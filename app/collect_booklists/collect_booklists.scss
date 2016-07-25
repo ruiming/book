@@ -1,5 +1,6 @@
-.collect-box {
-  .booklists-box-top {
+.collect-booklists-page,
+.collect-books-page {
+  .switch {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,11 +17,7 @@
       padding: 10px;
     }
   }
-  .booklists-box-content,
-  .books {
+  .booklists-row {
     margin-top: 40px;
-  }
-  .books .title i {
-    float: right;
   }
 }

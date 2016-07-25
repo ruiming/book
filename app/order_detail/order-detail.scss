@@ -1,0 +1,163 @@
+.order-detail-page {
+  .order-group {
+    .order-list {
+      padding: 0;
+    }
+    .order-list-one {
+      background-color: $bgColor;
+      margin-bottom: 20px;
+      overflow: hidden;
+      .order-title,
+      .order-meta,
+      .order-books,
+      .order-detail{
+        overflow: hidden;
+        display: block;
+        border-bottom: 1px solid #EEE;
+        background-color: #ffffff;
+      }
+      .order-books,
+      .order-detail,
+      .order-receipt {
+        margin-bottom: 10px;
+      }
+      .order-title {
+        padding: 10px;
+        .order-head {
+          float: left;
+        }
+        .order-status {
+          float: right;
+          color: #b12704;
+        }
+      }
+      a {
+        display: block;
+        overflow: hidden;
+      }
+      .order-books {
+        padding: 0;
+        .order-book {
+          background-color: #ffffff;
+          overflow: hidden;
+          display: block;
+          padding: 10px;
+          position: relative;
+          img {
+            height: 120px;
+            float: left;
+            margin-right: 10px;
+          }
+          p,
+          small{
+            display: block;
+          }
+          p {
+            font-weight: 700;
+          }
+          .count {
+            float: right;
+            font-size: 13px;
+            color: #636363;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+          }
+          .order-img {
+            float: left;
+          }
+          .order-comment {
+            overflow: hidden;
+            padding: 0;
+            display: block;
+            textarea {
+              float: left;
+              padding: 0;
+              border: 0;
+              box-shadow: none;
+              overflow: auto;
+              resize: none;
+              height: 150px;
+              outline: 0;
+            }
+          }
+          .order-star{
+            display: block;
+            overflow: hidden;
+            border-top: 1px solid #F7F7F7;
+            border-bottom: 1px solid #F7F7F7;
+            padding: 10px;
+            .star {
+              float: right;
+            }
+          }
+        }
+      }
+      .order-comments {
+        .order-book {
+          padding: 0;
+          margin-bottom: 10px;
+        }
+        .order-img,
+        .order-comment{
+          padding: 10px !important;
+        }
+      }
+      .order-meta {
+        .order-meta-price {
+          padding: 8px;
+          display: block;
+          float: left;
+          span {
+            padding-left: 10px;
+            display: block;
+            margin: 5px 0;
+          }
+        }
+        button,
+        a {
+          border-radius: 0;
+          float: right;
+          padding: 6px 12px;
+          margin: 6px;
+          font-size: 14px;
+        }
+      }
+      .order-meta-fix-bottom {
+        border-top: 1px solid #E7E7E7;
+        background-color: #fff;
+        position: fixed;
+        z-index: 9999;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      .order-process {
+        overflow: hidden;
+        list-style-type: disc;
+        padding: 10px 10px 10px 35px;
+        li {
+          padding: 5px 0;
+          color: #03A9F4;
+          &:last-child {
+            color: #B12704;
+          }
+          span {
+            &:first-child {
+              float: left;
+            }
+            &:last-child {
+              float: right;
+            }
+          }
+        }
+      }
+      .order-receipt-meta {
+        background-color: #ffffff;
+        overflow: hidden;
+        list-style-type: disc;
+        padding: 10px 10px 10px 20px;
+      }
+    }
+  }
+}

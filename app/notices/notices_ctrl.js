@@ -7,7 +7,7 @@
 
     NoticesCtrl.$inject = ['userservice'];
 
-    function userservice() {
+    function NoticesCtrl(userservice) {
         let vm = this;
 
         getUserNotices();

@@ -1,38 +1,40 @@
-<div class="order-group">
-    <form name="commentForm" class="order-list-one">
-        <div class="order-title">
-            <span class="order-head">订单详细信息</span>
-            <span class="order-status">建议您把书看完再来评价书籍哦~</span>
-        </div>
-        <ul class="order-books order-comments">
-            <li class="order-book" ng-repeat="z in vm.order.carts">
-                <a ui-sref="book({isbn: z.book.isbn})" class="order-img">
-                    <img ng-src="{{z.book.image}}">
-                </a>
-                <div class="order-comment">
+<div class="order-comments-page">
+    <div class="order-group">
+        <form name="commentForm" class="order-list-one">
+            <div class="order-title">
+                <span class="order-head">订单详细信息</span>
+                <span class="order-status">建议您把书看完再来评价书籍哦~</span>
+            </div>
+            <ul class="order-books order-comments">
+                <li class="order-book" ng-repeat="z in vm.order.carts">
+                    <a ui-sref="book({isbn: z.book.isbn})" class="order-img">
+                        <img ng-src="{{z.book.image}}">
+                    </a>
+                    <div class="order-comment">
                     <textarea class="form-control"
                               ng-model="z.book.content"
                               rows="3"
                               placeholder="认真评价可以获得积分哦~" required></textarea>
-                </div>
-                <div class="order-star">
-                    <comment-star title="书籍评分" stars="z.book.star"></comment-star>
-                </div>
-            </li>
-        </ul>
-        <div class="platform-comment">
-            <div class="platform-comment-title">
-                <span class="order-head">平台评分</span>
-            </div>
-            <ul class="platform-comment-items">
-                <li><comment-star title="购书体验" stars="vm.stars1"></comment-star></li>
-                <li><comment-star title="物流服务" stars="vm.stars2"></comment-star></li>
-                <li><comment-star title="服务态度" stars="vm.stars３"></comment-star></li>
+                    </div>
+                    <div class="order-star">
+                        <comment-star title="书籍评分" stars="z.book.star"></comment-star>
+                    </div>
+                </li>
             </ul>
-        </div>
-        <div class="order-comment-fix-bottom">
-            <button class="btn btn-danger" ng-click="vm.comment()" ng-if="!vm.WAIT_COMMENT">发表评价</button>
-            <button class="btn btn-danger" disabled ng-if="vm.WAIT_COMMENT"></button>
-        </div>
-    </form>
+            <div class="platform-comment">
+                <div class="platform-comment-title">
+                    <span class="order-head">平台评分</span>
+                </div>
+                <ul class="platform-comment-items">
+                    <li><comment-star title="购书体验" stars="vm.stars1"></comment-star></li>
+                    <li><comment-star title="物流服务" stars="vm.stars2"></comment-star></li>
+                    <li><comment-star title="服务态度" stars="vm.stars３"></comment-star></li>
+                </ul>
+            </div>
+            <div class="order-comment-fix-bottom">
+                <button class="btn btn-danger" ng-click="vm.comment()" ng-if="!vm.WAIT_COMMENT">发表评价</button>
+                <button class="btn btn-danger" disabled ng-if="vm.WAIT_COMMENT"></button>
+            </div>
+        </form>
+    </div>
 </div>

@@ -1,24 +1,9 @@
-<div class="booklists-box collect-box">
-    <div class="booklists-box-top btn-group">
-        <a class="btn btn-default" ui-sref="booklistsCollect">
-            书单收藏夹
-        </a>
-        <a class="btn btn-default" ui-sref="booksCollect">
-            书籍收藏夹
-        </a>
-    </div>
+<div class="collect-books-page">
+    <div ng-include="'collect_booklists/collect_switch_part.html'"></div>
     <div class="books">
         <div class="empty-alert" ng-if="vm.books.length==0">
             <p>您还没有收藏书籍</p>
         </div>
-        <div class="books-content" ng-if="vm.books.length!=0">
-            <div class="books-content-list" ng-repeat="book in vm.books">
-                <a ui-sref="book({isbn: book.isbn})"><img ng-src="{{book.image}}"></a>
-                <span class="title">&nbsp;{{book.title}}<i class="mark-book-remove fa fa-trash-o" ng-click="vm.remove(book, $index)"></i></span>
-                <uib-rating class="star red-star wechat-fix" ng-model="book.star" max="5" read-only="true" state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
-                <span class="rate">&nbsp;{{book.rate | number:1}}</span>
-                <blockquote class="reason" ng-bind-html="book.reason"></blockquote>
-            </div>
-        </div>
+        <book-row books=vm.books></book-row>
     </div>
 </div>

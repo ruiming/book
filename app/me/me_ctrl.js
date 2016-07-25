@@ -7,7 +7,7 @@
 
     MeCtrl.$inject = ['userservice'];
 
-    function MeCtrl() {
+    function MeCtrl(userservice) {
         let vm = this;
         getUserInfo();
 

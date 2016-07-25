@@ -5,7 +5,7 @@
             <a ui-sref="tags">查看全部标签 > </a>
         </div>
         <div class="tags-list">
-            <a class="btn btn-default" class="tag"
+            <a class="btn btn-default tag"
                ng-repeat="tag in vm.tags track by $index"
                ui-sref="tagBooklists({tag: tag})">
                 {{tag}}
@@ -13,5 +13,4 @@
         </div>
     </div>
     <div ng-include="'booklists/booklists_slides_part.html'"></div>
-
 </div>

@@ -1,0 +1,134 @@
+.user-comments-page {
+  .comments {
+    margin-bottom: 0;
+    overflow: hidden;
+    padding-left: 0;
+    li {
+      &:last-child {
+        margin-bottom: 0;
+      }
+      p {
+        word-break: break-all;
+        margin-bottom: 0;
+        margin-right: 55px;
+      }
+      overflow: hidden;
+      padding: 0 10px;
+      margin-bottom: 20px;
+      background-color: #fff;
+      .comment-title {
+        padding: 10px 5px;
+        overflow: hidden;
+        font-size: 15px;
+        font-weight: 700;
+        .comment-action {
+          width: 55px;
+          overflow: hidden;
+          display: block;
+          float: right;
+          i {
+            float: right;
+            &:first-child {
+              padding-left: 20px;
+            }
+          }
+        }
+      }
+      .comment-book {
+        overflow: hidden;
+        display: block;
+        border-top: 1px solid #EFEFEF;
+        border-bottom: 1px solid #EFEFEF;
+        a {
+          display: block;
+          overflow: hidden;
+          float: left;
+          padding: 10px 5px;
+          img {
+            height: 100px;
+            float: left;
+            margin-right: 10px;
+          }
+        }
+      }
+      .comment-content {
+        overflow: hidden;
+        padding: 10px 0;
+        display: block;
+        textarea {
+          float: left;
+          padding: 0;
+          border: 0;
+          box-shadow: none;
+          overflow: auto;
+          resize: none;
+          height: 120px;
+          outline: 0;
+          background-color: #ffffff;
+        }
+      }
+      .comment-star {
+        padding: 10px;
+        display: block;
+        overflow: hidden;
+        width: 100%;
+        .comment-down,
+        .comment-up {
+          padding-right: 10px;
+          &:before {
+            padding-right: 5px;
+          }
+        }
+        span {
+          float: right;
+        }
+        button {
+          position: absolute;
+          right: 0;
+          margin-top: -10px;
+          height: 40px;
+          border: 0;
+          border-radius: 0;
+        }
+        &-left {
+          margin-right: 80px!important;
+        }
+      }
+    }
+  }
+  .modal-dialog {
+    opacity: 1;
+    margin: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #FFF;
+    z-index: 1070;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    transition: opacity .15s linear;
+    width: 100%;
+    position: fixed;
+    .modal-header {
+      padding: 15px;
+      border-bottom: 1px solid #e5e5e5;
+      .modal-title {
+        margin: 0;
+        line-height: 1.42857143;
+        font-size: 18px;
+      }
+      .modal-body {
+        position: relative;
+        padding: 15px;
+      }
+      .modal-footer {
+        padding: 15px;
+        text-align: right;
+        border-top: 1px solid #e5e5e5;
+        button {
+          margin-bottom: 0;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}

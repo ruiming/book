@@ -206,7 +206,8 @@
                 views: {
                     'main': {
                         controller: 'OrdersCommentedCtrl',
-                        templateUrl: 'orders_commented/orders_commented_tpl.html'
+                        templateUrl: 'orders_commented/orders_commented_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -235,7 +236,8 @@
                 views: {
                     'main': {
                         controller: 'CollectBooksCtrl',
-                        templateUrl: 'collect_books/collect_books_tpl.html'
+                        templateUrl: 'collect_books/collect_books_tpl.html',
+                        controllerAs: 'vm'
                     }
                 }
             })

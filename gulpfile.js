@@ -103,7 +103,7 @@ gulp.task('img', function(cb){
 
 // 编译sass得到bookist.css
 gulp.task('sass', function(cb){
-    gulp.src(['static/scss/*.scss', 'app/**/*.scss'])
+    gulp.src(['app/*.scss', 'app/**/*.scss'])
         .pipe(plumber())
         .pipe(concat('bookist.scss'))
         .pipe(sass())
@@ -130,7 +130,7 @@ gulp.task('move', function(){
                 .pipe(gulp.dest('backend/app/templates/'));
 });
 
-gulp.watch(['static/scss/*.scss, app/**/*.scss'],['sass']);                                      // sass自动部署
+gulp.watch(['app/*.scss', 'app/**/*.scss'], ['sass']);
 gulp.watch(['app/**/*.js'], ['js']);                                            // angularJS自动部署
 gulp.watch('static/img/*.*', ['img']);                                          // 图片自动部署
 gulp.watch('app/**/*.html',['templates:dist']);                                 // 模板自动部署

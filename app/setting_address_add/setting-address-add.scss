@@ -1,0 +1,61 @@
+.setting {
+  z-index: 333;
+  background-color: #fff;
+  padding: 15px;
+  .address-list {
+    padding: 10px 0;
+    position: relative;
+    border-bottom: 1px solid #EEEEEE;
+    &:first-child {
+      padding-top: 0;
+    }
+    p {
+      margin-bottom: 5px;
+    }
+    small {
+      color: #777;
+    }
+    span {
+      position: absolute;
+      bottom: 10px;
+      right: 0;
+      border: 1px solid #F44336;
+      color: #F44336;
+      padding: 4px 8px;
+    }
+  }
+  textarea {
+    width: 100%;
+    border: {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 1px solid #0b97c4;
+    }
+    &,
+    &:hover,
+    &:active,
+    &:visited,
+    &:focus {
+      box-shadow: 0 0 0 0;
+    }
+    border-radius: 0;
+  }
+  .number {
+    float: right;
+    color: #777;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  .btn-group {
+    margin: 30px auto 10px;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    button {
+      float: right;
+      border-radius: 0 !important;
+      margin-left: 10px!important;
+    }
+  }
+}

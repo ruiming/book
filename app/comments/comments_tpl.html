@@ -1,36 +1,39 @@
-<div class="book-comments-all">
-    <div class="navbar navbar-default navbar-fixed-top">
-        <a class="navbar-brand">全部评论 - {{vm.title}}</a>
-    </div>
-    <div class="book-comments-list">
-        <div class="book-comments">
-            <div class="book-comment" ng-repeat="comment in vm.comments">
-                <div class="book-comment-origin">
-                    <img ng-src="{{comment.user.avatar}}">
-                    <span class="book-comment-origin">{{comment.user.username}}</span>
-                    <uib-rating class="star red-star"
-                                ng-model="comment.star"
-                                state-on="'fa fa-star'"
-                                state-off="'fa fa-star-o'"
-                                max="5" read-only="true"></uib-rating>
+<div class="comments-page">
+    <div class="book-comments-all">
+        <div class="navbar navbar-default navbar-fixed-top">
+            <a class="navbar-brand">全部评论 - {{vm.title}}</a>
+        </div>
+        <div class="book-comments-list">
+            <div class="book-comments">
+                <div class="book-comment" ng-repeat="comment in vm.comments">
+                    <div class="book-comment-origin">
+                        <img ng-src="{{comment.user.avatar}}">
+                        <span class="book-comment-origin">{{comment.user.username}}</span>
+                        <uib-rating class="star red-star"
+                                    ng-model="comment.star"
+                                    state-on="'fa fa-star'"
+                                    state-off="'fa fa-star-o'"
+                                    max="5" read-only="true"></uib-rating>
+                    </div>
+                    <p ng-bind-html="comment.content"></p>
+                    <div class="comment-meta">
+                        <p>{{comment.create_time*1000 | date:'yyyy-MM-dd HH:mm'}}</p>
+                        <i class="fa"
+                           ng-class={false:'fa-thumbs-o-down',true:'fa-thumbs-down'}[comment.down_already]
+                           ng-click="down(comment)">
+                            {{comment.down}}
+                        </i>
+                        <i class="fa"
+                           ng-class={false:'fa-thumbs-o-up',true:'fa-thumbs-up'}[comment.up_already]
+                           ng-click="up(comment)">
+                            {{comment.up}}
+                        </i>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
-                <p ng-bind-html="comment.content"></p>
-                <div class="comment-meta">
-                    <p>{{comment.create_time*1000 | date:'yyyy-MM-dd HH:mm'}}</p>
-                    <i class="fa"
-                       ng-class={false:'fa-thumbs-o-down',true:'fa-thumbs-down'}[comment.down_already]
-                       ng-click="down(comment)">
-                        {{comment.down}}
-                    </i>
-                    <i class="fa"
-                       ng-class={false:'fa-thumbs-o-up',true:'fa-thumbs-up'}[comment.up_already]
-                       ng-click="up(comment)">
-                        {{comment.up}}
-                    </i>
-                </div>
-                <div class="clearfix"></div>
             </div>
         </div>
     </div>
-</div>
 
+
+</div>

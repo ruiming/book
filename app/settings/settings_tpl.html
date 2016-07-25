@@ -1,16 +1,19 @@
-<div class="user-items">
-    <a class="user-item">
-        <i class="fa fa-folder user-item-gravatar"><span>头像</span></i>
-        <img ng-src="{{vm.user.avatar}}">
-    </a>
-    <a class="user-item"><i class="fa fa-comments"><span>昵称</span></i>
-        <span>{{vm.user.username}}</span>
-    </a>
-</div>
-<div class="user-items">
-    <a class="user-item"><i class="fa fa-cloud"><span>性别</span></i>
-        <i class="fa fa-mars" aria-hidden="true" ng-if="vm.user.sex === 1"></i>
-        <i class="fa fa-venus" aria-hidden="true" ng-if="vm.user.sex === 2"></i>
-    </a>
-    <a ui-sref="address" class="user-item"><i class="fa fa-commenting"><span>我的地址</span></i></a>
+<div class="settings-page">
+    <div class="user-items">
+        <a class="user-item">
+            <i class="fa fa-folder user-item-gravatar"><span>头像</span></i>
+            <img ng-src="{{vm.user.avatar}}">
+        </a>
+        <a class="user-item"><i class="fa fa-comments"><span>昵称</span></i>
+            <span>{{vm.user.username}}</span>
+        </a>
+    </div>
+    <div class="user-items">
+        <a class="user-item"><i class="fa fa-cloud"><span>性别</span></i>
+            <i class="fa fa-mars" aria-hidden="true" ng-if="vm.user.sex === 1"></i>
+            <i class="fa fa-venus" aria-hidden="true" ng-if="vm.user.sex === 2"></i>
+        </a>
+        <a ui-sref="address" class="user-item"><i class="fa fa-commenting"><span>我的地址</span></i></a>
+    </div>
+
 </div>

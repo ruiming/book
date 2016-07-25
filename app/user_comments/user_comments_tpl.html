@@ -1,17 +1,18 @@
-<ul class="comments">
-    <li ng-repeat="comment in vm.comments track by $index">
-        <div class="comment-title">
-            <div class="comment-action">
-                <i class="fa fa-trash-o" ng-click="vm.deleteBox=true"></i>
-                <i class="fa fa-pencil-square-o" ng-click="vm.focus(comment)"></i>
+<div class="user-comments-page">
+    <ul class="comments">
+        <li ng-repeat="comment in vm.comments track by $index">
+            <div class="comment-title">
+                <div class="comment-action">
+                    <i class="fa fa-trash-o" ng-click="vm.deleteBox=true"></i>
+                    <i class="fa fa-pencil-square-o" ng-click="vm.focus(comment)"></i>
+                </div>
+                <p>{{comment.book.title}}</p>
             </div>
-            <p>{{comment.book.title}}</p>
-        </div>
-        <form name="commentForm" class="comment-book">
-            <a ui-sref="book({isbn:comment.book.isbn})">
-                <img ng-src="{{comment.book.image}}">
-            </a>
-            <div class="comment-content">
+            <form name="commentForm" class="comment-book">
+                <a ui-sref="book({isbn:comment.book.isbn})">
+                    <img ng-src="{{comment.book.image}}">
+                </a>
+                <div class="comment-content">
                 <textarea class="form-control"
                           rows="3"
                           name="content"
@@ -20,36 +21,37 @@
                           ng-bind-html="comment.content"
                           ng-readonly="comment.readonly"
                           focus-me="{{comment.edit}}"></textarea>
+                </div>
+                <div class="comment-star">
+                    <i class="fa fa-thumbs-o-up comment-up">{{comment.up}}</i>
+                    <i class="fa fa-thumbs-o-down comment-down">{{comment.down}}</i>
+                    <button ng-if="comment.edit" ng-disabled="vm.WAIT_OPERATING" class="btn btn-success"
+                            ng-click="vm.submit(comment)">确认修改</button>
+                    <uib-rating ng-model="comment.star"
+                                max="5"
+                                read-only="!comment.edit"
+                                class="red-star star"
+                                ng-class="{true: 'comment-star-left'}[comment.edit]"
+                                state-on="'fa fa-star'"
+                                state-off="'fa fa-star-o'"></uib-rating>
+                </div>
+            </form>
+            <div ng-if="vm.deleteBox" class="modal-dialog">
+                <div class="modal-header">
+                    <h4 class="modal-title">你确认要删除评论吗?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>巴拉拉巴拉拉把啦啦啦啦啦啦把啦啦啦啦啦啦吧啦啦啦啦啦巴拉巴拉巴拉吧啦啦啦啦啦。</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary"
+                            ng-disabled="vm.WAIT_OPERATING"
+                            ng-click="vm.delete(comment)">确认</button>
+                    <button class="btn btn-warning"
+                            ng-click="vm.deleteBox=false">取消</button>
+                </div>
             </div>
-            <div class="comment-star">
-                <i class="fa fa-thumbs-o-up comment-up">{{comment.up}}</i>
-                <i class="fa fa-thumbs-o-down comment-down">{{comment.down}}</i>
-                <button ng-if="comment.edit" ng-disabled="vm.WAIT_OPERATING" class="btn btn-success"
-                        ng-click="vm.submit(comment)">确认修改</button>
-                <uib-rating ng-model="comment.star"
-                            max="5"
-                            read-only="!comment.edit"
-                            class="red-star star"
-                            ng-class="{true: 'comment-star-left'}[comment.edit]"
-                            state-on="'fa fa-star'"
-                            state-off="'fa fa-star-o'"></uib-rating>
-            </div>
-        </form>
-        <div ng-if="vm.deleteBox" class="modal-dialog">
-            <div class="modal-header">
-                <h4 class="modal-title">你确认要删除评论吗?</h4>
-            </div>
-            <div class="modal-body">
-                <p>巴拉拉巴拉拉把啦啦啦啦啦啦把啦啦啦啦啦啦吧啦啦啦啦啦巴拉巴拉巴拉吧啦啦啦啦啦。</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary"
-                        ng-disabled="vm.WAIT_OPERATING"
-                        ng-click="vm.delete(comment)">确认</button>
-                <button class="btn btn-warning"
-                        ng-click="vm.deleteBox=false">取消</button>
-            </div>
-        </div>
-        <div ng-if="vm.deleteBox" class="modal-backdrop fade" style="z-index: 1040;"></div>
-    </li>
-</ul>
+            <div ng-if="vm.deleteBox" class="modal-backdrop fade" style="z-index: 1040;"></div>
+        </li>
+    </ul>
+</div>

@@ -3,15 +3,19 @@
 
     angular
         .module('index')
-        .controller('CollectBookListsCtrl', function(userservice){
+        .controller('CollectBookListsCtrl', CollectBookListsCtrl);
 
-            getUserCollect();
+    CollectBookListsCtrl.$inject = ['userservice'];
 
-            function getUserCollect() {
-                userservice.getUserCollect('booklist').then((response) => {
-                    vm.booklists = response;
-                });
-            }
-        });
+    function CollectBookListsCtrl(userservice) {
+        let vm = this;
 
+        getUserCollect();
+
+        function getUserCollect() {
+            userservice.getUserCollect('booklist').then(response => {
+                vm.booklists = response;
+            });
+        }
+    }
 })();

@@ -3,31 +3,32 @@
 
     angular
         .module('index')
-        .controller('BooklistsCtrl', function ($http, booklistservice, tagservice) {
-            let vm = this;
-            vm.booklists = new booklistservice.getBooklists('all');
+        .controller('BooklistsCtrl', BooklistsCtrl);
 
-            getHotTags();
+    BooklistsCtrl.$inject = ['booklistservice', 'tagservice'];
 
-            vm.timeOrder = getBooklistOrderByTime;
-            vm.collectOrder = getBooklistOrderByCollect;
+    function BooklistsCtrl(booklistservice, tagservice) {
+        let vm = this;
+        vm.timeOrder = getBooklistOrderByTime;
+        vm.collectOrder = getBooklistOrderByCollect;
+        vm.booklists = new booklistservice.getBooklists('all');
 
-            function getHotTags() {
-                tagservice.getHotTags().then(response => {
-                    vm.tags = response;
-                });
-            }
+        getHotTags();
 
-            function getBooklistOrderByTime() {
-                vm.booklists = new booklistservice.getBooklists('time');
-                vm.booklists.nextPage();
-            }
+        function getHotTags() {
+            tagservice.getHotTags().then(response => {
+                vm.tags = response;
+            });
+        }
 
-            function getBooklistOrderByCollect() {
-                vm.booklists = new booklistservice.getBooklists('collect');
-                vm.booklists.nextPage();
-            }
+        function getBooklistOrderByTime() {
+            vm.booklists = new booklistservice.getBooklists('time');
+            vm.booklists.nextPage();
+        }
 
-
-        });
+        function getBooklistOrderByCollect() {
+            vm.booklists = new booklistservice.getBooklists('collect');
+            vm.booklists.nextPage();
+        }
+    }
 })();

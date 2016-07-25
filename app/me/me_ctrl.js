@@ -3,16 +3,18 @@
 
     angular
         .module('index')
-        .controller('MeCtrl',function(userservice) {
-            let vm = this;
-            getUserInfo();
+        .controller('MeCtrl', MeCtrl);
 
-            function getUserInfo() {
-                userservice.getUserInfo().then(response => {
-                    vm.user = response;
-                });
-            }
+    MeCtrl.$inject = ['userservice'];
 
-        });
+    function MeCtrl() {
+        let vm = this;
+        getUserInfo();
 
+        function getUserInfo() {
+            userservice.getUserInfo().then(response => {
+                vm.user = response;
+            });
+        }
+    }
 })();

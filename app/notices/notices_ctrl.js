@@ -3,15 +3,19 @@
 
     angular
         .module('index')
-        .controller('NoticesCtrl', function(userservice){
+        .controller('NoticesCtrl', NoticesCtrl);
 
-            getUserNotices();
+    NoticesCtrl.$inject = ['userservice'];
 
-            function getUserNotices() {
-                userservice.getUserNotices().then(response => {
-                    vm.notices = response;
-                });
-            }
+    function userservice() {
+        let vm = this;
 
-        });
+        getUserNotices();
+
+        function getUserNotices() {
+            userservice.getUserNotices().then(response => {
+                vm.notices = response;
+            });
+        }
+    }
 })();

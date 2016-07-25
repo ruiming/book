@@ -3,31 +3,35 @@
 
     angular
         .module('index')
-        .controller('AddressCtrl', function ($state, userservice) {
-            let vm = this;
-            vm.WAIT_LOADING = true;
+        .controller('AddressCtrl', AddressCtrl);
 
-            vm.edit = edit;
-            vm.back = back;
+    AddressCtrl.$inject = ['$state', 'userservice'];
 
-            getUserAddress();
+    function AddressCtrl($state, userservice) {
+        let vm = this;
+        vm.WAIT_LOADING = true;
 
-            function getUserAddress() {
-                userservice.getUserAddress().then(response => {
-                    vm.address = response;
-                    vm.WAIT_LOADING = false;
-                });
-            }
+        vm.edit = edit;
+        vm.back = back;
 
-            function edit() {
-                vm.edit = function(){
-                    userservice.setAddress(this.x);
-                    $state.go('AddressAdd');
-                };
-            }
+        getUserAddress();
 
-            function back() {
-                history.back();
-            }
-        });
+        function getUserAddress() {
+            userservice.getUserAddress().then(response => {
+                vm.address = response;
+                vm.WAIT_LOADING = false;
+            });
+        }
+
+        function edit() {
+            vm.edit = function(){
+                userservice.setAddress(this.x);
+                $state.go('AddressAdd');
+            };
+        }
+
+        function back() {
+            history.back();
+        }
+    }
 })();

@@ -3,11 +3,13 @@
 
     angular
         .module('index')
-        .controller('RecommendMoreCtrl',function(bookservice) {
+        .controller('RecommendMoreCtrl', RecommendMoreCtrl);
 
-            let vm = this;
-            vm.books = new bookservice.getBooks();
-            vm.books.nextPage();
+    RecommendMoreCtrl.$inject = ['bookservice'];
 
-        });
+    function RecommendMoreCtrl(bookservice) {
+        let vm = this;
+        vm.books = new bookservice.getBooks();
+        vm.books.nextPage();
+    }
 })();

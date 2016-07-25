@@ -3,35 +3,37 @@
 
     angular
         .module('index')
-        .controller('SuggestCtrl', function(userservice, $timeout){
+        .controller('SuggestCtrl', SuggestCtrl);
 
-            let vm = this;
-            
-            vm.required = true;
-            vm.WAIT_OPERATING = false;
+    SuggestCtrl.$inject = ['userservice', '$timeout'];
 
-            getUserInfo();
-            vm.post = post;
+    function SuggestCtrl(userservice, $timeout){
+        let vm = this;
+        vm.required = true;
+        vm.WAIT_OPERATING = false;
 
-            function getUserInfo() {
-                userservice.getUserInfo().then(response => {
-                    vm.user = response;
-                });
+        vm.post = post;
+
+        getUserInfo();
+
+        function getUserInfo() {
+            userservice.getUserInfo().then(response => {
+                vm.user = response;
+            });
+        }
+
+        function post(){
+            if(this.suggestBox.suggestion.$invalid) {
+                return;
             }
-
-            function post(){
-                if(this.suggestBox.suggestion.$invalid) {
-                    return;
-                }
-                vm.WAIT_OPERATING = true;
-                userservice.postSuggestion(vm.suggestion).then(() => {
-                    notie.alert(1, '谢谢您的反馈！', 0.3);
-                    $timeout(() => {
-                        vm.WAIT_OPERATING = false;
-                        history.back();
-                    }, 300)
-                });
-            }
-
-        });
+            vm.WAIT_OPERATING = true;
+            userservice.postSuggestion(vm.suggestion).then(() => {
+                notie.alert(1, '谢谢您的反馈！', 0.3);
+                $timeout(() => {
+                    vm.WAIT_OPERATING = false;
+                    history.back();
+                }, 300)
+            });
+        }
+    }
 })();

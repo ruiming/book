@@ -3,34 +3,36 @@
 
     angular
         .module('index')
-        .controller('IndexCtrl',function($http, bookservice, booklistservice, slideservice) {
+        .controller('IndexCtrl', IndexCtrl);
 
-            var vm = this;
-            vm.myInterval = 5000;
-            vm.noWrapSlides = false;
-            vm.active = 0;
+    IndexCtrl.$inject = ['bookservice', 'booklistservice', 'slideservice'];
 
-            getPopularBooks();
-            getHotBooklists();
-            getSlides();
+    function IndexCtrl(bookservice, booklistservice, slideservice) {
+        var vm = this;
+        vm.myInterval = 5000;
+        vm.noWrapSlides = false;
+        vm.active = 0;
 
-            function getPopularBooks() {
-                bookservice.getPopularBooks().then(response => {
-                    vm.books = response;
-                });
-            }
+        getPopularBooks();
+        getHotBooklists();
+        getSlides();
 
-            function getHotBooklists() {
-                booklistservice.getHotBooklists().then(response => {
-                    vm.booklists = response;
-                });
-            }
+        function getPopularBooks() {
+            bookservice.getPopularBooks().then(response => {
+                vm.books = response;
+            });
+        }
 
-            function getSlides() {
-                slideservice.getSlides().then(response => {
-                    vm.slides = response;
-                });
-            }
+        function getHotBooklists() {
+            booklistservice.getHotBooklists().then(response => {
+                vm.booklists = response;
+            });
+        }
 
-        });
+        function getSlides() {
+            slideservice.getSlides().then(response => {
+                vm.slides = response;
+            });
+        }
+    }
 })();

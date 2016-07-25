@@ -3,14 +3,15 @@
 
     angular
         .module('index')
-        .controller('TagsCtrl', function(tagservice){
+        .controller('TagsCtrl', TagsCtrl);
 
-            let vm = this;
+    TagsCtrl.$inject = ['tagservice'];
 
-            tagservice.getAllTags().then(response => {
-                vm.allTags = response;
-            });
+    function TagsCtrl(tagservice) {
+        let vm = this;
 
+        tagservice.getAllTags().then(response => {
+            vm.allTags = response;
         });
-
+    }
 })();

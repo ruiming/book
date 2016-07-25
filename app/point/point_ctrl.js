@@ -3,17 +3,19 @@
 
     angular
         .module('index')
-        .controller('PointCtrl', function(userservice){
+        .controller('PointCtrl', PointCtrl);
 
-            let vm = this;
-            getUserPoint();
+    PointCtrl.$inject = ['userservice'];
 
-            function getUserPoint() {
-                userservice.getUserPoints().then(response => {
-                    vm.points = response;
-                });
-            }
+    function　PointCtrl(userservice) {
+        let vm = this;
 
-        });
+        getUserPoint();
 
+        function getUserPoint() {
+            userservice.getUserPoints().then(response => {
+                vm.points = response;
+            });
+        }
+    }
 })();

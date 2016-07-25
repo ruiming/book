@@ -8,11 +8,12 @@
             'ngAnimate',
             'ngSanitize',
             'ngTouch',
+            'angularPromiseButtons'
         ])
         .config(config);
 
-    config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider'];
-    function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider) {
+    config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider', 'angularPromiseButtonsProvider'];
+    function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider) {
         $httpProvider.defaults.transformResponse.push(response => {
             if(response.message !== void 0) {
                 notie.alert(1, response.message, 0.3);
@@ -42,6 +43,15 @@
         $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};
         // redirect to "/" if not match
         $urlRouterProvider.otherwise("/");
+
+        angularPromiseButtonsProvider.extendConfig({
+            spinnerTpl: '<i class="btn-spinner"></i>',
+            disableBtn: true,
+            btnLoadingClass: 'is-loading',
+            addClassToCurrentBtnOnly: false,
+            disableCurrentBtnOnly: false
+        });
+
 
         // routes
         $stateProvider

@@ -5,10 +5,12 @@
         .module('index')
         .factory('bookservice', bookservice);
 
-    bookservice.$inject = ['$http', 'commonservice'];
+    bookservice.$inject = ['$http', 'commonservice', '$q'];
 
-    function bookservice($http, commonservice) {
+    function bookservice($http, commonservice, $q) {
 
+        let popularBooks = null;
+        let bookDetail = [];
         let changeStars = commonservice.changeStars;
 
         return {
@@ -61,8 +63,18 @@
         }
 
         function getBookDetail(isbn) {
-            return $http.get(host + '/book?type=detail&isbn=' + isbn)
-                .then(response => response.data);
+            if(bookDetail[isbn] === void 0) {
+                return $http.get(host + '/book?type=detail&isbn=' + isbn)
+                    .then(response => {
+                        bookDetail[isbn] = response.data;
+                        return bookDetail[isbn]
+                    });
+            }
+            else {
+                let deferred = $q.defer();
+                deferred.resolve(bookDetail[isbn]);
+                return deferred.promise;
+            }
         }
 
         function getBookBelongs(isbn) {
@@ -96,13 +108,19 @@
                 })
         }
 
-        /**
-         * 获取热门书籍
-         * @returns {*|Promise.<TResult>}
-         */
         function getPopularBooks() {
-            return $http.get(host + '/pop_book')
-                .then(response => changeStars(response.data));
+            if(popularBooks === null) {
+                return $http.get(host + '/pop_book')
+                    .then(response => {
+                        popularBooks = changeStars(response.data);
+                        return popularBooks;
+                    });
+            }
+            else {
+                let deferred = $q.defer();
+                deferred.resolve(popularBooks);
+                return deferred.promise;
+            }
         }
 
     }

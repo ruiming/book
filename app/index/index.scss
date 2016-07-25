@@ -1,8 +1,12 @@
 .index-page {
+  .books,
+  .slides,
+  .booklists {
+    margin-bottom: 5px;
+  }
   .slides {
-    height: 160px;
     background-color: #ffffff;
-    margin-bottom: 20px;
+    height: 160px;
     img {
       min-height: 160px !important;
       width: 100%;
@@ -20,7 +24,6 @@
     }
   }
   .books {
-    margin-bottom: 14px;
     background-color: #ffffff;
     .books-header {
       @extend .header;

@@ -5,9 +5,11 @@
         .module('index')
         .factory('booklistservice', booklistservice);
 
-    booklistservice.$inject = ['$http'];
+    booklistservice.$inject = ['$http', '$q'];
 
-    function booklistservice($http) {
+    function booklistservice($http, $q) {
+        let booklist = [];
+        let deferred = $q.defer();
 
         return {
             collectBooklist: collectBooklist,
@@ -24,8 +26,18 @@
         }
 
         function getBooklistDetail(id) {
-            return $http.get(host + '/booklist?id=' + id)
-                .then(response => response.data)
+            if(booklist[id] === void 0) {
+                return $http.get(host + '/booklist?id=' + id)
+                    .then(response => {
+                        booklist[id] = response.data;
+                        return booklist[id];
+                    })
+            }
+            else {
+                console.log(booklist[id].collect_already);
+                deferred.resolve(booklist[id]);
+                return deferred.promise;
+            }
         }
 
         function getHotBooklists() {

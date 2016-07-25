@@ -11,10 +11,7 @@
 
         let vm = this;
         vm.more = false;            // 默认不加载更多书籍信息介绍
-        vm.busy = false;            // 页面加载动画Loading
         vm.wait = false;            // 发表评论wait
-        vm.wait2 = false;           // 收藏图书wait
-        vm.wait3 = false;           // 加入购物车wait
         vm.required = true;         // 必填
         vm.star = 5;                // 默认星星数
 
@@ -42,11 +39,11 @@
         });
 
         function addCart(){
-            cartservice.addCart($stateParams.isbn);
+            return cartservice.addCart($stateParams.isbn);
         }
 
         function collect() {
-            bookservice.collectBook($stateParams.isbn).then(() => {
+            return bookservice.collectBook($stateParams.isbn).then(() => {
                 vm.book.collect_already = !vm.book.collect_already;
             })
         }

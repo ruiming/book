@@ -10,8 +10,6 @@
     function IndexCtrl(bookservice, booklistservice, slideservice) {
         var vm = this;
         vm.myInterval = 5000;
-        vm.noWrapSlides = false;
-        vm.active = 0;
 
         getPopularBooks();
         getHotBooklists();

@@ -3,15 +3,6 @@
     <book-slide ng-init="vm.booksBought=[]" books=vm.booksBought></book-slide>
 </div>
 <div class="booklists-box" ng-if="vm.booklists.length != 0">
-    <span>被以下书单收录</span>
-    <div class="booklists-box-content">
-        <a ng-repeat="booklist in vm.booklists" ui-sref="booklist({id: booklist.id})">
-            <img ng-src="{{booklist.image}}">
-            <span class="title">{{booklist.title}}</span>
-            <span class="collect">{{booklist.collect}}人收藏</span>
-            <div class="booklist-tag">
-                <div class="tag" ng-repeat="tag in booklist.tags">{{tag}}</div>
-            </div>
-        </a>
-    </div>
+    <span style="padding:0 10px">被以下书单收录</span>
+    <booklist-row booklists=vm.booklists></booklist-row>
 </div>

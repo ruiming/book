@@ -5,17 +5,32 @@
         .module('index')
         .factory('slideservice', slideservice);
 
-    slideservice.$inject = ['$http'];
+    slideservice.$inject = ['$http', '$q'];
 
-    function slideservice($http) {
+    function slideservice($http, $q) {
+        let slides = null;
+        let deferred = $q.defer();
 
         return {
             getSlides: getSlides
         };
 
+        /**
+         * 获取活动轮播
+         * @returns {*}
+         */
         function getSlides() {
-            return $http.get(host + '/slides')
-                .then(response => response.data);
+            if(slides === null) {
+                return $http.get(host + '/slides')
+                    .then(response => {
+                        slides = response.data;
+                        return slides;
+                    });
+            }
+            else {
+                deferred.resolve(slides);
+                return deferred.promise;
+            }
         }
     }
 })();

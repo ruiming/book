@@ -35,6 +35,7 @@ gulp.task('angular', function(cb){
             'bower_components/angular-animate/angular-animate.min.js',
             'bower_components/angular-touch/angular-touch.min.js',
             'bower_components/angular-sanitize/angular-sanitize.min.js',
+            'bower_components/angular-promise-buttons/dist/angular-promise-buttons.js',
             'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())

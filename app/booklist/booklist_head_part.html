@@ -4,14 +4,12 @@
     <p class="booklist-intro">{{vm.booklist.description}}</p>
     <img class="avatar" ng-src="{{vm.booklist.author.avatar}}">
     <small>{{vm.booklist.author.name}} / {{vm.booklist.collect}}人收藏</small>
-    <button class="btn btn-blue" ng-click="vm.collect()" ng-if="!vm.booklist.collect_already&&!vm.wait">
-        <i class="fa fa-bookmark-o"></i> 收藏书单
-    </button>
-    <button class="btn btn-blue" ng-if="vm.wait" disabled>
-        <wait></wait>
-    </button>
-    <button class="btn btn-blue" ng-click="vm.collect()" ng-if="vm.booklist.collect_already&&!vm.wait">
-        <i class="fa fa-bookmark"></i> 已收藏
+    <button class="btn btn-blue"
+            ng-click="vm.collect()"
+            promise-btn>
+        <i class="fa fa-bookmark-o"></i>
+        <i ng-if="!vm.booklist.collect_already">收藏书单</i>
+        <i ng-if="vm.booklist.collect_already">已收藏</i>
     </button>
 </div>
 <div class="tags">

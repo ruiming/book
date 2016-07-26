@@ -40,7 +40,7 @@ class Book(db.Document):
     tag = db.ListField(db.EmbeddedDocumentField(BookTag))
     binding = db.StringField()
     rate = db.FloatField()
-    reason = db.StringField()
+    reason = db.StringField(require=True)
 
     class NotBookInstance(Exception):
         pass

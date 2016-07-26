@@ -18,7 +18,7 @@
             if(response.message !== void 0) {
                 notie.alert(1, response.message, 0.3);
             }
-            if(angular.isUndefined(response.data)&& response.status === 'success') {
+            if(angular.isDefined(response.data)&& response.status === 'success') {
                 response = response.data;
                 return response;
             }

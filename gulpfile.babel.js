@@ -49,7 +49,7 @@ gulp.task('angular', function(cb){
 // 打包压缩自己写的angular路由，控制器，指令文件
 // 该文件需要维护，合并但不压缩
 gulp.task('js', function(cb){
-    gulp.src(['app/**/*.js'])
+    gulp.src(['app/**/*.js', 'app/module/**/*.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
         .pipe(eslint())
@@ -62,7 +62,7 @@ gulp.task('js', function(cb){
 
 // 打包视图
 gulp.task('templates:dist', function(cb) {
-    gulp.src('app/**/*.html')
+    gulp.src('app/module/**/*.html')
         .pipe(minifyHtml({empty: true, quotes: true}))
         .pipe(ngTemplate({
             moduleName: 'index',
@@ -105,7 +105,7 @@ gulp.task('img', function(cb){
 
 // 编译sass得到bookist.css
 gulp.task('sass', function(cb){
-    gulp.src(['app/*.scss', 'app/**/*.scss'])
+    gulp.src(['app/*.scss', 'app/**/*.scss', 'app/module/**/*.scss'])
         .pipe(plumber())
         .pipe(concat('bookist.scss'))
         .pipe(sass())
@@ -132,10 +132,10 @@ gulp.task('move', function(){
                 .pipe(gulp.dest('backend/app/templates/'));
 });
 
-gulp.watch(['app/*.scss', 'app/**/*.scss'], ['sass']);
-gulp.watch(['app/**/*.js'], ['js']);                                            // angularJS自动部署
+gulp.watch(['app/*.scss', 'app/module/**/*.scss'], ['sass']);
+gulp.watch(['app/**/*.js', 'app/module/**/*.js'], ['js']);                      // angularJS自动部署
 gulp.watch('static/img/*.*', ['img']);                                          // 图片自动部署
-gulp.watch('app/**/*.html',['templates:dist']);                                 // 模板自动部署
+gulp.watch('app/module/**/*.html',['templates:dist']);                          // 模板自动部署
 
 gulp.task('product',function(cb){                                               // 生产环境部署
     runSequence('together','move',cb)

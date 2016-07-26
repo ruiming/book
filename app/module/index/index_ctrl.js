@@ -5,9 +5,9 @@
         .module('index')
         .controller('IndexCtrl', IndexCtrl);
 
-    IndexCtrl.$inject = ['bookservice', 'booklistservice', 'slideservice'];
+    IndexCtrl.$inject = ['bookservice', 'booklistservice', 'slideservice', '$log'];
 
-    function IndexCtrl(bookservice, booklistservice, slideservice) {
+    function IndexCtrl(bookservice, booklistservice, slideservice, $log) {
         var vm = this;
         vm.myInterval = 5000;
 
@@ -30,6 +30,7 @@
         function getSlides() {
             slideservice.getSlides().then(response => {
                 vm.slides = response;
+                $log.log(response);
             });
         }
     }

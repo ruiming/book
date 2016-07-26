@@ -8,10 +8,10 @@
             <img ng-src="{{vm.user.avatar}}">
         </div>
         <form class="suggestion" name="vm.suggestBox">
-            <textarea class="form-control" name="suggestion"
-                      ng-model="vm.suggestion" ng-required="required"></textarea>
-            <button type="submit" class="btn btn-block btn-info"
-                    ng-click="vm.post()" ng-disabled="vm.WAIT_OPERATING">提交</button>
+            <textarea class="form-control" name="suggestion" required autofocus
+                      ng-model="vm.suggestion"></textarea>
+            <input type="submit" class="btn btn-block btn-info" promise-btn
+                    ng-click="vm.post()">
         </form>
     </div>
 </div>

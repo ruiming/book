@@ -7,10 +7,11 @@
             replace: true,
             scope: {
                 stars: '=',
-                title: '='
+                title: '@'
             },
             template:
                 `
+                    <div>
                     <span>{{title}}</span>
                     <uib-rating ng-model="stars" max="5"
                                 read-only="false"
@@ -18,6 +19,7 @@
                                 on-leave="overStar = null"
                                 state-on="'fa fa-star'" state-off="'fa fa-star-o'">                         
                     </uib-rating>
+                    </div>
                 `
         }
     };

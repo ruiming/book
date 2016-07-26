@@ -12,8 +12,6 @@
         vm.deleteBox = false;
         vm.edit = false;
         vm.readonly = true;
-        vm.busy = true;
-        vm.WAIT_OPERATING = false;
 
         vm.focus = focus;
         vm.submit = submit;
@@ -24,6 +22,10 @@
         function getUserComments() {
             userservice.getUserComments().then(response => {
                 vm.comments = response;
+                for(let comment of vm.comments) {
+                    comment.readonly = true;
+                    comment.deleteBox = false;
+                }
             });
         }
 
@@ -33,21 +35,17 @@
         }
 
         function submit(comment){
-            if(comment.content === void 0) {
+            if(comment.content === void 0 || comment.content == '') {
                 return;
             }
-            vm.WAIT_OPERATING = true;
-            commentservice.editComment(comment.id, comment.star, comment.content).then(() => {
+            return commentservice.editComment(comment.id, comment.star, comment.content).then(() => {
                 comment.readonly = true;
                 comment.edit = false;
-                vm.WAIT_OPERATING = false;
             });
         }
 
         function deleteComment(comment){
-            vm.WAIT_OPERATING = true;
-            commentservice.deleteComment(comment.id).then(() => {
-                vm.WAIT_OPERATING = false;
+            return commentservice.deleteComment(comment.id).then(() => {
                 vm.comments.splice(vm.comments.indexOf(comment), 1);
                 vm.deleteBox = false;
             });

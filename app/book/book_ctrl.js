@@ -11,7 +11,6 @@
 
         let vm = this;
         vm.more = false;            // 默认不加载更多书籍信息介绍
-        vm.wait = false;            // 发表评论wait
         vm.required = true;         // 必填
         vm.star = 5;                // 默认星星数
 
@@ -68,7 +67,7 @@
 
         function postComment(){
             if(vm.content === void 0) return;
-            commentservice.postComment($stateParams.isbn, vm.star*2, vm.content).then((response) => {
+            return commentservice.postComment($stateParams.isbn, vm.star, vm.content).then((response) => {
                 vm.commentBox = false;
                 response.user = {
                     avatar: vm.user.avatar,

@@ -11,7 +11,6 @@
         let vm = this;
         vm.price = 0;
         vm.status_list = [];
-        vm.WAIT_OPERATING = false;
 
         vm.cancel = cancel;
         vm.receipt = receipt;
@@ -37,9 +36,7 @@
 
 
         function cancel(order) {
-            vm.WAIT_OPERATING = true;
-            orderservice.cancelOrder(order.id).then(() => {
-                vm.WAIT_OPERATING = false;
+            return orderservice.cancelOrder(order.id).then(() => {
                 vm.order.status = '已取消';
                 vm.status_list.push({
                     'status': '已取消',
@@ -49,9 +46,7 @@
         }
 
         function receipt(order) {
-            order.WAIT_OPERATING = true;
-            orderservice.receiptOrder(order.id).then(() => {
-                order.WAIT_OPERATING = true;
+            return orderservice.receiptOrder(order.id).then(() => {
                 vm.status_list.push({
                     'status': '已收货',
                     'time': Date.parse(new Date()) / 1000

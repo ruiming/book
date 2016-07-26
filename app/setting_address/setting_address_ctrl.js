@@ -9,7 +9,6 @@
 
     function AddressCtrl($state, userservice) {
         let vm = this;
-        vm.WAIT_LOADING = true;
 
         vm.edit = edit;
         vm.back = back;
@@ -19,13 +18,12 @@
         function getUserAddress() {
             userservice.getUserAddress().then(response => {
                 vm.address = response;
-                vm.WAIT_LOADING = false;
             });
         }
 
-        function edit() {
+        function edit(x) {
             vm.edit = function(){
-                userservice.setAddress(this.x);
+                userservice.setAddress(x);
                 $state.go('AddressAdd');
             };
         }

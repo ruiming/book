@@ -14,28 +14,19 @@
         </div>
         <div class="form-group">
             <label>宿舍地址</label>
-            <input type="text" name="dorm" ng-model="vm.dorm"
+            <input type="text" name="dorm" ng-model="vm.dormitory"
                    maxlength=30 class="form-control"
                    ng-required=true placeholder="宿舍位置">
         </div>
         <div class="btn-group">
-            <button class="btn btn-success" type="submit"
-                    ng-if="!vm.edit&&!vm.WAIT_ADD" ng-click="vm.addAddress()"
-                    ng-disabled="vm.WAIT_ADD">添加</button>
-            <button class="btn btn-success" disabled ng-if="vm.WAIT_ADD" style="width: 54px;" operating></button>
-            <button class="btn btn-success" type="submit"
-                    ng-if="vm.edit&&!vm.WAIT_UPDATE" ng-click="vm.updateAddress()"
-                    ng-disabled="vm.WAIT_UPDATE">修改</button>
-            <button class="btn btn-success" disabled ng-if="vm.WAIT_UPDATE" style="width: 54px;"  operating></button>
-            <button class="btn btn-danger" type="button"
-                    ng-if="vm.edit&&!vm.WAIT_DELETE" ng-click="vm.deleteAddress(id)"
-                    ng-disabled="vm.WAIT_UPDATE">删除</button>
-            <button class="btn btn-danger" disabled ng-if="vm.WAIT_DELETE" style="width: 54px;"  operating></button>
-            <button class="btn btn-info" type="submit"
-                    ng-if="vm.edit&&!vm.WAIT_RETURN" ng-click="vm.setDefaultAddress(id)"
-                    ng-disabled="vm.WAIT_RETURN">设置为默认地址</button>
-            <button class="btn btn-info" disabled
-                    ng-if="vm.WAIT_RETURN" style="width: 124px;"  operating></button>
+            <button class="btn btn-success" promise-btn
+                    ng-if="!vm.edit" ng-click="vm.addAddress()">添加</button>
+            <button class="btn btn-success" promise-btn
+                    ng-if="vm.edit" ng-click="vm.updateAddress()">修改</button>
+            <button class="btn btn-danger" promise-btn
+                    ng-if="vm.edit" ng-click="vm.deleteAddress(vm.id)">删除</button>
+            <button class="btn btn-info" promise-btn
+                    ng-if="vm.edit" ng-click="vm.setDefaultAddress(vm.id)">设置为默认地址</button>
             <button class="btn btn-default" ng-click="vm.back()">返回</button>
         </div>
     </form>

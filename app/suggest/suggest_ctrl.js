@@ -9,8 +9,6 @@
 
     function SuggestCtrl(userservice, $timeout){
         let vm = this;
-        vm.required = true;
-        vm.WAIT_OPERATING = false;
 
         vm.post = post;
 
@@ -23,14 +21,12 @@
         }
 
         function post(){
-            if(this.suggestBox.suggestion.$invalid) {
+            if(vm.suggestion === void 0 || vm.suggestion == '') {
                 return;
             }
-            vm.WAIT_OPERATING = true;
-            userservice.postSuggestion(vm.suggestion).then(() => {
+            return userservice.postSuggestion(vm.suggestion).then(() => {
                 notie.alert(1, '谢谢您的反馈！', 0.3);
                 $timeout(() => {
-                    vm.WAIT_OPERATING = false;
                     history.back();
                 }, 300)
             });

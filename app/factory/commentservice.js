@@ -36,9 +36,9 @@
 
         function platformComment(stars1, stars2, stars3) {
             return $http.post(host + '/user_billing', {
-                stars1: stars1,
-                stars2: stars2,
-                stars3: stars3
+                stars1: stars1*2,
+                stars2: stars2*2,
+                stars3: stars3*2
             }).then(response => response.data);
         }
 

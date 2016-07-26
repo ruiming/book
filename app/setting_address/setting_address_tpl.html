@@ -1,8 +1,5 @@
 <div class="setting-address-page">
-    <div class="loading-more" ng-if="vm.WAIT_LOADING">
-        <i class="fa fa-spinner fa-pulse fa-2x"></i>
-    </div>
-    <div class="address-list" ng-repeat="x in vm.address" ng-click="vm.edit()">
+    <div class="address-list" ng-repeat="x in vm.address" ng-click="vm.edit(x)">
         <p>{{x.name}}, {{x.phone}}</p>
         <small>{{x.dormitory}}</small>
         <span ng-if="x.is_default">默认地址</span>

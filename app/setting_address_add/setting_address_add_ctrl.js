@@ -9,16 +9,21 @@
 
     function AddressAddCtrl(userservice){
         let vm = this;
-        vm.edit = false;
         vm.data = userservice.getAddress();
 
-        vm.WAIT_ADD = false;
-        vm.WAIT_UPDATE = false;
-        vm.WAIT_DELETE = false;
-        vm.WAIT_RETURN = false;
+        if(vm.data === null) {
+            vm.edit = false;
+        } else {
+            vm.phone = vm.data.phone;
+            vm.dormitory = vm.data.dormitory;
+            vm.name = vm.data.name;
+            vm.id = vm.data.id;
+            vm.edit = true;
+            userservice.setAddress(null);
+        }
 
         vm.addAddress = addAddress;
-        vm.updatAddress = updateAddress;
+        vm.updateAddress = updateAddress;
         vm.deleteAddress = deleteAddress;
         vm.setDefaultAddress = setDefaultAddress;
         vm.back = back;
@@ -26,35 +31,27 @@
 
         function updateAddress() {
             if(!checkForm())    return false;
-            vm.WAIT_UPDATE = vm.edit;
-            userservice.updateUserAddress(vm.name, vm.phone, vm.dorm, vm.id).then(() => {
-                vm.WAIT_UPDATE = !vm.edit;
+            return userservice.updateUserAddress(vm.name, vm.phone, vm.dormitory, vm.id).then(() => {
                 vm.back();
             });
         }
 
         function addAddress() {
             if(!checkForm())    return false;
-            vm.WAIT_ADD = !vm.edit;
-            userservice.addUserAddress(vm.name, vm.phone, vm.dorm).then(() => {
-                vm.WAIT_ADD = vm.edit;
+            return userservice.addUserAddress(vm.name, vm.phone, vm.dormitory).then(() => {
                 vm.back();
             });
         }
 
 
         function deleteAddress(id) {
-            vm.WAIT_DELETE = true;
-            userservice.deleteUserAddress(id).then(() => {
-                vm.WAIT_DELETE = false;
+            return userservice.deleteUserAddress(id).then(() => {
                 vm.back();
             });
         }
 
         function setDefaultAddress(id) {
-            vm.WAIT_RETURN = true;
-            userservice.setUserDefaultAddress(vm.name, vm.phone, vm.dorm, id).then(() => {
-                vm.WAIT_RETURN = false;
+            return userservice.setUserDefaultAddress(vm.name, vm.phone, vm.dormitory, id).then(() => {
                 vm.back();
             });
         }

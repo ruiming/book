@@ -69,12 +69,9 @@
         <div class="book-comment-post">
             <p>评价 "{{vm.book.title}}"</p>
             <button class="btn btn-success" type="submit"
-                    ng-click="vm.postComment()" ng-if="!wait">
+                    ng-click="vm.postComment()"
+                    promise-btn>
                 发表
-            </button>
-            <button class="btn btn-success"
-                    ng-if="wait" style="width: 54px" disabled>
-                <wait></wait>
             </button>
         </div>
     </form>

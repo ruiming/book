@@ -5,13 +5,15 @@
         .module('index')
         .factory('userservice', userservice);
 
-    userservice.$inject = ['$http', 'commonservice'];
+    userservice.$inject = ['$http', 'commonservice', '$q'];
 
-    function userservice($http, commonservice) {
+    function userservice($http, commonservice, $q) {
 
         let changeStars = commonservice.changeStars;
 
+        let defaultAddress = null;
         let address = null;
+        let userInfo = null;
 
         return {
             getUserInfo: getUserInfo,
@@ -33,8 +35,18 @@
         };
 
         function getUserDefaultAddress() {
-            return $http.get(host + '/user_address?type=default')
-                .then((response) => response.data)
+            if(defaultAddress == null) {
+                return $http.get(host + '/user_address?type=default')
+                    .then((response) => {
+                        defaultAddress = response.data;
+                        return defaultAddress;
+                    })
+            }
+            else {
+                let deferred = $q.defer();
+                deferred.resolve(defaultAddress);
+                return deferred.promise;
+            }
         }
 
         function getUserCollect(type) {
@@ -43,19 +55,28 @@
         }
 
         function setUserDefaultAddress(name, phone, dormitory, id) {
-            return $http.put(host + '/user_address', {
+            let address = {
                 name: name,
                 phone: phone,
                 dormitory: dormitory,
                 type: 'default',
                 id: id
-            }).then(response => response.data);
+            };
+            return $http.put(host + '/user_address', address).then(response => {
+                if(response.status == 200) {
+                    defaultAddress = address;
+                }
+            });
         }
 
         function deleteUserAddress(id) {
             return $http.delete(host + '/user_address', {data:{
                 id: id
-            }}).then(response => response.data);
+            }}).then(response => {
+                if(response.status == 200) {
+                    defaultAddress = null;
+                }
+            });
         }
 
         function updateUserAddress(name, phone, dormitory, id) {
@@ -105,8 +126,18 @@
         }
 
         function getUserInfo() {
-            return $http.get(host + '/user_info')
-                .then(response => response.data);
+            if(userInfo == null) {
+                return $http.get(host + '/user_info')
+                    .then(response => {
+                        userInfo = response.data;
+                        return userInfo;
+                    });
+            }
+            else {
+                let deferred = $q.defer();
+                deferred.resolve(userInfo);
+                return deferred.promise;
+            }
         }
 
         function getUserNotices() {

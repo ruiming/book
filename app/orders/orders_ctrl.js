@@ -34,7 +34,7 @@
         function getOrder() {
             orderservice.getOrder($stateParams.status).then(response => {
                 vm.orders = response;
-                for(order of vm.orders) {
+                for(let order of vm.orders) {
                     order.status = statusDict[order.status];
                 }
             });
@@ -42,21 +42,17 @@
 
         // TODO 取消售后
         function cancelReturn(order) {
-            order.WAIT_OPERATING = true;
+
         }
 
         function cancel(order) {
-            order.WAIT_OPERATING = true;
-            orderservice.cancelOrder(order.id).then(() => {
-                order.WAIT_OPERATING = false;
+            return orderservice.cancelOrder(order.id).then(() => {
                 order.status = '已取消'
             });
         }
 
         function receipt(order){
-            order.WAIT_OPERATING = true;
-            orderservice.receiptOrder(order.id).then(() => {
-                order.WAIT_OPERATING = false;
+            return orderservice.receiptOrder(order.id).then(() => {
                 order.status = '待评价'
             });
         }

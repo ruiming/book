@@ -11,6 +11,16 @@
     <link rel="stylesheet" href="src/css/app.min.css">
     <link rel="stylesheet" href="src/css/bookist.css">
     <!-- endbuild -->
+    <script>
+        // 设置token
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        localStorage.setItem("token", getQueryString("token"));
+        localStorage.setItem("user_id", getQueryString("user_id"));
+    </script>
 </head>
 <body>
     <div ui-view="main" class="bookist-view"></div>
@@ -32,15 +42,5 @@
         template.js             模板文件
     -->
     <!-- endbuild-->
-    <script>
-        // 设置token
-        function getQueryString(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]); return null;
-        }
-        localStorage.setItem("token", getQueryString("token"));
-        localStorage.setItem("user_id", getQueryString("user_id"));
-    </script>
 </body>
 </html>

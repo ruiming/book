@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -29,7 +29,7 @@
                         'status': statusDict[item.status],
                         'content': item.content,
                         'time': item.time
-                    })
+                    });
                 }
             });
         }
@@ -41,8 +41,8 @@
                 vm.status_list.push({
                     'status': '已取消',
                     'time': Date.parse(new Date()) / 1000
-                })
-            })
+                });
+            });
         }
 
         function receipt(order) {

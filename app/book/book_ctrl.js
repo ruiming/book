@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -44,7 +44,7 @@
         function collect() {
             return bookservice.collectBook($stateParams.isbn).then(() => {
                 vm.book.collect_already = !vm.book.collect_already;
-            })
+            });
         }
 
         function up(comment) {

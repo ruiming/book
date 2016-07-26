@@ -1,5 +1,5 @@
 (function() {
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -19,7 +19,7 @@
         function addCart(isbn) {
             return $http.post(host + '/cart', {
                 isbn: isbn
-            }).then(response => response.data)
+            }).then(response => response.data);
         }
 
         function getCart() {
@@ -31,13 +31,13 @@
             return $http.put(host + '/cart', {
                 isbn: isbn,
                 number: number
-            }).then(response => response.data)
+            }).then(response => response.data);
         }
 
         function deleteCart(isbn) {
             return $http.delete(host + '/cart', {data:{
                 isbn: isbn
-            }}).then(response => response.data)
+            }}).then(response => response.data);
         }
 
     }

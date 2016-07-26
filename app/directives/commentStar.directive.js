@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     let commentStar = () => {
         return {
@@ -21,7 +21,7 @@
                     </uib-rating>
                     </div>
                 `
-        }
+        };
     };
 
     angular

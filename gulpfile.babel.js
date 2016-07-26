@@ -1,16 +1,17 @@
-var gulp = require('gulp');
-var babel = require('gulp-babel');
-var uglify = require('gulp-uglify');
-var ngAnnotate = require('gulp-ng-annotate');
-var concat = require('gulp-concat');
-var cleanCSS = require('gulp-clean-css');
-var imagemin = require('gulp-imagemin');
-var minifyHtml = require('gulp-minify-html');
-var ngTemplate = require('gulp-ng-template');
-var plumber = require('gulp-plumber');
-var sass = require('gulp-sass');
-var usemin = require('gulp-usemin');
-var runSequence  = require('gulp-run-sequence');
+import gulp from 'gulp'
+import babel from 'gulp-babel'
+import uglify from 'gulp-uglify'
+import ngAnnotate from 'gulp-ng-annotate'
+import concat from 'gulp-concat'
+import cleanCSS from 'gulp-clean-css'
+import imagemin from 'gulp-imagemin'
+import minifyHtml from 'gulp-minify-html'
+import ngTemplate from 'gulp-ng-template'
+import plumber from 'gulp-plumber'
+import sass from 'gulp-sass'
+import usemin from 'gulp-usemin'
+import runSequence from 'gulp-run-sequence'
+import eslint from 'gulp-eslint'
 
 /*
  *
@@ -51,10 +52,10 @@ gulp.task('js', function(cb){
     gulp.src(['app/**/*.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError())
         .pipe(concat('app.js'))
-        .pipe(babel({
-            presets: ['es2015']
-        }))
         .pipe(gulp.dest('src/js/'))
         .on('end',cb);
 });
@@ -119,7 +120,7 @@ gulp.task('together', function(cb){
         .pipe(plumber())
         .pipe(usemin({
             cssProduct: ['concat'],
-            jsProduct: [ngAnnotate(),'concat',uglify()]
+            jsProduct: [ngAnnotate(),'concat', babel(), uglify()]
         }))
         .pipe(gulp.dest('backend/app/'))
         .on('end',cb);

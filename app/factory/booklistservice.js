@@ -1,5 +1,5 @@
 (function() {
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -31,10 +31,9 @@
                     .then(response => {
                         booklist[id] = response.data;
                         return booklist[id];
-                    })
+                    });
             }
             else {
-                console.log(booklist[id].collect_already);
                 deferred.resolve(booklist[id]);
                 return deferred.promise;
             }
@@ -42,11 +41,10 @@
 
         function getHotBooklists() {
             return $http.get(host + '/booklist?type=hot')
-                .then(response => response.data)
+                .then(response => response.data);
         }
 
         function getBooklists(type, tag) {
-            console.log(type, tag);
             this.list = [];
             this.busy = false;
             this.url = host + '/booklist';
@@ -57,7 +55,6 @@
             if(tag !== void 0) {
                 this.params.tag = tag;
             }
-            console.log(this.params);
             this.continue = true;
             this.nextPage = function() {
                 if(!this.continue){

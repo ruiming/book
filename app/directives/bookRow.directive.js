@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     let bookRow = () => {
         return {
@@ -27,7 +27,7 @@
         <div class="loading-more" ng-if="scroll.busy"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
     </div>
             `
-        }
+        };
     };
 
     angular

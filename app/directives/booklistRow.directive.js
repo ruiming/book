@@ -1,5 +1,5 @@
 (function() {
-    "use strict";
+    'use strict';
 
     let booklistRow = () => {
         return {
@@ -25,7 +25,7 @@
                 </a>
             </div>
             `
-        }
+        };
     };
 
     angular

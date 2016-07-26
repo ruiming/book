@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -41,7 +41,7 @@
                     item.deleted = false;
                 }
                 vm.recount(vm.items);
-            })
+            });
         }
 
         function recount() {

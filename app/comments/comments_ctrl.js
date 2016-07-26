@@ -1,5 +1,6 @@
 (function(){
-    "use strict";
+    'use strict';
+
     angular
         .module('index')
         .controller('CommentsCtrl', CommentsCtrl);
@@ -17,7 +18,6 @@
 
         function getComment() {
             commentservice.getComment($stateParams.isbn).then(response => {
-                console.log(response)
                 vm.comments = response;
             });
         }

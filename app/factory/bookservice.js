@@ -1,5 +1,5 @@
 (function() {
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -68,7 +68,7 @@
                 return $http.get(host + '/book?type=detail&isbn=' + isbn)
                     .then(response => {
                         bookDetail[isbn] = response.data;
-                        return bookDetail[isbn]
+                        return bookDetail[isbn];
                     });
             }
             else {
@@ -89,7 +89,7 @@
                     .then(response => {
                         similarBook = changeStars(response.data);
                         return similarBook;
-                    })
+                    });
             }
             else {
                 let deferred = $q.defer();
@@ -102,21 +102,21 @@
             return $http.post(host + '/collect', {
                 isbn: isbn,
                 type: 'book'
-            }).then(response => response.data)
+            }).then(response => response.data);
         }
 
         function discollectBook(isbn) {
             return $http.post(host + '/collect', {
                 type: 'book',
                 isbn: isbn
-            }).then(response => response.data)
+            }).then(response => response.data);
         }
 
         function getBook(isbn) {
             return $http.get(host + '/book?isbn=' + isbn)
                 .then(response => {
                     return changeStars(response.data);
-                })
+                });
         }
 
         function getPopularBooks() {

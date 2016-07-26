@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -28,7 +28,7 @@
                 notie.alert(1, '谢谢您的反馈！', 0.3);
                 $timeout(() => {
                     history.back();
-                }, 300)
+                }, 300);
             });
         }
     }

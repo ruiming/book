@@ -1,5 +1,5 @@
 (function() {
-    "use strict";
+    'use strict';
 
     let myMaxlength = () => {
         return {
@@ -17,7 +17,7 @@
                 }
                 ngModelCtrl.$parsers.push(fromUser);
             }
-        }
+        };
     };
 
     angular

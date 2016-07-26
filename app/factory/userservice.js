@@ -1,5 +1,5 @@
 (function() {
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -40,7 +40,7 @@
                     .then((response) => {
                         defaultAddress = response.data;
                         return defaultAddress;
-                    })
+                    });
             }
             else {
                 let deferred = $q.defer();
@@ -51,7 +51,7 @@
 
         function getUserCollect(type) {
             return $http.get(host + '/user_collects?type=' + type)
-                .then(response => changeStars(response.data))
+                .then(response => changeStars(response.data));
         }
 
         function setUserDefaultAddress(name, phone, dormitory, id) {

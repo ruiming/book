@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -47,13 +47,13 @@
 
         function cancel(order) {
             return orderservice.cancelOrder(order.id).then(() => {
-                order.status = '已取消'
+                order.status = '已取消';
             });
         }
 
         function receipt(order){
             return orderservice.receiptOrder(order.id).then(() => {
-                order.status = '待评价'
+                order.status = '待评价';
             });
         }
     }

@@ -1,5 +1,6 @@
 (function(){
-    "use strict";
+    'use strict';
+
     angular
         .module('index')
         .controller('OrderCommentsCtrl', OrderCommentsCtrl);
@@ -33,10 +34,10 @@
                 }
             }
             return $q.all(promises).then(() => {
-                commentservice.platformComment(vm.stars1, vm.stars2, vm.stars3)
+                commentservice.platformComment(vm.stars1, vm.stars2, vm.stars3);
             }).then(() => {
                 history.back();
-            })
+            });
         }
     }
 })();

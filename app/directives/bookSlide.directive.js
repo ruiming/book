@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     let bookSlide = () => {
         return {
@@ -24,7 +24,7 @@
                 </a>
             </div>
                 `
-        }
+        };
     };
 
     angular

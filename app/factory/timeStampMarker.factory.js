@@ -1,5 +1,5 @@
 (function() {
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -15,6 +15,6 @@
                 response.config.responseTimestamp = new Date().getTime();
                 return response;
             }
-        }
+        };
     }
 })();

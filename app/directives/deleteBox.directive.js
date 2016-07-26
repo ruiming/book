@@ -1,5 +1,5 @@
 (function() {
-    "use strict";
+    'use strict';
 
     let deleteBox = () => {
         return {
@@ -30,7 +30,7 @@
             <div class="modal-backdrop fade" style="z-index: 1040;"></div>
             </div>
             `
-        }
+        };
     };
 
     angular

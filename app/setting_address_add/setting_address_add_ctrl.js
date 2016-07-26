@@ -1,5 +1,5 @@
 (function(){
-    "use strict";
+    'use strict';
 
     angular
         .module('index')
@@ -61,24 +61,23 @@
         }
 
         function checkForm() {
-            console.log(+vm.addressForm.phone.$viewValue);
             if(!+vm.addressForm.phone.$viewValue) {
                 vm.correct_phone = true;
-                notie.alert(1, "手机信息有误", 0.3);
+                notie.alert(1, '手机信息有误', 0.3);
                 return false;
             }
             if(vm.addressForm.$invalid) {
                 if(vm.addressForm.name.$invalid)  {
                     vm.correct_name = true;
-                    notie.alert(1, "收货人信息有误", 0.3);
+                    notie.alert(1, '收货人信息有误', 0.3);
                 }
                 else if(vm.addressForm.phone.$invalid)  {
                     vm.correct_phone = true;
-                    notie.alert(1, "手机信息有误", 0.3);
+                    notie.alert(1, '手机信息有误', 0.3);
                 }
                 else if(vm.addressForm.dorm.$invalid)  {
                     vm.correct_dorm = true;
-                    notie.alert(1, "宿舍信息有误", 0.3);
+                    notie.alert(1, '宿舍信息有误', 0.3);
                 }
                 return false;
             }

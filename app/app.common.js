@@ -18,7 +18,7 @@
             if(response.message !== void 0) {
                 notie.alert(1, response.message, 0.3);
             }
-            if(typeof(response.data) != "undefined" && response.status === "success") {
+            if(angular.isUndefined(response.data)&& response.status === 'success') {
                 response = response.data;
                 return response;
             }
@@ -32,17 +32,17 @@
         $httpProvider.defaults.transformRequest = obj => {
             var str = [];
             for(var p in obj){
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
             }
-            return str.join("&");
+            return str.join('&');
         };
 
         $locationProvider.html5Mode(true);
         $httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.put = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};
-        // redirect to "/" if not match
-        $urlRouterProvider.otherwise("/");
+        // redirect to '/' if not match
+        $urlRouterProvider.otherwise('/');
 
         angularPromiseButtonsProvider.extendConfig({
             spinnerTpl: '<i class="btn-spinner"></i>',

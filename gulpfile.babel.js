@@ -56,6 +56,8 @@ gulp.task('js', function(cb){
         .pipe(eslint.format())
         .pipe(eslint.failAfterError())
         .pipe(concat('app.js'))
+        .pipe(babel())
+        .pipe(uglify())
         .pipe(gulp.dest('src/js/'))
         .on('end',cb);
 });
@@ -120,7 +122,7 @@ gulp.task('together', function(cb){
         .pipe(plumber())
         .pipe(usemin({
             cssProduct: ['concat'],
-            jsProduct: [ngAnnotate(),'concat', babel(), uglify()]
+            jsProduct: [uglify(), babel()]
         }))
         .pipe(gulp.dest('backend/app/'))
         .on('end',cb);

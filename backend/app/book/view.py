@@ -435,6 +435,6 @@ def similar_book():
         'image': book.image,
         'rate': book.rate,
         'reason': book.reason
-    }for book in books] if books else ""
+    }for book in books]
 
-    return return_message('success', 112, books_json)
+    return return_message('success', 112, books_json, data_required=True)

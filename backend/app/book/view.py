@@ -437,4 +437,4 @@ def similar_book():
         'reason': book.reason
     }for book in books]
 
-    return return_message('success', 112, books_json)
+    return return_message('success', 112, books_json, data_required=True)

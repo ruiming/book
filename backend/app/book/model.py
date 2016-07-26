@@ -22,7 +22,6 @@ class BookTag(db.EmbeddedDocument):
 
 
 class Book(db.Document):
-    title = db.StringField()
     isbn = db.StringField(required=True)
     title = db.StringField(required=True)
     origin_title = db.StringField()
@@ -41,7 +40,7 @@ class Book(db.Document):
     tag = db.ListField(db.EmbeddedDocumentField(BookTag))
     binding = db.StringField()
     rate = db.FloatField()
-    reason = db.StringField()
+    reason = db.StringField(require=True)
 
     class NotBookInstance(Exception):
         pass
@@ -54,10 +53,10 @@ class BookList(db.Document):
 
     title = db.StringField(required=True)
     subtitle = db.StringField()
-    description = db.StringField()
-    author = db.ReferenceField(User)
+    description = db.StringField(required=True)
+    author = db.ReferenceField(User, required=True)
     tag = db.ListField(db.ReferenceField(Tag))
-    books = db.ListField(db.ReferenceField(Book))
+    books = db.ListField(db.ReferenceField(Book), required=True)
     hot = db.IntField(default=0)
     image = db.StringField()
     collect = db.IntField(default=0, required=True)

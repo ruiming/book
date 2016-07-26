@@ -671,7 +671,7 @@ def user_address():
                     'is_default': one_address.is_default
                 })
 
-        return return_message('success', 234, address_list)
+        return return_message('success', 234, address_list, data_required=True)
 
     elif request.method == 'POST':
 
@@ -913,7 +913,8 @@ def user_carts():
                 'is_collection': True if Collect.objects(user=this_user, type='book', type_id=one_cart.book.isbn).count() == 1 else False
             }
         })
-    return return_message('success', 243, all_cart_json)
+
+    return return_message('success', 243, all_cart_json, data_required=True)
 
 
 @user_module.route('/user_billings', methods=['GET'])

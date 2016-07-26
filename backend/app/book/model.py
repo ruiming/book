@@ -53,10 +53,10 @@ class BookList(db.Document):
 
     title = db.StringField(required=True)
     subtitle = db.StringField()
-    description = db.StringField()
-    author = db.ReferenceField(User)
+    description = db.StringField(required=True)
+    author = db.ReferenceField(User, required=True)
     tag = db.ListField(db.ReferenceField(Tag))
-    books = db.ListField(db.ReferenceField(Book))
+    books = db.ListField(db.ReferenceField(Book), required=True)
     hot = db.IntField(default=0)
     image = db.StringField()
     collect = db.IntField(default=0, required=True)

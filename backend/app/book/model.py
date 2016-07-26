@@ -22,7 +22,6 @@ class BookTag(db.EmbeddedDocument):
 
 
 class Book(db.Document):
-    title = db.StringField()
     isbn = db.StringField(required=True)
     title = db.StringField(required=True)
     origin_title = db.StringField()

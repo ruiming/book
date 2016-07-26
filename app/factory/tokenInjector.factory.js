@@ -42,11 +42,11 @@
                         sessionStorage.verify = 'true';
                         config.headers['token'] = localStorage.getItem('token');
                         config.headers['userid'] = localStorage.getItem('user_id');
-                        $log('verify OK');
+                        $log.log('verify OK');
                         deferred.resolve(config);
                     }).error(function(){
                         // 跳转微信登陆
-                        $log('verify FAIL');
+                        $log.log('verify FAIL');
                         // window.location.replace(host);
                         deferred.resolve(config);
                     });

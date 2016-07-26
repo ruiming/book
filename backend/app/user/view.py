@@ -671,7 +671,7 @@ def user_address():
                     'is_default': one_address.is_default
                 })
 
-        return return_message('success', 234, address_list)
+        return return_message('success', 234, address_list, data_required=True)
 
     elif request.method == 'POST':
 

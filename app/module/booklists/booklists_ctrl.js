@@ -1,49 +1,35 @@
-routeApp.controller('BooklistsCtrl',function($scope, $http, BL) {
-    var url = host + '/booklist';
-    var params = {
-        type: "all",
-        page: 1
-    };
+(function() {
+    'use strict';
 
-    // 获取书单,获取默认排序的十个书单
-    $scope.booklists = new BL(url,params);
+    angular
+        .module('index')
+        .controller('BooklistsCtrl', BooklistsCtrl);
 
-    // 获取热门书单标签并缓存
-    if(sessionStorage.tags != undefined) {
-        $scope.tags = angular.fromJson(sessionStorage.tags);
+    BooklistsCtrl.$inject = ['booklistservice', 'tagservice'];
+
+    function BooklistsCtrl(booklistservice, tagservice) {
+        let vm = this;
+        vm.booklists = new booklistservice.getBooklists('all');
+
+        vm.timeOrder = getBooklistOrderByTime;
+        vm.collectOrder = getBooklistOrderByCollect;
+
+        getHotTags();
+
+        function getHotTags() {
+            tagservice.getHotTags().then(response => {
+                vm.tags = response;
+            });
+        }
+
+        function getBooklistOrderByTime() {
+            vm.booklists = new booklistservice.getBooklists('time');
+            vm.booklists.nextPage();
+        }
+
+        function getBooklistOrderByCollect() {
+            vm.booklists = new booklistservice.getBooklists('collect');
+            vm.booklists.nextPage();
+        }
     }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/tags',
-            params: {
-                type: "hot"
-            }
-        }).success(function(response){
-            $scope.tags = response;
-            sessionStorage.tags = angular.toJson($scope.tags);
-        });
-    }
-
-    // 时间优先
-    $scope.timeOrder = function(){
-        var url = host + '/booklist';
-        var params = {
-            type: "time",
-            page: 1
-        };
-        $scope.booklists = new BL(url,params);
-        $scope.booklists.nextPage();
-    };
-
-    // 收藏优先
-    $scope.collectOrder = function(){
-        var url = host + '/booklist';
-        var params = {
-            type: "collect",
-            page: 1
-        };
-        $scope.booklists = new BL(url, params);
-        $scope.booklists.nextPage();
-    };
-});
+})();

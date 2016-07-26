@@ -1,0 +1,42 @@
+.notices {
+  overflow: hidden;
+  padding: 0;
+  .notice {
+    border: 1px solid #EEE;
+    border-radius: 10px;
+    display: block;
+    overflow: hidden;
+    background-color: #FFF;
+    margin: 10px;
+    .notice-title,
+    .notice-read {
+      overflow: hidden;
+      display: block;
+      padding: 10px;
+    }
+    .notice-title {
+      p {
+        margin-bottom: 5px;
+        font-size: 16px;
+      }
+      span {
+        display: block;
+        font-size: 12px;
+        color: #CACACA;
+      }
+    }
+    .notice-content {
+      font-size: 12px;
+      padding: 0 10px;
+    }
+    .notice-read {
+      border-top: 1px solid #eee;
+      span {
+        float: left;
+      }
+      i {
+        float: right;
+      }
+    }
+  }
+}

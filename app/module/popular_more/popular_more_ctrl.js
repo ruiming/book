@@ -1,11 +1,15 @@
-routeApp.controller('PopularMoreCtrl',function($scope, BL) {
+(function(){
+    'use strict';
 
-    // 获取更多热门书单
-    var url = host + '/booklist';
-    var params = {
-        type: "hot",
-        page: 1
-    };
-    $scope.booklists = new BL(url,params);
+    angular
+        .module('index')
+        .controller('PopularMoreCtrl', PopularMoreCtrl);
 
-});
+    PopularMoreCtrl.$inject = ['booklistservice'];
+
+    function PopularMoreCtrl(booklistservice) {
+        let vm = this;
+        vm.booklists = new booklistservice.getBooklists('all');
+        vm.booklists.nextPage();
+    }
+})();

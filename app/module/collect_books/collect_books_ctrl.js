@@ -1,33 +1,32 @@
-routeApp.controller('CollectBooksCtrl', function($http, $scope){
+(function(){
+    'use strict';
 
-    $scope.busy = true;
+    angular
+        .module('index')
+        .controller('CollectBooksCtrl', CollectBooksCtrl);
 
-    // 获取全部收藏书籍
-    $http({
-        method: 'GET',
-        url: host + '/user_collects',
-        params: {
-            type: "book"
-        }
-    }).success(function(response){
-        $scope.books = response;
-        for(var i=0;i<$scope.books.length;i++){
-            $scope.books[i].star = Math.ceil($scope.books[i].rate/2);
-        }
-        $scope.busy = false;
-    });
+    CollectBooksCtrl.$inject = ['userservice', 'bookservice'];
     
-    // 取消收藏书籍
-    $scope.remove = function(book, index){
-        $http({
-            method: 'POST',
-            url: host + '/collect',
-            data: {
-                isbn: book.isbn,
-                type: "book"
-            }
-        }).success(function(){
-            $scope.books.splice(index, 1);
-        });
-    };
-});
+    function CollectBooksCtrl(userservice, bookservice) {
+        let vm = this;
+
+        vm.remove = remove;
+
+        getUserCollect();
+
+        function getUserCollect() {
+            userservice.getUserCollect('book').then(response => {
+                vm.books = response;
+                for(let book of vm.books) {
+                    book.star = Math.ceil(book.rate/2);
+                }
+            });
+        }
+
+        function remove(book, index) {
+            bookservice.discollectBook(book.isbn).then(() => {
+                vm.books.splice(index, 1);
+            });
+        }
+    }
+})();

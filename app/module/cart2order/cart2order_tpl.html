@@ -1,50 +1,52 @@
-<div class="cart2order order-group">
-    <div class="order-list">
-        <div class="order-list-one">
-            <div class="order-title">
-                <span class="order-head">Bookist</span>
-                <span class="order-status">待支付</span>
+<div class="cart2order-page">
+    <div class="cart2order">
+        <div class="order-list">
+            <div class="order">
+                <div class="order-title">
+                    <span class="order-head">Bookist</span>
+                    <span class="order-status">待支付</span>
+                </div>
+                <div class="order-cart">
+                    <div class="colorBar"></div>
+                    <div class="order-address rarrow" ui-sref="address()">
+                        <p class="name" ng-if="vm.x">收货人:{{vm.x.name}}<em>{{vm.x.phone}}</em></p>
+                        <p class="address" ng-if="vm.x">收货地址:{{vm.x.dormitory}}</p>
+                        <p class="empty" ng-if="!vm.x">你还没有添加地址信息</p>
+                    </div>
+                    <div class="colorBar"></div>
+                    <div class="order-books">
+                        <div class="cart2order-book order-book" ng-repeat="item in vm.books">
+                            <img ng-src="{{item.book.image}}">
+                        </div>
+                        <div class="cart2order-sum">
+                            <p>共{{vm.order.number}}件</p>
+                            <p>小计: <span> ¥ {{vm.order.price | number:2}}</span></p>
+                        </div>
+                    </div>
+                    <div class="order-tip">
+                        <div class="order-tip-1">
+                            <span>送货方式</span>
+                            <span>送书上门</span>
+                        </div>
+                        <div class="order-tip-1">
+                            <span>付款方式</span>
+                            <span>货到付款</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="order-cart">
-                <div class="colorBar"></div>
-                <div class="order-address rarrow" ui-sref="address()">
-                    <p class="name" ng-if="x!=undefined">收货人:{{x.name}}<em>{{x.phone}}</em></p>
-                    <p class="address" ng-if="x!=undefined">{{x.dormitory}}</p>
-                    <p class="empty" ng-if="x===undefined">你还没有添加地址信息</p>
-                </div>
-                <div class="colorBar"></div>
-                <div class="order-books">
-                    <div class="cart2order-book order-book" ng-repeat="item in books">
-                        <img ng-src="{{item.book.image}}">
-                    </div>
-                    <div class="cart2order-sum">
-                        <p>共{{order.number}}件</p>
-                        <p>小计: <span> ¥ {{order.price | number:2}}</span></p>
-                    </div>
-                </div>
-                <div class="order-tip">
-                    <div class="order-tip-1">
-                        <span>送货方式</span>
-                        <span>送书上门</span>
-                    </div>
-                    <div class="order-tip-1">
-                        <span>付款方式</span>
-                        <span>货到付款</span>
-                    </div>
-                </div>
+            <div class="cart-message">
+                <p>庄瑞铭到次一游！</p>
             </div>
-        </div>
-        <div class="cart-message">
-            <p>平台承诺书籍为全新正版, 两日内送达。</p>
-            <p>自2016年5月到2016年7月，平台提供免费的送书上门服务。</p>
-            <p>平台仍然在不断完善，将很快推出微信支付功能，敬请等待，谢谢您的支持。</p>
         </div>
     </div>
-</div>
-<div class="make-order cart-to-order">
-    <button class="btn btn-danger" ng-if="!wait" ng-disabled="no_address" ng-click="make()">提交订单</button>
-    <button class="btn btn-danger" ng-if="wait" style="width: 98px;"><wait></wait></button>
-    <div class="cart-count">
-        <label> 总额: ¥ {{order.price | number: 2}}</label>
+    <div class="make-order">
+        <button class="btn btn-danger"
+                ng-disabled="vm.no_address"
+                promise-btn
+                ng-click="vm.make()">提交订单</button>
+        <div class="cart-count">
+            <label> 总额: ¥ {{vm.order.price | number: 2}}</label>
+        </div>
     </div>
 </div>

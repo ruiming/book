@@ -1,0 +1,30 @@
+.points {
+  .point-history {
+    background-color: #fff;
+    .point-header {
+      padding: 15px 10px;
+      font-size: 16px;
+      display: block;
+      border-bottom: 1px solid #0F9E5E;
+      overflow: hidden;
+    }
+    .point-list {
+      padding: 0 10px;
+      list-style: none;
+      display: block;
+      overflow: hidden;
+      li {
+        border-bottom: 1px solid #EEE;
+        display: block;
+        overflow: hidden;
+        padding: 10px 5px;
+        .point-title {
+          float: left;
+        }
+        .point-result {
+          float: right;
+        }
+      }
+    }
+  }
+}

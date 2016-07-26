@@ -1,0 +1,22 @@
+<div class="booklist-header">
+    <img class="booklist-image-cover" ng-src="{{vm.booklist.image}}">
+    <h3>{{vm.booklist.title}}</h3>
+    <p class="booklist-intro">{{vm.booklist.description}}</p>
+    <img class="avatar" ng-src="{{vm.booklist.author.avatar}}">
+    <small>{{vm.booklist.author.name}} / {{vm.booklist.collect}}人收藏</small>
+    <button class="btn btn-blue"
+            ng-click="vm.collect()"
+            promise-btn>
+        <i class="fa fa-bookmark-o"></i>
+        <i ng-if="!vm.booklist.collect_already">收藏书单</i>
+        <i ng-if="vm.booklist.collect_already">已收藏</i>
+    </button>
+</div>
+<div class="tags">
+    <div class="tags-outer">
+        <div class="tags-inner">
+            <span class="tag">标签</span>
+            <a class="tag" ng-repeat="tag in vm.booklist.tags track by $index" ui-sref="tagBooklists({tag: tag})">{{tag}}</a>
+        </div>
+    </div>
+</div>

@@ -1,71 +1,87 @@
-<loading ng-if="busy"></loading>
-<div class="order-group" ng-if="!busy">
-    <ul class="order-list" ng-if="orders_return.length>0">
-        <li class="order-list-one" ng-repeat="order in orders_return">
-            <div class="order-title">
-                <span class="order-head">Bookist</span>
-                <span class="order-status">{{order.status}}</span>
-            </div>
-            <a ui-sref="orderDetail({id:order.id})">
-                <ul class="order-books" style="margin-bottom: 0">
-                    <li class="order-book" ng-repeat="z in orders_return.carts">
-                        <img ng-src="{{z.book.image}}">
-                        <p>{{z.book.title}}</p>
-                        <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
-                        <span class="count"> {{z.number}}本 / 共{{z.price*z.number | number:2}}元</span>
-                    </li>
-                </ul>
-            </a>
-            <div class="order-meta">
-                <div class="order-meta-price">
-                    <span class="order-method">货到付款</span>
-                    <span class="order-price">实付款 {{order.price}} 元</span>
+<div class="order-page">
+    <div class="order-group">
+        <ul class="order-list" ng-if="vm.orders_return.length>0">
+            <li class="order-list-one" ng-repeat="order in vm.orders_return">
+                <div class="order-title">
+                    <span class="order-head">Bookist</span>
+                    <span class="order-status">{{vm.order.status}}</span>
                 </div>
-                <a class="btn btn-danger" ng-bind="order.status" ui-sref="orderDetail({id:order.id})"></a>
-                <button class="btn btn-danger" ng-if="order.status!='refund'&&order.status!='replace'&&!order.wait2" ng-click="stop(order)">取消订单</button>
-                <button class="btn btn-danger" ng-if="order.wait2" disabled style="width: 95px;"><wait></wait></button>
-            </div>
-        </li>
-    </ul>
-    <ul class="order-list">
-        <div class="empty-alert" ng-if="orders.length==0 && type=='all'">
-            <p>您还没有订单，快去逛逛吧</p>
-        </div>
-        <div class="empty-alert" ng-if="orders.length==0 && type=='pending'">
-            <p>您还没有待发货订单，快去逛逛吧</p>
-        </div>
-        <div class="empty-alert" ng-if="orders.length==0 && type=='waiting'">
-            <p>您还没有待收货订单，快去逛逛吧</p>
-        </div>
-        <div class="empty-alert" ng-if="orders_return.length==0 || type=='return'">
-            <p>您还没有订单，快去逛逛吧</p>
-        </div>
-        <li class="order-list-one" ng-repeat="order in orders">
-            <div class="order-title">
-                <span class="order-head">Bookist</span>
-                <span class="order-status">{{order.status}}</span>
-            </div>
-            <a ui-sref="orderDetail({id:order.id})">
-                <ul class="order-books" style="margin-bottom: 0">
-                    <li class="order-book" ng-repeat="z in order.carts">
-                        <img ng-src="{{z.book.image}}">
-                        <p>{{z.book.title}}</p>
-                        <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
-                        <span class="count"> {{z.number}}本 / 共{{z.price*z.number | number:2}}元</span>
-                    </li>
-                </ul>
-            </a>
-            <div class="order-meta">
-                <div class="order-meta-price">
-                    <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{order.price}}</em> 元</span>
+                <a ui-sref="orderDetail({id:order.id})">
+                    <ul class="order-books" style="margin-bottom: 0">
+                        <li class="order-book" ng-repeat="z in vm.orders_return.carts">
+                            <img ng-src="{{z.book.image}}">
+                            <p>{{z.book.title}}</p>
+                            <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
+                            <span class="count">
+                            {{z.number}}本 / 共{{z.price*z.number | number:2}}元
+                        </span>
+                        </li>
+                    </ul>
+                </a>
+                <div class="order-meta">
+                    <div class="order-meta-price">
+                        <span class="order-method">货到付款</span>
+                        <span class="order-price">实付款 {{vm.order.price}} 元</span>
+                    </div>
+                    <a class="btn btn-danger"
+                       ng-bind="order.status"
+                       ui-sref="orderDetail({id:order.id})"></a>
+                    <button class="btn btn-danger" promise-btn
+                            ng-if="vm.order.status!='refund'&&vm.order.status!='replace'"
+                            ng-click="vm.cancelReturn(order)">
+                        取消订单
+                    </button>
                 </div>
-                <a class="btn btn-danger" ng-if="type=='return'" style="width: 82px;" ui-sref="orderReturn({id: order.id})">退换货</a>
-                <a class="btn btn-danger" ng-if="order.status=='待评价'&&!order.wait2" style="width: 82px;" ui-sref="orderComments({id: order.id})">评价</a>
-                <button class="btn btn-danger" ng-if="order.status=='待收货'&&!order.wait2" ng-click="receipt(order)">确认收货</button>
-                <button class="btn btn-danger" ng-if="order.status=='待发货'&&!order.wait2" ng-click="cancel(order)">取消订单</button>
-                <button class="btn btn-danger" ng-if="order.status=='已取消'" style="width: 82px;" disabled>已取消</button>
-                <button class="btn btn-danger" ng-if="order.wait2" disabled style="width: 82px;"><wait></wait></button>
-            </div>
-        </li>
-    </ul>
+            </li>
+        </ul>
+        <ul class="order-list">
+            <li class="order-list-one" ng-repeat="order in vm.orders">
+                <div class="order-title">
+                    <span class="order-head">Bookist</span>
+                    <span class="order-status">{{order.status}}</span>
+                </div>
+                <a ui-sref="orderDetail({id:order.id})">
+                    <ul class="order-books" style="margin-bottom: 0">
+                        <li class="order-book" ng-repeat="z in order.carts">
+                            <img ng-src="{{z.book.image}}">
+                            <p>{{z.book.title}}</p>
+                            <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
+                            <span class="count"> {{z.number}}本 / 共{{z.price*z.number | number:2}}元</span>
+                        </li>
+                    </ul>
+                </a>
+                <div class="order-meta">
+                    <div class="order-meta-price">
+                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{order.price}}</em> 元</span>
+                    </div>
+                    <a class="btn btn-danger"
+                       ng-if="type=='return'"
+                       style="width: 82px;"
+                       ui-sref="orderReturn({id: order.id})">
+                        退换货
+                    </a>
+                    <a class="btn btn-danger"
+                       ng-if="order.status=='待评价'"
+                       ui-sref="orderComments({id: order.id})">
+                        评价
+                    </a>
+                    <button class="btn btn-danger" promise-btn
+                            ng-if="order.status=='待收货'"
+                            ng-click="vm.receipt(order)">
+                        确认收货
+                    </button>
+                    <button class="btn btn-danger" promise-btn
+                            ng-if="order.status=='待发货'"
+                            ng-click="vm.cancel(order)">
+                        取消订单
+                    </button>
+                    <button class="btn btn-danger"
+                            ng-if="order.status=='已取消'"
+                            disabled>
+                        已取消
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>

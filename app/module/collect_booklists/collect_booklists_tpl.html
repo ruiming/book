@@ -1,24 +1,4 @@
-<loading ng-if="busy"></loading>
-<div class="booklists-box collect-box" ng-if="!busy">
-    <div class="booklists-box-top btn-group">
-        <a class="btn btn-default" ui-sref="booklistsCollect">
-            书单收藏夹
-        </a>
-        <a class="btn btn-default" ui-sref="booksCollect">
-            书籍收藏夹
-        </a>
-    </div>
-    <div class="booklists-box-content">
-        <div class="empty-alert" ng-if="booklists.length==0">
-            <p>您还没有收藏书单</p>
-        </div>
-        <a ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
-            <img ng-src="{{booklist.image}}">
-            <span class="title">{{booklist.title}}</span>
-            <span class="collect">{{booklist.collect}}人收藏</span>
-            <div class="booklist-tag">
-                <div class="tag" ng-repeat="tag in booklist.tags">{{tag}}</div>
-            </div>
-        </a>
-    </div>
+<div class="collect-booklists-page">
+    <div ng-include="'collect_booklists/collect_switch_part.html'"></div>
+    <booklist-row booklists=vm.booklists ></booklist-row>
 </div>

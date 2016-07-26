@@ -1,0 +1,8 @@
+<div class="books-similarity" ng-if="vm.booksBought.length != 0">
+    <span>购买此书的人最近也购买</span>
+    <book-slide ng-init="vm.booksBought=[]" books=vm.booksBought></book-slide>
+</div>
+<div class="booklists-box" ng-if="vm.booklists.length != 0">
+    <span style="padding:0 10px">被以下书单收录</span>
+    <booklist-row booklists=vm.booklists></booklist-row>
+</div>

@@ -1,0 +1,42 @@
+.settings-page {
+  .user-items {
+    margin-bottom: 15px;
+    background-color: #FFF;
+    overflow: hidden;
+    a,
+    button {
+      display: block;
+      padding: 15px;
+      overflow: hidden;
+      border-bottom: 1px solid #F5F5F5;
+      .fa-mars,
+      .fa-venus {
+        float: right;
+        padding-right: 0;
+      }
+      .user-item-gravatar {
+        line-height: 50px;
+      }
+      i {
+        padding-right: 15px;
+        span {
+          font-family: $font;
+          padding-left: 15px;
+          color: #000;
+        }
+      }
+      span {
+        float: right;
+        color: #777777;
+      }
+      p {
+        margin: 10px 0 0;
+        color: #777;
+      }
+      img {
+        float: right;
+        width: 50px;
+      }
+    }
+  }
+}

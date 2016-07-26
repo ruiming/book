@@ -1,48 +1,32 @@
-<loading ng-if="busy"></loading>
-<div class="booklist" ng-if="!busy">
-    <div class="booklist-header">
-        <img class="booklist-image-cover" ng-src="{{booklist.image}}">
-        <h3>{{booklist.title}}</h3>
-        <p class="booklist-intro">{{booklist.description}}</p>
-        <img class="avatar" ng-src="{{booklist.author.avatar}}">
-        <small>{{booklist.author.name}} / {{booklist.collect}}人收藏</small>
-        <button class="btn btn-blue" ng-click="collect()" ng-if="!booklist.collect_already&&!wait">
-            <i class="fa fa-bookmark-o"></i> 收藏书单
-        </button>
-        <button class="btn btn-blue" ng-if="wait" disabled>
-            <wait></wait>
-        </button>
-        <button class="btn btn-blue" ng-click="collect()" ng-if="booklist.collect_already&&!wait">
-            <i class="fa fa-bookmark"></i> 已收藏
-        </button>
-    </div>
-    <div class="booklist-tags">
-        <div class="booklist-tags-outer">
-            <div class="booklist-tags-inner">
-                <span class="tag">标签</span>
-                <a class="tag" ng-repeat="tag in booklist.tags" ui-sref="tagBooklists({tag: tag})">{{tag}}</a>
-            </div>
-        </div>
-    </div>
-    <div class="booklist-books slides-box-content">
-        <a ng-repeat="book in booklist.books" ui-sref="book({isbn: book.isbn})">
-            <div class="book-img">
+<div class="booklist-page">
+    <div ng-include="'booklist/booklist_head_part.html'"></div>
+    <div class="books">
+        <a class="book"
+           ng-repeat="book in vm.booklist.books track by book.isbn"
+           ui-sref="book({isbn: book.isbn})">
+            <div class="book-image">
                 <img class="cover cover-sm" ng-src="{{book.image}}">
                 <img class="cover-bg" ng-src="{{book.image}}">
             </div>
-            <div class="book-message">
-                <div class="book-message-top">
-                    <span class="book-message-top-title">{{book.title}}</span>
-                    <div class="book-message-top-rate">
+            <div class="book-info">
+                <div class="book-info-top">
+                    <span class="title">{{book.title}}</span>
+                    <div class="rate">
                         <span>&nbsp;{{book.rate}}</span>
-                        <uib-rating class="red-star" ng-model="book.star" max="5" read-only="true"
-                                    state-on="'fa fa-star'" state-off="'fa fa-star-o'"></uib-rating>
+                        <uib-rating class="red-star"
+                                    ng-model="book.star"
+                                    max="5"
+                                    read-only="true"
+                                    state-on="'fa fa-star'"
+                                    state-off="'fa fa-star-o'"></uib-rating>
                     </div>
                 </div>
-                <span class="book-message-author" ng-if='book.author!=""'><span ng-repeat="x in book.author">{{x}} </span></span>
+                <span class="author" ng-if='book.author!=""'>
+                    <span ng-repeat="x in book.author track by $index">{{x}} </span>
+                </span>
             </div>
-            <div class="book-reason">
-                <p name="reason" ng-bind-html="book.reason"></p>
+            <div class="reason">
+                <p ng-bind-html="book.reason"></p>
             </div>
         </a>
     </div>

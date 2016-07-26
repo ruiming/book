@@ -1,97 +1,60 @@
-routeApp.controller('OrdersCtrl',function($scope, $http, $stateParams) {
+(function(){
+    'use strict';
 
-    $scope.message = false;
-    $scope.busy = true;
-    $scope.wait = false;        // 取消订单提示
-    $scope.type = $stateParams.status;
-    console.log($stateParams.status);
+    angular
+        .module('index')
+        .controller('OrdersCtrl', OrdersCtrl);
 
-    /*
-     * 备注:
-     * return    传回 commenting, done订单
-     * on_return 传回 refund, refunding, refunded, replace, replaced, replacing, refund_refused, replace_refused 订单
-     *
-     */
+    OrdersCtrl.$inject = ['$stateParams', 'orderservice'];
 
-    // 非法参数，返回
-    if($stateParams.status !== "pending"
-        && $stateParams.status !== "all"
-        && $stateParams.status !== "commenting"
-        && $stateParams.status !== "waiting"
-        && $stateParams.status !== "return"
-        && $stateParams.status !== "done"
-    ) {
-        history.back();
-    }
-    else if($stateParams.status == "return") {
-        // todo 获取正在申请售后服务的订单
-        $http({
-            method: 'GET',
-            url: host + '/user_billings',
-            params: {
-                status: "on_return"
-            }
-        }).success(function(response){
-            $scope.orders_return = response;
-            for(var x in $scope.orders_return){
-                if($scope.orders_return.hasOwnProperty(x)){
-                    $scope.orders_return[x].status = statusDict[$scope.orders_return[x].status];
+    function OrdersCtrl($stateParams, orderservice) {
+        let vm = this;
+        vm.WAIT_OPERATING = false;
+        vm.type = $stateParams.status;
+        let status = ['pending', 'all', 'commenting', 'waiting', 'return', 'done'];
+
+        vm.cancelReturn = cancelReturn;
+        vm.cancel = cancel;
+        vm.receipt = receipt;
+
+        getOrder();
+
+        if(status.indexOf(vm.type) === -1) {
+            history.back();
+        }
+        else if(vm.type === 'return') {
+            orderservice.getReturnOrder().then(response => {
+                vm.orders_return = response;
+                for(let order of vm.orders_return) {
+                    order.status = statusDict[order.status];
                 }
-            }
-        });
+            });
+        }
+
+        function getOrder() {
+            orderservice.getOrder($stateParams.status).then(response => {
+                vm.orders = response;
+                for(let order of vm.orders) {
+                    order.status = statusDict[order.status];
+                }
+            });
+        }
+
+        // TODO 取消售后
+        function cancelReturn(order) {
+
+        }
+
+        function cancel(order) {
+            return orderservice.cancelOrder(order.id).then(() => {
+                order.status = '已取消';
+            });
+        }
+
+        function receipt(order){
+            return orderservice.receiptOrder(order.id).then(() => {
+                order.status = '待评价';
+            });
+        }
     }
-
-    // 获取订单
-    $http({
-        method: 'GET',
-        url: host + '/user_billings',
-        params: {
-            status: $stateParams.status
-        }
-    }).success(function(response){
-        $scope.orders = response;
-        for(var x in $scope.orders){
-            if($scope.orders.hasOwnProperty(x)){
-                $scope.orders[x].status = statusDict[$scope.orders[x].status];
-            }
-        }
-        $scope.busy = false;
-    });
-
-    // todo 取消售后
-    $scope.stop = function(order){
-        order.wait2 = true;
-    };
-
-    // 取消订单    pending -> canceled
-    $scope.cancel = function(order){
-        order.wait2 = true;
-        $http({
-            method: 'DELETE',
-            url: host + '/billing',
-            data: {
-                "id": order.id
-            }
-        }).success(function(){
-            order.wait2 = false;
-            order.status = "已取消";
-        });
-    };
-
-    // 确认收货    waiting -> commenting
-    $scope.receipt = function(order){
-        order.wait2 = true;
-        $http({
-            method: 'PUT',
-            url: host + '/billing',
-            data: {
-                "id": order.id,
-                "status": "commenting"
-            }
-        }).success(function(){
-            order.wait2 = false;
-            order.status = "待评价";
-        });
-    };
-
-});
+})();

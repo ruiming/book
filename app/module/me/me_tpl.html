@@ -1,17 +1,12 @@
 <div class="me">
     <div class="user">
-        <img ui-sref="settings" ng-src="{{user.avatar}}">
+        <img ui-sref="settings" ng-src="{{vm.user.avatar}}">
         <div ui-sref="settings" class="user-name">
-            <p>{{user.username}}</p>
+            <p>{{vm.user.username}}</p>
         </div>
         <a ui-sref="settings"><i class="fa fa-cog fa-lg"></i></a>
         <a ui-sref="notices"><i class="fa fa-envelope-o fa-lg"></i></a>
     </div>
-    <!--
-    待发货: 用户确认订单后待后台确认，用户可以取消订单，但需后台确认
-    待收货: 后台确认并下单后，用户不可以取消订单，用户应该在收到书籍后进行收货确认，超出一周自动确认收货
-    待评价: 书籍已经成功送达用户手上且用户已确认收货，此时用户可以进入书籍评价状态
-    -->
     <div class="order-panel">
         <div class="order-head user-item" ui-sref="orders({status:'all'})" >
             <i class="fa fa-ticket"></i>全部订单

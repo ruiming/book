@@ -1,5 +1,22 @@
-routeApp.controller('SettingsCtrl', function($http, $scope){
+(function(){
+    'use strict';
 
-    $scope.user = JSON.parse(sessionStorage.user);
+    angular
+        .module('index')
+        .controller('SettingsCtrl', SettingsCtrl);
 
-});
+    SettingsCtrl.$inject = ['userservice'];
+
+    function SettingsCtrl(userservice){
+        let vm = this;
+
+        getUserInfo();
+
+        function getUserInfo() {
+            userservice.getUserInfo().then(response => {
+                vm.user = response;
+            });
+        }
+    }
+})();
+

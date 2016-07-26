@@ -1,16 +1,21 @@
-routeApp.controller('CollectBookListsCtrl', function($http, $scope){
+(function(){
+    'use strict';
 
-    $scope.busy = true;
+    angular
+        .module('index')
+        .controller('CollectBookListsCtrl', CollectBookListsCtrl);
 
-    //  获取全部收藏书单
-    $http({
-        method: 'GET',
-        url: host + '/user_collects',
-        params: {
-            type: "booklist"
+    CollectBookListsCtrl.$inject = ['userservice'];
+
+    function CollectBookListsCtrl(userservice) {
+        let vm = this;
+
+        getUserCollect();
+
+        function getUserCollect() {
+            userservice.getUserCollect('booklist').then(response => {
+                vm.booklists = response;
+            });
         }
-    }).success(function(response){
-        $scope.booklists = response;
-        $scope.busy = false;
-    });
-});
+    }
+})();

@@ -1,0 +1,190 @@
+.cart2order-page {
+  .make-order {
+    background-color: white;
+    bottom: 0;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    button {
+      border-radius: 0;
+      float: right;
+      padding: 6px 12px;
+      margin: 6px;
+      font-size: 14px;
+    }
+    .cart-count {
+      padding-top: 5px;
+      padding-left: 20px;
+      float: left;
+      label {
+        color: #D9534F;
+        padding: 8px 10px 8px 0;
+      }
+    }
+  }
+  .cart2order {
+    .order-cart,
+    .order-books {
+      margin: 5px 0;
+    }
+    .order-books {
+      border: {
+        top: 1px solid #EEE;
+        bottom: 1px solid #EEE;
+      }
+    }
+    .cart2order-sum {
+      margin: {
+        top: 10px;
+        bottom: 10px;
+      }
+      display: block;
+      overflow: hidden;
+      width: 100%;
+      p {
+        margin: 0;
+        line-height: 30px;
+        font-size: 14px;
+        padding: 0 25px 0 20px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        background-color: #fff;
+        color: #464646;
+        span {
+          color: darkred;
+        }
+      }
+    }
+    .cart-message {
+      background-color: white;
+      overflow: hidden;
+      display: block;
+      padding: 10px;
+      color: #828282;
+      font-size: 15px;
+    }
+    .order-tip {
+      line-height: 46px;
+      font-size: 14px;
+      padding: 0 25px 0 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      background-color: #fff;
+      color: #464646;
+      .order-tip-1 {
+        display: block;
+        overflow: hidden;
+        border-bottom: 1px solid #dcdcdc;
+        &:last-child {
+          border-bottom: 0;
+        }
+        span {
+          color: #787878;
+          font-size: 14px;
+          &:first-child {
+            padding-right: 10px;
+            float: left;
+          }
+          &:last-child {
+            float: right;
+          }
+        }
+      }
+    }
+    .order-address {
+      padding: 5px 25px 5px 20px;
+      color: #464646;
+      font-size: 14px;
+      position: relative;
+      background-color: #fff;
+      p {
+        margin: 0;
+        font-size: 16px;
+        line-height: 26px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        em {
+          font-style: normal;
+          display: inline-block;
+          float: right;
+          padding-right: 11px;
+        }
+      }
+      .address {
+        font-size: 14px;
+      }
+      .empty {
+        text-align: center;
+        padding: 10px;
+      }
+    }
+    .cart2order-book {
+      float: left;
+      padding-right: 0 !important;
+      img {
+        height: 100px !important;
+        margin-right: 0 !important;
+      }
+    }
+  }
+  .order-list {
+    padding: 0;
+  }
+  .order {
+    background-color: $bgColor;
+    margin-bottom: 20px;
+    overflow: hidden;
+    .order-title,
+    .order-books {
+      overflow: hidden;
+      display: block;
+      border-bottom: 1px solid #EEE;
+      background-color: #ffffff;
+    }
+    .order-books,
+    .order-detail {
+      margin-bottom: 10px;
+    }
+    .order-title {
+      padding: 10px;
+      .order-head {
+        float: left;
+      }
+      .order-status {
+        float: right;
+        color: #b12704;
+      }
+    }
+    a {
+      display: block;
+      overflow: hidden;
+    }
+    .order-books {
+      padding: 0;
+      .order-book {
+        background-color: #ffffff;
+        overflow: hidden;
+        display: block;
+        padding: 10px;
+        position: relative;
+        img {
+          height: 120px;
+          float: left;
+          margin-right: 10px;
+        }
+        p,
+        small{
+          display: block;
+        }
+        p {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

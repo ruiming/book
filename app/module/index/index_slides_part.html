@@ -1,0 +1,10 @@
+<div class="slides">
+    <uib-carousel active="0"
+                  interval="vm.myInterval"
+                  no-wrap="false"
+                  no-pause="true">
+        <uib-slide ng-repeat="slide in vm.slides track by $index" index="slide.id">
+            <img ng-src="{{slide.image}}">
+        </uib-slide>
+    </uib-carousel>
+</div>

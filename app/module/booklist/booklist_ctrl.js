@@ -1,45 +1,38 @@
-routeApp.controller('BookListCtrl',function($scope, $http, $stateParams) {
-    $scope.busy = true;
-    $scope.wait = false;
-    $scope.wait2 = false;
+(function(){
+    'use strict';
 
-    // 获取书单信息
-    $http({
-        method: 'GET',
-        url: host + '/booklist',
-        params: {
-            id: $stateParams.id
+    angular
+        .module('index')
+        .controller('BookListCtrl', BookListCtrl);
+
+    BookListCtrl.$inject = ['$stateParams', 'booklistservice'];
+
+    function BookListCtrl($stateParams, booklistservice) {
+        let vm = this;
+        vm.wait = false;
+        vm.wait2 = false;
+
+        vm.collect = collect;
+
+        getBooklistDetail();
+
+        function getBooklistDetail() {
+            booklistservice.getBooklistDetail($stateParams.id).then(response => {
+                vm.booklist = response;
+                for(let book of vm.booklist.books) {
+                    book.star = Math.ceil(book.rate / 2);
+                }
+            });
         }
-    }).success(function(response){
-        $scope.booklist = response;
-        for(var i in $scope.booklist.books){
-            if($scope.booklist.books.hasOwnProperty(i)){
-                $scope.booklist.books[i].star = Math.ceil($scope.booklist.books[i].rate/2);
-            }
+
+        function　collect(){
+            vm.wait = true;
+            return booklistservice.collectBooklist($stateParams.id).then(() => {
+                vm.booklist.collect_already = !vm.booklist.collect_already;
+                vm.booklist.collect = vm.booklist.collect_already ?
+                    ++vm.booklist.collect : --vm.booklist.collect;
+                vm.wait = false;
+            });
         }
-        $scope.busy = false;
-    });
-
-    // 收藏书单函数
-    $scope.collect = function(){
-        $scope.wait = true;
-        $http({
-            method: 'POST',
-            url: host + '/collect',
-            data: {
-                type: "booklist",
-                id: $stateParams.id
-            }
-        }).success(function(){
-            $scope.booklist.collect_already = !$scope.booklist.collect_already;
-            if($scope.booklist.collect_already)  {
-                $scope.booklist.collect++;
-            }
-            else  {
-                $scope.booklist.collect--;
-            }
-            $scope.wait = false;
-        });
-    };
-
-});
+    }
+})();

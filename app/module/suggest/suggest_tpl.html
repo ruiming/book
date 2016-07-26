@@ -5,13 +5,13 @@
         </div>
         <hr>
         <div class="input-group">
-            <img ng-src="{{user.avatar}}">
+            <img ng-src="{{vm.user.avatar}}">
         </div>
-        <form class="suggestion" name="suggestBox">
-            <textarea class="form-control" name="suggestion" ng-model="suggestion" ng-required="required"></textarea>
-            <button type="submit" class="btn btn-block btn-info" ng-if="!wait" ng-click="post()" ng-disabled="wait2">提交</button>
-            <button class="btn btn-block btn-info" ng-if="wait" disabled><wait></wait></button>
+        <form class="suggestion" name="vm.suggestBox">
+            <textarea class="form-control" name="suggestion" required autofocus
+                      ng-model="vm.suggestion"></textarea>
+            <input type="submit" class="btn btn-block btn-info" promise-btn
+                    ng-click="vm.post()">
         </form>
     </div>
 </div>
-<div ng-if="wait2" class="animate-if"><p>提交成功，感谢您的反馈</p></div>

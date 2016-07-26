@@ -1,0 +1,31 @@
+.book-info-page {
+  padding: 0 10px 10px;
+  .book {
+    display: block;
+    overflow: hidden;
+    margin: 10px;
+    header {
+      padding: 0;
+      color: #8e8e8e;
+      font-size: 15px;
+      margin: 10px 0;
+    }
+    article {
+      word-wrap: break-word;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      color: #252525;
+      background-color: #fff;
+      section {
+        margin: 0 15px;
+        padding: 15px 0;
+        font-size: 13px;
+        .info {
+          display: block;
+          padding: 3px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}

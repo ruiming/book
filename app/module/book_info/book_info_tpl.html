@@ -1,44 +1,43 @@
-<loading ng-if="busy"></loading>
-<div class="book-box-outer" ng-if="!busy">
-    <div class="book-box">
-        <header class="book-box-head">出版信息</header>
-        <article class="book-box-article">
+<div class="book-info-page">
+    <div class="book">
+        <header>出版信息</header>
+        <article>
             <section>
-                <span class="info" ng-if='book.title!=""'>标题: {{book.title}}</span>
-                <span class="info" ng-if='book.subtitle!=""'>副标题: {{book.subtitle}}</span>
-                <span class="info" ng-if='book.origin_title!=""'>原标题: {{book.origin_title}}</span>
-                <span class="info" ng-if='book.author!=""'>作者：<span ng-repeat="x in book.author">{{x}} </span></span>
-                <span class="info" ng-if='book.translator'!="">译者: <span ng-repeat="x in book.translator">{{x}} </span></span>
-                <span class="info" ng-if='book.publisher!=""'>出版社: {{book.publisher}}</span>
-                <span class="info" ng-if='book.publish_time!=""'>出版年: {{book.publish_time}}</span>
-                <span class="info" ng-if='!book.page'>页数: {{book.page}}</span>
-                <span class="info" ng-if='book.price!=""'>定价: {{book.price}}</span>
-                <span class="info" ng-if='book.binding!=""'>装帧: {{book.binding}}</span>
-                <span class="info" ng-if='book.isbn!=""'>ISBN: {{book.isbn}}</span>
+                <span class="info" ng-if='vm.book.title!=""'>标题: {{vm.book.title}}</span>
+                <span class="info" ng-if='vm.book.subtitle!=""'>副标题: {{vm.book.subtitle}}</span>
+                <span class="info" ng-if='vm.book.origin_title!=""'>原标题: {{vm.book.origin_title}}</span>
+                <span class="info" ng-if='vm.book.author!=""'>作者：<span ng-repeat="x in vm.book.author">{{x}} </span></span>
+                <span class="info" ng-if='vm.book.translator'!="">译者: <span ng-repeat="x in vm.book.translator">{{x}} </span></span>
+                <span class="info" ng-if='vm.book.publisher!=""'>出版社: {{vm.book.publisher}}</span>
+                <span class="info" ng-if='vm.book.publish_time!=""'>出版年: {{vm.book.publish_time}}</span>
+                <span class="info" ng-if='!vm.book.page'>页数: {{vm.book.page}}</span>
+                <span class="info" ng-if='vm.book.price!=""'>定价: {{vm.book.price}}</span>
+                <span class="info" ng-if='vm.book.binding!=""'>装帧: {{vm.book.binding}}</span>
+                <span class="info" ng-if='vm.book.isbn!=""'>ISBN: {{vm.book.isbn}}</span>
             </section>
         </article>
     </div>
-    <div class="book-box" ng-if='book.description!=""'>
+    <div class="book" ng-if='vm.book.description!=""'>
         <header>书籍内容介绍</header>
         <article >
             <section>
-                <p class="info" ng-bind-html="book.description"></p>
+                <p class="info" ng-bind-html="vm.book.description"></p>
             </section>
         </article>
     </div>
-    <div class="book-box" ng-if='book.author_intro!=""'>
+    <div class="book" ng-if='vm.book.author_intro!=""'>
         <header>作者介绍</header>
         <article>
             <section>
-                <p class="info" ng-bind-html="book.author_description"></p>
+                <p class="info" ng-bind-html="vm.book.author_description"></p>
             </section>
         </article>
     </div>
-    <div class="book-box" ng-if='book.catelog!=""'>
+    <div class="book" ng-if='vm.book.catelog!=""'>
         <header>目录</header>
         <article>
             <section>
-                <p class="info" ng-bind-html="book.catelog"></p>
+                <p class="info" ng-bind-html="vm.book.catelog"></p>
             </section>
         </article>
     </div>

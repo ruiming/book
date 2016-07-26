@@ -1,41 +1,37 @@
-routeApp.controller('IndexCtrl',function($scope, $http) {
+(function() {
+    'use strict';
 
-    $scope.myInterval = 5000;
-    $scope.noWrapSlides = false;
-    $scope.active = 0;
+    angular
+        .module('index')
+        .controller('IndexCtrl', IndexCtrl);
 
-        $http({
-            method: 'GET',
-            url: host + '/pop_book'
-        }).success(function(response){
-            $scope.books = response;
-            for(var i=0;i<$scope.books.length;i++){
-                $scope.books[i].star = Math.ceil($scope.books[i].rate/2);
-            }
-        });
+    IndexCtrl.$inject = ['bookservice', 'booklistservice', 'slideservice', '$log'];
 
-        $http({
-            method: 'GET',
-            url: host + '/booklist',
-            params: {
-                type: "hot"
-            }
-        }).success(function(response){
-            $scope.booklists = response;
-        });
+    function IndexCtrl(bookservice, booklistservice, slideservice, $log) {
+        var vm = this;
+        vm.myInterval = 5000;
 
-    // 获取活动轮播
-    if(sessionStorage.slides != undefined) {
-        $scope.slides = JSON.parse(sessionStorage.slides);
+        getPopularBooks();
+        getHotBooklists();
+        getSlides();
+
+        function getPopularBooks() {
+            bookservice.getPopularBooks().then(response => {
+                vm.books = response;
+            });
+        }
+
+        function getHotBooklists() {
+            booklistservice.getHotBooklists().then(response => {
+                vm.booklists = response;
+            });
+        }
+
+        function getSlides() {
+            slideservice.getSlides().then(response => {
+                vm.slides = response;
+                $log.log(response);
+            });
+        }
     }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/slides'
-        }).success(function(response){
-            $scope.slides = response;
-            sessionStorage.slides = JSON.stringify($scope.slides);
-        });
-    }
-
-});
+})();

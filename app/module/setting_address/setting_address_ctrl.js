@@ -1,23 +1,35 @@
-routeApp.controller('AddressCtrl', function ($http, $scope, $state, User) {
+(function() {
+    'use strict';
 
-    $scope.wait = true;
+    angular
+        .module('index')
+        .controller('AddressCtrl', AddressCtrl);
 
-    // 获取用户地址信息
-    $http({
-        method: 'GET',
-        url: host + '/user_address'
-    }).success(function(response){
-        $scope.address = response;
-        $scope.wait = false;
-    });
+    AddressCtrl.$inject = ['$state', 'userservice'];
 
-    $scope.edit = function(){
-        User.setTemp(this.x);
-        $state.go('AddressAdd');
-    };
+    function AddressCtrl($state, userservice) {
+        let vm = this;
 
-    // 返回上层
-    $scope.back = function() {
-        history.back();
-    };
-});
+        vm.edit = edit;
+        vm.back = back;
+
+        getUserAddress();
+
+        function getUserAddress() {
+            userservice.getUserAddress().then(response => {
+                vm.address = response;
+            });
+        }
+
+        function edit(x) {
+            vm.edit = function(){
+                userservice.setAddress(x);
+                $state.go('AddressAdd');
+            };
+        }
+
+        function back() {
+            history.back();
+        }
+    }
+})();

@@ -1,44 +1,35 @@
-routeApp.controller('SuggestCtrl', function($http, $scope){
+(function(){
+    'use strict';
 
-    $scope.required = true;     // 必填
-    $scope.wait = false;        // 提交反馈wait
-    $scope.wait2 = false;       // 提交反馈动画时延
+    angular
+        .module('index')
+        .controller('SuggestCtrl', SuggestCtrl);
 
-    if(sessionStorage.user != undefined) {
-        $scope.user = JSON.parse(sessionStorage.user);
-    }
-    else {
-        $http({
-            method: 'GET',
-            url: host + '/user_info'
-        }).success(function(response){
-            $scope.user = response;
-            sessionStorage.user = JSON.stringify(response);
-        });
-    }
+    SuggestCtrl.$inject = ['userservice', '$timeout'];
 
-    // 发布建议和看法
-    $scope.post = function(){
-        if(this.suggestBox.suggestion.$invalid) {
-            return;
+    function SuggestCtrl(userservice, $timeout){
+        let vm = this;
+
+        vm.post = post;
+
+        getUserInfo();
+
+        function getUserInfo() {
+            userservice.getUserInfo().then(response => {
+                vm.user = response;
+            });
         }
-        $scope.wait = true;
-        $http({
-            method: 'POST',
-            url: host + '/user_feedback',
-            data: {
-                content: $scope.suggestion
-            }
-        }).success(function(){
-            $scope.wait = false;
-            $scope.wait2 = true;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait2 = false;
-                    history.back();
-                });
-            }, 2000);
-        });
-    };
 
-});
+        function post(){
+            if(vm.suggestion === void 0 || vm.suggestion == '') {
+                return;
+            }
+            return userservice.postSuggestion(vm.suggestion).then(() => {
+                notie.alert(1, '谢谢您的反馈！', 0.3);
+                $timeout(() => {
+                    history.back();
+                }, 300);
+            });
+        }
+    }
+})();

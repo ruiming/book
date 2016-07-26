@@ -1,0 +1,45 @@
+.booklists-row {
+  background-color: white;
+  $width: 100px;
+  overflow: hidden;
+  padding: 0 10px;
+  .booklist {
+    float: left;
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    padding: 5px;
+    position: relative;
+    img {
+      width: $width;
+      min-height: 120px;
+      float: right;
+      margin-left: 10px;
+    }
+    .title {
+      font: {
+        size: 16px;
+        weight: 500;
+      }
+      margin: 5px 0;
+      display: block;
+    }
+    .collect {
+      color: $grayColor;
+    }
+    .tags {
+      display: block;
+      overflow: hidden;
+      bottom: 10px;
+      margin: 0;
+      position: absolute;
+      padding: 0;
+      .tag {
+        float: left;
+        font-size: 12px;
+        padding-right: 5px;
+        color: $grayColor;
+      }
+    }
+  }
+}

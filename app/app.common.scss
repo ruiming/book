@@ -1,0 +1,247 @@
+$font: Helvetica Neue,Helvetica,Arial,PingFang SC,Hiragino Sans GB,WenQuanYi Micro Hei,Microsoft Yahei,sans-serif;
+$bgColor: #f7f7f7;
+$grayColor: #9C9C9C;
+$star: red;
+
+@mixin box-shadow($shadow...) {
+  -webkit-box-shadow:$shadow;
+  box-shadow:$shadow;
+}
+@mixin box-sizing($box) {
+  -webkit-box-sizing: $box;
+  -moz-box-sizing: $box;
+  -o-box-sizing: $box;
+  -ms-box-sizing: $box;
+  box-sizing: $box;
+}
+@mixin blur($filter) {
+  -webkit-filter: blur($filter);
+  filter: blur($filter);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+::-ms-tooltip {
+  display: none;
+}
+
+.btn-blue {
+  color: #fff;
+  background-color: #2196F3;
+  border-color: #2196F3;
+  border-radius: 0;
+}
+.btn-default {
+  color: black !important;
+}
+button {
+  text-align: center !important;
+  i {
+    color: white;
+  }
+}
+
+body {
+  font-family: $font;
+  background-color: $bgColor;
+}
+p {
+  white-space: pre-wrap;
+}
+
+a {
+  color: #000000;
+  text-decoration: none;
+  &:hover,
+  &:active {
+    text-decoration: none;
+    color: #000000;
+  }
+}
+
+.red-star{
+  color: $star;
+}
+.header {
+  padding: 10px 5px;
+  overflow: hidden;
+  margin: 0 12px;
+  font-size: 15px;
+}
+
+.booklists-page,
+.tags-booklists-page {
+  .booklists {
+    background: #ffffff;
+    .order {
+      width: 100%;
+      border-bottom: 1px solid #eee;
+      button {
+        border: none;
+        border-radius: 0;
+        width: 50%;
+        padding: 10px;
+      }
+    }
+    .booklists-list {
+      padding: 0;
+      overflow: hidden;
+      margin: 0 12px;
+      font-size: 15px;
+      i {
+        float: left;
+        padding-right: 5px;
+        line-height: 1.4;
+        span {
+          float: left;
+        }
+      }
+      .booklist {
+        float: left;
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid #eee;
+        padding: 5px;
+        position: relative;
+        img {
+          width: 100px;
+          float: right;
+          margin-left: 10px;
+          min-height: 140px;
+        }
+        .title {
+          font-size: 16px;
+          font-weight: 500;
+          margin: 5px 0;
+          display: block;
+        }
+        .collect {
+          color: #9C9C9C;
+        }
+        .tags {
+          display: block;
+          overflow: hidden;
+          bottom: 10px;
+          position: absolute;
+          .tag {
+            float: left;
+            font-size: 12px;
+            padding-right: 5px;
+            color: #9C9C9C;
+          }
+        }
+      }
+    }
+  }
+}
+.rarrow {
+  background: url(/static/images/arrow_r.png) right center no-repeat;
+}
+.colorBar {
+  height: 3px;
+  background: url(/static/images/colourBar.png) top left repeat-x;
+  box-shadow: 0 -1px 2px #ebebeb;
+  background-size: contain;
+}
+.book-page,
+.book-info-page,
+.booklist-page,
+.booklists-page,
+.order-page,
+.user-comments-page {
+  margin-bottom: 50px;
+}
+@-webkit-keyframes three-quarters {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@-moz-keyframes three-quarters {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@-o-keyframes three-quarters {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@keyframes three-quarters {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+/* Styles for old versions of IE */
+.btn-spinner {
+  font-family: sans-serif;
+  font-weight: 100; }
+
+/* :not(:required) hides this rule from IE9 and below */
+.btn-spinner:not(:required) {
+  -webkit-animation: three-quarters 1250ms infinite linear;
+  -moz-animation: three-quarters 1250ms infinite linear;
+  -ms-animation: three-quarters 1250ms infinite linear;
+  -o-animation: three-quarters 1250ms infinite linear;
+  animation: three-quarters 1250ms infinite linear;
+  border: 3px solid #ffffff;
+  border-right-color: transparent;
+  border-radius: 100%;
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  overflow: hidden;
+  text-indent: -9999px;
+  width: 18px;
+  height: 18px; }
+
+.btn-spinner:not(:required) {
+  margin-left: -22px;
+  opacity: 0;
+  transition: 0.4s margin ease-out, 0.2s opacity ease-out; }
+
+.is-loading .btn-spinner {
+  transition: 0.2s margin ease-in, 0.4s opacity ease-in;
+  margin-left: 5px;
+  opacity: 1; }

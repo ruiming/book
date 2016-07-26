@@ -1,0 +1,26 @@
+.slides-book-content {
+  $imgHeight: 150px;
+  padding: 0 10px;
+  width: 100%;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  min-height: 200px;
+  a {
+    padding: 0 5px;
+    font-size: 12px;
+    display: inline-block;
+    max-width: 120px;
+    img {
+      height: $imgHeight;
+      width: 105px;
+    }
+    p {
+      margin: 5px 0 0;
+      overflow: hidden;
+    }
+    i {
+      color: $star;
+    }
+  }
+}

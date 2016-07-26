@@ -1,14 +1,21 @@
-routeApp.controller('NoticesCtrl', function($http, $scope){
+(function() {
+    'use strict';
 
-    $scope.busy = true;
+    angular
+        .module('index')
+        .controller('NoticesCtrl', NoticesCtrl);
 
-    // 获取全部消息
-    $http({
-        method: 'GET',
-        url: host + '/user_notices'
-    }).success(function(response){
-        $scope.notices = response;
-        $scope.busy = false;
-    });
-    
-});
+    NoticesCtrl.$inject = ['userservice'];
+
+    function NoticesCtrl(userservice) {
+        let vm = this;
+
+        getUserNotices();
+
+        function getUserNotices() {
+            userservice.getUserNotices().then(response => {
+                vm.notices = response;
+            });
+        }
+    }
+})();

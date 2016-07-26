@@ -1,10 +1,15 @@
-routeApp.controller('RecommendMoreCtrl',function($scope, BL) {
+(function(){
+    'use strict';
 
-    // 获取更多推荐书籍
-    var url = host + '/pop_book';
-    var params = {
-        page: 1
-    };
-    $scope.books = new BL(url, params);
-    
-});
+    angular
+        .module('index')
+        .controller('RecommendMoreCtrl', RecommendMoreCtrl);
+
+    RecommendMoreCtrl.$inject = ['bookservice'];
+
+    function RecommendMoreCtrl(bookservice) {
+        let vm = this;
+        vm.books = new bookservice.getBooks();
+        vm.books.nextPage();
+    }
+})();

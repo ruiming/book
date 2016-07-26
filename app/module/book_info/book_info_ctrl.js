@@ -1,16 +1,21 @@
-routeApp.controller('BookInfoCtrl', function($http, $scope, $stateParams){
-    $scope.busy = true;
-    
-    // 获取图书信息(包含评论和标签)
-    $http({
-        method: 'GET',
-        url: host + '/book',
-        params: {
-            isbn: $stateParams.isbn,
-            type: "detail"
+(function(){
+    'use strict';
+
+    angular
+        .module('index')
+        .controller('BookInfoCtrl', BookInfoCtrl);
+
+    BookInfoCtrl.$inject = ['bookservice', '$stateParams'];
+
+    function BookInfoCtrl(bookservice, $stateParams) {
+        let vm = this;
+
+        getBookDetail();
+
+        function getBookDetail() {
+            bookservice.getBookDetail($stateParams.isbn).then(response => {
+                vm.book = response;
+            });
         }
-    }).success(function(response){
-        $scope.book = response;
-        $scope.busy = false;
-    });
-});
+    }
+})();

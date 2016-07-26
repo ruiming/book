@@ -1,64 +1,54 @@
-routeApp.controller('UserCommentsCtrl', function($http, $scope){
-    
-    $scope.deleteBox = false;       // 删除确认框
-    $scope.edit = false;            // 可编辑
-    $scope.readonly = true;         // 只读
-    $scope.busy = true;
-    $scope.wait = false;
-    $scope.required = true;
-    $scope.wait2 = false;            // 删除等待
+(function(){
+    'use strict';
 
-    // 用户所有评论
-    $http({
-        method: 'GET', 
-        url: host + '/user_comments'
-    }).success(function(response){
-        $scope.comments = response;
-        for (var i=0; i< $scope.comments.length; i++){
-            $scope.comments[i].star = Math.ceil($scope.comments[i].star/2);
-        }
-        $scope.busy = false;
-    });
+    angular
+        .module('index')
+        .controller('UserCommentsCtrl', UserCommentsCtrl);
 
-    $scope.focus = function(obj){
-        obj.readonly = false;
-        obj.edit = true;
-    };
-    
-    // 修改评论
-    $scope.submit = function(obj){
-        if(!obj.commentForm.content.$valid){
-            return;
+    UserCommentsCtrl.$inject = ['userservice', 'commentservice'];
+
+    function UserCommentsCtrl(userservice, commentservice) {
+        let vm = this;
+        vm.deleteBox = false;
+        vm.edit = false;
+        vm.readonly = true;
+
+        vm.focus = focus;
+        vm.submit = submit;
+        vm.delete = deleteComment;
+
+        getUserComments();
+
+        function getUserComments() {
+            userservice.getUserComments().then(response => {
+                vm.comments = response;
+                for(let comment of vm.comments) {
+                    comment.readonly = true;
+                    comment.deleteBox = false;
+                }
+            });
         }
-        obj.wait = true;
-        $http({
-            method: 'PUT',
-            url: host + '/comment',
-            data:{
-                id: obj.comment.id,
-                type: "edit",
-                content: obj.comment.content,
-                star: obj.comment.star*2
+
+        function focus(comment){
+            comment.readonly = false;
+            comment.edit = true;
+        }
+
+        function submit(comment){
+            if(comment.content === void 0 || comment.content == '') {
+                return;
             }
-        }).success(function(){
-            obj.wait = false;
-            obj.readonly = true;
-            obj.edit = false;
-        });
-    };
-    
-    // 删除评论
-    $scope.delete = function(id, index){
-        $scope.wait2 = true;
-        $http({
-            method: 'DELETE',
-            url: host + '/comment',
-            data: {
-                id: id
-            }
-        }).success(function(){
-            $scope.wait2 = false;
-            $scope.comments.splice(index, 1);
-        });
-    };
-});
+            return commentservice.editComment(comment.id, comment.star, comment.content).then(() => {
+                comment.readonly = true;
+                comment.edit = false;
+            });
+        }
+
+        function deleteComment(comment){
+            return commentservice.deleteComment(comment.id).then(() => {
+                vm.comments.splice(vm.comments.indexOf(comment), 1);
+                vm.deleteBox = false;
+            });
+        }
+    }
+})();

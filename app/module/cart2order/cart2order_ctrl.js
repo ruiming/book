@@ -1,64 +1,46 @@
-routeApp.controller('Cart2OrderCtrl', function($http, $scope, TEMP, $location){
+(function(){
+    'use strict';
 
-    $scope.wait = true;            // 确认订单等待
-    $scope.no_address = true;      // 地址必须有
+    angular
+        .module('index')
+        .controller('Cart2OrderCtrl', Cart2OrderCtrl);
 
-    // 从单体获取
-    $scope.books = TEMP.getList();
-    
-    
-    $scope.cart_list = "";
-    $scope.order = {
-        number: 0,
-        price: 0
-    };
+    Cart2OrderCtrl.$inject = ['$location', 'userservice', 'orderservice'];
 
-    // 订单处理
-    for(var i=0; i<$scope.books.length; i++){
-        $scope.order.number += $scope.books[i].number;
-        $scope.order.price += $scope.books[i].price * $scope.books[i].number;
-        if(i !== $scope.books.length-1){
-            $scope.cart_list += $scope.books[i].id + ",";
+    function Cart2OrderCtrl($location, userservice, orderservice){
+        let vm = this;
+        vm.no_address = true;      // 地址必须有
+        vm.cart_list = '';
+        vm.order = {　number: 0, price: 0　};
+        vm.make = make;
+
+        /**
+         * 从orderservice获取订单数据
+         */
+        vm.books = orderservice.getStore();
+        for(let book of vm.books) {
+            vm.order.number += book.number;
+            vm.order.price += book.price * book.number;
+            vm.cart_list += vm.cart_list ? ',' + book.id : book.id;
         }
-        else {
-            $scope.cart_list += $scope.books[i].id;
+        getUserDefaultAddress();
+
+
+        // TODO 等待地址问题修复
+        function getUserDefaultAddress() {
+            userservice.getUserDefaultAddress().then(response => {
+                vm.x = response[0];
+                vm.no_address = false;
+            }).catch(() => {
+                vm.no_address = true;
+            });
+        }
+
+        // TODO　等待地址问题修复
+        function make() {
+            return orderservice.makeOrder(vm.cart_list, vm.x.id).then((response) => {
+                $location.path('/order/'+response+'/detail').replace();
+            });
         }
     }
-
-    // 获取默认地址
-    $http({
-        method: 'GET',
-        url: host + '/user_address',
-        params: {
-            type: "default"
-        }
-    }).success(function(response){
-        $scope.x = response[0];
-        $scope.no_address = false;
-        $scope.wait = false;
-    }).error(function(){
-        $scope.wait = false;
-        $scope.no_address = true;
-    });
-
-    // todo提交订单
-    $scope.make = function(){
-        $scope.wait = true;
-        $http({
-            method: 'POST',
-            url: host + '/billing',
-            data: {
-                cart_list: $scope.cart_list,
-                address_id: $scope.x.id
-            }
-        }).success(function(response){
-            // * 防止后退回到订单生成页面
-            $location.path('/order/'+response+'/detail').replace();
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.wait = false;
-                });
-            }, 500);
-        });
-    };
-});
+})();

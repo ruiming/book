@@ -1,9 +1,8 @@
-<loading ng-if="busy"></loading>
-<ul class="notices" ng-if="!busy">
-    <div class="empty-alert" ng-if="notices.length==0">
+<ul class="notices">
+    <div class="empty-alert" ng-if="vm.notices.length==0">
         <p>暂无消息</p>
     </div>
-    <li class="notice" ng-repeat="notice in notices">
+    <li class="notice" ng-repeat="notice in vm.notices">
         <div class="notice-title">
             <p ng-bind-html="notice.content"></p>
             <span>{{notice.time*1000 | date:'yyyy-MM-dd HH:mm' }}</span>
@@ -13,7 +12,7 @@
         </p>
         <a class="notice-read" ng-href="url">
             <span>查看</span>
-            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            <i class="fa fa-chevron-right"></i>
         </a>
     </li>
 </ul>

@@ -1,0 +1,11 @@
+<div class="booklists">
+    <div class="btn-group order">
+        <button class="btn btn-default" ng-click="vm.timeOrder()">
+            时间优先
+        </button>
+        <button class="btn btn-default" ng-click="vm.collectOrder()">
+            收藏优先
+        </button>
+    </div>
+    <booklist-row booklists=vm.booklists.list scroll=vm.booklists></booklist-row>
+</div>

@@ -1,128 +1,89 @@
-routeApp.controller('AddressAddCtrl', function($http, $scope, $location, $state, User){
+(function(){
+    'use strict';
 
-    var data = User.getTemp();
-    $scope.edit = false;
+    angular
+        .module('index')
+        .controller('AddressAddCtrl', AddressAddCtrl);
 
-    $scope.wait1 = false;               // 添加等待动画
-    $scope.wait2 = false;               // 修改等待动画
-    $scope.wait3 = false;               // 删除等待动画
-    $scope.wait4 = false;               //　设置默认地址成功动画
+    AddressAddCtrl.$inject = ['userservice'];
 
-    if(JSON.stringify(data) != '{}') {
-        $scope.name = data.name;
-        $scope.phone = data.phone;
-        $scope.dorm = data.dormitory;
-        $scope.id = data.id;
-        $scope.edit = true;
-        User.setTemp({});
-    }
-    
-    // 添加和修改地址
-    $scope.add = function(){
-        if(this.addressForm.$invalid) {
-            if(this.addressForm.name.$invalid)  {
-                $scope.correct_name = true;
-                notie.alert(1, "收货人信息有误", 0.3);
-            }
-            else if(this.addressForm.phone.$invalid)  {
-                $scope.correct_phone = true;
-                notie.alert(1, "手机信息有误", 0.3);
-            }
-            else if(this.addressForm.dorm.$invalid)  {
-                $scope.correct_dorm = true;
-                notie.alert(1, "宿舍信息有误", 0.3);
-            }
+    function AddressAddCtrl(userservice){
+        let vm = this;
+        vm.data = userservice.getAddress();
+
+        if(vm.data === null) {
+            vm.edit = false;
+        } else {
+            vm.phone = vm.data.phone;
+            vm.dormitory = vm.data.dormitory;
+            vm.name = vm.data.name;
+            vm.id = vm.data.id;
+            vm.edit = true;
+            userservice.setAddress(null);
         }
-        else{
-            // 编辑状态
-            if($scope.edit) {
-                $scope.wait2 = true;
-                $http({
-                    method: 'PUT',
-                    url: host + '/user_address',
-                    data: {
-                        name: $scope.name,
-                        phone: $scope.phone,
-                        dormitory: $scope.dorm,
-                        id: $scope.id
-                    }
-                }).success(function(){
-                    $scope.wait2 = false;
-                    window.setTimeout(function() {
-                        $scope.$apply(function() {
-                            $scope.back();
-                        });
-                    }, 1000);
-                });
+
+        vm.addAddress = addAddress;
+        vm.updateAddress = updateAddress;
+        vm.deleteAddress = deleteAddress;
+        vm.setDefaultAddress = setDefaultAddress;
+        vm.back = back;
+
+
+        function updateAddress() {
+            if(!checkForm())    return false;
+            return userservice.updateUserAddress(vm.name, vm.phone, vm.dormitory, vm.id).then(() => {
+                vm.back();
+            });
+        }
+
+        function addAddress() {
+            if(!checkForm())    return false;
+            return userservice.addUserAddress(vm.name, vm.phone, vm.dormitory).then(() => {
+                vm.back();
+            });
+        }
+
+
+        function deleteAddress(id) {
+            return userservice.deleteUserAddress(id).then(() => {
+                vm.back();
+            });
+        }
+
+        function setDefaultAddress(id) {
+            return userservice.setUserDefaultAddress(vm.name, vm.phone, vm.dormitory, id).then(() => {
+                vm.back();
+            });
+        }
+
+        function back() {
+            history.back();
+        }
+
+        function checkForm() {
+            if(!+vm.addressForm.phone.$viewValue) {
+                vm.correct_phone = true;
+                notie.alert(1, '手机信息有误', 0.3);
+                return false;
             }
-            // 添加状态
+            if(vm.addressForm.$invalid) {
+                if(vm.addressForm.name.$invalid)  {
+                    vm.correct_name = true;
+                    notie.alert(1, '收货人信息有误', 0.3);
+                }
+                else if(vm.addressForm.phone.$invalid)  {
+                    vm.correct_phone = true;
+                    notie.alert(1, '手机信息有误', 0.3);
+                }
+                else if(vm.addressForm.dorm.$invalid)  {
+                    vm.correct_dorm = true;
+                    notie.alert(1, '宿舍信息有误', 0.3);
+                }
+                return false;
+            }
             else {
-                $scope.wait1 = true;
-                $http({
-                    method: 'POST',
-                    url: host + '/user_address',
-                    data: {
-                        name: $scope.name,
-                        phone: $scope.phone,
-                        dormitory: $scope.dorm
-                    }
-                }).success(function(){
-                    $scope.wait1 = false;
-                    window.setTimeout(function() {
-                        $scope.$apply(function() {
-                            $scope.back();
-                        });
-                    }, 1000);
-                });
+                return true;
             }
         }
-    };
-
-    // 删除地址
-    $scope.delete = function(id) {
-        $scope.wait3 = true;
-        $http({
-            method: 'DELETE',
-            url: host + '/user_address',
-            data: {
-                id: id
-            }
-        }).success(function(){
-            $scope.wait3 = false;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.back();
-                });
-            }, 1000);
-        });
-    };
-
-    // 设置默认地址
-    $scope.setDefault = function(id) {
-        $scope.wait4 = true;
-        $http({
-            method: 'PUT',
-            url: host + '/user_address',
-            data: {
-                id: id,
-                name: $scope.name,
-                phone: $scope.phone,
-                dormitory: $scope.dorm,
-                type: "default"
-            }
-        }).success(function(){
-            $scope.wait4 = false;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.back();
-                })
-            }, 1000);
-        })
-    };
-
-    // 返回上层
-    $scope.back = function() {
-        history.back();
-    };
-    
-});
+    }
+})();

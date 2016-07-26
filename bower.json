@@ -29,6 +29,7 @@
     "bootstrap": "^3.3.6",
     "font-awesome": "fontawesome#^4.6.3",
     "ngInfiniteScroll": "^1.2.2",
-    "notie": "^3.2.0"
+    "notie": "^3.2.0",
+    "angular-promise-buttons": "^0.1.14"
   }
 }

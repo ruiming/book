@@ -1,0 +1,225 @@
+.cart-page  {
+  background-color: $bgColor;
+  margin-bottom: 82px;
+  .checkbox {
+    float: left;
+    height: 110px;
+    overflow: hidden;
+    margin-right: 10px;
+    label {
+      top: 45px;
+      position: relative;
+      padding-left: 0;
+      span {
+        display: inline-block;
+        border: 1px solid #d9d9d9;
+        width: 1.375em;
+        height: 1.375em;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        @include box-sizing(border-box);
+        &.active {
+          background: #ff5252;
+          position: relative;
+          border-color: #ff5252;
+          &:after {
+            position: absolute;
+            content: '';
+            width: 0.75em;
+            height: 0.41em;
+            border: 2px solid #ffffff;
+            border-top: none;
+            border-right: none;
+            left: 0.3em;
+            top: 0.35em;
+            @include box-sizing(border-box);
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+          }
+        }
+      }
+      input {
+        visibility: hidden;
+      }
+    }
+  }
+  .cart-head {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid #C9302C;
+    padding: 15px 10px 10px;
+    font-size: 15px;
+    background-color: #fff;
+    overflow: hidden;
+    text-align: center;
+    z-index: 99;
+    span {
+      &:last-child {
+        right: 10px;
+        position: absolute;
+      }
+    }
+  }
+  .cart-list {
+    margin-top: 47px;
+    padding: 0 0 10px;
+    list-style: none;
+    display: block;
+    .book {
+      display: block;
+      overflow: hidden;
+      padding: 10px 0;
+      border-bottom: 1px solid #e3e3e3;
+      position: relative;
+      margin-left: 15px;
+      .book-image {
+        float: left;
+        img {
+          height: 130px;
+          float: left;
+          margin-right: 10px;
+        }
+      }
+      .book-title {
+        font-size: 14px;
+        display: block;
+        overflow: hidden;
+        a {
+          font-weight: 700;
+        }
+      }
+      .book-price {
+        color: #F92828;
+        margin: 5px 0 5px 0;
+      }
+      .book-count {
+        margin-bottom: 8px;
+        position: absolute;
+        bottom: 0;
+        color: black;
+        font-size: 12px;
+      }
+      .book-edit {
+        display: block;
+        overflow: hidden;
+        .book-edit-count {
+          margin-right: 50px;
+          i {
+            background-color: white;
+            padding: 4.5px 10px;
+            float: left;
+            color: #B6B6B6;
+            border: 0;
+            border-right: 1px solid #F0F0F0;
+            &:last-child {
+              float: none;
+              border-left: 1px solid #F0F0F0;
+              border-right: 0;
+            }
+          }
+          input,
+          input:active {
+            width: 60px;
+            text-align: center;
+            padding: 3px 5px;
+            font-size: 12px;
+            border: 0;
+            outline: none;
+            border-radius: 0;
+            float: left;
+          }
+        }
+        .fa-trash-o {
+          float: right;
+          font-size: 1.3em;
+          padding-top: 2px;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  .cart-to-order {
+    position: fixed;
+    z-index: 9999;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    background-color: rgba(255,255,255,.9);
+    button {
+      padding: 10px 20px;
+      border-radius: 0;
+      float: right;
+    }
+    .checkbox {
+      height: auto;
+      position: absolute;
+      left: 15px;
+      label {
+        position: initial;
+        top: 45px;
+        padding-left: 0;
+        span {
+          position: initial;
+          right: 0;
+        }
+      }
+    }
+    .cart-count {
+      float: right;
+      label {
+        color: #D9534F;
+        padding: 8px 10px 8px 0;
+      }
+    }
+  }
+  .checkbox {
+    float: left;
+    height: 110px;
+    overflow: hidden;
+    margin-right: 10px;
+    label {
+      top: 45px;
+      position: relative;
+      padding-left: 0;
+      span {
+        display: inline-block;
+        border: 1px solid #d9d9d9;
+        width: 1.375em;
+        height: 1.375em;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        @include box-sizing(border-box);
+        &.active {
+          background: #ff5252;
+          position: relative;
+          border-color: #ff5252;
+          &:after {
+            position: absolute;
+            content: '';
+            width: 0.75em;
+            height: 0.41em;
+            border: 2px solid #ffffff;
+            border-top: none;
+            border-right: none;
+            left: 0.3em;
+            top: 0.35em;
+            @include box-sizing(border-box);
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+          }
+        }
+      }
+      input {
+        visibility: hidden;
+      }
+    }
+  }
+
+}

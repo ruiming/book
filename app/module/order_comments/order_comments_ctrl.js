@@ -1,70 +1,43 @@
-routeApp.controller('OrderCommentsCtrl', function($scope, $http, $stateParams){
+(function(){
+    'use strict';
 
-    $scope.busy = true;
-    $scope.wait = false;        // 等待
-    $scope.alert = false;       // 错误提示
+    angular
+        .module('index')
+        .controller('OrderCommentsCtrl', OrderCommentsCtrl);
 
-    // 获取待评价订单的详细信息
-   $http({
-       method: 'GET',
-       url: host + '/billing',
-       params: {
-           id: $stateParams.id
-       }
-   }).success(function(response){
-       $scope.order = response;
-       $scope.busy = false;
-       // todo check here
-       if($scope.status != "commenting"){
-           history.back();
-       }
-   });
+    OrderCommentsCtrl.$inject = ['$q', '$stateParams', 'orderservice', 'commentservice'];
 
-    // todo 订单评价
-    $scope.comment = function(){
-        $scope.wait = true;
-        if(!this.commentForm.$valid) {
-            $scope.wait = false;
-            $scope.alert = true;
-            window.setTimeout(function() {
-                $scope.$apply(function() {
-                    $scope.alert = false;
-                });
-            }, 4000);
+    function OrderCommentsCtrl($q, $stateParams, orderservice, commentservice) {
+        let vm = this;
+        vm.comment = comment;
+
+        getOrderDetail();
+
+        function getOrderDetail() {
+            orderservice.getOrderDetail($stateParams.id).then(response => {
+                vm.order = response;
+                if(vm.order.status !== 'commenting') {
+                    history.back();
+                }
+            });
         }
-        else {
-            for(var i in $scope.order.carts){
-                if($scope.order.carts.hasOwnProperty(i)){
-                    $scope.commentBook($scope.order.carts[i].book);
+
+        function comment(){
+            let promises = [];
+            if(!vm.commentForm.$valid) {
+                notie.alert(1, '请填写全部信息', 0.3);
+                return;
+            }
+            else {
+                for(let z of vm.order.carts) {
+                    promises.push(commentservice.postComment(z.book.isbn, z.book.star, z.book.content));
                 }
             }
+            return $q.all(promises).then(() => {
+                commentservice.platformComment(vm.stars1, vm.stars2, vm.stars3);
+            }).then(() => {
+                history.back();
+            });
         }
-        // todo 平台评分
-        $http({
-            method: 'POST',
-            url: host + '/user_billing',
-            data: {
-                stars1: $scope.stars1,
-                stars2: $scope.stars2,
-                stars3: $scope.stars3
-            }
-        }).success(function(response){
-
-        });
-    };
-
-    // 书籍评价
-    $scope.commentBook = function(book){
-        console.log(book);
-        $http({
-            method: 'POST',
-            url: host + '/comment',
-            data: {
-                content: book.content,
-                isbn: book.isbn,
-                star: book.star*2
-            }
-        });
-    };
-    
-});
+    }
+})();

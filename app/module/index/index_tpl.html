@@ -1,40 +1,19 @@
-<div class="slides">
-    <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides" no-pause="true">
-        <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
-            <img ng-src="{{slide.image}}" style="margin:auto;">
-        </uib-slide>
-    </uib-carousel>
-</div>
-<div class="slides-book">
-    <div class="slides-book-header">
-        <i class="fa fa-book"></i>
-        <span>书籍推荐</span>
-        <a ui-sref="recommend">更多 > </a>
+<div class="index-page">
+    <div ng-include="'index/index_slides_part.html'"></div>
+    <div class="books">
+        <div class="books-header">
+            <i class="fa fa-book"></i>
+            <span>书籍推荐</span>
+            <a ui-sref="recommend">更多 > </a>
+        </div>
+        <book-slide ng-init="vm.books=[]" books=vm.books></book-slide>
     </div>
-    <div class="slides-book-content" style="min-height: 195px;">
-        <a ng-repeat="book in books" ui-sref="book({isbn:book.isbn})">
-            <img ng-src="{{book.image}}">
-            <p>{{book.title | limitTo : 8}}<span ng-if="book.title.length>8">...</span></p>
-            <uib-rating ng-model="book.star" class="red-star wechat-fix" max="5"
-                        state-on="'fa fa-star'" state-off="'fa fa-star-o'" read-only="true"></uib-rating>
-            <span>{{book.rate | number:1}}</span>
-        </a>
-    </div>
-</div>
-<div class="booklists-box" style="min-height: 400px;">
-    <div class="booklists-box-header">
-        <i class="fa fa-list"></i>
-        <span>热门书单</span>
-        <a ui-sref="popular">更多 > </a>
-    </div>
-    <div class="booklists-box-content">
-        <a ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
-            <img ng-src="{{booklist.image}}">
-            <span class="title">{{booklist.title}}</span>
-            <span class="collect">{{booklist.collect}}人收藏</span>
-            <div class="booklist-tag">
-                <div class="tag" ng-repeat="tag in booklist.tags">{{tag}}</div>
-            </div>
-        </a>
+    <div class="booklists" style="min-height: 400px;">
+        <div class="booklists-header">
+            <i class="fa fa-list"></i>
+            <span>热门书单</span>
+            <a ui-sref="popular">更多 > </a>
+        </div>
+        <booklist-row booklists=vm.booklists></booklist-row>
     </div>
 </div>

@@ -1,0 +1,33 @@
+.suggest {
+  overflow: hidden;
+  .i-suggest {
+    overflow: hidden;
+    .input-group {
+      text-align: center;
+      margin: 0 auto;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      float: left;
+      border-radius: 50%;
+      border: 2px solid #FFF;
+    }
+    .suggest-header {
+      margin: 30px 0 10px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .suggestion {
+      padding: 20px 10px;
+      textarea {
+        min-height: 140px;
+        resize: none;
+      }
+      input {
+        margin-top: 25px;
+      }
+    }
+  }
+}

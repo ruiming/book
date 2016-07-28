@@ -5,7 +5,7 @@ from app.user.model import Points
 from datetime import datetime, timedelta
 
 
-def return_message(status, status_id, data=None, data_required=False):
+def return_message(status, status_id, data=None, data_required=True):
     return_data = {
         'status': str(status),
         'status_id': int(status_id),
@@ -13,7 +13,7 @@ def return_message(status, status_id, data=None, data_required=False):
     if data:
         return_data['data'] = data
     else:
-        if data_required:
+        if data_required and status == 'success':
             return_data['data'] = ""
 
     return jsonify(return_data)

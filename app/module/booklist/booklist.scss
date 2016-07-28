@@ -11,7 +11,8 @@
     }
     .booklist-image-cover {
       position: absolute;
-      top: -5%;
+      top: -100%;
+      bottom: 50%;
       left: 0;
       width: 100%;
       z-index: -1;
@@ -19,7 +20,7 @@
       border: 0;
       vertical-align: middle;
       display: block;
-      height: auto;
+      height: 100%;
       @include blur(1rem);
       opacity: 0.3;
     }

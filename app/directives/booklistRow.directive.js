@@ -14,7 +14,9 @@
            <div class="booklists-row"  infinite-scroll='scroll.nextPage()' 
                 infinite-scroll-disabled='scroll.busy'  infinite-scroll-distance='1'>
                 <a class="booklist" ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
-                    <img ng-src="{{booklist.image}}">
+                    <div class="pic">
+                        <img ng-src="{{booklist.image}}">
+                    </div>
                     <span class="title">{{booklist.title}}</span>
                     <span class="collect">{{booklist.collect}}人收藏</span>
                     <div class="tags">

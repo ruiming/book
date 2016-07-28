@@ -13,20 +13,6 @@ import usemin from 'gulp-usemin'
 import runSequence from 'gulp-run-sequence'
 import eslint from 'gulp-eslint'
 
-/*
- *
- * app Angular控制器和模板
- * backend 后端，生产环境
- * bower_components bower管理前端JS,CSS,FONTS等源码
- * node_modules npm管理前端npm插件
- * src 开发环境部署用
- * static 自己写的CSS, JS以及引入的IMG等等
- *
- */
-
-
-// 打包js依赖文件如angularJS文件和jquery等
-// 该文件无需维护
 gulp.task('angular', function(cb){
     gulp.src(['bower_components/jquery/dist/jquery.min.js',
             'bower_components/notie/dist/notie.min.js',
@@ -46,8 +32,6 @@ gulp.task('angular', function(cb){
         .on('end',cb);
 });
 
-// 打包压缩自己写的angular路由，控制器，指令文件
-// 该文件需要维护，合并但不压缩
 gulp.task('js', function(cb){
     gulp.src(['app/**/*.js', 'app/module/**/*.js'])
         .pipe(plumber())
@@ -62,7 +46,6 @@ gulp.task('js', function(cb){
         .on('end',cb);
 });
 
-// 打包视图
 gulp.task('templates:dist', function(cb) {
     gulp.src('app/module/**/*.html')
         .pipe(minifyHtml({empty: true, quotes: true}))
@@ -74,7 +57,6 @@ gulp.task('templates:dist', function(cb) {
         .on('end',cb);
 });
 
-// 打包合并css
 gulp.task('css', function(cb){
     gulp.src(['bower_components/bootstrap/dist/css/bootstrap.min.css',
             'bower_components/font-awesome/css/font-awesome.min.css',
@@ -85,7 +67,6 @@ gulp.task('css', function(cb){
         .on('end',cb);
 });
 
-// 移动fonts
 gulp.task('fonts', function(cb){
     gulp.src(['bower_components/font-awesome/fonts/*', 'bower_components/bootstrap/fonts/*'])
         .pipe(gulp.dest('backend/app/static/fonts/'))
@@ -93,8 +74,6 @@ gulp.task('fonts', function(cb){
         .on('end',cb);
 });
 
-
-// 压缩图片
 gulp.task('img', function(cb){
     gulp.src('static/images/*.*')
         .pipe(imagemin({
@@ -105,7 +84,6 @@ gulp.task('img', function(cb){
         .on('end',cb);
 });
 
-// 编译sass得到bookist.css
 gulp.task('sass', function(cb){
     gulp.src(['app/*.scss', 'app/**/*.scss', 'app/module/**/*.scss'])
         .pipe(plumber())
@@ -116,7 +94,6 @@ gulp.task('sass', function(cb){
         .on('end',cb);
 });
 
-// 部署生产环境，将全部css和js各合为一个
 gulp.task('together', function(cb){
     gulp.src('index.html')
         .pipe(plumber())
@@ -128,18 +105,17 @@ gulp.task('together', function(cb){
         .on('end',cb);
 });
 
-// 移动index
 gulp.task('move', function(){
     return gulp.src('backend/app/index.html')
                 .pipe(gulp.dest('backend/app/templates/'));
 });
 
-gulp.watch(['app/*.scss', 'app/module/**/*.scss'], ['sass']);
-gulp.watch(['app/**/*.js', 'app/module/**/*.js'], ['js']);                      // angularJS自动部署
-gulp.watch('static/img/*.*', ['img']);                                          // 图片自动部署
-gulp.watch('app/module/**/*.html',['templates:dist']);                          // 模板自动部署
+gulp.watch(['app/*.scss', 'app/**/*.scss', 'app/module/**/*.scss'], ['sass']);
+gulp.watch(['app/**/*.js', 'app/module/**/*.js'], ['js']);
+gulp.watch('static/img/*.*', ['img']);
+gulp.watch('app/module/**/*.html',['templates:dist']);
 
-gulp.task('product',function(cb){                                               // 生产环境部署
+gulp.task('product',function(cb) {
     runSequence('together','move',cb)
 });
 

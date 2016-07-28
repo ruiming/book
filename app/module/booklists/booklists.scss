@@ -1,7 +1,6 @@
 .booklists-page {
   .tags {
     background-color: #fff;
-    margin-bottom: 20px;
     padding: 0;
     .tags-header {
       padding: 10px 5px;
@@ -20,7 +19,7 @@
       }
     }
     .tags-list {
-      margin: 0 10px 10px 10px;
+      margin: 0 10px;
       display: block;
       overflow: hidden;
       .tag {

@@ -33,10 +33,11 @@
         line-height: 1.4;
       }
       span {
+        font-size: 13px;
         float: left;
       }
       a {
-        color: #009688;
+        color: #6f6f6f;
         font-weight: 500;
         font-size: 13px;
         float: right;
@@ -52,12 +53,13 @@
       float: left;
       padding-right: 5px;
       line-height: 1.4;
-      span {
-        float: left;
-      }
+    }
+    span {
+      font-size: 13px;
+      float: left;
     }
     a {
-      color: #009688;
+      color: #6f6f6f;
       font-weight: 500;
       font-size: 13px;
       float: right;

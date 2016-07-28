@@ -23,4 +23,12 @@
       color: $star;
     }
   }
+  .wechat-fix {
+    i:before{
+      padding: 0 1px;
+    }
+    .sr-only {
+      height: 0 !important;
+    }
+  }
 }

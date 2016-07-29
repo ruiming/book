@@ -265,12 +265,13 @@ class Notice(db.Document):
     """
     通知模型
     """
-    content = db.StringField()
+    title = db.StringField(required=True)
+    content = db.StringField(required=True)
     url = db.StringField()
     create_time = db.IntField(default=int(time()))
     is_read = db.BooleanField(default=False)
     read_time = db.IntField()
-    user = db.ReferenceField(User)
+    user = db.ReferenceField(User, required=True)
 
     def read(self):
         try:

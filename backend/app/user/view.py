@@ -996,6 +996,7 @@ def user_notices():
         for one_notice in all_user_notices:
             all_user_notices_json.append({
                 'id': str(one_notice.pk),
+                'title': one_notice.title,
                 'time': one_notice.create_time,
                 'content': one_notice.content,
                 'url': one_notice.url,

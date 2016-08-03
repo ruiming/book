@@ -30,4 +30,26 @@
             </div>
         </a>
     </div>
+    <div class="booklist-bottom">
+        <button class="btn"
+                ng-click="vm.collect()"
+                promise-btn>
+            <i ng-if="!vm.booklist.collect_already" class="fa fa-bookmark-o"></i>
+            <i ng-if="vm.booklist.collect_already" class="fa fa-bookmark"></i>
+            {{vm.booklist.collect}}
+        </button>
+        <button class="btn"
+                ng-click="vm.collect()"
+                promise-btn>
+            <i ng-if="!vm.booklist.collect_already" class="fa fa-heart-o"></i>
+            <i ng-if="vm.booklist.collect_already" class="fa fa-heart"></i>
+            {{vm.booklist.collect}}
+        </button>
+        <button class="btn"
+                ng-click="vm.collect()"
+                promise-btn>
+            <i class="fa fa-comment-o"></i>
+            {{vm.booklist.collect}}
+        </button>
+    </div>
 </div>

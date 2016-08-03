@@ -3,14 +3,7 @@
     <h3>{{vm.booklist.title}}</h3>
     <p class="booklist-intro">{{vm.booklist.description}}</p>
     <img class="avatar" ng-src="{{vm.booklist.author.avatar}}">
-    <small>{{vm.booklist.author.name}} / {{vm.booklist.collect}}人收藏</small>
-    <button class="btn btn-blue"
-            ng-click="vm.collect()"
-            promise-btn>
-        <i class="fa fa-bookmark-o"></i>
-        <i ng-if="!vm.booklist.collect_already">收藏书单</i>
-        <i ng-if="vm.booklist.collect_already">已收藏</i>
-    </button>
+    <small>{{vm.booklist.author.name}}</small>
 </div>
 <div class="tags">
     <div class="tags-outer">

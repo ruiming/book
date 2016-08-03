@@ -122,6 +122,9 @@
                         controller: 'BookListCtrl',
                         templateUrl: 'booklist/booklist_tpl.html',
                         controllerAs: 'vm'
+                    },
+                    'nav': {
+                        template: '<span></span>'
                     }
                 }
             })

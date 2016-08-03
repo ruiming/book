@@ -115,6 +115,9 @@
                         controller: 'BookInfoCtrl',
                         templateUrl: 'book_info/book_info_tpl.html',
                         controllerAs: 'vm'
+                    },
+                    'nav': {
+                        template: '<span></span>'
                     }
                 }
             })

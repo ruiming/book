@@ -2,9 +2,9 @@
 <button class="btn btn-success"
         ng-click="vm.collect()"
         promise-btn>
-    <i class="fa fa-bookmark-o"></i>
-    <i ng-if="vm.book.collect_already">已收藏</i>
-    <i ng-if="!vm.book.collect_already">收藏</i>
+    <i ng-if="vm.book.collect_already" class="fa fa-bookmark-o"></i>
+    <i ng-if="!vm.book.collect_already" class="fa fa-bookmark"></i>
+    <i>收藏</i>
 </button>
 <button class="btn btn-danger"
         ng-click="vm.addCart()"

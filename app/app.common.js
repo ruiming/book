@@ -102,6 +102,9 @@
                         controller: 'BookCtrl',
                         templateUrl: 'book/book_tpl.html',
                         controllerAs: 'vm'
+                    },
+                    'nav': {
+                        template: '<span></span>'
                     }
                 }
             })

@@ -18,16 +18,12 @@
         }
         .cover-bg {
           position: absolute;
-          top: -5%;
+          top: -50%;
+          bottom: -50%;
           z-index: -1;
-          background: #fff;
-          border: 0;
-          vertical-align: middle;
-          display: block;
-          left: -5%;
-          width: 110%;
-          opacity: 0.8;
-          @include blur(1rem);
+          width: 100%;
+          opacity: .9;
+          -webkit-filter: blur(0.8rem);
         }
       }
       .book-info {
@@ -61,20 +57,22 @@
       }
     }
     .book-section {
-      padding: 0 10px;
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      z-index: 1;
       background-color: #ffffff;
-      border-top: 1px solid #eee;
-      border-bottom: 1px solid #eee;
       overflow: hidden;
       span {
-        padding: 12px 0;
+        padding: 15px 12px;
         float: left;
         color: #F44336;
       }
       button {
         float: right;
         border: none;
-        padding: 12px 10px;
+        padding: 15px 10px;
         border-radius: 0;
       }
       .btn-collect {

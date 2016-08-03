@@ -11,8 +11,8 @@
     }
     .booklist-image-cover {
       position: absolute;
-      top: -100%;
-      bottom: 50%;
+      top: -50%;
+      bottom: -50%;
       left: 0;
       width: 100%;
       z-index: -1;
@@ -83,12 +83,12 @@
         }
         .cover-bg {
           position: absolute;
-          top: -5%;
+          top: -50%;
+          bottom: -50%;
           z-index: -1;
-          left: -5%;
-          width: 110%;
-          opacity: 0.8;
-          @include blur(1rem);
+          width: 100%;
+          opacity: .9;
+          -webkit-filter: blur(0.8rem);
         }
       }
       .book-info {

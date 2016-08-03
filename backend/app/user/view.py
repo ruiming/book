@@ -991,13 +991,12 @@ def user_notices():
 
         all_user_notices = Notice.objects(user=this_user).order_by("-create_time")
 
-        all_user_notices_json = {
-            'data': []
-        }
+        all_user_notices_json = []
 
         for one_notice in all_user_notices:
-            all_user_notices_json['data'].append({
+            all_user_notices_json.append({
                 'id': str(one_notice.pk),
+                'title': one_notice.title,
                 'time': one_notice.create_time,
                 'content': one_notice.content,
                 'url': one_notice.url,

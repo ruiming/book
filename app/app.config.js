@@ -1,8 +1,6 @@
 /*
  * 配置文件
  */
-
-var delay = 2800;                           // time delay for message animate
 var host = 'https://www.bookist.org';        // API url
 // var host = 'http://192.168.1.231';
 
@@ -54,3 +52,6 @@ notie.setOptions({
     animationDelay: 300, // Be sure to also change 'transition: all 0.3s ease' variable in .scss file
     backgroundClickDismiss: true
 });
+var notices = {
+    '216': '加入购物车成功'
+};

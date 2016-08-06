@@ -15,8 +15,8 @@
     config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider', 'angularPromiseButtonsProvider'];
     function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider) {
         $httpProvider.defaults.transformResponse.push(response => {
-            if(response.message !== void 0) {
-                notie.alert(1, response.message, 0.3);
+            if(notices[response.status_id] !== void 0) {
+                notie.alert(1, notices[response.status_id], 0.3);
             }
             if(angular.isDefined(response.data)&& response.status === 'success') {
                 response = response.data;

@@ -2,8 +2,8 @@
 <button class="btn btn-success"
         ng-click="vm.collect()"
         promise-btn>
-    <i ng-if="vm.book.collect_already" class="fa fa-bookmark-o"></i>
-    <i ng-if="!vm.book.collect_already" class="fa fa-bookmark"></i>
+    <i ng-if="!vm.book.collect_already" class="fa fa-bookmark-o"></i>
+    <i ng-if="vm.book.collect_already" class="fa fa-bookmark"></i>
     <i>收藏</i>
 </button>
 <button class="btn btn-danger"

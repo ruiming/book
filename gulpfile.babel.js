@@ -36,9 +36,9 @@ gulp.task('js', function(cb){
     gulp.src(['app/**/*.js', 'app/module/**/*.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
-        .pipe(eslint())
+        /*.pipe(eslint())
         .pipe(eslint.format())
-        .pipe(eslint.failAfterError())
+        .pipe(eslint.failAfterError())*/
         .pipe(concat('app.js'))
         .pipe(babel())
         .pipe(uglify())

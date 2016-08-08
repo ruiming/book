@@ -1,0 +1,9 @@
+<div class="comments-page">
+    <div class="navbar navbar-default navbar-fixed-top">
+        <a class="navbar-brand"><i class="fa fa-book" aria-hidden="true"></i>
+            {{vm.title}}</a>
+    </div>
+    <div class="book-comment" ng-repeat="comment in vm.comments">
+        <comment-row comment=comment up=vm.up down=vm.down></comment-row>
+    </div>
+</div>

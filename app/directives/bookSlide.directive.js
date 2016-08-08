@@ -13,7 +13,7 @@
              <div class="slides-book-content">
                 <a ng-repeat="book in books track by $index" ui-sref="book({isbn: book.isbn})">
                     <img ng-src="{{book.image}}">
-                    <p>{{book.title | limitTo : 8}}<span ng-if="book.title.length>8">...</span></p>
+                    <p>{{book.title}}</p>
                     <uib-rating ng-model="book.star"
                                 class="red-star wechat-fix"
                                 state-on="'fa fa-star'"

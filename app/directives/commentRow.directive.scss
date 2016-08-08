@@ -1,0 +1,36 @@
+.origin{
+  margin: 10px 0;
+  color: #a6a6a6;
+  img {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+  }
+  span:first-child {
+    padding-left: 5px;
+  }
+  .star {
+    float: right;
+    line-height: 2.5;
+  }
+}
+.comment-meta {
+  overflow: hidden;
+  width: 100%;
+  display: block;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+  p {
+    color: #828282;
+    float: left;
+    margin-bottom: 0;
+    padding: 5px 10px 5px 0;
+  }
+  i {
+    float: right;
+    padding: 5px 10px;
+    &:before {
+      padding-right: 5px;
+    }
+  }
+}

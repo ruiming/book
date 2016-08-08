@@ -30,7 +30,7 @@
         });
 
         bookservice.getSimilarBook($stateParams.isbn).then(response => {
-            vm.booksBought = response;
+            vm.similarbooks = response;
         });
 
         bookservice.getBookBelongs($stateParams.isbn).then(response => {

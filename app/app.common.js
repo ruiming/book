@@ -134,6 +134,19 @@
                     }
                 }
             })
+            .state('booklistComments', {
+                url: '/booklist/{id}/comments',
+                views: {
+                    'main': {
+                        controller: 'BooklistCommentsCtrl',
+                        templateUrl: 'booklist_comments/booklist_comments_tpl.html',
+                        controllerAs: 'vm'
+                    },
+                    'nav': {
+                        template: '<span></span>'
+                    }
+                }
+            })
             .state('tagBooklists',{
                 url: '/booklists/{tag}',
                 views: {

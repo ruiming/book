@@ -84,16 +84,16 @@
         }
 
         function getSimilarBook(isbn) {
-            if(similarBook == null) {
+            if(similarBook[isbn] == null) {
                 return $http.get(host + '/similar_book?isbn=' + isbn)
                     .then(response => {
-                        similarBook = changeStars(response.data);
-                        return similarBook;
+                        similarBook[isbn] = changeStars(response.data);
+                        return similarBook[isbn];
                     });
             }
             else {
                 let deferred = $q.defer();
-                deferred.resolve(similarBook);
+                deferred.resolve(similarBook[isbn]);
                 return deferred.promise;
             }
         }

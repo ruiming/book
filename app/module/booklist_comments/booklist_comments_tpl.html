@@ -1,6 +1,34 @@
-<div class="comments-page">
+<div class="booklist-comment-page">
     <top-bar title=vm.title></top-bar>
     <div class="book-comment" ng-repeat="comment in vm.comments">
         <comment-row comment=comment up=vm.up down=vm.down></comment-row>
+    </div>
+    <form name="commentForm" class="book-comment-box" ng-if="vm.commentBox">
+        <div class="book-comment-origin">
+            <img ng-src="{{vm.user.avatar}}">
+            <span class="book-comment-origin">{{vm.user.username}}</span>
+            <uib-rating class="star red-star"
+                        state-on="'fa fa-star'" state-off="'fa fa-star-o'"
+                        ng-model="vm.star" max="5" read-only="false"></uib-rating>
+        </div>
+        <textarea ng-model="vm.content"
+                  focus-me="{{vm.commentBox}}"
+                  name="content"
+                  class="form-control"
+                  rows="3"
+                  ng-required="true"></textarea>
+        <div class="book-comment-post">
+            <button class="btn btn-success btn-block" type="submit"
+                    ng-click="vm.postComment()"
+                    promise-btn>
+                发表
+            </button>
+        </div>
+    </form>
+    <div class="btn-bottom" ng-if="!vm.commentBox">
+        <button class="btn btn-success btn-block" style="border-radius: 0"
+                ng-click="vm.commentBox = !vm.commentBox">
+            评论
+        </button>
     </div>
 </div>

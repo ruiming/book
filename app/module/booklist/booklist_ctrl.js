@@ -9,10 +9,9 @@
 
     function BookListCtrl($stateParams, booklistservice) {
         let vm = this;
-        vm.wait = false;
-        vm.wait2 = false;
 
         vm.collect = collect;
+        vm.love = love;
 
         getBooklistDetail();
 
@@ -25,13 +24,19 @@
             });
         }
 
+        function love() {
+            return booklistservice.loveBooklist($stateParams.id).then(() => {
+                vm.booklist.love_already = !vm.booklist.love_already;
+                vm.booklist.love = vm.booklist.love_already ?
+                    ++vm.booklist.love : --vm.booklist.love;
+            });
+        }
+
         function　collect(){
-            vm.wait = true;
             return booklistservice.collectBooklist($stateParams.id).then(() => {
                 vm.booklist.collect_already = !vm.booklist.collect_already;
                 vm.booklist.collect = vm.booklist.collect_already ?
                     ++vm.booklist.collect : --vm.booklist.collect;
-                vm.wait = false;
             });
         }
     }

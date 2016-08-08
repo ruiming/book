@@ -140,6 +140,16 @@ a {
 .rarrow {
   background: url(/static/images/arrow_r.png) right center no-repeat;
 }
+.btn-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  border-top: 1px solid #eee;
+  background-color: white;
+  height: 50px;
+}
 .colorBar {
   height: 3px;
   background: url(/static/images/colourBar.png) top left repeat-x;
@@ -156,6 +166,7 @@ a {
 .book-page,
 .booklist-page,
 .booklists-page,
+.recommend-more-page,
 .order-page,
 .collect-booklists-page,
 .collect-books-page,

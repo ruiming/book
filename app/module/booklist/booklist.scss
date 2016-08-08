@@ -134,14 +134,7 @@
       }
     }
   }
-  .booklist-bottom {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-    border-top: 1px solid #eee;
-    background-color: white;
+  .btn-bottom {
     button {
       width: 33.33%;
       float: left;

@@ -15,12 +15,19 @@
             collectBooklist: collectBooklist,
             getHotBooklists: getHotBooklists,
             getBooklistDetail: getBooklistDetail,
-            getBooklists: getBooklists
+            getBooklists: getBooklists,
+            loveBooklist: loveBooklist
         };
 
         function collectBooklist(id) {
             return $http.post(host + '/collect', {
                 type: 'booklist',
+                id: id
+            }).then(response => response.data);
+        }
+
+        function loveBooklist(id) {
+            return $http.post(host + '/booklist_love', {
                 id: id
             }).then(response => response.data);
         }

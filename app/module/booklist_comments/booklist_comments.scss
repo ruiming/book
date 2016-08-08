@@ -1,0 +1,36 @@
+.booklist-comment-page {
+  padding-top: 45px;
+  background-color: white;
+  .btn-bottom {
+    button {
+      padding: 13.5px;
+    }
+  }
+  .book-comment-box {
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 10px 10px 10px;
+    button {
+      margin-top: 10px;
+    }
+  }
+  .book-comment-origin{
+    margin: 10px 0;
+    color: #a6a6a6;
+    img {
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+    }
+    span:first-child {
+      padding-left: 5px;
+    }
+    .star {
+      float: right;
+      line-height: 2.5;
+    }
+  }
+}

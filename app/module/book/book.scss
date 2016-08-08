@@ -1,6 +1,6 @@
 .book-page {
   background-color: #ffffff;
-  .book {
+  .book-intro {
     padding: 0 10px;
   }
   .book-detail {
@@ -159,6 +159,14 @@
         margin: 0 10px 5px 0;
       }
     }
+  }
+  .book-comments {
+    span:first-child {
+      padding-left: 10px !important;
+    }
+  }
+  .book-comment-box {
+    padding: 0 10px;
   }
   .booklists-box-content,
   .slides-book-content{

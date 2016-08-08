@@ -12,7 +12,7 @@
             },
             template:
                 `
-                    <div>
+                    <div class="comment">
                     <div class="origin">
                         <img ng-src="{{comment.user.avatar}}">
                         <span>{{comment.user.username}}</span>

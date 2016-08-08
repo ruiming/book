@@ -13,10 +13,10 @@
 </div>
 <div class="book-comments">
     <span>评论</span>
-    <div class="book-no-comment" ng-if="vm.book.comments.length == 0">
-        <p style="color: grey">征集评论</p>
+    <div ng-if="vm.book.comments.length == 0">
+        <p class="text-center">征集评论</p>
     </div>
-    <div class="book-comment"
+    <div
          ng-repeat="comment in vm.book.comments"
          ng-if="book.comments.length != 0">
         <comment-row comment=comment up=vm.up down=vm.down></comment-row>

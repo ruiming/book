@@ -2,12 +2,10 @@
     <span>简介</span>
     <p ng-bind-html="vm.book.description"
        ng-class="{'book-intro-less':!vm.more,'book-intro-more':vm.more}"></p>
-    <span class="btn btn-block btn-default"
-          ng-show="!vm.more" ng-click="vm.more=!vm.more">
+    <span ng-show="!vm.more" ng-click="vm.more=!vm.more">
                 更多
             </span>
-    <span class="btn btn-block btn-default"
-          ng-show="vm.more" ng-click="vm.more=!vm.more">
+    <span ng-show="vm.more" ng-click="vm.more=!vm.more">
                 收起
             </span>
 </div>

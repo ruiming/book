@@ -1,8 +1,5 @@
 .book-page {
   background-color: #ffffff;
-  .book-intro {
-    padding: 0 10px;
-  }
   .book-detail {
     .book-head {
       .book-image {
@@ -83,7 +80,6 @@
       }
     }
     .book-intro,
-    .book-comments,
     .book-tags,
     .books-similarity,
     .booklists-box {
@@ -95,10 +91,11 @@
         font-size: 14px;
         text-align: left;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin: 5px;
         color: grey;
       }
       p {
+        margin: 5px;
         word-wrap: break-word;
         line-height: 1.6;
       }
@@ -126,6 +123,9 @@
         padding: 6px;
         border: none;
         color: grey;
+        display: block;
+        font-size: 14px;
+        width: 100%;
       }
     }
     .book-comments-more {
@@ -172,9 +172,6 @@
   .slides-book-content{
     padding: 0;
     margin-top: 10px;
-  }
-  .books-similarity {
-    padding: 0 10px;
   }
   .book-comment-origin{
     margin: 10px 0;

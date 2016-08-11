@@ -22,14 +22,6 @@
         if(status.indexOf(vm.type) === -1) {
             history.back();
         }
-        else if(vm.type === 'return') {
-            orderservice.getReturnOrder().then(response => {
-                vm.orders_return = response;
-                for(let order of vm.orders_return) {
-                    order.status = statusDict[order.status];
-                }
-            });
-        }
 
         function getOrder() {
             orderservice.getOrder($stateParams.status).then(response => {

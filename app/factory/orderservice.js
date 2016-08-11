@@ -19,17 +19,11 @@
             getOrderDetail: getOrderDetail,
             cancelOrder: cancelOrder,
             receiptOrder: receiptOrder,
-            getReturnOrder: getReturnOrder,
             getOrder: getOrder
         };
 
         function getOrder(status) {
             return $http.get(host + '/user_billings?status=' + status)
-                .then(response => response.data);
-        }
-
-        function getReturnOrder() {
-            return $http.get(host + '/billing?status=on_return')
                 .then(response => response.data);
         }
 

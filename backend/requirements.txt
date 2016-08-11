@@ -1,6 +1,6 @@
-flask=0.11.1
+flask==0.11.1
 celery
-flask-mongoengine=0.7.5
+flask-mongoengine==0.7.5
 flask-admin
 flask-login
 flask-security

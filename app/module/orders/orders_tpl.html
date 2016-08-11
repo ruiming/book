@@ -55,12 +55,6 @@
                         <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{order.price}}</em> 元</span>
                     </div>
                     <a class="btn btn-danger"
-                       ng-if="type=='return'"
-                       style="width: 82px;"
-                       ui-sref="orderReturn({id: order.id})">
-                        退换货
-                    </a>
-                    <a class="btn btn-danger"
                        ng-if="order.status=='待评价'"
                        ui-sref="orderComments({id: order.id})">
                         评价
@@ -80,6 +74,12 @@
                             disabled>
                         已取消
                     </button>
+                    <a class="btn btn-danger"
+                       ng-if="type=='commenting'||'waiting'||'return'"
+                       style="width: 82px;"
+                       ui-sref="orderReturn({id: order.id})">
+                        退换货
+                    </a>
                 </div>
             </li>
         </ul>

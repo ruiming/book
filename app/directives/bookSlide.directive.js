@@ -11,7 +11,8 @@
             template:
                 `
              <div class="slides-book-content">
-                <p>Test2: {{books === undefined}} {{books.length}}</p>
+                <p>Test3: {{books === undefined}} {{books.length}}</p>
+                <p></p>
                  <a ng-repeat="book in books track by $index" ui-sref="book({isbn: book.isbn})">
                     <img ng-src="{{book.image}}">
                     <p>{{book.title}}</p>

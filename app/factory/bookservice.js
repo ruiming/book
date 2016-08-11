@@ -70,8 +70,7 @@
                         bookDetail[isbn] = response.data;
                         return bookDetail[isbn];
                     });
-            }
-            else {
+            } else {
                 let deferred = $q.defer();
                 deferred.resolve(bookDetail[isbn]);
                 return deferred.promise;
@@ -90,8 +89,7 @@
                         similarBook[isbn] = changeStars(response.data);
                         return similarBook[isbn];
                     });
-            }
-            else {
+            } else {
                 let deferred = $q.defer();
                 deferred.resolve(similarBook[isbn]);
                 return deferred.promise;
@@ -126,8 +124,7 @@
                         popularBooks = changeStars(response.data);
                         return popularBooks;
                     });
-            }
-            else {
+            } else {
                 let deferred = $q.defer();
                 deferred.resolve(popularBooks);
                 return deferred.promise;

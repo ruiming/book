@@ -5,34 +5,36 @@
         .module('index')
         .controller('IndexCtrl', IndexCtrl);
 
-    IndexCtrl.$inject = ['bookservice', 'booklistservice', 'slideservice', '$log', '$state'];
+    IndexCtrl.$inject = ['booklistservice', 'bookservice', 'slideservice', '$log', '$state'];
 
-    function IndexCtrl(bookservice, booklistservice, slideservice, $log, $state) {
-        console.log($state);
+    function IndexCtrl(booklistservice, bookservice, slideservice, $log, $state) {
         var vm = this;
         vm.myInterval = 5000;
 
-        getPopularBooks();
         getHotBooklists();
         getSlides();
+        getPopularBooks();
+
 
         function getHotBooklists() {
-            booklistservice.getHotBooklists().then(response => {
+            return booklistservice.getHotBooklists().then(response => {
                 vm.booklists = response;
             });
         }
 
         function getSlides() {
-            slideservice.getSlides().then(response => {
+            return slideservice.getSlides().then(response => {
                 vm.slides = response;
                 $log.log(response);
             });
         }
 
         function getPopularBooks() {
-            bookservice.getPopularBooks().then(response => {
+            vm.beforeGetPopularBooks = 'hehe';
+            return bookservice.getPopularBooks().then(response => {
                 vm.books = response;
-                alert(response);
+                vm.afterGetPopularBooks = 'haha';
+                vm.response = response;
             });
         }
     }

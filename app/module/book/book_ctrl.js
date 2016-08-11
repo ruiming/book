@@ -37,6 +37,11 @@
             vm.booklists = response;
         });
 
+        bookservice.getPopularBooks().then(response => {
+            vm.test = response;
+            alert(response);
+        });
+
         function addCart(){
             return cartservice.addCart($stateParams.isbn);
         }

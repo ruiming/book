@@ -6,7 +6,7 @@
             restrict: 'EA',
             replace: true,
             scope: {
-                books: '='
+                books: '=books'
             },
             template:
                 `

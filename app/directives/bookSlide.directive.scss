@@ -1,5 +1,6 @@
 .slides-book-content {
   $imgHeight: 150px;
+  width: 100%;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
   overflow-x: auto;
@@ -8,7 +9,6 @@
     font-size: 12px;
     display: inline-block;
     max-width: 120px;
-    overflow: hidden;
     img {
       height: $imgHeight;
       width: 105px;

@@ -16,12 +16,6 @@
         getHotBooklists();
         getSlides();
 
-        function getPopularBooks() {
-            bookservice.getPopularBooks().then(response => {
-                vm.books = response;
-            });
-        }
-
         function getHotBooklists() {
             booklistservice.getHotBooklists().then(response => {
                 vm.booklists = response;
@@ -32,6 +26,13 @@
             slideservice.getSlides().then(response => {
                 vm.slides = response;
                 $log.log(response);
+            });
+        }
+
+        function getPopularBooks() {
+            bookservice.getPopularBooks().then(response => {
+                vm.books = response;
+                alert(response);
             });
         }
     }

@@ -14,7 +14,7 @@
         let changeStars = commonservice.changeStars;
 
         return {
-            getPopularBooks: getPopularBooks,
+            getPopularBooks2: getPopularBooks2,
             getBook: getBook,
             getBookDetail: getBookDetail,
             collectBook: collectBook,
@@ -23,6 +23,15 @@
             getBookBelongs: getBookBelongs,
             getBooks: getBooks
         };
+
+        function getPopularBooks2() {
+            alert("before get");
+            return $http.get(host + '/pop_book')
+                .then(response => {
+                    alert(changeStars(response.data));
+                    return changeStars(response.data);
+                });
+        }
 
         function getBooks() {
             this.list = [];
@@ -115,15 +124,5 @@
                     return changeStars(response.data);
                 });
         }
-
-        function getPopularBooks() {
-            alert("before get");
-            return $http.get(host + '/pop_book')
-                .then(response => {
-                    alert(changeStars(response.data));
-                    return changeStars(response.data);
-                });
-        }
-
     }
 })();

@@ -30,7 +30,7 @@
 
         function getPopularBooks() {
             vm.beforeGetPopularBooks = 'hehe';
-            return bookservice.getPopularBooks().then(response => {
+            return bookservice.getPopularBooks2().then(response => {
                 vm.books = response;
                 vm.afterGetPopularBooks = 'haha';
                 vm.response = response;

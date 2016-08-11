@@ -9,7 +9,6 @@
 
     function bookservice($http, commonservice, $q) {
 
-        let popularBooks = null;
         let bookDetail = [];
         let similarBook = [];
         let changeStars = commonservice.changeStars;
@@ -118,17 +117,12 @@
         }
 
         function getPopularBooks() {
-            if(popularBooks === null) {
-                return $http.get(host + '/pop_book')
-                    .then(response => {
-                        popularBooks = changeStars(response.data);
-                        return popularBooks;
-                    });
-            } else {
-                let deferred = $q.defer();
-                deferred.resolve(popularBooks);
-                return deferred.promise;
-            }
+            alert("before get");
+            return $http.get(host + '/pop_book')
+                .then(response => {
+                    alert(changeStars(response.data));
+                    return changeStars(response.data);
+                });
         }
 
     }

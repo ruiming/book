@@ -21,6 +21,8 @@
 
         if(status.indexOf(vm.type) === -1) {
             history.back();
+        } else {
+            vm.type2 = statusDict[vm.type];
         }
 
         function getOrder() {

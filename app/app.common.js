@@ -204,6 +204,9 @@
                         controller: 'OrdersCtrl',
                         templateUrl: 'orders/orders_tpl.html',
                         controllerAs: 'vm'
+                    },
+                    'nav': {
+                        template: '<span></span>'
                     }
                 }
             })

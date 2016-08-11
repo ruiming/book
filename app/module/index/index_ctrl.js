@@ -5,9 +5,10 @@
         .module('index')
         .controller('IndexCtrl', IndexCtrl);
 
-    IndexCtrl.$inject = ['bookservice', 'booklistservice', 'slideservice', '$log'];
+    IndexCtrl.$inject = ['bookservice', 'booklistservice', 'slideservice', '$log', '$state'];
 
-    function IndexCtrl(bookservice, booklistservice, slideservice, $log) {
+    function IndexCtrl(bookservice, booklistservice, slideservice, $log, $state) {
+        console.log($state);
         var vm = this;
         vm.myInterval = 5000;
 

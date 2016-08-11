@@ -20,10 +20,8 @@
     </script>
 </head>
 <body>
-    <div ui-view="main" class="bookist-view"></div>
-    <div ui-view="nav">
-        <navbar></navbar>
-    </div>
+    <div ui-view class="bookist-view"></div>
+    <div ng-show="$state.current.nav" ng-include="'navbar/navbar_tpl.html'"></div>
     <script src="/static/js/app.min.js"></script>
     <script src="/static/js/bookist.min.js"></script>
 </body>

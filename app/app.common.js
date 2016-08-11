@@ -10,7 +10,10 @@
             'ngTouch',
             'angularPromiseButtons'
         ])
-        .config(config);
+        .config(config)
+        .run(function ($state,$rootScope) {
+            $rootScope.$state = $state;
+        });
 
     config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider', 'angularPromiseButtonsProvider'];
     function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider) {
@@ -57,298 +60,170 @@
         $stateProvider
             .state('index', {
                 url: '/',
-                views: {
-                    'main': {
-                        templateUrl: 'index/index_tpl.html',
-                        controller: 'IndexCtrl',
-                        controllerAs: 'vm'
-                    }
-                }
-            })
-            .state('recommend',{
-                url: '/books/recommend',
-                views: {
-                    'main': {
-                        controller: 'RecommendMoreCtrl',
-                        templateUrl: 'recommend_more/recommend_more_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
-            })
-            .state('booklists',{
-                url: '/booklists',
-                views: {
-                    'main': {
-                        controller: 'BooklistsCtrl',
-                        templateUrl: 'booklists/booklists_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
-            })
-            .state('popular',{
-                url: '/booklists/popular',
-                views: {
-                    'main': {
-                        controller: 'PopularMoreCtrl',
-                        templateUrl: 'popular_more/popular_more_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
-            })
-            .state('book',{
-                url: '/book/{isbn}',
-                views: {
-                    'main': {
-                        controller: 'BookCtrl',
-                        templateUrl: 'book/book_tpl.html',
-                        controllerAs: 'vm'
-                    },
-                    'nav': {
-                        template: '<span></span>'
-                    }
-                }
-            })
-            .state('bookDetail',{
-                url: '/book/{isbn}/detail',
-                views: {
-                    'main': {
-                        controller: 'BookInfoCtrl',
-                        templateUrl: 'book_info/book_info_tpl.html',
-                        controllerAs: 'vm'
-                    },
-                    'nav': {
-                        template: '<span></span>'
-                    }
-                }
-            })
-            .state('booklist',{
-                url: '/booklist/{id}',
-                views: {
-                    'main': {
-                        controller: 'BookListCtrl',
-                        templateUrl: 'booklist/booklist_tpl.html',
-                        controllerAs: 'vm'
-                    },
-                    'nav': {
-                        template: '<span></span>'
-                    }
-                }
-            })
-            .state('booklistComments', {
-                url: '/booklist/{id}/comments',
-                views: {
-                    'main': {
-                        controller: 'BooklistCommentsCtrl',
-                        templateUrl: 'booklist_comments/booklist_comments_tpl.html',
-                        controllerAs: 'vm'
-                    },
-                    'nav': {
-                        template: '<span></span>'
-                    }
-                }
-            })
-            .state('tagBooklists',{
-                url: '/booklists/{tag}',
-                views: {
-                    'main': {
-                        controller: 'TagBooklistsCtrl',
-                        templateUrl: 'tag-booklists/tag-booklists_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
-            })
-            .state('commentsBook',{
-                url: '/comments/{isbn}',
-                views: {
-                    'main': {
-                        controller: 'CommentsCtrl',
-                        templateUrl: 'comments/comments_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
-            })
-            .state('tags',{
-                url: '/tags',
-                views: {
-                    'main': {
-                        controller: 'TagsCtrl',
-                        templateUrl: 'tags/tags_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
-            })
-            .state('me',{
-                url: '/me',
-                views: {
-                    'main': {
-                        controller: 'MeCtrl',
-                        templateUrl: 'me/me_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                templateUrl: 'index/index_tpl.html',
+                controller: 'IndexCtrl',
+                controllerAs: 'vm',
+                nav: true
             })
             .state('cart',{
                 url: '/cart',
-                views: {
-                    'main': {
-                        controller: 'CartCtrl',
-                        templateUrl: 'cart/cart_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'CartCtrl',
+                templateUrl: 'cart/cart_tpl.html',
+                controllerAs: 'vm',
+                nav: true
+            })
+            .state('me',{
+                url: '/me',
+                controller: 'MeCtrl',
+                templateUrl: 'me/me_tpl.html',
+                controllerAs: 'vm',
+                nav: true
+            })
+            .state('booklists',{
+                url: '/booklists',
+                controller: 'BooklistsCtrl',
+                templateUrl: 'booklists/booklists_tpl.html',
+                controllerAs: 'vm',
+                nav: true
+            })
+            .state('recommend',{
+                url: '/books/recommend',
+                controller: 'RecommendMoreCtrl',
+                templateUrl: 'recommend_more/recommend_more_tpl.html',
+                controllerAs: 'vm'
+            })
+            .state('popular',{
+                url: '/booklists/popular',
+                controller: 'PopularMoreCtrl',
+                templateUrl: 'popular_more/popular_more_tpl.html',
+                controllerAs: 'vm'
+            })
+            .state('book',{
+                url: '/book/{isbn}',
+                controller: 'BookCtrl',
+                templateUrl: 'book/book_tpl.html',
+                controllerAs: 'vm'
+            })
+            .state('bookDetail',{
+                url: '/book/{isbn}/detail',
+                controller: 'BookInfoCtrl',
+                templateUrl: 'book_info/book_info_tpl.html',
+                controllerAs: 'vm'
+            })
+            .state('booklist',{
+                url: '/booklist/{id}',
+                controller: 'BookListCtrl',
+                templateUrl: 'booklist/booklist_tpl.html',
+                controllerAs: 'vm'
+            })
+            .state('booklistComments', {
+                url: '/booklist/{id}/comments',
+                controller: 'BooklistCommentsCtrl',
+                templateUrl: 'booklist_comments/booklist_comments_tpl.html',
+                controllerAs: 'vm'
+            })
+            .state('tagBooklists',{
+                url: '/booklists/{tag}',
+                controller: 'TagBooklistsCtrl',
+                templateUrl: 'tag-booklists/tag-booklists_tpl.html',
+                controllerAs: 'vm'
+            })
+            .state('commentsBook',{
+                url: '/comments/{isbn}',
+                controller: 'CommentsCtrl',
+                templateUrl: 'comments/comments_tpl.html',
+                controllerAs: 'vm'
+            })
+            .state('tags',{
+                url: '/tags',
+                controller: 'TagsCtrl',
+                templateUrl: 'tags/tags_tpl.html',
+                controllerAs: 'vm'
             })
             .state('orders',{
                 url: '/orders/{status}/show',
-                views: {
-                    'main': {
-                        controller: 'OrdersCtrl',
-                        templateUrl: 'orders/orders_tpl.html',
-                        controllerAs: 'vm'
-                    },
-                    'nav': {
-                        template: '<span></span>'
-                    }
-                }
+                controller: 'OrdersCtrl',
+                templateUrl: 'orders/orders_tpl.html',
+                controllerAs: 'vm'
             })
             .state('orderDetail',{
                 url: '/order/{id}/detail',
-                views: {
-                    'main': {
-                        controller: 'OrderDetailCtrl',
-                        templateUrl: 'order_detail/order_detail_tpl.html',
-                        controllerAs: 'vm'
-                    },
-                    'nav': {
-                        template: '<span></span>'
-                    }
-                }
+                controller: 'OrderDetailCtrl',
+                templateUrl: 'order_detail/order_detail_tpl.html',
+                controllerAs: 'vm'
             })
             .state('orderComments',{
                 url: '/order/{id}/comments',
-                views: {
-                    'main': {
-                        controller: 'OrderCommentsCtrl',
-                        templateUrl: 'order_comments/order_comments_tpl.html',
-                        controllerAs: 'vm'
-                    },
-                    'nav': {
-                        template: '<span></span>'
-                    }
-                }
+                controller: 'OrderCommentsCtrl',
+                templateUrl: 'order_comments/order_comments_tpl.html',
+                controllerAs: 'vm'
             })
             .state('ordersCommented', {
                 url: '/orders/commented',
-                views: {
-                    'main': {
-                        controller: 'OrdersCommentedCtrl',
-                        templateUrl: 'orders_commented/orders_commented_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'OrdersCommentedCtrl',
+                templateUrl: 'orders_commented/orders_commented_tpl.html',
+                controllerAs: 'vm'
             })
             .state('comments',{
                 url: '/comments',
-                views: {
-                    'main': {
-                        controller: 'UserCommentsCtrl',
-                        templateUrl: 'user_comments/user_comments_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'UserCommentsCtrl',
+                templateUrl: 'user_comments/user_comments_tpl.html',
+                controllerAs: 'vm'
             })
             .state('booklistsCollect',{
                 url: '/collect/booklists',
-                views: {
-                    'main': {
-                        controller: 'CollectBookListsCtrl',
-                        templateUrl: 'collect_booklists/collect_booklists_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'CollectBookListsCtrl',
+                templateUrl: 'collect_booklists/collect_booklists_tpl.html',
+                controllerAs: 'vm'
             })
             .state('booksCollect',{
                 url: '/collect/books',
-                views: {
-                    'main': {
-                        controller: 'CollectBooksCtrl',
-                        templateUrl: 'collect_books/collect_books_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'CollectBooksCtrl',
+                templateUrl: 'collect_books/collect_books_tpl.html',
+                controllerAs: 'vm'
             })
             .state('point', {
                 url: '/point',
-                views: {
-                    'main': {
-                        controller: 'PointCtrl',
-                        templateUrl: 'point/point_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'PointCtrl',
+                templateUrl: 'point/point_tpl.html',
+                controllerAs: 'vm'
             })
             .state('notices',{
                 url: '/notices',
-                views: {
-                    'main': {
-                        controller: 'NoticesCtrl',
-                        templateUrl: 'notices/notices_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'NoticesCtrl',
+                templateUrl: 'notices/notices_tpl.html',
+                controllerAs: 'vm'
             })
             .state('settings', {
                 url: '/settings',
-                views: {
-                    'main': {
-                        controller: 'SettingsCtrl',
-                        templateUrl: 'settings/settings_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'SettingsCtrl',
+                templateUrl: 'settings/settings_tpl.html',
+                controllerAs: 'vm'
             })
             .state('address', {
                 url: '/setting/address',
-                views: {
-                    'main': {
-                        controller: 'AddressCtrl',
-                        templateUrl: 'setting_address/setting_address_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'AddressCtrl',
+                templateUrl: 'setting_address/setting_address_tpl.html',
+                controllerAs: 'vm'
             })
             .state('AddressAdd', {
                 url: '/setting/address/add',
-                views: {
-                    'main': {
-                        controller: 'AddressAddCtrl',
-                        templateUrl: 'setting_address_add/setting_address_add_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
+                controller: 'AddressAddCtrl',
+                templateUrl: 'setting_address_add/setting_address_add_tpl.html',
+                controllerAs: 'vm'
             })
             .state('cart2order', {
                 url: '/cart2order',
-                views: {
-                    'main': {
-                        controller: 'Cart2OrderCtrl',
-                        templateUrl: 'cart2order/cart2order_tpl.html',
-                        controllerAs: 'vm'
-                    },
-                    'nav': {
-                        template: '<span></span>'
-                    }
-                }
+                controller: 'Cart2OrderCtrl',
+                templateUrl: 'cart2order/cart2order_tpl.html',
+                controllerAs: 'vm'
             })
             .state('suggest', {
                 url: '/suggest',
-                views: {
-                    'main': {
-                        controller: 'SuggestCtrl',
-                        templateUrl: 'suggest/suggest_tpl.html',
-                        controllerAs: 'vm'
-                    }
-                }
-            });
+                controller: 'SuggestCtrl',
+                templateUrl: 'suggest/suggest_tpl.html',
+                controllerAs: 'vm'
+            })
     }
 
 })();

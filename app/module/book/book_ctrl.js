@@ -39,7 +39,6 @@
 
         bookservice.getPopularBooks2().then(response => {
             vm.test = response;
-            alert(response);
         });
 
         function addCart(){

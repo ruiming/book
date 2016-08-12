@@ -43,7 +43,6 @@ gulp.task('js', function(cb){
         .pipe(eslint.failAfterError())*/
         .pipe(concat('app.js'))
         .pipe(babel())
-        .pipe(uglify())
         .pipe(gulp.dest('src/js/'))
         .on('end',cb);
 });

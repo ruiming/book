@@ -79,6 +79,13 @@
         width: 62px;
       }
     }
+    .book-intro {
+      p {
+        margin: 5px;
+        word-wrap: break-word;
+        line-height: 1.6;
+      }
+    }
     .book-intro,
     .book-tags,
     .books-similarity,
@@ -93,11 +100,6 @@
         font-weight: bold;
         margin: 5px;
         color: grey;
-      }
-      p {
-        margin: 5px;
-        word-wrap: break-word;
-        line-height: 1.6;
       }
     }
     .books-similarity {

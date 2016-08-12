@@ -19,6 +19,9 @@
         function getHotBooklists() {
             return booklistservice.getHotBooklists().then(response => {
                 vm.booklists = response;
+            }, err => {
+                vm.booklists = err;
+                alert(err);
             });
         }
 

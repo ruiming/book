@@ -30,6 +30,9 @@
                 .then(response => {
                     alert(changeStars(response.data));
                     return changeStars(response.data);
+                }, err => {
+                    alert(err);
+                    return err;
                 });
         }
 

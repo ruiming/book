@@ -25,14 +25,9 @@
         };
 
         function getPopularBooks2() {
-            alert("before get");
             return $http.get(host + '/pop_book')
                 .then(response => {
-                    alert(changeStars(response.data));
                     return changeStars(response.data);
-                }, err => {
-                    alert(err);
-                    return err;
                 });
         }
 

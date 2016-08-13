@@ -84,21 +84,46 @@
                 controller: 'CartCtrl',
                 templateUrl: 'cart/cart_tpl.html',
                 controllerAs: 'vm',
-                nav: true
+                nav: true,
+                resolve: {
+                    cart: function(cartservice) {
+                        return cartservice.getCart().then(response => {
+                            let index = 1;
+                            for(let item of response) {
+                                item.checked = false;
+                                item.index = index++;
+                                item.deleted = false;
+                            }
+                            return response;
+                        });
+                    }
+                }
             })
             .state('me',{
                 url: '/me',
                 controller: 'MeCtrl',
                 templateUrl: 'me/me_tpl.html',
                 controllerAs: 'vm',
-                nav: true
+                nav: true,
+                resolve: {
+                    me: function(userservice) {
+                        return userservice.getUserInfo()
+                            .then(response => response);
+                    }
+                }
             })
             .state('booklists',{
                 url: '/booklists',
                 controller: 'BooklistsCtrl',
                 templateUrl: 'booklists/booklists_tpl.html',
                 controllerAs: 'vm',
-                nav: true
+                nav: true,
+                resolve: {
+                    tags: function(tagservice) {
+                        return tagservice.getHotTags()
+                            .then(response => response);
+                    }
+                }
             })
             .state('recommend',{
                 url: '/books/recommend',

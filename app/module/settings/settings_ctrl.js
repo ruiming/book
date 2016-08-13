@@ -5,18 +5,11 @@
         .module('index')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['userservice'];
+    SettingsCtrl.$inject = ['user'];
 
-    function SettingsCtrl(userservice){
+    function SettingsCtrl(users){
         let vm = this;
-
-        getUserInfo();
-
-        function getUserInfo() {
-            userservice.getUserInfo().then(response => {
-                vm.user = response;
-            });
-        }
+        vm.user = user;
     }
 })();
 

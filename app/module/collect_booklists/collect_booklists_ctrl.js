@@ -5,17 +5,10 @@
         .module('index')
         .controller('CollectBookListsCtrl', CollectBookListsCtrl);
 
-    CollectBookListsCtrl.$inject = ['userservice'];
+    CollectBookListsCtrl.$inject = ['booklists'];
 
-    function CollectBookListsCtrl(userservice) {
+    function CollectBookListsCtrl(booklists) {
         let vm = this;
-
-        getUserCollect();
-
-        function getUserCollect() {
-            userservice.getUserCollect('booklist').then(response => {
-                vm.booklists = response;
-            });
-        }
+        vm.booklists = booklists;
     }
 })();

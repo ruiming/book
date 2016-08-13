@@ -5,22 +5,15 @@
         .module('index')
         .controller('CommentsCtrl', CommentsCtrl);
 
-    CommentsCtrl.$inject = ['$stateParams', 'commentservice'];
+    CommentsCtrl.$inject = ['commentservice', 'comments'];
 
-    function CommentsCtrl($stateParams, commentservice) {
+    function CommentsCtrl(commentservice, comments) {
         let vm = this;
+        vm.comments = comments;
         vm.title = commentservice.getTitle();
 
         vm.up = up;
         vm.down = down;
-
-        getComment();
-
-        function getComment() {
-            commentservice.getComment($stateParams.isbn).then(response => {
-                vm.comments = response;
-            });
-        }
 
         function up(comment) {
             commentservice.up(comment.id).then(() => {

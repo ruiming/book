@@ -5,20 +5,13 @@
         .module('index')
         .controller('SuggestCtrl', SuggestCtrl);
 
-    SuggestCtrl.$inject = ['userservice', '$timeout'];
+    SuggestCtrl.$inject = ['userservice', '$timeout', 'user'];
 
-    function SuggestCtrl(userservice, $timeout){
+    function SuggestCtrl(userservice, $timeout, user) {
         let vm = this;
+        vm.user = user;
 
         vm.post = post;
-
-        getUserInfo();
-
-        function getUserInfo() {
-            userservice.getUserInfo().then(response => {
-                vm.user = response;
-            });
-        }
 
         function post(){
             if(vm.suggestion === void 0 || vm.suggestion == '') {

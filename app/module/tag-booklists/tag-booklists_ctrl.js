@@ -5,20 +5,15 @@
         .module('index')
         .controller('TagBooklistsCtrl', TagBooklistsCtrl);
 
-    TagBooklistsCtrl.$inject = ['$stateParams', 'booklistservice'];
+    TagBooklistsCtrl.$inject = ['$stateParams', 'booklistservice', 'booklists'];
 
-    function TagBooklistsCtrl($stateParams, booklistservice) {
+    function TagBooklistsCtrl($stateParams, booklistservice, booklists) {
         let vm = this;
-
-        getAllBook();
+        vm.booklists = booklists;
+        vm.booklists.nextPage();
 
         vm.timeOrder = timeOrder;
         vm.collectOrder = collectOrder;
-
-        function getAllBook() {
-            vm.booklists = new booklistservice.getBooklists('all', $stateParams.tag);
-            vm.booklists.nextPage();
-        }
 
         function timeOrder() {
             vm.booklists = new booklistservice.getBooklists('time', $stateParams.tag);

@@ -5,23 +5,13 @@
         .module('index')
         .controller('CollectBooksCtrl', CollectBooksCtrl);
 
-    CollectBooksCtrl.$inject = ['userservice', 'bookservice'];
+    CollectBooksCtrl.$inject = ['bookservice', 'books'];
     
-    function CollectBooksCtrl(userservice, bookservice) {
+    function CollectBooksCtrl(bookservice, books) {
         let vm = this;
+        vm.books = books;
 
         vm.remove = remove;
-
-        getUserCollect();
-
-        function getUserCollect() {
-            userservice.getUserCollect('book').then(response => {
-                vm.books = response;
-                for(let book of vm.books) {
-                    book.star = Math.ceil(book.rate/2);
-                }
-            });
-        }
 
         function remove(book, index) {
             bookservice.discollectBook(book.isbn).then(() => {

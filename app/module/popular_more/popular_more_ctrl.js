@@ -5,11 +5,11 @@
         .module('index')
         .controller('PopularMoreCtrl', PopularMoreCtrl);
 
-    PopularMoreCtrl.$inject = ['booklistservice'];
+    PopularMoreCtrl.$inject = ['booklists'];
 
-    function PopularMoreCtrl(booklistservice) {
+    function PopularMoreCtrl(booklists) {
         let vm = this;
-        vm.booklists = new booklistservice.getBooklists('all');
+        vm.booklists = booklists;
         vm.booklists.nextPage();
     }
 })();

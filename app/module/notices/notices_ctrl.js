@@ -5,17 +5,10 @@
         .module('index')
         .controller('NoticesCtrl', NoticesCtrl);
 
-    NoticesCtrl.$inject = ['userservice'];
+    NoticesCtrl.$inject = ['notices'];
 
-    function NoticesCtrl(userservice) {
+    function NoticesCtrl(notices) {
         let vm = this;
-
-        getUserNotices();
-
-        function getUserNotices() {
-            userservice.getUserNotices().then(response => {
-                vm.notices = response;
-            });
-        }
+        vm.notices = notices;
     }
 })();

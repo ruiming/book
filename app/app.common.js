@@ -13,6 +13,30 @@
         .config(config)
         .run(function ($state,$rootScope) {
             $rootScope.$state = $state;
+            $rootScope.$on("$stateChangeStart", function (event, toState, toStateParams, fromState, fromStateParams) {
+                var isLoading = toState.resolve;
+                if(!isLoading) {
+                    for (var prop in toState.views) {
+                        if (toState.views.hasOwnProperty(prop)) {
+                            if(toState.views[prop].resolve) {
+                                isLoading = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (isLoading) {
+                    $rootScope.loading = true;
+                }
+            });
+
+            $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
+                $rootScope.loading = false;
+            });
+
+            $rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
+                $rootScope.loading = false;
+            });
         });
 
     config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider', 'angularPromiseButtonsProvider'];
@@ -122,6 +146,9 @@
                     tags: function(tagservice) {
                         return tagservice.getHotTags()
                             .then(response => response);
+                    },
+                    booklists: function(booklistservice) {
+                        return new booklistservice.getBooklists('all');
                     }
                 }
             })
@@ -129,13 +156,23 @@
                 url: '/books/recommend',
                 controller: 'RecommendMoreCtrl',
                 templateUrl: 'recommend_more/recommend_more_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    books: function(bookservice) {
+                        return new bookservice.getBooks();
+                    }
+                }
             })
             .state('popular',{
                 url: '/booklists/popular',
                 controller: 'PopularMoreCtrl',
                 templateUrl: 'popular_more/popular_more_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    booklists: function(booklistservice) {
+                        return new booklistservice.getBooklists('all');
+                    }
+                }
             })
             .state('book',{
                 url: '/book/{isbn}',
@@ -182,25 +219,43 @@
                 url: '/booklist/{id}/comments',
                 controller: 'BooklistCommentsCtrl',
                 templateUrl: 'booklist_comments/booklist_comments_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                // TODO: 书单评论，resolve...
             })
             .state('tagBooklists',{
                 url: '/booklists/{tag}',
                 controller: 'TagBooklistsCtrl',
                 templateUrl: 'tag-booklists/tag-booklists_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    booklists: function(booklistservice, $stateParams) {
+                        return new booklistservice.getBooklists('all', $stateParams.tag)
+                    }
+                }
             })
             .state('commentsBook',{
                 url: '/comments/{isbn}',
                 controller: 'CommentsCtrl',
                 templateUrl: 'comments/comments_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    comments: function(commentservice, $stateParams) {
+                        return commentservice.getComment($stateParams.isbn)
+                            .then(response => response);
+                    }
+                }
             })
             .state('tags',{
                 url: '/tags',
                 controller: 'TagsCtrl',
                 templateUrl: 'tags/tags_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    tags: function(tagservice) {
+                        return tagservice.getAllTags()
+                            .then(response => response);
+                    }
+                }
             })
             .state('orders',{
                 url: '/orders/{status}/show',
@@ -247,49 +302,90 @@
                 url: '/order/{id}/comments',
                 controller: 'OrderCommentsCtrl',
                 templateUrl: 'order_comments/order_comments_tpl.html',
-                controllerAs: 'vm'
-            })
-            .state('ordersCommented', {
-                url: '/orders/commented',
-                controller: 'OrdersCommentedCtrl',
-                templateUrl: 'orders_commented/orders_commented_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    order: function(orderservice, $stateParams) {
+                        return orderservice.getOrderDetail($stateParams.id)
+                            .then(response => response);
+                    }
+                }
             })
             .state('comments',{
                 url: '/comments',
                 controller: 'UserCommentsCtrl',
                 templateUrl: 'user_comments/user_comments_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    comments: function(commentservice, $stateParams) {
+                        return commentservice.getComment($stateParams.isbn)
+                            .then(response => response);
+                    }
+                }
             })
             .state('booklistsCollect',{
                 url: '/collect/booklists',
                 controller: 'CollectBookListsCtrl',
                 templateUrl: 'collect_booklists/collect_booklists_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    booklists: function(userservice) {
+                        return userservice.getUserCollect('booklist')
+                            .then(response => response);
+                    }
+                }
             })
             .state('booksCollect',{
                 url: '/collect/books',
                 controller: 'CollectBooksCtrl',
                 templateUrl: 'collect_books/collect_books_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    books: function(userservice) {
+                        return userservice.getUserCollect('book')
+                            .then(response => {
+                                for(let book of response) {
+                                    book.star = Math.ceil(book.rate/2);
+                                }
+                                return response;
+                            });
+                    }
+                }
             })
             .state('point', {
                 url: '/point',
                 controller: 'PointCtrl',
                 templateUrl: 'point/point_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    points: function(userservice) {
+                        return userservice.getUserPoints()
+                            .then(response => response);
+                    }
+                }
             })
             .state('notices',{
                 url: '/notices',
                 controller: 'NoticesCtrl',
                 templateUrl: 'notices/notices_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    notices: function(userservice) {
+                        return userservice.getUserNotices()
+                            .then(response => response);
+                    }
+                }
             })
             .state('settings', {
                 url: '/settings',
                 controller: 'SettingsCtrl',
                 templateUrl: 'settings/settings_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    user: function(userservice) {
+                        return userservice.getUserInfo()
+                            .then(response => response);
+                    }
+                }
             })
             .state('address', {
                 url: '/setting/address',
@@ -319,7 +415,13 @@
                 url: '/suggest',
                 controller: 'SuggestCtrl',
                 templateUrl: 'suggest/suggest_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    user: function(userservice) {
+                        return userservice.getUserInfo()
+                            .then(response => response);
+                    }
+                }
             })
     }
 

@@ -5,17 +5,10 @@
         .module('index')
         .controller('PointCtrl', PointCtrl);
 
-    PointCtrl.$inject = ['userservice'];
+    PointCtrl.$inject = ['points'];
 
-    function　PointCtrl(userservice) {
+    function　PointCtrl(points) {
         let vm = this;
-
-        getUserPoint();
-
-        function getUserPoint() {
-            userservice.getUserPoints().then(response => {
-                vm.points = response;
-            });
-        }
+        vm.points = points;
     }
 })();

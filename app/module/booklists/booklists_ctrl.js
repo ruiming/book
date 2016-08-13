@@ -5,12 +5,12 @@
         .module('index')
         .controller('BooklistsCtrl', BooklistsCtrl);
 
-    BooklistsCtrl.$inject = ['booklistservice', 'tags'];
+    BooklistsCtrl.$inject = ['booklistservice', 'tags', 'booklists'];
 
-    function BooklistsCtrl(booklistservice, tags) {
+    function BooklistsCtrl(booklistservice, tags, booklists) {
         let vm = this;
         vm.tags = tags;
-        vm.booklists = new booklistservice.getBooklists('all');
+        vm.booklists = booklists;
 
         vm.timeOrder = getBooklistOrderByTime;
         vm.collectOrder = getBooklistOrderByCollect;

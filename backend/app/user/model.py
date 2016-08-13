@@ -31,6 +31,31 @@ class UserCommentLove(db.Document):
     time = db.IntField(required=True, default=int(time()))
 
 
+class BookListComment(db.Document):
+    """
+    书单评论模型
+    """
+    content = db.StringField(required=True)
+    star = db.IntField(required=True)
+    up = db.IntField(required=True, default=0)
+    down = db.IntField(required=True, default=0)
+
+    book_list = db.ReferenceField(BookList)
+    user = db.ReferenceField(User)
+    create_time = db.IntField(required=True, default=int(time()))
+    edit_time = db.IntField()
+
+
+class UserBookListCommentLove(db.Document):
+    """
+    用户评论点赞表
+    """
+    user = db.ReferenceField(User, required=True)
+    comment = db.ReferenceField(BookListComment, required=True)
+    type = db.StringField(required=True, default=u'none')
+    time = db.IntField(required=True, default=int(time()))
+
+
 class UserBookListLove(db.Document):
     """
     用户书单点赞

@@ -4,7 +4,8 @@ from flask import Blueprint, jsonify, request
 
 from app.auth.model import User, UserAddress
 from app.book.model import Book, BookList
-from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback, BillingStatus, UserBookListLove
+from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback, BillingStatus, \
+    UserBookListLove, BookListComment, UserBookListCommentLove
 
 from app.lib.common_function import return_message, token_verify
 from app.lib.api_function import allow_cross_domain

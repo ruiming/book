@@ -9,7 +9,6 @@
 
     function slideservice($http, $q) {
         let slides = null;
-        let deferred = $q.defer();
 
         return {
             getSlides: getSlides
@@ -26,8 +25,8 @@
                         slides = response.data;
                         return slides;
                     });
-            }
-            else {
+            } else {
+                let deferred = $q.defer();
                 deferred.resolve(slides);
                 return deferred.promise;
             }

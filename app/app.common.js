@@ -231,6 +231,18 @@
                     }
                 }
             })
+            .state('orderReturn', {
+                url: '/order/{id}/return',
+                controller: 'OrderReturnCtrl',
+                templateUrl: 'order_return/order_return_tpl.html',
+                controllerAs: 'vm',
+                resolve: {
+                    order: function(orderservice, $stateParams) {
+                        return orderservice.getOrderDetail($stateParams.id)
+                            .then(response => response);
+                    }
+                }
+            })
             .state('orderComments',{
                 url: '/order/{id}/comments',
                 controller: 'OrderCommentsCtrl',
@@ -283,7 +295,13 @@
                 url: '/setting/address',
                 controller: 'AddressCtrl',
                 templateUrl: 'setting_address/setting_address_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    address: function(userservice) {
+                        return userservice.getUserAddress()
+                            .then(response => response);
+                    }
+                }
             })
             .state('AddressAdd', {
                 url: '/setting/address/add',

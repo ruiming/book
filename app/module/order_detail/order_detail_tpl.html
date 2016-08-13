@@ -21,7 +21,7 @@
                         <span class="order-status">{{vm.order.status}}</span>
                     </div>
                     <ul class="order-process">
-                        <li ng-repeat="x in vm.status_list">
+                        <li ng-repeat="x in vm.status_list track by $index">
                             <span>{{x.status}}</span>
                             <span>{{x.time*1000 | date:'yyyy-MM-dd HH:mm'}}</span>
                         </li>

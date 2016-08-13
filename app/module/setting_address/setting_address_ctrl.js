@@ -5,21 +5,14 @@
         .module('index')
         .controller('AddressCtrl', AddressCtrl);
 
-    AddressCtrl.$inject = ['$state', 'userservice'];
+    AddressCtrl.$inject = ['$state', 'userservice', 'address'];
 
-    function AddressCtrl($state, userservice) {
+    function AddressCtrl($state, userservice, address) {
         let vm = this;
+        vm.address = address;
 
         vm.edit = edit;
         vm.back = back;
-
-        getUserAddress();
-
-        function getUserAddress() {
-            userservice.getUserAddress().then(response => {
-                vm.address = response;
-            });
-        }
 
         function edit(x) {
             vm.edit = function(){

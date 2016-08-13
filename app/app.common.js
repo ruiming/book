@@ -63,7 +63,21 @@
                 templateUrl: 'index/index_tpl.html',
                 controller: 'IndexCtrl',
                 controllerAs: 'vm',
-                nav: true
+                nav: true,
+                resolve: {
+                    hotBooklists: function(booklistservice) {
+                        return booklistservice.getHotBooklists()
+                            .then(response => response);
+                    },
+                    slides: function(slideservice) {
+                        return slideservice.getSlides()
+                            .then(response => response);
+                    },
+                    popularBooks: function(bookservice) {
+                        return bookservice.getPopularBooks2()
+                            .then(response => response);
+                    }
+                }
             })
             .state('cart',{
                 url: '/cart',
@@ -102,19 +116,42 @@
                 url: '/book/{isbn}',
                 controller: 'BookCtrl',
                 templateUrl: 'book/book_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    book: function(bookservice, $stateParams) {
+                        return bookservice.getBook($stateParams.isbn)
+                            .then(response => response);
+                    }
+                }
             })
             .state('bookDetail',{
                 url: '/book/{isbn}/detail',
                 controller: 'BookInfoCtrl',
                 templateUrl: 'book_info/book_info_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    bookDetail: function(bookservice, $stateParams) {
+                        return bookservice.getBookDetail($stateParams.isbn)
+                            .then(response => response);
+                    }
+                }
             })
             .state('booklist',{
                 url: '/booklist/{id}',
                 controller: 'BookListCtrl',
                 templateUrl: 'booklist/booklist_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    booklist: function($stateParams, booklistservice) {
+                        return booklistservice.getBooklistDetail($stateParams.id)
+                            .then(response => {
+                                for(let book of response.books) {
+                                    book.star = Math.ceil(book.rate / 2);
+                                }
+                                return response;
+                        });
+                    }
+                }
             })
             .state('booklistComments', {
                 url: '/booklist/{id}/comments',

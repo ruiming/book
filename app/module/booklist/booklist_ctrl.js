@@ -5,24 +5,14 @@
         .module('index')
         .controller('BookListCtrl', BookListCtrl);
 
-    BookListCtrl.$inject = ['$stateParams', 'booklistservice'];
+    BookListCtrl.$inject = ['$stateParams', 'booklistservice', 'booklist'];
 
-    function BookListCtrl($stateParams, booklistservice) {
+    function BookListCtrl($stateParams, booklistservice, booklist) {
         let vm = this;
+        vm.booklist = booklist;
 
         vm.collect = collect;
         vm.love = love;
-
-        getBooklistDetail();
-
-        function getBooklistDetail() {
-            booklistservice.getBooklistDetail($stateParams.id).then(response => {
-                vm.booklist = response;
-                for(let book of vm.booklist.books) {
-                    book.star = Math.ceil(book.rate / 2);
-                }
-            });
-        }
 
         function love() {
             return booklistservice.loveBooklist($stateParams.id).then(() => {

@@ -5,17 +5,10 @@
         .module('index')
         .controller('BookInfoCtrl', BookInfoCtrl);
 
-    BookInfoCtrl.$inject = ['bookservice', '$stateParams'];
+    BookInfoCtrl.$inject = ['bookDetail'];
 
-    function BookInfoCtrl(bookservice, $stateParams) {
+    function BookInfoCtrl(bookDetail) {
         let vm = this;
-
-        getBookDetail();
-
-        function getBookDetail() {
-            bookservice.getBookDetail($stateParams.isbn).then(response => {
-                vm.book = response;
-            });
-        }
+        vm.book = bookDetail;
     }
 })();

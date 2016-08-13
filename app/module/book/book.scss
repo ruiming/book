@@ -88,6 +88,7 @@
     }
     .book-intro,
     .book-tags,
+    .book-comments,
     .books-similarity,
     .booklists-box {
       overflow: hidden;
@@ -160,11 +161,6 @@
         border-radius: 0;
         margin: 0 10px 5px 0;
       }
-    }
-  }
-  .book-comments {
-    span:first-child {
-      padding-left: 10px !important;
     }
   }
   .book-comment-box {

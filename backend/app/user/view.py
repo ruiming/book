@@ -64,6 +64,56 @@ def comments():
     return return_message('success', 201, all_comment_json)
 
 
+@user_module.route('/booklistcomments', methods=['GET'])
+@allow_cross_domain
+@oauth4api
+def booklistcomments():
+    """
+    返回书单所有评论
+    """
+    #TODO: error id
+    _id = request.args.get('id', None)
+    if not _id or len(_id) != 24:
+        return return_message('error', 111)
+
+    this_book_list = BookList.objects(pk=_id)
+    this_book_list = this_book_list.first() if this_book_list.count() == 1 else None
+    if this_book_list is None:
+        return return_message('error', 111)
+
+    page = request.args.get('page', 1)
+    try:
+        page = int(page)
+    except:
+        return return_message('error', 107)
+
+    this_user = User.get_one_user(openid=request.headers['userid'])
+
+    all_comment = BookListComment.objects(book_list=this_book_list).order_by("create_time").limit(5).skip(5*(page-1))
+
+    all_comment_json = []
+
+    for one in all_comment:
+        up_already = True if UserBookListCommentLove.objects(user=this_user, comment=one, type='up').count() == 1 else False
+        down_already = True if UserBookListCommentLove.objects(user=this_user, comment=one, type='down').count() == 1 else False
+        all_comment_json.append({
+            'id': str(one.pk),
+            'content': one.content,
+            'star': one.star,
+            'up': one.up,
+            'down': one.down,
+            'up_already': up_already,
+            'down_already': down_already,
+            'user': {
+                'avatar': one.user.avatar,
+                'username': one.user.username
+            },
+            'create_time': one.create_time
+        })
+
+    return return_message('success', 201, all_comment_json)
+
+
 @user_module.route('/comment', methods=['POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
@@ -208,6 +258,160 @@ def comment():
         this_comment = Comment.objects(user=this_user, pk=id).first()
         if isinstance(this_comment, Comment):
             all_user_comment_love = UserCommentLove.objects(comment=this_comment)
+            for one_love in all_user_comment_love:
+                one_love.delete()
+
+            this_comment.delete()
+        return return_message('success', 211)
+
+
+@user_module.route('/booklistcomment', methods=['POST', 'PUT', 'DELETE'])
+@allow_cross_domain
+@oauth4api
+def booklistcomment():
+    """
+    发布书单评论
+
+    """
+    #TODO: error id
+    if request.method == 'POST':
+        token = request.form.get('token', None)
+        _id = request.form.get('id', None)
+        content = request.form.get('content', None)
+        star = request.form.get('star', None)
+        if isinstance(star, int):
+            star = min(int(star), 10)
+
+        if not star:
+            return return_message('error', 202)
+
+        if _id is None or len(_id) != 24 or content is None or star is None:
+            return return_message('error', 203)
+
+        this_book_list = BookList.objects(pk=_id)
+        this_book_list = this_book_list.first() if this_book_list.count() == 1 else None
+
+        if this_book_list is None:
+            return return_message('error', 111)
+
+        this_user = User.get_one_user(openid=request.headers['userid'])
+
+        this_comment = BookListComment(
+            content=content,
+            star=star,
+            book_list=this_book_list,
+            user=this_user
+
+        ).save()
+
+        # TODO: 积分设置
+        # Points.add_record(
+        #     user=this_user,
+        #     record_type=Points.PointType.COMMENT,
+        # )
+
+        this_comment_json = {
+            'id': str(this_comment.pk),
+            'content': this_comment.content,
+            'star': this_comment.star,
+            'up': this_comment.up,
+            'up_already': False,
+            'down': this_comment.down,
+            'down_already': False,
+            'create_time': this_comment.create_time
+        }
+        return return_message('success', 204, this_comment_json)
+
+    elif request.method == 'PUT':
+        """
+        提交评论点赞/ 修改评论
+        """
+
+        id = request.form.get('id', None)
+        type = request.form.get('type', 'up')
+
+        if id is not None:
+            if len(id) != 24:
+                id = None
+
+        if type not in ['up', 'down', 'edit']:
+            return return_message('error', 205)
+
+        if id is None:
+            return return_message('error', 206)
+        else:
+
+            this_comment = BookListComment.objects(pk=id)
+            if this_comment.count() != 1:
+                return return_message('error', 206)
+            else:
+                this_comment = this_comment.first()
+
+        this_user = User.get_one_user(openid=request.headers['userid'])
+
+
+        if type == 'edit':
+
+            content = request.form.get("content", None)
+            star = request.form.get('star', 0)
+            try:
+                star = min(int(star), 10)
+            except:
+                return return_message("error", 202)
+
+            this_comment.content = content
+            this_comment.star = star
+            this_comment.edit_time = int(time())
+            this_comment.save()
+
+            return return_message('success', 207)
+
+        this_user_comment_love = UserBookListCommentLove.objects(user=this_user, comment=this_comment)
+
+        if this_user_comment_love.count() == 1:
+            # 存在记录
+            this_user_comment_love = this_user_comment_love.first()
+
+            if type == this_user_comment_love.type:
+                # 与数据库相同 == 删除
+                this_comment[this_user_comment_love.type] -= 1
+                this_comment.save()
+                this_user_comment_love.delete()
+                return return_message('success', 208)
+            else:
+                # 与数据库的不相同
+                this_comment[this_user_comment_love.type] -= 1
+
+                this_comment[type] += 1
+                this_user_comment_love.type = type
+
+                this_comment.save()
+                this_user_comment_love.save()
+                return return_message('success', 209)
+        else:
+            # 不存在记录，添加纪录
+
+            UserBookListCommentLove(
+                user=this_user,
+                comment=this_comment,
+                type=type
+            ).save()
+            this_comment[type] += 1
+            this_comment.save()
+            return return_message('success', 210)
+
+    elif request.method == 'DELETE':
+
+        id = request.form.get('id', None)
+
+        this_user = User.get_one_user(openid=request.headers['userid'])
+
+        if not id or len(id) != 24 or BookListComment.objects(pk=id).count() != 1:
+            return return_message('error', 206)
+
+        this_comment = BookListComment.objects(user=this_user, pk=id).first()
+        if isinstance(this_comment, BookListComment):
+            all_user_comment_love = UserBookListCommentLove.objects(comment=this_comment)
             for one_love in all_user_comment_love:
                 one_love.delete()
 

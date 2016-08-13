@@ -9,7 +9,6 @@
 
     function booklistservice($http, $q) {
         let booklist = [];
-        let deferred = $q.defer();
 
         return {
             collectBooklist: collectBooklist,
@@ -41,6 +40,7 @@
                     });
             }
             else {
+                let deferred = $q.defer();
                 deferred.resolve(booklist[id]);
                 return deferred.promise;
             }

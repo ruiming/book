@@ -206,13 +206,30 @@
                 url: '/orders/{status}/show',
                 controller: 'OrdersCtrl',
                 templateUrl: 'orders/orders_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    orders: function(orderservice, $stateParams) {
+                        return orderservice.getOrder($stateParams.status)
+                            .then(response => {
+                                for(let order of response) {
+                                    order.status = statusDict[order.status];
+                                }
+                                return response;
+                            });
+                    }
+                }
             })
             .state('orderDetail',{
                 url: '/order/{id}/detail',
                 controller: 'OrderDetailCtrl',
                 templateUrl: 'order_detail/order_detail_tpl.html',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    order: function(orderservice, $stateParams) {
+                        return orderservice.getOrderDetail($stateParams.id)
+                            .then(response => response);
+                    }
+                }
             })
             .state('orderComments',{
                 url: '/order/{id}/comments',

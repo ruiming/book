@@ -10,6 +10,7 @@
     function bookservice($http, commonservice, $q) {
 
         let bookDetail = [];
+        let bookBelongs = [];
         let popBooks = null;
         let similarBook = [];
         let changeStars = commonservice.changeStars;
@@ -92,8 +93,17 @@
         }
 
         function getBookBelongs(isbn) {
-            return $http.get(host + '/booklist?isbn=' + isbn)
-                .then(response => response.data);
+            if(bookBelongs[isbn] === void 0) {
+                return $http.get(host + '/booklist?isbn=' + isbn)
+                    .then(response => {
+                        bookBelongs[isbn] = response.data;
+                        return bookBelongs[isbn];
+                    });
+            } else {
+                let deferred = $q.defer();
+                deferred.resolve(bookBelongs[isbn]);
+                return deferred.promise;
+            }
         }
 
         function getSimilarBook(isbn) {

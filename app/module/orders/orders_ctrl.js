@@ -5,33 +5,23 @@
         .module('index')
         .controller('OrdersCtrl', OrdersCtrl);
 
-    OrdersCtrl.$inject = ['$stateParams', 'orderservice'];
+    OrdersCtrl.$inject = ['$stateParams', 'orderservice', 'orders'];
 
-    function OrdersCtrl($stateParams, orderservice) {
+    function OrdersCtrl($stateParams, orderservice, orders) {
         let vm = this;
-        vm.WAIT_OPERATING = false;
         vm.type = $stateParams.status;
+        vm.orders = orders;
         let status = ['pending', 'all', 'commenting', 'waiting', 'return', 'done'];
 
         vm.cancelReturn = cancelReturn;
         vm.cancel = cancel;
         vm.receipt = receipt;
 
-        getOrder();
 
         if(status.indexOf(vm.type) === -1) {
             history.back();
         } else {
             vm.type2 = statusDict[vm.type];
-        }
-
-        function getOrder() {
-            orderservice.getOrder($stateParams.status).then(response => {
-                vm.orders = response;
-                for(let order of vm.orders) {
-                    order.status = statusDict[order.status];
-                }
-            });
         }
 
         // TODO 取消售后

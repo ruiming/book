@@ -12,14 +12,6 @@
     <!-- build:css /static/css/app.min.css -->
     <link rel="stylesheet" href="src/css/app.min.css">
     <link rel="stylesheet" href="src/css/bookist.css">
-    <!-- endbuild -->
-    <script src="//cdn.bootcss.com/babel-polyfill/6.13.0/polyfill.min.js"></script>
-    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular.min.js"></script>
-    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-animate.min.js"></script>
-    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-sanitize.min.js"></script>
-    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-touch.min.js"></script>
-    <script src="//cdn.bootcss.com/angular-ui-router/1.0.0-beta.1/angular-ui-router.min.js"></script>
-    <script src="//cdn.bootcss.com/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
     <script>
         // 设置token
         function getQueryString(name) {
@@ -30,6 +22,19 @@
         localStorage.setItem("token", getQueryString("token"));
         localStorage.setItem("user_id", getQueryString("user_id"));
     </script>
+    <!-- endbuild -->
+    <script src="//cdn.bootcss.com/babel-polyfill/6.13.0/polyfill.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-animate.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-sanitize.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-touch.min.js"></script>
+    <script src="//cdn.bootcss.com/angular-ui-router/1.0.0-beta.1/angular-ui-router.min.js"></script>
+    <script src="//cdn.bootcss.com/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
+    <!-- build:js /static/js/app.min.js -->
+    <script src="src/js/dependence.min.js"></script>
+    <script src="src/js/app.js"></script>
+    <script src="src/js/templates.js"></script>
+    <!-- enbuild -->
 </head>
 <body>
     <div ui-view class="bookist-view uiview" ng-show="!$root.loading"></div>
@@ -40,11 +45,6 @@
         <div class="cssload-cube cssload-c3"></div>
     </div>
     <div ng-show="$state.current.nav" ng-include="'navbar/navbar_tpl.html'"></div>
-    <!-- build:js /static/js/app.min.js -->
-    <script src="src/js/dependence.min.js"></script>
-    <script src="src/js/app.js"></script>
-    <script src="src/js/templates.js"></script>
-    <!-- enbuild -->
     <!-- build:remove -->
     <!--
         开发环境 development     v2016.5.20

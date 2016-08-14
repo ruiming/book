@@ -8,8 +8,8 @@
             'ngAnimate',
             'ngSanitize',
             'ngTouch',
-            'angularPromiseButtons',
-            'infinite-scroll'
+            'infinite-scroll',
+            'angularPromiseButtons'
         ])
         .config(config)
         .run(function ($state,$rootScope) {

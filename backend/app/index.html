@@ -17,25 +17,5 @@
     <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-touch.min.js"></script>
     <script src="//cdn.bootcss.com/angular-ui-router/1.0.0-beta.1/angular-ui-router.min.js"></script>
     <script src="//cdn.bootcss.com/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
-    <script>
-        // 设置token
-        function getQueryString(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]); return null;
-        }
-        localStorage.setItem("token", getQueryString("token"));
-        localStorage.setItem("user_id", getQueryString("user_id"));
-    </script>
-</head>
-<body>
-    <div ui-view class="bookist-view uiview" ng-show="!$root.loading"></div>
-    <div class="cssload-thecube" ng-show="$root.loading">
-        <div class="cssload-cube cssload-c1"></div>
-        <div class="cssload-cube cssload-c2"></div>
-        <div class="cssload-cube cssload-c4"></div>
-        <div class="cssload-cube cssload-c3"></div>
-    </div>
-    <div ng-show="$state.current.nav" ng-include="'navbar/navbar_tpl.html'"></div>
     <script src="/static/js/app.min.js"></script>
 </body>

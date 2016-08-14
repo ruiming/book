@@ -92,7 +92,7 @@ gulp.task('cdn', function() {
             bucket: "bookist",
             private: false
         }));
-    gulp.src(['./src/css/app.min.css', './src/css/bookist.css'])
+    gulp.src(['src/css/app.min.css', 'src/css/bookist.css'])
         .pipe(concat('app.min.css'))
         .pipe(cleanCSS())
         .pipe(qiniu({

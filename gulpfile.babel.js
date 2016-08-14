@@ -80,12 +80,10 @@ gulp.task('sass', function() {
 
 gulp.task('cdn', function() {
     gulp.src('index.html')
-        .pipe(usemin({
-        }))
+        .pipe(usemin())
         .pipe(gulp.dest('backend/app/templates'));
-    gulp.src(['./src/js/app.js', './src/js/dependence.min.js', './src/js/templates.js'])
+    gulp.src(['./src/js/app.js', './src/js/templates.js', './src/js/dependence.min.js'])
         .pipe(plumber())
-        .pipe(concat('app.min.js'))
         .pipe(uglify())
         .pipe(babel())
         .pipe(qiniu({

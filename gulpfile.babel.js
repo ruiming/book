@@ -39,7 +39,7 @@ gulp.task('js', function(cb){
         .on('end',cb);
 });
 
-gulp.task('templates:dist', function(cb) {
+gulp.task('templates', function(cb) {
     gulp.src('app/module/**/*.html')
         .pipe(minifyHtml({empty: true, quotes: true}))
         .pipe(ngTemplate({
@@ -89,8 +89,8 @@ gulp.task('together', function(cb){
     gulp.src('index.html')
         .pipe(plumber())
         .pipe(usemin({
-            cssProduct: ['concat'],
-            jsProduct: [uglify(), babel()]
+            css: ['concat'],
+            js: [uglify(), babel()]
         }))
         .pipe(gulp.dest('backend/app/'))
         .on('end',cb);
@@ -98,16 +98,16 @@ gulp.task('together', function(cb){
 
 gulp.task('move', function(){
     return gulp.src('backend/app/index.html')
-                .pipe(gulp.dest('backend/app/templates/'));
+        .pipe(gulp.dest('backend/app/templates/'));
 });
 
 gulp.watch(['app/*.scss', 'app/**/*.scss', 'app/module/**/*.scss'], ['sass']);
 gulp.watch(['app/**/*.js', 'app/module/**/*.js'], ['js']);
 gulp.watch('static/img/*.*', ['img']);
-gulp.watch('app/module/**/*.html',['templates:dist']);
+gulp.watch('app/module/**/*.html',['templates']);
 
 gulp.task('product',function(cb) {
     runSequence('together','move',cb)
 });
 
-gulp.task('default',['css','js','angular','img','templates:dist','sass','fonts']);
+gulp.task('default',['css','js','angular','img','templates','sass','fonts']);

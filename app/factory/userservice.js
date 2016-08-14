@@ -35,18 +35,11 @@
         };
 
         function getUserDefaultAddress() {
-            if(defaultAddress == null) {
-                return $http.get(host + '/user_address?type=default')
-                    .then((response) => {
-                        defaultAddress = response.data;
-                        return defaultAddress;
-                    });
+            if(defaultAddress === null) {
+                return defaultAddress = $http.get(host + '/user_address?type=default')
+                    .then(response => response.data);
             }
-            else {
-                let deferred = $q.defer();
-                deferred.resolve(defaultAddress);
-                return deferred.promise;
-            }
+            return defaultAddress;
         }
 
         function getUserCollect(type) {
@@ -127,17 +120,10 @@
 
         function getUserInfo() {
             if(userInfo == null) {
-                return $http.get(host + '/user_info')
-                    .then(response => {
-                        userInfo = response.data;
-                        return userInfo;
-                    });
+                return userInfo = $http.get(host + '/user_info')
+                    .then(response => response.data);
             }
-            else {
-                let deferred = $q.defer();
-                deferred.resolve(userInfo);
-                return deferred.promise;
-            }
+            return userInfo;
         }
 
         function getUserNotices() {

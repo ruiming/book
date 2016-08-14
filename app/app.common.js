@@ -182,7 +182,9 @@
                 resolve: {
                     book: function(bookservice, $stateParams) {
                         return bookservice.getBook($stateParams.isbn)
-                            .then(response => response);
+                            .then(response => {
+                                return response;
+                            });
                     }
                 }
             })

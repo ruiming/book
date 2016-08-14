@@ -19,32 +19,18 @@
 
         function getAllTags() {
             if(allTags == null) {
-                return $http.get(host + '/tags?type=all')
-                    .then(response => {
-                        allTags = response.data;
-                        return allTags;
-                    });
+                return allTags = $http.get(host + '/tags?type=all')
+                    .then(response => response.data);
             }
-            else {
-                let deferred = $q.defer();
-                deferred.resolve(allTags);
-                return deferred.promise;
-            }
+            return allTags;
         }
 
         function getHotTags() {
             if(hotTags == null) {
-                return $http.get(host + '/tags?type=hot')
-                    .then(response => {
-                        hotTags = response.data;
-                        return hotTags;
-                    });
+                return hotTags = $http.get(host + '/tags?type=hot')
+                    .then(response => response.data);
             }
-            else {
-                let deferred = $q.defer();
-                deferred.resolve(hotTags);
-                return deferred.promise;
-            }
+            return hotTags;
         }
 
     }

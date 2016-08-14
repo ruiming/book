@@ -20,16 +20,10 @@
          */
         function getSlides() {
             if(slides === null) {
-                return $http.get(host + '/slides')
-                    .then(response => {
-                        slides = response.data;
-                        return slides;
-                    });
-            } else {
-                let deferred = $q.defer();
-                deferred.resolve(slides);
-                return deferred.promise;
+                return slides = $http.get(host + '/slides')
+                    .then(response => response.data);
             }
+            return slides;
         }
     }
 })();

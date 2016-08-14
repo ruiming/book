@@ -7,7 +7,7 @@
 
     SettingsCtrl.$inject = ['user'];
 
-    function SettingsCtrl(users){
+    function SettingsCtrl(user){
         let vm = this;
         vm.user = user;
     }

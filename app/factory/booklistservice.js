@@ -44,46 +44,12 @@
                 .then(response => response.data);
         }
 
-        function getBooklists(type, tag) {
-            this.list = [];
-            this.busy = false;
-            this.url = host + '/booklist';
-            this.params =  {
-                type: type,
-                page: 1
-            };
-            if(tag !== void 0) {
-                this.params.tag = tag;
-            }
-            this.continue = true;
-            this.nextPage = function() {
-                if(!this.continue){
-                    this.busy = false;
-                    return;
-                }
-                if(this.busy) {
-                    return;
-                }
-                this.busy = true;
-                $http({
-                    method: 'GET',
-                    url: this.url,
-                    params: this.params
-                }).success(function(response){
-                    var list = response;
-                    if(list.length < 5 ) {
-                        this.continue = false;
-                    }
-                    for (var i = 0 ;i < list.length; i++){
-                        list[i].star = Math.ceil(list[i].rate/2);
-                        this.list.push(list[i]);
-                    }
-                    this.busy = false;
-                    this.params.page += 1;
-                }.bind(this));
-            }.bind(this);
-            this.nextPage();
-            return this;
+        function getBooklists(page, type, tag) {
+            let url = '/booklist?page=' + page;
+            if(type)    url += '&type=' + type;
+            if(tag)     url += '&tag='  + tag;
+            return $http.get(host + url)
+                .then(response => response.data);
         }
     }
 

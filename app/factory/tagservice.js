@@ -5,9 +5,9 @@
         .module('index')
         .factory('tagservice', tagservice);
 
-    tagservice.$inject = ['$http', '$q'];
+    tagservice.$inject = ['$http'];
 
-    function tagservice($http, $q) {
+    function tagservice($http) {
 
         let hotTags = null;
         let allTags = null;

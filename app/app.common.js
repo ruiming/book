@@ -8,7 +8,8 @@
             'ngAnimate',
             'ngSanitize',
             'ngTouch',
-            'angularPromiseButtons'
+            'angularPromiseButtons',
+            'infinite-scroll'
         ])
         .config(config)
         .run(function ($state,$rootScope) {
@@ -32,10 +33,12 @@
 
             $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
                 $rootScope.loading = false;
+                console.log(false);
             });
 
             $rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
                 $rootScope.loading = false;
+                console.log(false);
             });
         });
 
@@ -148,7 +151,8 @@
                             .then(response => response);
                     },
                     booklists: function(booklistservice) {
-                        return new booklistservice.getBooklists('all');
+                        return booklistservice.getBooklists(1, 'all')
+                            .then(response => response);
                     }
                 }
             })
@@ -159,7 +163,8 @@
                 controllerAs: 'vm',
                 resolve: {
                     books: function(bookservice) {
-                        return new bookservice.getBooks();
+                        return bookservice.getBooks(1)
+                            .then(response => response);
                     }
                 }
             })
@@ -170,7 +175,8 @@
                 controllerAs: 'vm',
                 resolve: {
                     booklists: function(booklistservice) {
-                        return new booklistservice.getBooklists('all');
+                        return booklistservice.getBooklists(1)
+                            .then(response => response);
                     }
                 }
             })
@@ -231,7 +237,8 @@
                 controllerAs: 'vm',
                 resolve: {
                     booklists: function(booklistservice, $stateParams) {
-                        return new booklistservice.getBooklists('all', $stateParams.tag)
+                        return booklistservice.getBooklists(1, 'all', $stateParams.tag)
+                            .then(response => response);
                     }
                 }
             })

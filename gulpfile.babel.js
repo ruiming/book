@@ -16,7 +16,6 @@ import eslint from 'gulp-eslint'
 gulp.task('angular', function(cb){
     gulp.src([
             'node_modules/babel-polyfill/dist/polyfill.min.js',
-            'bower_components/jquery/dist/jquery.min.js',
             'bower_components/notie/dist/notie.min.js',
             'bower_components/angular/angular.min.js',
             'bower_components/angular-ui-router/release/angular-ui-router.min.js',

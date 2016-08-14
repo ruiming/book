@@ -7,12 +7,11 @@
     <base href="/">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-    <link href="//cdn.bootcss.com/notie/3.3.0/notie.min.css" rel="stylesheet">
     <!-- build:css //cdn.bookist.org/app.min.css -->
     <link href="src/css/app.min.css" rel="stylesheet">
-    <link href="src/css/bookist.css" rel="stylesheet">
+    <!-- endbuild -->
+    <!-- build:css //cdn.bookist.org/bookist.min.css -->
+    <link href="src/css/bookist.min.css" rel="stylesheet">
     <!-- endbuild -->
     <script>
         function getQueryString(name) {
@@ -23,14 +22,6 @@
         localStorage.setItem("token", getQueryString("token"));
         localStorage.setItem("user_id", getQueryString("user_id"));
     </script>
-    <script src="//cdn.bootcss.com/babel-polyfill/6.13.0/polyfill.min.js"></script>
-    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular.min.js"></script>
-    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-animate.min.js"></script>
-    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-sanitize.min.js"></script>
-    <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-touch.min.js"></script>
-    <script src="//cdn.bootcss.com/angular-ui-router/1.0.0-beta.1/angular-ui-router.min.js"></script>
-    <script src="//cdn.bootcss.com/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
-    <script src="//cdn.bootcss.com/ngInfiniteScroll/1.2.2/ng-infinite-scroll.min.js"></script>
 </head>
 <body>
     <div ui-view class="bookist-view uiview" ng-show="!$root.loading"></div>
@@ -41,12 +32,11 @@
         <div class="cssload-cube cssload-c3"></div>
     </div>
     <div ng-show="$state.current.nav" ng-include="'navbar/navbar_tpl.html'"></div>
-    <script src="//cdn.bootcss.com/notie/3.2.0/notie.min.js"></script>
-    <!-- build:js //cdn.bookist.org/dependence.min.js -->
-    <script src="src/js/dependence.min.js"></script>
-    <!-- endbuild -->
     <!-- build:js //cdn.bookist.org/app.min.js -->
-    <script src="src/js/app.js"></script>
+    <script src="src/js/app.min.js"></script>
     <script src="src/js/templates.js"></script>
+    <!-- endbuild -->
+    <!-- build:js //cdn.bookist.org/bookist.min.js -->
+    <script src="src/js/bookist.js"></script>
     <!-- endbuild -->
 </body>

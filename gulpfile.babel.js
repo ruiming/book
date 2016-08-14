@@ -15,14 +15,7 @@ import eslint from 'gulp-eslint'
 
 gulp.task('angular', function(cb){
     gulp.src([
-            'node_modules/babel-polyfill/dist/polyfill.min.js',
             'bower_components/notie/dist/notie.min.js',
-            'bower_components/angular/angular.min.js',
-            'bower_components/angular-ui-router/release/angular-ui-router.min.js',
-            'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-            'bower_components/angular-animate/angular-animate.min.js',
-            'bower_components/angular-touch/angular-touch.min.js',
-            'bower_components/angular-sanitize/angular-sanitize.min.js',
             'bower_components/angular-promise-buttons/dist/angular-promise-buttons.js',
             'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'])
         .pipe(plumber())
@@ -58,9 +51,7 @@ gulp.task('templates:dist', function(cb) {
 });
 
 gulp.task('css', function(cb){
-    gulp.src(['bower_components/bootstrap/dist/css/bootstrap.min.css',
-            'bower_components/font-awesome/css/font-awesome.min.css',
-            'bower_components/notie/dist/notie.css'])
+    gulp.src(['bower_components/notie/dist/notie.css'])
         .pipe(concat('app.min.css'))
         .pipe(cleanCSS())
         .pipe(gulp.dest('src/css/'))

@@ -16,8 +16,7 @@ import eslint from 'gulp-eslint'
 gulp.task('angular', function() {
     gulp.src([
             'bower_components/notie/dist/notie.min.js',
-            'bower_components/angular-promise-buttons/dist/angular-promise-buttons.js',
-            'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'])
+            'bower_components/angular-promise-buttons/dist/angular-promise-buttons.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
         .pipe(concat('dependence.min.js'))

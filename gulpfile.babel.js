@@ -82,7 +82,7 @@ gulp.task('cdn', function() {
     gulp.src('index.html')
         .pipe(usemin({
         }))
-        .pipe(gulp.dest('backend/app/'));
+        .pipe(gulp.dest('backend/app/templates'));
     gulp.src(['./src/js/app.js', './src/js/dependence.min.js', './src/js/templates.js'])
         .pipe(plumber())
         .pipe(concat('app.min.js'))

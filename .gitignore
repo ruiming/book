@@ -2,5 +2,4 @@
 node_modules
 bower_components
 src
-.DS_Store
-/backend/app/img.bookist.org/
+/backend/app/templates/img.bookist.org/

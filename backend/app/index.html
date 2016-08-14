@@ -9,7 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/app.min.css"/>
+    <link rel="stylesheet" href="//img.bookist.org/app.min.css"/>
+    <script>
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        localStorage.setItem("token", getQueryString("token"));
+        localStorage.setItem("user_id", getQueryString("user_id"));
+    </script>
     <script src="//cdn.bootcss.com/babel-polyfill/6.13.0/polyfill.min.js"></script>
     <script src="//cdn.bootcss.com/angular.js/1.5.8/angular.min.js"></script>
     <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-animate.min.js"></script>
@@ -17,6 +26,7 @@
     <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-touch.min.js"></script>
     <script src="//cdn.bootcss.com/angular-ui-router/1.0.0-beta.1/angular-ui-router.min.js"></script>
     <script src="//cdn.bootcss.com/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
+    <script src="//img.bookist.org/app.min.js"></script>
 </head>
 <body>
     <div ui-view class="bookist-view uiview" ng-show="!$root.loading"></div>
@@ -27,5 +37,4 @@
         <div class="cssload-cube cssload-c3"></div>
     </div>
     <div ng-show="$state.current.nav" ng-include="'navbar/navbar_tpl.html'"></div>
-    <script src="/static/js/app.min.js"></script>
 </body>

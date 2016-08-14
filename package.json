@@ -44,6 +44,7 @@
     "gulp-ng-annotate": "^2.0.0",
     "gulp-ng-template": "^0.2.2",
     "gulp-plumber": "^1.1.0",
+    "gulp-qiniu": "^0.2.4",
     "gulp-rev": "^7.0.0",
     "gulp-run-sequence": "^0.3.2",
     "gulp-sass": "^2.2.0",

@@ -9,11 +9,11 @@ import minifyHtml from 'gulp-minify-html'
 import ngTemplate from 'gulp-ng-template'
 import plumber from 'gulp-plumber'
 import sass from 'gulp-sass'
+import qiniu from 'gulp-qiniu'
 import usemin from 'gulp-usemin'
-import runSequence from 'gulp-run-sequence'
 import eslint from 'gulp-eslint'
 
-gulp.task('angular', function(cb){
+gulp.task('angular', function() {
     gulp.src([
             'bower_components/notie/dist/notie.min.js',
             'bower_components/angular-promise-buttons/dist/angular-promise-buttons.js',
@@ -23,10 +23,9 @@ gulp.task('angular', function(cb){
         .pipe(concat('dependence.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('src/js/'))
-        .on('end',cb);
 });
 
-gulp.task('js', function(cb){
+gulp.task('js', function() {
     gulp.src(['app/**/*.js', 'app/module/**/*.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
@@ -36,10 +35,9 @@ gulp.task('js', function(cb){
         .pipe(concat('app.js'))
         .pipe(babel())
         .pipe(gulp.dest('src/js/'))
-        .on('end',cb);
 });
 
-gulp.task('templates', function(cb) {
+gulp.task('templates', function() {
     gulp.src('app/module/**/*.html')
         .pipe(minifyHtml({empty: true, quotes: true}))
         .pipe(ngTemplate({
@@ -47,58 +45,64 @@ gulp.task('templates', function(cb) {
             filePath: 'templates.js'
         }))
         .pipe(gulp.dest('src/js/'))
-        .on('end',cb);
 });
 
-gulp.task('css', function(cb){
+gulp.task('css', function() {
     gulp.src(['bower_components/notie/dist/notie.css'])
         .pipe(concat('app.min.css'))
         .pipe(cleanCSS())
         .pipe(gulp.dest('src/css/'))
-        .on('end',cb);
 });
 
-gulp.task('fonts', function(cb){
+gulp.task('fonts', function() {
     gulp.src(['bower_components/font-awesome/fonts/*', 'bower_components/bootstrap/fonts/*'])
         .pipe(gulp.dest('backend/app/static/fonts/'))
         .pipe(gulp.dest('src/fonts/'))
-        .on('end',cb);
 });
 
-gulp.task('img', function(cb){
+gulp.task('img', function() {
     gulp.src('static/images/*.*')
         .pipe(imagemin({
             progressive: true
         }))
         .pipe(gulp.dest('backend/app/static/images/'))
         .pipe(gulp.dest('src/images/'))
-        .on('end',cb);
 });
 
-gulp.task('sass', function(cb){
+gulp.task('sass', function() {
     gulp.src(['app/*.scss', 'app/**/*.scss', 'app/module/**/*.scss'])
         .pipe(plumber())
         .pipe(concat('bookist.scss'))
         .pipe(sass())
         .pipe(cleanCSS())
         .pipe(gulp.dest('src/css/'))
-        .on('end',cb);
 });
 
-gulp.task('together', function(cb){
+gulp.task('cdn', function() {
     gulp.src('index.html')
-        .pipe(plumber())
         .pipe(usemin({
-            css: ['concat'],
-            js: [uglify(), babel()]
         }))
-        .pipe(gulp.dest('backend/app/'))
-        .on('end',cb);
-});
-
-gulp.task('move', function(){
-    return gulp.src('backend/app/index.html')
-        .pipe(gulp.dest('backend/app/templates/'));
+        .pipe(gulp.dest('backend/app/'));
+    gulp.src(['./src/js/app.js', './src/js/dependence.min.js', './src/js/templates.js'])
+        .pipe(plumber())
+        .pipe(concat('app.min.js'))
+        .pipe(uglify())
+        .pipe(babel())
+        .pipe(qiniu({
+            accessKey: "rIku3cj75WrKEprUEf2YPDto8aPVDUe8iQ3Al2Q1",
+            secretKey: "x5nPZqGt6lYBoKY1XVMEjY70VPCWRljmbaPtK4SJ",
+            bucket: "bookist",
+            private: false
+        }));
+    gulp.src(['./src/css/app.min.css', './src/css/bookist.css'])
+        .pipe(concat('app.min.css'))
+        .pipe(cleanCSS())
+        .pipe(qiniu({
+            accessKey: "rIku3cj75WrKEprUEf2YPDto8aPVDUe8iQ3Al2Q1",
+            secretKey: "x5nPZqGt6lYBoKY1XVMEjY70VPCWRljmbaPtK4SJ",
+            bucket: "bookist",
+            private: false
+        }));
 });
 
 gulp.watch(['app/*.scss', 'app/**/*.scss', 'app/module/**/*.scss'], ['sass']);
@@ -106,8 +110,6 @@ gulp.watch(['app/**/*.js', 'app/module/**/*.js'], ['js']);
 gulp.watch('static/img/*.*', ['img']);
 gulp.watch('app/module/**/*.html',['templates']);
 
-gulp.task('product',function(cb) {
-    runSequence('together','move',cb)
-});
 
-gulp.task('default',['css','js','angular','img','templates','sass','fonts']);
+gulp.task('product', ['cdn']);
+gulp.task('default', ['css','js','angular','img','templates','sass','fonts']);

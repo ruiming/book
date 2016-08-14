@@ -14,9 +14,7 @@ import usemin from 'gulp-usemin'
 import eslint from 'gulp-eslint'
 
 gulp.task('angular', function() {
-    gulp.src([
-            'bower_components/notie/dist/notie.min.js',
-            'bower_components/angular-promise-buttons/dist/angular-promise-buttons.js'])
+    gulp.src(['bower_components/angular-promise-buttons/dist/angular-promise-buttons.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
         .pipe(concat('dependence.min.js'))
@@ -44,13 +42,6 @@ gulp.task('templates', function() {
             filePath: 'templates.js'
         }))
         .pipe(gulp.dest('src/js/'))
-});
-
-gulp.task('css', function() {
-    gulp.src(['bower_components/notie/dist/notie.css'])
-        .pipe(concat('app.min.css'))
-        .pipe(cleanCSS())
-        .pipe(gulp.dest('src/css/'))
 });
 
 gulp.task('fonts', function() {
@@ -81,10 +72,20 @@ gulp.task('cdn', function() {
     gulp.src('index.html')
         .pipe(usemin())
         .pipe(gulp.dest('backend/app/templates'));
-    gulp.src(['./src/js/app.js', './src/js/templates.js', './src/js/dependence.min.js'])
+    gulp.src('./src/js/dependence.min.js')
+        .pipe(plumber())
+        .pipe(uglify())
+        .pipe(qiniu({
+            accessKey: "rIku3cj75WrKEprUEf2YPDto8aPVDUe8iQ3Al2Q1",
+            secretKey: "x5nPZqGt6lYBoKY1XVMEjY70VPCWRljmbaPtK4SJ",
+            bucket: "bookist",
+            private: false
+        }));
+    gulp.src(['./src/js/app.js', './src/js/templates.js'])
         .pipe(plumber())
         .pipe(uglify())
         .pipe(babel())
+        .pipe(concat('app.min.js'))
         .pipe(qiniu({
             accessKey: "rIku3cj75WrKEprUEf2YPDto8aPVDUe8iQ3Al2Q1",
             secretKey: "x5nPZqGt6lYBoKY1XVMEjY70VPCWRljmbaPtK4SJ",
@@ -109,4 +110,4 @@ gulp.watch('app/module/**/*.html',['templates']);
 
 
 gulp.task('product', ['cdn']);
-gulp.task('default', ['css','js','angular','img','templates','sass','fonts']);
+gulp.task('default', ['js','angular','img','templates','sass','fonts']);

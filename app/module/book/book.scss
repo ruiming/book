@@ -46,10 +46,17 @@
             float: right;
           }
         }
-        .book-info-basic span{
+        .book-info-basic span {
           color: #a6a6a6;
           font-size: 12px;
           margin-bottom: 2px;
+          &:after {
+            content: '/';
+            padding-left: 4px;
+          }
+          &:last-child:after{
+            content: '';
+          }
         }
       }
     }

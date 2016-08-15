@@ -1,11 +1,11 @@
 <div class="collect-page">
     <div class="switch btn-group">
-        <a class="btn btn-default" ng-click="vm.swap = false">
+        <span ng-click="vm.swap = false" ng-class="{active: !vm.swap}">
             书单收藏夹
-        </a>
-        <a class="btn btn-default" ng-click="vm.swap = true">
+        </span>
+        <span ng-click="vm.swap = true" ng-class="{active: vm.swap}">
             书籍收藏夹
-        </a>
+        </span>
     </div>
     <div class="collect">
         <div ng-swipe-left="vm.swap=true" class="animate" ng-class="{true: 'animate-hide', false: ''}[vm.swap]">

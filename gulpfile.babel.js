@@ -68,13 +68,6 @@ gulp.task('templates', function() {
         .pipe(gulp.dest('src/js/'))
 });
 
-// 移动字体
-gulp.task('fonts', function() {
-    gulp.src(['bower_components/font-awesome/fonts/*', 'bower_components/bootstrap/fonts/*'])
-        .pipe(gulp.dest('backend/app/static/fonts/'))
-        .pipe(gulp.dest('src/fonts/'))
-});
-
 // 图片压缩
 gulp.task('img', function() {
     gulp.src('static/images/*.*')
@@ -156,4 +149,4 @@ gulp.watch('app/module/**/*.html',['templates']);
 
 
 gulp.task('product', ['cdn']);
-gulp.task('default', ['js', 'css', 'angular','img','templates','sass','fonts']);
+gulp.task('default', ['js', 'css', 'angular','img','templates','sass']);

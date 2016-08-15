@@ -1,0 +1,28 @@
+.order-return-page{
+  p {
+    margin-bottom: 0;
+  }
+  .head {
+    padding: 10px;
+    background-color: #fff;
+  }
+  li {
+    overflow: hidden;
+    padding: 10px;
+    color: #777;
+    img {
+      height: 80px;
+      float: left;
+      margin-right: 10px;
+    }
+    span {
+      font-size: 12px;
+    }
+  }
+  .checkbox {
+    height: 60px;
+    label {
+      top: 19px;
+    }
+  }
+}

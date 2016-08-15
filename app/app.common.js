@@ -33,12 +33,10 @@
 
             $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
                 $rootScope.loading = false;
-                console.log(false);
             });
 
             $rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
                 $rootScope.loading = false;
-                console.log(false);
             });
         });
 

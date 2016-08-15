@@ -10,5 +10,6 @@
     function OrderReturnCtrl(orderservice, order) {
         let vm = this;
         vm.order = order;
+        console.log(order);
     }
 }());

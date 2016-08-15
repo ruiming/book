@@ -1,52 +1,6 @@
 .cart-page  {
   background-color: $bgColor;
   margin-bottom: 82px;
-  .checkbox {
-    float: left;
-    height: 110px;
-    overflow: hidden;
-    margin-right: 10px;
-    label {
-      top: 45px;
-      position: relative;
-      padding-left: 0;
-      span {
-        display: inline-block;
-        border: 1px solid #d9d9d9;
-        width: 1.375em;
-        height: 1.375em;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        @include box-sizing(border-box);
-        &.active {
-          background: #ff5252;
-          position: relative;
-          border-color: #ff5252;
-          &:after {
-            position: absolute;
-            content: '';
-            width: 0.75em;
-            height: 0.41em;
-            border: 2px solid #ffffff;
-            border-top: none;
-            border-right: none;
-            left: 0.3em;
-            top: 0.35em;
-            @include box-sizing(border-box);
-            -webkit-transform: rotate(-45deg);
-            -moz-transform: rotate(-45deg);
-            -ms-transform: rotate(-45deg);
-            -o-transform: rotate(-45deg);
-            transform: rotate(-45deg);
-          }
-        }
-      }
-      input {
-        visibility: hidden;
-      }
-    }
-  }
   .cart-head {
     position: fixed;
     top: 0;

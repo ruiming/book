@@ -5,7 +5,14 @@
     <div class="contain">
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="z in vm.order.carts">
-                <img ng-src="z.book.image">
+                <div class="checkbox">
+                    <label>
+                    <span ng-class="{true: 'active', false: ''}[item.checked]">
+                        <input type="checkbox">
+                    </span>
+                    </label>
+                </div>
+                <img ng-src={{z.book.image}}>
                 <p>{{z.book.title}}</p>
                 <span>{{z.number}}本 / 共{{z.price*z.number | number:2}}元</span>
             </li>

@@ -1,0 +1,18 @@
+<div class="collect-page">
+    <div class="switch btn-group">
+        <a class="btn btn-default" ng-click="vm.swap = false">
+            书单收藏夹
+        </a>
+        <a class="btn btn-default" ng-click="vm.swap = true">
+            书籍收藏夹
+        </a>
+    </div>
+    <div class="collect">
+        <div ng-swipe-left="vm.swap=true" class="animate" ng-class="{true: 'animate-hide', false: ''}[vm.swap]">
+            <booklist-row booklists=vm.booklists></booklist-row>
+        </div>
+        <div ng-swipe-right="vm.swap=false" class="animate-2" ng-class="{true: 'animate-hide-2', false: ''}[!vm.swap]">
+            <book-row books=vm.books></book-row>
+        </div>
+    </div>
+</div>

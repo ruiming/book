@@ -330,23 +330,15 @@
                 }
             })
             .state('booklistsCollect',{
-                url: '/collect/booklists',
-                controller: 'CollectBookListsCtrl',
-                templateUrl: 'collect_booklists/collect_booklists_tpl.html',
+                url: '/collect',
+                controller: 'CollectCtrl',
+                templateUrl: 'collect/collect_tpl.html',
                 controllerAs: 'vm',
                 resolve: {
                     booklists: function(userservice) {
                         return userservice.getUserCollect('booklist')
                             .then(response => response);
-                    }
-                }
-            })
-            .state('booksCollect',{
-                url: '/collect/books',
-                controller: 'CollectBooksCtrl',
-                templateUrl: 'collect_books/collect_books_tpl.html',
-                controllerAs: 'vm',
-                resolve: {
+                    },
                     books: function(userservice) {
                         return userservice.getUserCollect('book')
                             .then(response => {

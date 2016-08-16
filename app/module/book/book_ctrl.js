@@ -69,7 +69,7 @@
 
         function postComment(){
             if(vm.content === void 0) return;
-            return commentservice.postComment($stateParams.isbn, vm.star, vm.content).then((response) => {
+            return commentservice.postComment($stateParams.isbn, vm.star, vm.content).then(response => {
                 vm.commentBox = false;
                 response.user = {
                     avatar: vm.user.avatar,

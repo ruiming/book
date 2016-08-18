@@ -5,11 +5,26 @@
         .module('index')
         .controller('RecommendMoreCtrl', RecommendMoreCtrl);
 
-    RecommendMoreCtrl.$inject = ['bookservice'];
+    RecommendMoreCtrl.$inject = ['books', 'bookservice'];
 
-    function RecommendMoreCtrl(bookservice) {
+    function RecommendMoreCtrl(books, bookservice) {
         let vm = this;
-        vm.books = new bookservice.getBooks();
-        vm.books.nextPage();
+        let page = 1;
+        vm.books = books;
+
+        vm.more = more;
+
+        function more() {
+            if(page !== null) {
+                return bookservice.getBooks(++page)
+                    .then(response => {
+                        if(response.length === 0) {
+                            page = null;
+                        } else {
+                            Array.prototype.push.apply(vm.books, response);
+                        }
+                    })
+            }
+        }
     }
 })();

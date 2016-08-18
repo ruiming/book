@@ -9,7 +9,6 @@
 
     function slideservice($http, $q) {
         let slides = null;
-        let deferred = $q.defer();
 
         return {
             getSlides: getSlides
@@ -21,16 +20,10 @@
          */
         function getSlides() {
             if(slides === null) {
-                return $http.get(host + '/slides')
-                    .then(response => {
-                        slides = response.data;
-                        return slides;
-                    });
+                return slides = $http.get(host + '/slides')
+                    .then(response => response.data);
             }
-            else {
-                deferred.resolve(slides);
-                return deferred.promise;
-            }
+            return slides;
         }
     }
 })();

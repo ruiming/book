@@ -1,6 +1,3 @@
-/*
- * 配置文件
- */
 var host = 'https://www.bookist.org';        // API url
 // var host = 'http://192.168.1.231';
 
@@ -31,17 +28,6 @@ var statusDict = {                       // 订单状态转换
  *                                                             -> closed    -> replace_refused
  *                                                             -> replaced_refused
  */
-
-/*
- * 积分机制
- * 初次登陆:            100分        所有用户第一次登陆默认获取
- * 第一次下单购买:        50分        仅限第一单，且订单完成不包含退款才计入
- * 购买一本图书：         10分        按本计，每本记一次
- * 评价一本图书：        2/5分        购买后评价5分，未购买评价2分
- * 评价获置顶:           20分         人工置顶，自动发消息通知并加分
- * 系统奖励:             xx分         提供接口，推送消息通知并发放奖励
- */
-
 notie.setOptions({
     colorSuccess: '#57BF57',
     colorWarning: '#D6A14D',

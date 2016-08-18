@@ -5,9 +5,9 @@
         .module('index')
         .controller('CartCtrl', CartCtrl);
 
-    CartCtrl.$inject = ['$state', 'cartservice', 'bookservice', 'orderservice'];
+    CartCtrl.$inject = ['cart', '$state', 'cartservice', 'bookservice', 'orderservice'];
 
-    function CartCtrl($state, cartservice, bookservice, orderservice) {
+    function CartCtrl(cart, $state, cartservice, bookservice, orderservice) {
         let vm = this;
         vm.checked = false;         // 默认全不选
         vm.editStatu = false;       // 默认非编辑状态
@@ -15,6 +15,7 @@
         vm.count = 0;               // 书籍数量(单本数量可叠加，结算显示)
         vm.number = 0;              // 书籍种类(单本数量不叠加，移入收藏和删除显示)
         vm.checkArr = [];           // 暂存勾选状态
+        vm.items = cart;
 
         vm.recount = recount;
         vm.selectAll = selectAll;
@@ -28,21 +29,7 @@
         vm.cart2order = cart2order;
         vm.editBook = editBook;
 
-        getCart();
-
-
-        function getCart() {
-            cartservice.getCart().then(response => {
-                vm.items = response;
-                let index = 1;
-                for(let item of vm.items) {
-                    item.checked = false;
-                    item.index = index++;
-                    item.deleted = false;
-                }
-                vm.recount(vm.items);
-            });
-        }
+        recount(vm.items);
 
         function recount() {
             vm.price = 0;

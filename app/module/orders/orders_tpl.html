@@ -1,6 +1,8 @@
 <div class="order-page">
     <div class="order-group">
-        <p class="empty" ng-if="vm.orders.length === 0"><i class="fa fa-rocket" aria-hidden="true"></i>您还没有 {{vm.type2}} 订单</p>
+        <p class="empty" ng-if="vm.orders.length === 0">
+            <i class="fa fa-rocket" aria-hidden="true"></i> 您还没有{{vm.type2}}订单
+        </p>
         <ul class="order-list">
             <li class="order-list-one" ng-repeat="order in vm.orders">
                 <div class="order-title">

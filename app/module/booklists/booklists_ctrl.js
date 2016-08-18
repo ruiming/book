@@ -5,31 +5,49 @@
         .module('index')
         .controller('BooklistsCtrl', BooklistsCtrl);
 
-    BooklistsCtrl.$inject = ['booklistservice', 'tagservice'];
+    BooklistsCtrl.$inject = ['booklistservice', 'tags', 'booklists'];
 
-    function BooklistsCtrl(booklistservice, tagservice) {
+    function BooklistsCtrl(booklistservice, tags, booklists) {
         let vm = this;
-        vm.booklists = new booklistservice.getBooklists('all');
+        let page = 1;
+        let type = 'all';
+
+        vm.tags = tags;
+        vm.booklists = booklists;
 
         vm.timeOrder = getBooklistOrderByTime;
         vm.collectOrder = getBooklistOrderByCollect;
+        vm.more = more;
 
-        getHotTags();
-
-        function getHotTags() {
-            tagservice.getHotTags().then(response => {
-                vm.tags = response;
-            });
+        function more() {
+            if(page !== null) {
+                return booklistservice.getBooklists(++page, type)
+                    .then(response => {
+                        if(response.length === 0) {
+                            page = null;
+                        } else {
+                            Array.prototype.push.apply(vm.booklists, response);
+                        }
+                    })
+            }
         }
 
         function getBooklistOrderByTime() {
-            vm.booklists = new booklistservice.getBooklists('time');
-            vm.booklists.nextPage();
+            return booklistservice.getBooklists(1, 'time')
+                .then(response => {
+                    vm.booklists = response;
+                    page = 1;
+                    type = 'time';
+                })
         }
 
         function getBooklistOrderByCollect() {
-            vm.booklists = new booklistservice.getBooklists('collect');
-            vm.booklists.nextPage();
+            return booklistservice.getBooklists(1, 'collect')
+                .then(response => {
+                    vm.booklists = response;
+                    page = 1;
+                    type = 'time';
+                })
         }
     }
 })();

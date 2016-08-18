@@ -1,8 +1,8 @@
 .books-content {
   background-color: white;
-  overflow: hidden;
   list-style: none;
-  padding: 10px;
+  overflow: hidden;
+  padding: 50px 10px 10px;
   .books-content-list {
     border-bottom: 1px solid #F7F7F7;
     margin-bottom: 10px;
@@ -13,6 +13,7 @@
     width: 100%;
     &:last-child {
       margin-bottom: 0;
+      border-bottom: 0;
     }
     img {
       margin: 0 10px 0 0;

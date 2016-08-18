@@ -5,9 +5,7 @@
         .module('index')
         .factory('commonservice', commonservice);
 
-    commonservice.$inject = ['$http'];
-
-    function commonservice($http) {
+    function commonservice() {
 
         return {
             changeStars: changeStars

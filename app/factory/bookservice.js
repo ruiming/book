@@ -9,13 +9,14 @@
 
     function bookservice($http, commonservice, $q) {
 
-        let popularBooks = null;
         let bookDetail = [];
+        let bookBelongs = [];
+        let popBooks = null;
         let similarBook = [];
         let changeStars = commonservice.changeStars;
 
         return {
-            getPopularBooks: getPopularBooks,
+            getPopularBooks2: getPopularBooks2,
             getBook: getBook,
             getBookDetail: getBookDetail,
             collectBook: collectBook,
@@ -25,77 +26,41 @@
             getBooks: getBooks
         };
 
-        function getBooks() {
-            this.list = [];
-            this.busy = false;
-            this.url = host + '/pop_book';
-            this.params = {
-                page: 1
-            };
-            this.continue = true;
-            this.nextPage = function() {
-                if(!this.continue){
-                    this.busy = false;
-                    return;
-                }
-                if(this.busy) {
-                    return;
-                }
-                this.busy = true;
-                $http({
-                    method: 'GET',
-                    url: this.url,
-                    params: this.params
-                }).success(function(response){
-                    var list = response;
-                    if(list.length < 5 ) {
-                        this.continue = false;
-                    }
-                    for (var i = 0 ;i < list.length; i++){
-                        list[i].star = Math.ceil(list[i].rate/2);
-                        this.list.push(list[i]);
-                    }
-                    this.busy = false;
-                    this.params.page += 1;
-                }.bind(this));
-            }.bind(this);
-            this.nextPage();
-            return this;
+        function getPopularBooks2() {
+            if(popBooks === null) {
+                return popBooks = $http.get(host + '/pop_book')
+                    .then(response => changeStars(response.data));
+            }
+            return popBooks;
+        }
+
+        function getBooks(page) {
+            return $http.get(host + '/pop_book?page=' + page)
+                .then(response => changeStars(response.data));
         }
 
         function getBookDetail(isbn) {
             if(bookDetail[isbn] === void 0) {
-                return $http.get(host + '/book?type=detail&isbn=' + isbn)
-                    .then(response => {
-                        bookDetail[isbn] = response.data;
-                        return bookDetail[isbn];
-                    });
+                return bookDetail[isbn] = $http.get(host + '/book?type=detail&isbn=' + isbn)
+                    .then(response => response.data);
             }
-            else {
-                let deferred = $q.defer();
-                deferred.resolve(bookDetail[isbn]);
-                return deferred.promise;
-            }
+            return bookDetail[isbn];
         }
 
         function getBookBelongs(isbn) {
-            return $http.get(host + '/booklist?isbn=' + isbn)
-                .then(response => response.data);
+            if(bookBelongs[isbn] === void 0) {
+                return bookBelongs[isbn] = $http.get(host + '/booklist?isbn=' + isbn)
+                    .then(response => response.data);
+            }
+            return bookBelongs[isbn];
         }
 
         function getSimilarBook(isbn) {
-            if(similarBook[isbn] == null) {
-                return $http.get(host + '/similar_book?isbn=' + isbn)
-                    .then(response => {
-                        similarBook[isbn] = changeStars(response.data);
-                        return similarBook[isbn];
-                    });
+            if(similarBook[isbn] === void 0) {
+                return similarBook[isbn] = $http.get(host + '/similar_book?isbn=' + isbn)
+                    .then(response => changeStars(response.data));
             }
-            else {
-                let deferred = $q.defer();
-                deferred.resolve(similarBook[isbn]);
-                return deferred.promise;
-            }
+            return similarBook[isbn];
         }
 
         function collectBook(isbn) {
@@ -114,25 +79,7 @@
 
         function getBook(isbn) {
             return $http.get(host + '/book?isbn=' + isbn)
-                .then(response => {
-                    return changeStars(response.data);
-                });
+                .then(response => changeStars(response.data));
         }
-
-        function getPopularBooks() {
-            if(popularBooks === null) {
-                return $http.get(host + '/pop_book')
-                    .then(response => {
-                        popularBooks = changeStars(response.data);
-                        return popularBooks;
-                    });
-            }
-            else {
-                let deferred = $q.defer();
-                deferred.resolve(popularBooks);
-                return deferred.promise;
-            }
-        }
-
     }
 })();

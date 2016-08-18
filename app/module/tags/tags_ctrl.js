@@ -5,13 +5,10 @@
         .module('index')
         .controller('TagsCtrl', TagsCtrl);
 
-    TagsCtrl.$inject = ['tagservice'];
+    TagsCtrl.$inject = ['tags'];
 
-    function TagsCtrl(tagservice) {
+    function TagsCtrl(tags) {
         let vm = this;
-
-        tagservice.getAllTags().then(response => {
-            vm.allTags = response;
-        });
+        vm.allTags = tags;
     }
 })();

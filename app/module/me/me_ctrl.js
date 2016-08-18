@@ -5,16 +5,10 @@
         .module('index')
         .controller('MeCtrl', MeCtrl);
 
-    MeCtrl.$inject = ['userservice'];
+    MeCtrl.$inject = ['me'];
 
-    function MeCtrl(userservice) {
+    function MeCtrl(me) {
         let vm = this;
-        getUserInfo();
-
-        function getUserInfo() {
-            userservice.getUserInfo().then(response => {
-                vm.user = response;
-            });
-        }
+        vm.user = me;
     }
 })();

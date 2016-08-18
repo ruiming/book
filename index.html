@@ -7,12 +7,13 @@
     <base href="/">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <!-- build:cssProduct /static/css/app.min.css -->
-    <link rel="stylesheet" href="src/css/app.min.css">
-    <link rel="stylesheet" href="src/css/bookist.css">
+    <!-- build:css //cdn.bookist.org/app.min.css -->
+    <link href="src/css/app.min.css" rel="stylesheet">
+    <!-- endbuild -->
+    <!-- build:css //cdn.bookist.org/bookist.min.css -->
+    <link href="src/css/bookist.min.css" rel="stylesheet">
     <!-- endbuild -->
     <script>
-        // 设置token
         function getQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
             var r = window.location.search.substr(1).match(reg);
@@ -23,23 +24,19 @@
     </script>
 </head>
 <body>
-    <div ui-view class="bookist-view uiview"></div>
+    <div ui-view class="bookist-view uiview" ng-show="!$root.loading"></div>
+    <div class="cssload-thecube" ng-show="$root.loading">
+        <div class="cssload-cube cssload-c1"></div>
+        <div class="cssload-cube cssload-c2"></div>
+        <div class="cssload-cube cssload-c4"></div>
+        <div class="cssload-cube cssload-c3"></div>
+    </div>
     <div ng-show="$state.current.nav" ng-include="'navbar/navbar_tpl.html'"></div>
-    <!-- build:dependence /static/js/app.min.js -->
-    <script src="src/js/dependence.min.js"></script>
+    <!-- build:js //cdn.bookist.org/app.min.js -->
+    <script src="src/js/app.min.js"></script>
     <!-- endbuild -->
-    <!-- build:dependence /static/js/bookist.min.js -->
-    <script src="src/js/app.js"></script>
+    <!-- build:js //cdn.bookist.org/bookist.min.js -->
+    <script src="src/js/bookist.js"></script>
     <script src="src/js/templates.js"></script>
-    <!-- enbuild -->
-    <!-- build:remove -->
-    <!--
-        开发环境 development     v2016.5.20
-        app.min.css             其他css文件
-        bookist.css             自己写的css文件
-        dependence.min.js       Angular和jQuery相关Js文件，无需理会
-        app.js                  自己写的js文件，进行整合但未压缩，便于查错
-        template.js             模板文件
-    -->
-    <!-- endbuild-->
+    <!-- endbuild -->
 </body>

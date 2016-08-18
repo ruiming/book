@@ -5,29 +5,48 @@
         .module('index')
         .controller('TagBooklistsCtrl', TagBooklistsCtrl);
 
-    TagBooklistsCtrl.$inject = ['$stateParams', 'booklistservice'];
+    TagBooklistsCtrl.$inject = ['$stateParams', 'booklistservice', 'booklists'];
 
-    function TagBooklistsCtrl($stateParams, booklistservice) {
+    function TagBooklistsCtrl($stateParams, booklistservice, booklists) {
         let vm = this;
+        let type = 'all';
+        let page = 1;
+        let tag = $stateParams.tag;
+        vm.booklists = booklists;
 
-        getAllBook();
+        vm.timeOrder = getBooklistOrderByTime;
+        vm.collectOrder = getBooklistOrderByCollect;
+        vm.more = more;
 
-        vm.timeOrder = timeOrder;
-        vm.collectOrder = collectOrder;
-
-        function getAllBook() {
-            vm.booklists = new booklistservice.getBooklists('all', $stateParams.tag);
-            vm.booklists.nextPage();
+        function more() {
+            if(page !== null) {
+                return booklistservice.getBooklists(++page, type, tag)
+                    .then(response => {
+                        if(response.length === 0) {
+                            page = null;
+                        } else {
+                            Array.prototype.push.apply(vm.booklists, response);
+                        }
+                    })
+            }
         }
 
-        function timeOrder() {
-            vm.booklists = new booklistservice.getBooklists('time', $stateParams.tag);
-            vm.booklists.nextPage();
+        function getBooklistOrderByTime() {
+            return booklistservice.getBooklists(1, 'time', tag)
+                .then(response => {
+                    vm.booklists = response;
+                    page = 1;
+                    type = 'time';
+                })
         }
 
-        function collectOrder() {
-            vm.booklists = new booklistservice.getBooklists('collect', $stateParams.tag);
-            vm.booklists.nextPage();
+        function getBooklistOrderByCollect() {
+            return booklistservice.getBooklists(1, 'collect', tag)
+                .then(response => {
+                    vm.booklists = response;
+                    page = 1;
+                    type = 'time';
+                })
         }
     }
 })();

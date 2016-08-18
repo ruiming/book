@@ -16,14 +16,14 @@
         </a>
     </div>
     <div class="book-info-basic">
-        <span class="author" ng-if='vm.book.author!=""'>
-            <span ng-repeat="x in vm.book.author track by $index"> {{x}} </span>/
+        <span class="author" ng-repeat="x in vm.book.author">
+            {{x}}
         </span>
-        <span class="publisher" ng-if='vm.book.publisher!=""'>
-            {{book.publisher}} /
+        <span class="publisher">
+            {{vm.book.publisher}}
         </span>
-        <span class="publish_time" ng-if='vm.book.publish_time!=""'>
-            {{book.publish_time}}
+        <span class="publish_time">
+            {{vm.book.publish_time}}
         </span>
     </div>
 </div>

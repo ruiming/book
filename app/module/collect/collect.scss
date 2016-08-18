@@ -1,0 +1,52 @@
+.collect-page {
+  background-color: #fff;
+  overflow: hidden;
+  .collect {
+    width: 200%;
+  }
+  .switch {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    span {
+      border: none;
+      text-align: center;
+      border-radius: 0;
+      width: 50%;
+      padding: 10px;
+      display: block;
+      float: left;
+    }
+    .active {
+      background-color: #eeeeee;
+    }
+  }
+  .booklists-row {
+    padding-top: 40px;
+  }
+}
+.animate {
+  float: left;
+  width: 50%;
+  position: relative;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  left: 0;
+}
+.animate-2 {
+  float: left;
+  width: 50%;
+  position: relative;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  left: -50%;
+}
+.animate-hide {
+  left: -50%;
+}
+.animate-hide-2 {
+  left: 0;
+}

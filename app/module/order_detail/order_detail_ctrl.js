@@ -5,9 +5,9 @@
         .module('index')
         .controller('OrderDetailCtrl', OrderDetailCtrl);
 
-    OrderDetailCtrl.$inject = ['$stateParams', 'orderservice'];
+    OrderDetailCtrl.$inject = ['orderservice', 'order'];
 
-    function OrderDetailCtrl($stateParams, orderservice){
+    function OrderDetailCtrl(orderservice, order) {
         let vm = this;
         vm.price = 0;
         vm.status_list = [];
@@ -15,25 +15,18 @@
         vm.cancel = cancel;
         vm.receipt = receipt;
 
-        getOrderDetail();
-
-        function getOrderDetail() {
-            orderservice.getOrderDetail($stateParams.id).then(response => {
-                vm.order = response;
-                vm.order.status = statusDict[vm.order.status];
-                for(let book of vm.order.carts) {
-                    vm.price += book.number * book.price;
-                }
-                for(let item of vm.order.status_list) {
-                    vm.status_list.push({
-                        'status': statusDict[item.status],
-                        'content': item.content,
-                        'time': item.time
-                    });
-                }
+        vm.order = order;
+        vm.order.status = statusDict[vm.order.status];
+        for(let book of vm.order.carts) {
+            vm.price += book.number * book.price;
+        }
+        for(let item of vm.order.status_list) {
+            vm.status_list.push({
+                'status': statusDict[item.status],
+                'content': item.content,
+                'time': item.time
             });
         }
-
 
         function cancel(order) {
             return orderservice.cancelOrder(order.id).then(() => {

@@ -5,22 +5,13 @@
         .module('index')
         .controller('OrderCommentsCtrl', OrderCommentsCtrl);
 
-    OrderCommentsCtrl.$inject = ['$q', '$stateParams', 'orderservice', 'commentservice'];
+    OrderCommentsCtrl.$inject = ['$q', '$stateParams', 'orderservice', 'commentservice', 'order'];
 
-    function OrderCommentsCtrl($q, $stateParams, orderservice, commentservice) {
+    function OrderCommentsCtrl($q, $stateParams, orderservice, commentservice, order) {
         let vm = this;
+        vm.order = order;
+
         vm.comment = comment;
-
-        getOrderDetail();
-
-        function getOrderDetail() {
-            orderservice.getOrderDetail($stateParams.id).then(response => {
-                vm.order = response;
-                if(vm.order.status !== 'commenting') {
-                    history.back();
-                }
-            });
-        }
 
         function comment(){
             let promises = [];

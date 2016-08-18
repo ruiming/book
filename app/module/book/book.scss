@@ -46,10 +46,17 @@
             float: right;
           }
         }
-        .book-info-basic span{
+        .book-info-basic span {
           color: #a6a6a6;
           font-size: 12px;
           margin-bottom: 2px;
+          &:after {
+            content: '/';
+            padding-left: 4px;
+          }
+          &:last-child:after{
+            content: '';
+          }
         }
       }
     }
@@ -79,8 +86,16 @@
         width: 62px;
       }
     }
+    .book-intro {
+      p {
+        margin: 5px;
+        word-wrap: break-word;
+        line-height: 1.6;
+      }
+    }
     .book-intro,
     .book-tags,
+    .book-comments,
     .books-similarity,
     .booklists-box {
       overflow: hidden;
@@ -93,11 +108,6 @@
         font-weight: bold;
         margin: 5px;
         color: grey;
-      }
-      p {
-        margin: 5px;
-        word-wrap: break-word;
-        line-height: 1.6;
       }
     }
     .books-similarity {
@@ -158,11 +168,6 @@
         border-radius: 0;
         margin: 0 10px 5px 0;
       }
-    }
-  }
-  .book-comments {
-    span:first-child {
-      padding-left: 10px !important;
     }
   }
   .book-comment-box {

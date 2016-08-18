@@ -4,15 +4,13 @@
     let booklistRow = () => {
         return {
             restrict: 'EA',
-            replace: true,
             scope: {
                 booklists: '=',
-                scroll: '='
+                more: '='
             },
             template:
             `       
-           <div class="booklists-row"  infinite-scroll='scroll.nextPage()' 
-                infinite-scroll-disabled='scroll.busy'  infinite-scroll-distance='1'>
+           <div class="booklists-row" infinite-scroll="more()">
                 <a class="booklist" ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
                     <div class="pic">
                         <img ng-src="{{booklist.image}}">

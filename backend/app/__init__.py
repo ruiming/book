@@ -3,11 +3,13 @@ import os
 import sys
 
 from flask import Flask
-from flask_mongoengine import  MongoEngine
+from flask_mongoengine import MongoEngine
+from mongoengine import signals
 from flask_admin import Admin
 from flask_security import Security, MongoEngineUserDatastore
 from wechatpy.oauth import WeChatOAuth
 from qiniu import Auth, BucketManager
+from flask_restful import Api
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -19,12 +21,16 @@ wechat = WeChatOAuth(app.config['CORP_ID'], app.config['SECRET'], "http://www.bo
 q = Auth(app.config['QINIU_ACCESS_KEY'], app.config['QINIU_SECRET_KEY'])
 b = BucketManager(q)
 
-@app.errorhandler(404)
-def not_found(error):
-    return '404', 404
+api = Api(app)
 
 
-# Make the LazyText(Babel) JSON serializable
+#
+# @app.errorhandler(404)
+# def not_found(error):
+#     return '404', 404
+#
+
+
 
 
 # Later on you'll import the other blueprints the same way:
@@ -45,14 +51,11 @@ app.register_blueprint(outline_module)
 
 # Flask-Admin
 
-from flask_admin.contrib.mongoengine import ModelView
-from flask_admin.contrib.fileadmin import FileAdmin
-
 from app.lib.admin_base import AdminView, AdminBaseModelView
 from app.book.model import BookList, Activity, Book, Tag, Applacation
 from app.book.admin_model import BookView, TagView, BookListView, ActivityView
 from app.auth.admin_model import UserView
-from app.user.admin_model import BillingView
+from app.user.admin_model import BillingView, PendingBillingView, WaitingBillingView
 from app.auth.model import User, UserRole
 from app.user.model import Comment, Points, Billing, Collect, Notice, Feedback, Cart
 
@@ -70,6 +73,8 @@ admin.add_view(AdminBaseModelView(Comment, name=u"评论", category=u"用户相�
 admin.add_view(AdminBaseModelView(Points, name=u"积分", category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Billing, name=u"订单"))
 admin.add_view(BillingView(name=u"订单"))
+admin.add_view(PendingBillingView(name=u"待发货订单"))
+admin.add_view(WaitingBillingView(name=u"待收货订单"))
 admin.add_view(AdminBaseModelView(Collect, name=u"收藏", category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Notice, name=u"通知", category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Feedback, name=u"反馈信息"))
@@ -79,3 +84,66 @@ admin.add_view(AdminBaseModelView(Feedback, name=u"反馈信息"))
 
 user_datastore = MongoEngineUserDatastore(db, User, UserRole)
 security = Security(app, user_datastore)
+
+
+# Jinja2 Filter
+from app.lib.jinja2 import jinja2_filter_datetime
+app.add_template_filter(jinja2_filter_datetime, name='datetime')
+
+
+# Flask-RestFul
+from app.book.resource import BookResource, TagResource, SlideResource, SlidesResource, SimilarBooksResource, \
+    BooksResource, BookListsResource, BookListResource
+
+from app.user.resource import UserAddressResource, UserAddressListResource, FeedbackResource, UserNoticesResource, \
+    UserNoticeResource, UserCollectsResource, UserPointsResource, UserCommentsResource, UserResource, \
+    BookListLoveResource, BillingsResource, BillingResource, BookCommentsResource, BookCommentResource, \
+    CartsResource, BookListCommentsResource, BookListCommentResource, BookCollectResource, BookListCollectResource
+
+# Slide
+api.add_resource(SlidesResource, '/rest/slides')
+api.add_resource(SlideResource, '/rest/slides/<activity_id>')
+
+# Book
+api.add_resource(BooksResource, '/rest/books/<books_type>')
+api.add_resource(BookResource, '/rest/book/<isbn>')
+api.add_resource(SimilarBooksResource, '/rest/book/<isbn>/similar')
+api.add_resource(BookCollectResource, '/rest/book/<isbn>/collect')
+api.add_resource(BookCommentsResource, '/rest/book/<isbn>/comments')
+api.add_resource(BookCommentResource, '/rest/comments/<comment_id>')
+
+# Book List
+api.add_resource(BookListsResource, '/rest/booklists')
+api.add_resource(BookListResource, '/rest/booklists/<book_list_id>')
+api.add_resource(BookListLoveResource, '/rest/booklists/<book_list_id>/love')
+api.add_resource(BookListCollectResource, '/rest/booklists/<book_list_id>/collect')
+api.add_resource(BookListCommentsResource, '/rest/booklists/<book_list_id>/comments')
+api.add_resource(BookListCommentResource, '/rest/booklistcomment/<comment_id>')
+
+# Cart
+api.add_resource(CartsResource, '/rest/carts')
+
+# Billing
+api.add_resource(BillingsResource, '/rest/billings')
+api.add_resource(BillingResource, '/rest/billings/<billing_id>')
+
+# User
+api.add_resource(UserResource, '/rest/user')
+
+api.add_resource(UserAddressListResource, '/rest/user/addresses')
+api.add_resource(UserAddressResource, '/rest/user/addresses/<address_id>')
+
+api.add_resource(UserNoticesResource, '/rest/user/notices')
+api.add_resource(UserNoticeResource, '/rest/user/notices/<notice_id>')
+
+api.add_resource(UserCollectsResource, '/rest/user/collects/<collect_type>')
+
+api.add_resource(UserPointsResource, '/rest/user/points')
+
+api.add_resource(UserCommentsResource, '/rest/user/comments')
+
+# Other
+api.add_resource(TagResource, '/rest/tags')
+api.add_resource(FeedbackResource, '/rest/feedback')
+
+

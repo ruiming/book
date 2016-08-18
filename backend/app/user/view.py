@@ -20,6 +20,7 @@ user_module = Blueprint('user_module', __name__)
 @user_module.route('/comments', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def comments():
     """
     返回书籍所有评论
@@ -117,6 +118,7 @@ def booklistcomments():
 @user_module.route('/comment', methods=['POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
+# TODO: put
 def comment():
     """
     发布评论
@@ -642,6 +644,7 @@ def cart():
 @user_module.route('/billing', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
+# TODO: done except put
 def billing():
 
     this_user = User.get_one_user(openid=request.headers['userid'])
@@ -795,6 +798,7 @@ def billing():
 @user_module.route('/booklist_love', methods=['POST'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def booklist_love():
 
     this_user = User.get_one_user(openid=request.headers['userid'])
@@ -830,6 +834,7 @@ def booklist_love():
 @user_module.route('/user_info', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_info():
 
     this_user = User.get_one_user(openid=request.headers['userid'], token=request.headers['token'])
@@ -848,6 +853,7 @@ def user_info():
 @user_module.route('/user_address', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_address():
 
     this_user = User.get_one_user(openid=request.headers['userid'])
@@ -1004,6 +1010,7 @@ def user_address():
 @user_module.route('/user_comments', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_comment():
 
     this_user = User.get_one_user(openid=request.headers['userid'])
@@ -1032,6 +1039,7 @@ def user_comment():
 @user_module.route('/user_points', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_points():
     """
     获取用户积分详细
@@ -1063,6 +1071,7 @@ def user_points():
 @user_module.route('/user_collects', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_collects():
     type = request.args.get('type', 'book')
 
@@ -1100,6 +1109,7 @@ def user_collects():
 @user_module.route('/user_carts', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_carts():
     this_user = User.get_one_user(openid=request.headers['userid'])
     all_cart = Cart.objects(user=this_user, status=1)
@@ -1125,6 +1135,7 @@ def user_carts():
 @user_module.route('/user_billings', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_billings():
     """
     返回用户订单
@@ -1185,6 +1196,7 @@ def user_billings():
 @user_module.route('/user_notices', methods=['GET', 'POST'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_notices():
     """
 
@@ -1227,6 +1239,7 @@ def user_notices():
 @user_module.route('/user_feedback', methods=['POST'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def user_feedback():
 
     content = request.form.get('content', None)

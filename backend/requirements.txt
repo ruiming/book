@@ -9,3 +9,4 @@ gunicorn==19.6.0
 pycrypto
 wechatpy[pycrypto]
 qiniu
+flask-restful==0.3.5

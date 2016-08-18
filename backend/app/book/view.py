@@ -9,7 +9,7 @@ from app.lib.common_function import return_message
 from app.lib.api_function import allow_cross_domain
 from app.lib.wechat import oauth4api
 
-from json import dumps
+from flask_restful import Resource
 
 book_modules = Blueprint('book_module', __name__)
 
@@ -17,6 +17,7 @@ book_modules = Blueprint('book_module', __name__)
 @book_modules.route('/booklist', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+#RESTFUL DONE
 def booklist():
     """
     书单接口
@@ -181,6 +182,7 @@ def booklist():
 @book_modules.route('/slides', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def slides():
     # DONE
 
@@ -206,6 +208,7 @@ def slides():
 @book_modules.route('/pop_book', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+#RESTFUL DONE
 def pop_book():
     """
     首页热门书籍
@@ -255,6 +258,7 @@ def pop_book():
 @book_modules.route('/book', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def book():
     isbn = request.args.get('isbn', None)
     type = request.args.get('type', 'summary')
@@ -342,6 +346,7 @@ def book():
 @book_modules.route('/tags', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def tags():
     # DONE
 
@@ -372,7 +377,7 @@ def tags():
         def tag_sort(x, y):
             # TODO: TAG 热门排序算法
 
-            return 1 if x[0] > y[0] else -1
+            return -1 if x[0] > y[0] else 1
 
         all_tag = Tag.objects()
         all_tag_not_sort = []
@@ -394,6 +399,7 @@ def tags():
 @book_modules.route('/similar_book', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def similar_book():
     """
     购买此书的人也购买了。。。

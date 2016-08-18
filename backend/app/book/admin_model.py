@@ -2,6 +2,7 @@
 
 from flask import url_for
 from jinja2 import Markup
+from app import app
 from app.book.model import Book
 from app.user.model import Collect
 from flask_admin import form
@@ -18,10 +19,13 @@ class ActivityView(AdminBaseModelView):
     def _list_thumbnail(view, context, model, name):
         if not model.image:
             return ''
-        if model.image[:4] == 'http':
+        if model.image.is_cdn:
             return Markup('<img src="{}" style="max-width:200px;">'.format(model.image))
-        return Markup('<img src="%s" style="max-width:200px;">' % url_for('static',
-                                                 filename=form.thumbgen_filename(model.image)))
+        else:
+            if model.image.url[:4] == 'http':
+                return Markup('<img src="{}" style="max-width:200px;">'.format(model.image.url))
+            return Markup('<img src="%s" style="max-width:200px;">' % '{}/{}'.format(app.config['IMAGE_CDN_BASE_URL'],
+                                                                                     model.image))
 
     def _time_format(view, context, model, name):
 
@@ -46,13 +50,6 @@ class ActivityView(AdminBaseModelView):
 
 
 class BookListView(AdminBaseModelView):
-    def _list_thumbnail(view, context, model, name):
-        if not model.image:
-            return ''
-        if model.image[:4] == 'http':
-            return Markup('<img src="{}" style="max-height:70px;">'.format(model.image))
-        return Markup('<img src="%s" style="max-height:70px;">' % url_for('static',
-                                                 filename=form.thumbgen_filename(model.image)))
 
     def _time_format(view, context, model, name):
 
@@ -61,6 +58,16 @@ class BookListView(AdminBaseModelView):
             return strftime("%Y-%m-%d %H:%M", localtime(timestamp))
         else:
             return ''
+
+    def _list_thumbnail(view, context, model, name):
+        if not model.image:
+            return ''
+        if model.image.is_cdn:
+            return Markup('<img src="{}" style="max-width:200px;">'.format(model.image))
+        else:
+            if model.image.url[:4] == 'http':
+                return Markup('<img src="{}" style="max-width:200px;">'.format(model.image.url))
+            return Markup('<img src="%s" style="max-width:200px;">' % '{}'.format(model.image))
 
     column_formatters = {
         'image': _list_thumbnail,
@@ -76,7 +83,6 @@ class BookListView(AdminBaseModelView):
             'fields': (Tag.name, Tag.belong)
         }
     }
-
 
 
 class BookView(AdminBaseModelView):

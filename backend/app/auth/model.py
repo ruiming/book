@@ -2,7 +2,7 @@
 from app import db
 from time import time
 from flask_security import RoleMixin, UserMixin
-
+from flask import request
 
 class User(db.Document):
     pass
@@ -95,6 +95,11 @@ class UserTypeBook(db.Document):
             raise cls.TooManyRecord
 
 
+class UserInlineCart(db.EmbeddedDocument):
+    book_isbn = db.StringField(required=True)
+    number = db.IntField(required=True, default=1)
+
+
 class User(db.Document, UserMixin):
 
     id = db.StringField(required=True, unique=True, primary_key=True)
@@ -115,6 +120,8 @@ class User(db.Document, UserMixin):
     credits = db.IntField(required=True, default=0)
     # For APP
     wechat = db.EmbeddedDocumentField(WechatOAuth)
+    # Carts
+    carts = db.EmbeddedDocumentListField(UserInlineCart)
 
     def __unicode__(self):
         return u'{}'.format(self.username)
@@ -123,7 +130,20 @@ class User(db.Document, UserMixin):
     def active(self):
         return True
 
-
+    @classmethod
+    def get_user_on_headers(cls):
+        """
+        直接读取 headers TOKEN 返回一个User示例
+        ** 危险度高,慎用 **
+        :return: None / User实例
+        """
+        token = request.headers.get('token', None)
+        if not token:
+            return None
+        this_user = cls.objects(wechat__access_token=token)
+        if this_user.count() == 1:
+            return this_user.first()
+        return None
 
     @classmethod
     def get_one_user(cls, openid=None, token=None):
@@ -146,6 +166,25 @@ class User(db.Document, UserMixin):
             return this_user.first()
 
         return None
+
+    def add_cart(self, isbn, number=1):
+        is_added = False
+        carts = list(self.carts)
+        for cart in carts:
+            if cart.book_isbn == str(isbn):
+                cart.number += number
+                is_added = True
+                if cart.number <= 0:
+                    carts.remove(cart)
+                break
+
+        if not is_added and number>0:
+            carts.append(UserInlineCart(
+                book_isbn=isbn,
+                number=number
+            ))
+        self.carts = carts
+        self.save()
 
 
 class UserAddress(db.Document):

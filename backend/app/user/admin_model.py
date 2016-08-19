@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from app.user.model import Billing, BillingStatus
+from app.user.model import Billing, BillingStatus, NewBilling, NewCart, Purchase
 
+from app.lib import time_int
 from app.lib.admin_base import AdminBaseView
 from flask_admin import expose
-from flask import abort, request, redirect, url_for
+from flask import abort, request, redirect, url_for, flash
 from time import time
 
 
@@ -127,3 +128,87 @@ class BillingView(AdminBaseView):
                 )
 
         return redirect(url_for('billingview.detail', billing_id=str(billing.pk)))
+
+
+class PendingBillingView(AdminBaseView):
+    @expose('/')
+    def index(self):
+
+        billings = NewBilling.objects(status='pending')
+
+        billings = billings.order_by('create_time')
+        return self.render('admin/pendingbilling/index.html', billings=billings)
+
+    @expose('/save', methods=['POST'])
+    def save(self):
+        billings_id = request.form.getlist('billingid')
+        billings = []
+        for one_id in billings_id:
+            try:
+                this_billing = NewBilling.objects(pk=one_id)
+                if this_billing.count() == 1:
+                    billings.append(this_billing.first())
+            except:
+                pass
+        return self.render('admin/pendingbilling/save.html', billings=billings)
+
+    @expose('/savein', methods=['POST'])
+    def savein(self):
+        print request.form
+        billings_id = request.form.getlist('billing_id')
+        billings = []
+        for billing_id in billings_id:
+            billing = NewBilling.objects(pk=billing_id)
+            if billing.count() == 1:
+                billings.append(billing.first())
+
+        print billings
+
+        if billings:
+            for one in billings:
+                one.change_status_force('waiting', u"已发货")
+                one.in_purchase_time = time_int()
+                one.save()
+                for cart in one.carts:
+                    form_id = '{}-{}'.format(str(one.pk), str(cart.pk))
+                    value = request.form.get(form_id)
+                    cart.real_price = float(value)
+                    cart.save()
+
+            Purchase(
+                billings=billings,
+                operator=request.form.get('operator', 'Unknown'),
+                warehouse=request.form.get('warehouse', 'Unknown'),
+            ).save()
+            flash(u"已经生成采货单")
+        else:
+            flash(u"数据为空")
+        return redirect(url_for("pendingbillingview.index"))
+
+
+class WaitingBillingView(AdminBaseView):
+
+    @staticmethod
+    def _sort(one, two):
+        if one.in_purchase_time - one.create_time > two.in_purchase_time - two.create_time:
+            return -1
+        return 1
+
+    @expose('/')
+    def index(self):
+        billing_id = request.args.get('id', None)
+        if billing_id:
+            billing = NewBilling.objects(pk=billing_id).first()
+            billing.add_log_backend('received', u"书籍已经送达")
+
+            flash(u"ID为 {} 的订单已送达".format(billing_id))
+            return redirect(url_for("waitingbillingview.index"))
+
+        else:
+
+            billings = NewBilling.objects(status='waiting')
+
+            billings = billings.order_by('create_time')
+            billings = sorted(billings, cmp=self._sort)
+
+            return self.render('admin/waitingbilling/index.html', billings=billings)

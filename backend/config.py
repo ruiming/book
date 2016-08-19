@@ -41,3 +41,10 @@ QINIU_SECRET_KEY = os.environ.get('QINIU_SECRET_KEY', 'x5nPZqGt6lYBoKY1XVMEjY70V
 # Flask-Security
 SECURITY_PASSWORD_HASH = 'pbkdf2_sha512'
 SECURITY_PASSWORD_SALT = 'some key'
+
+
+# Flask-Restful
+BUNDLE_ERRORS = True
+
+# CDN
+IMAGE_CDN_BASE_URL = os.environ.get("IMAGE_CDN_BASE_URL",'https://cdn.bookist.org')

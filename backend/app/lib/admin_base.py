@@ -3,6 +3,7 @@ from flask_admin.contrib.mongoengine import ModelView
 from flask_admin import BaseView, expose, AdminIndexView
 from flask_security import current_user
 from flask import request, redirect, url_for
+from app import app
 
 from app.auth.model import User
 from app.user.model import Notice
@@ -36,6 +37,14 @@ class AdminBaseModelView(ModelView):
             return strftime("%Y-%m-%d %H:%M", localtime(timestamp))
         else:
             return ''
+    @classmethod
+    def list_thumbnail(view, context, model, name):
+        if not model.image:
+            return ''
+        if model.image[:4] == 'http':
+            return ('<img src="{}" style="max-width:200px;">'.format(model.image))
+        return ('<img src="%s" style="max-width:200px;">' % '{}/{}'.format(app.config['IMAGE_CDN_BASE_URL'], model.image))
+
 
 
 class AdminView(AdminIndexView):

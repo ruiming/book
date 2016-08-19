@@ -1,0 +1,104 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+    <h1>采货单</h1>
+    <form action="savein" method="post">
+    <table>
+    <thead>
+    <tr>
+        <th>订单ID</th>
+        <th>订单书籍</th>
+        <th>书籍定价</th>
+        <th>实际价钱</th>
+        <th>订单原价</th>
+        <th>订单实际总价</th>
+        <th>下单时间</th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for one in billings %}
+    {% for one_cart in one.carts %}
+        {% if loop.first %}
+    <tr class="billing_id" id="{{ one.pk }}">
+        <th rowspan="{{ loop.length }}">{{ one.pk }}<input type="hidden" name="billing_id" value="{{ one.pk }}"></th>
+        <th>{{ one_cart.book.title }}</th>
+        <th>{{ one_cart.price }}</th>
+        <th><input type="number" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
+
+        <th rowspan="{{ loop.length }}">{{ one.get_sum_price() }}</th>
+        <th rowspan="{{ loop.length }}"><div class="{{ one.pk }}">自行计算</div></th>
+        <th rowspan="{{ loop.length }}">{{ one.create_time|datetime }}</th>
+
+    </tr>
+
+        {% else %}
+    <tr>
+        <th>{{ one_cart.book.title }}</th>
+        <th>{{ one_cart.price }}</th>
+        <th><input type="number" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
+
+    </tr>
+        {% endif %}
+    {% endfor %}
+    {% endfor %}
+
+    </tbody>
+    </table>
+    <div class="book-num">书籍数量<span>自行计算</span></div>
+    <div class="price_sum">总价<span>自行计算</span></div>
+    <div class="price_sum_r">实际总价<span>自行计算</span></div>
+    <div class="interest">差价<span>自行计算</span></div>
+    <div class="person">经手人<span><input type="text" name="operator" required="required"></span></div>
+    <div class="dormitory">仓库<span><input type="text" name="warehouse" required="required"></span></div>
+    <button>下一步</button>
+    </form>
+
+{% endblock %}
+
+{% block tail %}
+{{ super() }}
+<script>
+
+{#    function toDecimal(x) {#}
+{#        var val = Number(x)#}
+{#        if(!isNaN(parseFloat(val))) {#}
+{#           val = val.toFixed(2);#}
+{#        }#}
+{#        return  val;#}
+{#    }#}
+{#    function change_price(billing_id) {#}
+{#        console.log('reload');#}
+{#        var sum = 0;#}
+{#        $("input[name^='"+billing_id+"-']").each(function () {#}
+{#            sum += $(this).val();#}
+{#        });#}
+{#        $("span#"+billing_id+"").each(function () {#}
+{#            $(this).innerHTML = sum;#}
+{#        })#}
+{#    }#}
+{##}
+{#    $("tr.billing_id").each(function(){#}
+{#        console.log($(this).attr('id'));#}
+{#        var billing_id = $(this).attr('id');#}
+{#        $("input[name^='"+billing_id+"-']").each(function () {#}
+{#            console.log('load');#}
+{#            $(this).change(function () {#}
+{#                console.log('reload');#}
+{#                var sum = 0;#}
+{#                $("input[name^='"+billing_id+"-']").each(function () {#}
+{#                    console.log(#}
+{#                            parseFloat($.trim($(this).text()))#}
+{#                    );#}
+{#                });#}
+{#                console.log(sum);#}
+{#                $("div."+billing_id).each(function () {#}
+{#                    $(this).html(sum);#}
+{#                })#}
+{#            });#}
+{#        })#}
+{#    })#}
+
+    </script>
+{% endblock %}

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from app.book.model import BookList, Activity, Tag, Book, BookTag
-from app.user.model import Comment, Collect, UserCommentLove, Cart, UserBookListLove
+from app.user.model import Comment, Collect, UserCommentLove, Cart, UserBookListLove, \
+    BookListComment, UserBookListCommentLove
 from app.auth.model import User
 
 from app.lib.common_function import return_message
 from app.lib.api_function import allow_cross_domain
 from app.lib.wechat import oauth4api
 
-from json import dumps
+from flask_restful import Resource
 
 book_modules = Blueprint('book_module', __name__)
 
@@ -16,6 +17,7 @@ book_modules = Blueprint('book_module', __name__)
 @book_modules.route('/booklist', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+#RESTFUL DONE
 def booklist():
     """
     书单接口
@@ -59,6 +61,7 @@ def booklist():
             this_user = User.get_one_user(openid=request.headers['userid'])
 
             this_book_list_json = {
+                'id': str(this_book_list.pk),
                 'title': this_book_list.title,
                 'subtitle': this_book_list.subtitle,
                 'author': {
@@ -70,6 +73,7 @@ def booklist():
                 'image': this_book_list.image,
                 'collect': this_book_list.collect,
                 'tags': [],
+                'commenters': BookListComment.objects(book_list=this_book_list).count(),
                 "collect_already": True if Collect.objects(user=this_user, type='booklist', type_id=str(this_book_list.pk)).count() == 1 else False,
                 'love': UserBookListLove.objects(book_list=this_book_list).count(),
                 'love_already': True if UserBookListLove.objects(book_list=this_book_list, user=this_user).count() == 1 else False,
@@ -167,6 +171,7 @@ def booklist():
             'image': x.image,
             'title': x.title,
             'collect': x.collect,
+            'commenters': BookListComment.objects(book_list=x).count(),
             'description': x.description,
             'tags': [one_tag.name for one_tag in x.tag][:3]
         })
@@ -177,6 +182,7 @@ def booklist():
 @book_modules.route('/slides', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def slides():
     # DONE
 
@@ -202,6 +208,7 @@ def slides():
 @book_modules.route('/pop_book', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+#RESTFUL DONE
 def pop_book():
     """
     首页热门书籍
@@ -251,6 +258,7 @@ def pop_book():
 @book_modules.route('/book', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def book():
     isbn = request.args.get('isbn', None)
     type = request.args.get('type', 'summary')
@@ -338,6 +346,7 @@ def book():
 @book_modules.route('/tags', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def tags():
     # DONE
 
@@ -368,7 +377,7 @@ def tags():
         def tag_sort(x, y):
             # TODO: TAG 热门排序算法
 
-            return 1 if x[0] > y[0] else -1
+            return -1 if x[0] > y[0] else 1
 
         all_tag = Tag.objects()
         all_tag_not_sort = []
@@ -390,6 +399,7 @@ def tags():
 @book_modules.route('/similar_book', methods=['GET'])
 @allow_cross_domain
 @oauth4api
+# RESTFUL DONE
 def similar_book():
     """
     购买此书的人也购买了。。。

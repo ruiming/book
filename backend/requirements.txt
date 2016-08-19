@@ -1,11 +1,12 @@
 flask==0.11.1
 celery
 flask-mongoengine==0.7.5
-flask-admin
-flask-login
-flask-security
+flask-admin==1.4.2
+flask-login==0.3.2
+flask-security==1.7.5
 requests
-gunicorn
+gunicorn==19.6.0
 pycrypto
 wechatpy[pycrypto]
 qiniu
+flask-restful==0.3.5

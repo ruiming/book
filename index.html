@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN" ng-app="index">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,15 +15,17 @@
     <link href="src/css/bookist.min.css" rel="stylesheet">
     <!-- endbuild -->
     <script>
-        function getQueryString(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]); return null;
-        }
-        localStorage.setItem("token", getQueryString("token"));
-        localStorage.setItem("user_id", getQueryString("user_id"));
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+    localStorage.setItem("token", getQueryString("token"));
+    localStorage.setItem("user_id", getQueryString("user_id"));
     </script>
 </head>
+
 <body>
     <div ui-view class="bookist-view uiview" ng-show="!$root.loading"></div>
     <div class="cssload-thecube" ng-show="$root.loading">
@@ -38,5 +41,6 @@
     <!-- build:js //cdn.bookist.org/bookist.min.js -->
     <script src="src/js/bookist.js"></script>
     <script src="src/js/templates.js"></script>
+    //
     <!-- endbuild -->
 </body>

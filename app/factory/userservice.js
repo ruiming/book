@@ -34,58 +34,62 @@
             getAddress: getAddress
         };
 
+        // 获取用户默认地址
         function getUserDefaultAddress() {
             if(defaultAddress === null) {
-                return defaultAddress = $http.get(host + '/user_address?type=default')
+                return defaultAddress = $http.get(host + '/user/addresses?type=default')
                     .then(response => response.data);
             }
             return defaultAddress;
         }
 
+        // 获取用户收藏
         function getUserCollect(type) {
-            return $http.get(host + '/user_collects?type=' + type)
+            return $http.get(host + '/rest/user/collects/' + type)
                 .then(response => changeStars(response.data));
         }
 
+        // 设置用户默认地址
         function setUserDefaultAddress(name, phone, dormitory, id) {
             let address = {
                 name: name,
                 phone: phone,
                 dormitory: dormitory,
                 type: 'default',
-                id: id
             };
-            return $http.put(host + '/user_address', address).then(response => {
+            return $http.put(host + '/user/addresses/' + id, address).then(response => {
                 if(response.status == 200) {
                     defaultAddress = address;
                 }
             });
         }
 
+        // 删除用户地址
         function deleteUserAddress(id) {
-            return $http.delete(host + '/user_address', {data:{
-                id: id
-            }}).then(response => {
-                if(response.status == 200) {
-                    defaultAddress = null;
-                }
-            });
+            return $http.delete(host + '/user/addresses/' + id)
+                .then(response => {
+                    if(response.status == 200) {
+                        defaultAddress = null;
+                    }
+                });
         }
 
+        // 更新用户地址
         function updateUserAddress(name, phone, dormitory, id) {
-            return $http.put(host + '/user_address', {
+            return $http.put(host + '/user/addresses' + id, {
                 name: name,
                 phone: phone,
                 dormitory: dormitory,
-                id: id
             }).then(response => response.data);
         }
 
+        // 添加用户地址
         function addUserAddress(name, phone, dormitory) {
-            return $http.post(host + '/user_address', {
+            return $http.post(host + '/user/addresses', {
                 name: name,
                 phone: phone,
-                dormitory: dormitory
+                dormitory: dormitory,
+                type: 'normal'
             }).then(response => response.data);
         }
 
@@ -97,37 +101,43 @@
             return address;
         }
 
+        // 获取用户地址
         function getUserAddress() {
-            return $http.get(host + '/user_address')
+            return $http.get(host + '/user/addresses')
                 .then(response => response.data);
         }
 
+        // 获取用户书籍评论
         function getUserComments() {
-            return $http.get(host + '/user_comments')
+            return $http.get(host + '/user／comments')
                 .then(response => response.data);
         }
 
+        // 提交反馈
         function postSuggestion(content) {
-            return $http.post(host + '/user_feedback', {
+            return $http.post(host + '/feedback', {
                 content: content
             }).then(response => response.data);
         }
 
+        // 读取用户积分信息
         function getUserPoints() {
-            return $http.get(host + '/user_points')
+            return $http.get(host + '/user/points')
                 .then(response => response.data);
         }
 
+        // 读取用户信息
         function getUserInfo() {
             if(userInfo == null) {
-                return userInfo = $http.get(host + '/user_info')
+                return userInfo = $http.get(host + '/user')
                     .then(response => response.data);
             }
             return userInfo;
         }
 
+        // 获取通知消息
         function getUserNotices() {
-            return $http.get(host + '/user_notices')
+            return $http.get(host + '/user/notices')
                 .then(response => response.data);
         }
 

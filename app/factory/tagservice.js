@@ -17,6 +17,7 @@
             getAllTags: getAllTags
         };
 
+        // 获取全部标签
         function getAllTags() {
             if(allTags == null) {
                 return allTags = $http.get(host + '/tags?type=all')
@@ -25,6 +26,7 @@
             return allTags;
         }
 
+        // 获取热门标签
         function getHotTags() {
             if(hotTags == null) {
                 return hotTags = $http.get(host + '/tags?type=hot')

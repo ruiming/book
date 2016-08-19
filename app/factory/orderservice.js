@@ -22,33 +22,37 @@
             getOrder: getOrder
         };
 
+        // 获取指定状态的全部书单
         function getOrder(status) {
-            return $http.get(host + '/user_billings?status=' + status)
+            return $http.get(host + '/billings?status=' + status)
                 .then(response => response.data);
         }
 
+        // 修改订单状态，签收订单
         function receiptOrder(id) {
-            return $http.put(host + '/billing', {
-                id: id,
+            return $http.put(host + '/billings/' + id, {
                 status: 'commenting'
             }).then(response => response.data);
         }
 
+        // 取消订单
         function cancelOrder(id) {
-            return $http.delete(host + '/billing', {data:{
-                id: id
-            }}).then(response => response.data);
-        }
-
-        function getOrderDetail(id) {
-            return $http.get(host + '/billing?id=' + id)
+            return $http.delete(host + '/billings' + id)
                 .then(response => response.data);
         }
 
-        function makeOrder(cart_list, address_id) {
-            return $http.post(host + '/billing', {
-                cart_list: cart_list,
-                address_id: address_id
+        // 获取订单详细信息
+        function getOrderDetail(id) {
+            return $http.get(host + '/billings/' + id)
+                .then(response => response.data);
+        }
+
+        // 生成订单
+        function makeOrder(cart_list, number_list, address_id) {
+            return $http.post(host + '/billings', {
+                cart: cart_list,
+                number: number_list,
+                address: address_id
             }).then(response => response.data);
         }
 

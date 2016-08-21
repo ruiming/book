@@ -43,12 +43,8 @@
     config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider', 'angularPromiseButtonsProvider'];
     function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider) {
         $httpProvider.defaults.transformResponse.push(response => {
-            if(notices[response.status_id] !== void 0) {
+            if(response && response.status_id && notices[response.status_id] !== void 0) {
                 notie.alert(1, notices[response.status_id], 0.3);
-            }
-            if(angular.isDefined(response.data)&& response.status === 'success') {
-                response = response.data;
-                return response;
             }
             return response;
         });
@@ -323,8 +319,8 @@
                 templateUrl: 'user_comments/user_comments_tpl.html',
                 controllerAs: 'vm',
                 resolve: {
-                    comments: function(commentservice, $stateParams) {
-                        return commentservice.getComment($stateParams.isbn)
+                    comments: function(userservice) {
+                        return userservice.getUserComments()
                             .then(response => response);
                     }
                 }

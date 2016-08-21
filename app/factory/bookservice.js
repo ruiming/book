@@ -75,7 +75,7 @@
         }
 
         function getBook(isbn) {
-            return $http.get(host + '/book/' + isbn + '?type=sumarry')
+            return $http.get(host + '/book/' + isbn)
                 .then(response => changeStars(response.data));
         }
     }

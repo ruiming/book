@@ -45,7 +45,7 @@
 
         // 获取用户收藏
         function getUserCollect(type) {
-            return $http.get(host + '/rest/user/collects/' + type)
+            return $http.get(host + '/user/collects/' + type)
                 .then(response => changeStars(response.data));
         }
 
@@ -76,7 +76,7 @@
 
         // 更新用户地址
         function updateUserAddress(name, phone, dormitory, id) {
-            return $http.put(host + '/user/addresses' + id, {
+            return $http.put(host + '/user/addresses/' + id, {
                 name: name,
                 phone: phone,
                 dormitory: dormitory,
@@ -109,7 +109,7 @@
 
         // 获取用户书籍评论
         function getUserComments() {
-            return $http.get(host + '/user／comments')
+            return $http.get(host + '/user/comments')
                 .then(response => response.data);
         }
 

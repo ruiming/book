@@ -21,26 +21,26 @@
 
         // 收藏书单
         function collectBooklist(id) {
-            return $http.post(host + '/booklist/' + id + '/collect')
+            return $http.post(host + '/booklists/' + id + '/collect')
                 .then(response => response.data);
         }
 
         // 取消收藏书单
         function discollectBooklist(id) {
-            return $http.delete(host + '/booklist' + id + '/collect')
+            return $http.delete(host + '/booklists/' + id + '/collect')
                 .then(response => response.data);
         }
 
         // 喜欢/取消喜欢 书单
         function loveBooklist(id) {
-            return $http.post(host + '/booklist/' + id + '/love')
+            return $http.post(host + '/booklists/' + id + '/love')
                 .then(response => response.data);
         }
 
         // TODO
         function getBooklistDetail(id) {
             if(booklist[id] === void 0) {
-                return booklist[id] = $http.get(host + '/booklist?id=' + id)
+                return booklist[id] = $http.get(host + '/booklists/' + id)
                     .then(response => response.data);
             }
             return booklist[id];
@@ -48,7 +48,7 @@
 
         // TODO
         function getHotBooklists() {
-            return $http.get(host + '/booklist?type=hot')
+            return $http.get(host + '/booklists?type=hot')
                 .then(response => response.data);
         }
 

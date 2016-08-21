@@ -42,7 +42,7 @@
 
         // 获取书单评论
         function getCommentBL(id) {
-            return $http.get(host + '/booklist/' + id + '/comments')
+            return $http.get(host + '/booklists/' + id + '/comments')
                 .then(response => changeStars(response.data));
         }
 

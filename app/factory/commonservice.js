@@ -19,7 +19,7 @@
                 }
                 return books;
             }
-            if(books.rate !== void 0) {
+            if(books && books.rate !== void 0) {
                 if(books.rate)   books.star = Math.ceil(books.rate/2);
                 else if(books.star)   books.star = Math.ceil(books.star/2);
             }

@@ -131,7 +131,7 @@ class BookCommentResource(Resource):
     method_decorators = [authenticate]
 
     put_parser = reqparse.RequestParser()
-    put_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT')
+    put_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     put_parser.add_argument('star', type=int, default=0)
 
     def put(self, comment_id):
@@ -244,7 +244,7 @@ class BookListCommentsResource(Resource):
             })
 
     post_parser = reqparse.RequestParser()
-    post_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT')
+    post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)
 
     def post(self, book_list_id):
@@ -286,7 +286,7 @@ class BookListCommentResource(Resource):
     method_decorators = [authenticate]
 
     put_parser = reqparse.RequestParser()
-    put_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT')
+    put_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     put_parser.add_argument('star', type=int, default=0)
 
     def put(self, comment_id):
@@ -783,7 +783,7 @@ class UserAddressListResource(Resource):
         return addresses_json
 
     post_parser = reqparse.RequestParser()
-    post_parser.add_argument('name', type=str, required=True, location='form', help='MISSING_NAME')
+    post_parser.add_argument('name', type=unicode, required=True, location='form', help='MISSING_NAME')
     post_parser.add_argument('phone', type=phone, required=True, location='form', help='MISSING_OR_WRONG_PHONE')
     post_parser.add_argument('dormitory', type=unicode, required=True, location='form', help='MISSING_DORMITORY')
     post_parser.add_argument('type', type=str, location='form', default='normal')
@@ -845,9 +845,9 @@ class UserAddressResource(Resource):
     method_decorators = [authenticate]
 
     put_parser = reqparse.RequestParser()
-    put_parser.add_argument('name', type=str, location='form')
+    put_parser.add_argument('name', type=unicode, location='form')
     put_parser.add_argument('phone', type=phone, location='form')
-    put_parser.add_argument('dormitory', type=str, location='form')
+    put_parser.add_argument('dormitory', type=unicode, location='form')
     put_parser.add_argument('type', type=str, location='form')
 
     def put(self, address_id):
@@ -1103,7 +1103,7 @@ class FeedbackResource(Resource):
     method_decorators = [authenticate]
 
     post_parser = reqparse.RequestParser()
-    post_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT', location='form')
+    post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT', location='form')
 
     def post(self):
         """

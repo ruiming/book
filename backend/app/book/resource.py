@@ -266,7 +266,7 @@ class BookListsResource(Resource):
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('type', type=str, default='all')
-    get_parser.add_argument('tag', type=str)
+    get_parser.add_argument('tag', type=unicode)
     get_parser.add_argument('isbn', type=str)
     get_parser.add_argument('page', type=int, default=1)
     get_parser.add_argument('per_page', type=int, default=5)

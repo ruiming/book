@@ -59,7 +59,7 @@ class BookCommentsResource(Resource):
         :return:
         """
         args = self.get_parser.parse_args()
-        book = get_from_object_id(isbn, Book, 'book_id')
+        book = abort_invalid_isbn(isbn)
         comments = Comment.objects(book=book).order_by("create_time").limit(args['per_page']).skip(args['per_page']*(args['page']-1))
         user = User.get_user_on_headers()
         comments_json = []
@@ -85,7 +85,7 @@ class BookCommentsResource(Resource):
             })
 
     post_parser = reqparse.RequestParser()
-    post_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT')
+    post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)
 
     def post(self, isbn):
@@ -98,11 +98,11 @@ class BookCommentsResource(Resource):
         args['star'] = max(args['star'], 0)
         args['star'] = min(args['star'], 10)
 
-        book = get_from_object_id(isbn, Book, 'book_id')
+        book = abort_invalid_isbn(isbn)
         user = User.get_user_on_headers()
 
         comment = Comment(
-            content=args['comment'],
+            content=args['content'],
             star=args['star'],
             book=book,
             user=user

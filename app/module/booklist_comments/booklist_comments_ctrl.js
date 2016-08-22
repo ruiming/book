@@ -9,10 +9,11 @@
 
     function BooklistCommentsCtrl($stateParams, commentservice, userservice) {
         let vm = this;
-        vm.title = commentservice.getTitle();
+        vm.title = $stateParams.title;
         vm.commentBox = false;
 
-        vm.postComment = postComment;
+
+        vm.postComment = postCommentBL;
         vm.up = up;
         vm.down = down;
 
@@ -49,9 +50,10 @@
             });
         }
 
-        function postComment() {
+        // TODO
+        function postCommentBL() {
             if(vm.content === void 0) return;
-            return commentservice.postComment($stateParams.isbn, vm.star, vm.content).then(response => {
+            return commentservice.postCommentBL($stateParams.id, vm.star, vm.content).then(response => {
                 vm.commentBox = false;
                 response.user = {
                     avatar: vm.user.avatar,

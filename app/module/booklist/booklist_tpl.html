@@ -46,7 +46,7 @@
             {{vm.booklist.love}}
         </button>
         <button class="btn"
-                ui-sref="booklistComments({id: vm.booklist.id})"
+                ui-sref="booklistComments({id: vm.booklist.id, title: vm.booklist.title})"
                 promise-btn>
             <i class="fa fa-comment-o"></i>
             {{vm.booklist.commenters}}

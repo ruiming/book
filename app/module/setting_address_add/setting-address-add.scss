@@ -48,10 +48,15 @@
     margin-top: 5px;
   }
   .btn-group {
-    margin: 30px auto 10px;
+    padding: 8px;
     display: block;
     width: 100%;
     overflow: hidden;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
     button {
       float: right;
       border-radius: 0 !important;

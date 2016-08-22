@@ -42,7 +42,7 @@
     </div>
     <div class="make-order">
         <button class="btn btn-danger"
-                ng-disabled="vm.no_address"
+                ng-disabled="!vm.x"
                 promise-btn
                 ng-click="vm.make()">提交订单</button>
         <div class="cart-count">

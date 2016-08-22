@@ -59,7 +59,7 @@ class BookCommentsResource(Resource):
         :return:
         """
         args = self.get_parser.parse_args()
-        book = get_from_object_id(isbn, Book, 'book_id')
+        book = abort_invalid_isbn(isbn)
         comments = Comment.objects(book=book).order_by("create_time").limit(args['per_page']).skip(args['per_page']*(args['page']-1))
         user = User.get_user_on_headers()
         comments_json = []
@@ -85,7 +85,7 @@ class BookCommentsResource(Resource):
             })
 
     post_parser = reqparse.RequestParser()
-    post_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT')
+    post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)
 
     def post(self, isbn):
@@ -98,11 +98,11 @@ class BookCommentsResource(Resource):
         args['star'] = max(args['star'], 0)
         args['star'] = min(args['star'], 10)
 
-        book = get_from_object_id(isbn, Book, 'book_id')
+        book = abort_invalid_isbn(isbn)
         user = User.get_user_on_headers()
 
         comment = Comment(
-            content=args['comment'],
+            content=args['content'],
             star=args['star'],
             book=book,
             user=user
@@ -131,7 +131,7 @@ class BookCommentResource(Resource):
     method_decorators = [authenticate]
 
     put_parser = reqparse.RequestParser()
-    put_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT')
+    put_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     put_parser.add_argument('star', type=int, default=0)
 
     def put(self, comment_id):
@@ -244,7 +244,7 @@ class BookListCommentsResource(Resource):
             })
 
     post_parser = reqparse.RequestParser()
-    post_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT')
+    post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)
 
     def post(self, book_list_id):
@@ -286,7 +286,7 @@ class BookListCommentResource(Resource):
     method_decorators = [authenticate]
 
     put_parser = reqparse.RequestParser()
-    put_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT')
+    put_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     put_parser.add_argument('star', type=int, default=0)
 
     def put(self, comment_id):
@@ -358,12 +358,12 @@ class BookCollectResource(Resource):
     """
     书籍收藏
     """
-    def post(self, book_id):
+    def post(self, isbn):
         """
         收藏
         :return:
         """
-        book = get_from_object_id(book_id, Book, 'book_id')
+        book = abort_invalid_isbn(isbn)
         user = User.get_user_on_headers()
         collect = Collect.objects(user=user, type='book', type_id=str(book.isbn))
         if collect.count() == 0:
@@ -373,12 +373,12 @@ class BookCollectResource(Resource):
             'collect': True,
         }
 
-    def delete(self, book_id):
+    def delete(self, isbn):
         """
         删除收藏
         :return:
         """
-        book = get_from_object_id(book_id, Book, 'book_id')
+        book = abort_invalid_isbn(isbn)
         user = User.get_user_on_headers()
         collect = Collect.objects(user=user, type='book', type_id=str(book.isbn))
         if collect.count() == 1:
@@ -758,7 +758,7 @@ class UserAddressListResource(Resource):
         :return:
         """
         args = self.get_parser.parse_args()
-        abort_valid_in_list('TYPE',args['type'], ['all', 'default'])
+        abort_valid_in_list('TYPE', args['type'], ['all', 'default'])
         user = User.get_user_on_headers()
 
         addresses = UserAddress.objects(user=user, enabled=True)
@@ -771,20 +771,21 @@ class UserAddressListResource(Resource):
 
         addresses_json = []
         for address in addresses:
-            addresses_json.append({
-                'id': str(address.pk),
-                'name': address.name,
-                'phone': address.phone,
-                'dormitory': address.dormitory,
-                'is_default': address.is_default
-            })
+            if isinstance(address, UserAddress):
+                addresses_json.append({
+                    'id': str(address.pk),
+                    'name': address.name,
+                    'phone': address.phone,
+                    'dormitory': address.dormitory,
+                    'is_default': address.is_default
+                })
 
         return addresses_json
 
     post_parser = reqparse.RequestParser()
-    post_parser.add_argument('name', type=str, required=True, location='form', help='MISSING_NAME')
+    post_parser.add_argument('name', type=unicode, required=True, location='form', help='MISSING_NAME')
     post_parser.add_argument('phone', type=phone, required=True, location='form', help='MISSING_OR_WRONG_PHONE')
-    post_parser.add_argument('dormitory', type=str, required=True, location='form', help='MISSING_DORMITORY')
+    post_parser.add_argument('dormitory', type=unicode, required=True, location='form', help='MISSING_DORMITORY')
     post_parser.add_argument('type', type=str, location='form', default='normal')
 
     def post(self):
@@ -844,9 +845,9 @@ class UserAddressResource(Resource):
     method_decorators = [authenticate]
 
     put_parser = reqparse.RequestParser()
-    put_parser.add_argument('name', type=str, location='form')
+    put_parser.add_argument('name', type=unicode, location='form')
     put_parser.add_argument('phone', type=phone, location='form')
-    put_parser.add_argument('dormitory', type=str, location='form')
+    put_parser.add_argument('dormitory', type=unicode, location='form')
     put_parser.add_argument('type', type=str, location='form')
 
     def put(self, address_id):
@@ -1102,7 +1103,7 @@ class FeedbackResource(Resource):
     method_decorators = [authenticate]
 
     post_parser = reqparse.RequestParser()
-    post_parser.add_argument('content', type=str, required=True, help='MISSING_CONTENT', location='form')
+    post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT', location='form')
 
     def post(self):
         """

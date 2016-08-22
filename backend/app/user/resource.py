@@ -358,12 +358,12 @@ class BookCollectResource(Resource):
     """
     书籍收藏
     """
-    def post(self, book_id):
+    def post(self, isbn):
         """
         收藏
         :return:
         """
-        book = get_from_object_id(book_id, Book, 'book_id')
+        book = get_from_object_id(isbn, Book, 'book_id')
         user = User.get_user_on_headers()
         collect = Collect.objects(user=user, type='book', type_id=str(book.isbn))
         if collect.count() == 0:
@@ -373,12 +373,12 @@ class BookCollectResource(Resource):
             'collect': True,
         }
 
-    def delete(self, book_id):
+    def delete(self, isbn):
         """
         删除收藏
         :return:
         """
-        book = get_from_object_id(book_id, Book, 'book_id')
+        book = get_from_object_id(isbn, Book, 'book_id')
         user = User.get_user_on_headers()
         collect = Collect.objects(user=user, type='book', type_id=str(book.isbn))
         if collect.count() == 1:

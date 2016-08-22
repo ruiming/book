@@ -363,7 +363,7 @@ class BookCollectResource(Resource):
         收藏
         :return:
         """
-        book = get_from_object_id(isbn, Book, 'book_id')
+        book = abort_invalid_isbn(isbn)
         user = User.get_user_on_headers()
         collect = Collect.objects(user=user, type='book', type_id=str(book.isbn))
         if collect.count() == 0:
@@ -378,7 +378,7 @@ class BookCollectResource(Resource):
         删除收藏
         :return:
         """
-        book = get_from_object_id(isbn, Book, 'book_id')
+        book = abort_invalid_isbn(isbn)
         user = User.get_user_on_headers()
         collect = Collect.objects(user=user, type='book', type_id=str(book.isbn))
         if collect.count() == 1:

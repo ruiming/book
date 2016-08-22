@@ -11,7 +11,7 @@
         return {
             request: function(config) {
 
-                var url = host + '/auth_verify';
+                var url = 'https://www.bookist.org/auth_verify';
                 var deferred = $q.defer();
                 var http = $injector.get('$http');
                 if(config.url === url)

@@ -1,4 +1,4 @@
-var host = 'https://www.bookist.org';        // API url
+var host = 'https://www.bookist.org/rest';        // API url
 // var host = 'http://192.168.1.231';
 
 var statusDict = {                       // 订单状态转换

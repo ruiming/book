@@ -14,10 +14,7 @@
             getSlides: getSlides
         };
 
-        /**
-         * 获取活动轮播
-         * @returns {*}
-         */
+        // 获取活动
         function getSlides() {
             if(slides === null) {
                 return slides = $http.get(host + '/slides')

@@ -7,7 +7,7 @@
 
     BookCtrl.$inject = ['$stateParams', 'commentservice', 'bookservice', 'cartservice', 'userservice', 'book'];
 
-    function BookCtrl($stateParams, commentservice, bookservice, cartservice, userservice, book){
+    function BookCtrl($stateParams, commentservice, bookservice, cartservice, userservice, book) {
 
         let vm = this;
         vm.more = false;            // 默认不加载更多书籍信息介绍

@@ -27,9 +27,19 @@
             deleteCommentBL: deleteCommentBL,
             getComment: getComment,
             getCommentBL: getCommentBL,
-            platformComment: platformComment
+            platformComment: platformComment,
+            getTitle: getTitle,
+            setTitle: setTitle
         };
-        
+
+        function getTitle() {
+            return title;
+        }
+
+        function setTitle(value) {
+            title = value;
+        }
+
         // 获取书单评论
         function getCommentBL(id) {
             return $http.get(host + '/booklists/' + id + '/comments')

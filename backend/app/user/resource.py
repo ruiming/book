@@ -758,7 +758,7 @@ class UserAddressListResource(Resource):
         :return:
         """
         args = self.get_parser.parse_args()
-        abort_valid_in_list('TYPE',args['type'], ['all', 'default'])
+        abort_valid_in_list('TYPE', args['type'], ['all', 'default'])
         user = User.get_user_on_headers()
 
         addresses = UserAddress.objects(user=user, enabled=True)
@@ -771,20 +771,21 @@ class UserAddressListResource(Resource):
 
         addresses_json = []
         for address in addresses:
-            addresses_json.append({
-                'id': str(address.pk),
-                'name': address.name,
-                'phone': address.phone,
-                'dormitory': address.dormitory,
-                'is_default': address.is_default
-            })
+            if isinstance(address, UserAddress):
+                addresses_json.append({
+                    'id': str(address.pk),
+                    'name': address.name,
+                    'phone': address.phone,
+                    'dormitory': address.dormitory,
+                    'is_default': address.is_default
+                })
 
         return addresses_json
 
     post_parser = reqparse.RequestParser()
     post_parser.add_argument('name', type=str, required=True, location='form', help='MISSING_NAME')
     post_parser.add_argument('phone', type=phone, required=True, location='form', help='MISSING_OR_WRONG_PHONE')
-    post_parser.add_argument('dormitory', type=str, required=True, location='form', help='MISSING_DORMITORY')
+    post_parser.add_argument('dormitory', type=unicode, required=True, location='form', help='MISSING_DORMITORY')
     post_parser.add_argument('type', type=str, location='form', default='normal')
 
     def post(self):

@@ -84,6 +84,8 @@ class BookCommentsResource(Resource):
                 'create_time': comment.create_time
             })
 
+        return comments_json
+
     post_parser = reqparse.RequestParser()
     post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)

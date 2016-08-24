@@ -84,13 +84,16 @@ class BooksResource(Resource):
         else:
             books = Book.objects().order_by("-rate")
 
+        if books.count() == 0:
+            books = Book.objects().order_by("-rate")
+
         books = books.limit(args['per_page']).skip(args['per_page']*(args['page']-1))
 
         books_json = []
 
         for book in books:
             if book.isbn not in books_isbn:
-                books_isbn.append({
+                books_json.append({
                     'title': book.title,
                     'isbn': book.isbn,
                     'subtitle': book.subtitle,

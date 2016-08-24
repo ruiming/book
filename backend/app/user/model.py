@@ -291,7 +291,7 @@ class NewCart(db.Document):
     price = db.DecimalField(required=True)
     status = db.IntField(required=True, default=0)
     create_time = db.IntField(required=True, default=time_int)
-    real_price = db.DecimalField(required=True)
+    real_price = db.DecimalField()
 
     def __eq__(self, other):
         if isinstance(other, NewCart):

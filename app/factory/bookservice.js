@@ -70,7 +70,7 @@
         }
 
         function discollectBook(isbn) {
-            return $http.post(host + '/book/' + isbn + '/collect')
+            return $http.delete(host + '/book/' + isbn + '/collect')
                 .then(response => response.data);
         }
 

@@ -7,7 +7,7 @@
 
     BookCtrl.$inject = ['$stateParams', 'commentservice', 'bookservice', 'cartservice', 'userservice', 'book'];
 
-    function BookCtrl($stateParams, commentservice, bookservice, cartservice, userservice, book){
+    function BookCtrl($stateParams, commentservice, bookservice, cartservice, userservice, book) {
 
         let vm = this;
         vm.more = false;            // 默认不加载更多书籍信息介绍
@@ -44,9 +44,15 @@
         }
 
         function collect() {
-            return bookservice.collectBook($stateParams.isbn).then(() => {
-                vm.book.collect_already = !vm.book.collect_already;
-            });
+            if(vm.book.collect_already) {
+                return bookservice.discollectBook($stateParams.isbn).then(() => {
+                    vm.book.collect_already = !vm.book.collect_already;
+                })
+            } else {
+                return bookservice.collectBook($stateParams.isbn).then(() => {
+                    vm.book.collect_already = !vm.book.collect_already;
+                });
+            }
         }
 
         function up(comment) {

@@ -218,11 +218,15 @@
                 }
             })
             .state('booklistComments', {
-                url: '/booklist/{id}/comments',
+                url: '/booklist/{id}/{title}/comments',
                 controller: 'BooklistCommentsCtrl',
                 templateUrl: 'booklist_comments/booklist_comments_tpl.html',
                 controllerAs: 'vm',
-                // TODO: 书单评论，resolve...
+                resolve: {
+                    title: function($stateParams) {
+                        return $stateParams.title;
+                    }
+                }
             })
             .state('tagBooklists',{
                 url: '/booklists/{tag}',

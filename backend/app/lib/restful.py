@@ -26,10 +26,9 @@ def authenticate(func):
 
 
 def phone(number):
-    if len(number) != 11:
-        raise ValueError('WRONG_PHONE_NUMBER')
     try:
-        number = int(number)
+        for one in number:
+            int
     except:
         raise ValueError('WRONG_PHONE_NUMBER')
     else:

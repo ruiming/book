@@ -14,16 +14,6 @@
     <!-- build:css //cdn.bookist.org/bookist.min.css -->
     <link href="src/css/bookist.min.css" rel="stylesheet">
     <!-- endbuild -->
-    <script>
-    function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]);
-        return null;
-    }
-    localStorage.setItem("token", getQueryString("token"));
-    localStorage.setItem("user_id", getQueryString("user_id"));
-    </script>
 </head>
 
 <body>

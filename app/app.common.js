@@ -12,7 +12,10 @@
             'angularPromiseButtons'
         ])
         .config(config)
-        .run(function ($state,$rootScope) {
+        .run(function ($state, $rootScope, tokenInjector, $location) {
+            let token = $location.search().token;
+            let userid = $location.search().user_id;
+            tokenInjector.setAuth(token, userid);
             $rootScope.$state = $state;
             $rootScope.$on("$stateChangeStart", function (event, toState, toStateParams, fromState, fromStateParams) {
                 var isLoading = toState.resolve;

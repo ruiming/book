@@ -40,8 +40,8 @@
 
         // TODO　等待地址问题修复
         function make() {
-            return orderservice.makeOrder(vm.cart_list, vm.count_list, vm.x.id).then((response) => {
-                $location.path('/order/'+response+'/detail').replace();
+            return orderservice.makeOrder(vm.cart_list, vm.count_list, vm.x.id).then(response => {
+                $location.path('/order/'+response.id+'/detail').replace();
             });
         }
     }

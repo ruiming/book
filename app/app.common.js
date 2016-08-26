@@ -68,6 +68,7 @@
         $httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.put = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};
+        $httpProvider.defaults.headers.patch = {'Content-Type': 'application/x-www-form-urlencoded'};
         // redirect to '/' if not match
         $urlRouterProvider.otherwise('/');
 

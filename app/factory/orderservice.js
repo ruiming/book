@@ -37,7 +37,7 @@
 
         // 取消订单
         function cancelOrder(id) {
-            return $http.delete(host + '/billings' + id)
+            return $http.delete(host + '/billings/' + id)
                 .then(response => response.data);
         }
 

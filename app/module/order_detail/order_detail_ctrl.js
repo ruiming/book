@@ -18,7 +18,7 @@
         vm.order = order;
         vm.order.status = statusDict[vm.order.status];
         for(let book of vm.order.carts) {
-            vm.price += book.number * book.price;
+            vm.price += book.price_sum;
         }
         for(let item of vm.order.status_list) {
             vm.status_list.push({

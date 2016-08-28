@@ -10,16 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="//cdn.bookist.org/app.min.css"/>
     <link rel="stylesheet" href="//cdn.bookist.org/bookist.min.css"/>
-    <script>
-    function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]);
-        return null;
-    }
-    localStorage.setItem("token", getQueryString("token"));
-    localStorage.setItem("user_id", getQueryString("user_id"));
-    </script>
 </head>
 
 <body>

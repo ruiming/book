@@ -15,7 +15,7 @@
                             <img ng-src="{{z.book.image}}">
                             <p>{{z.book.title}}</p>
                             <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
-                            <span class="count"> {{z.number}}本 / 共{{z.price*z.number | number:2}}元</span>
+                            <span class="count"> {{z.number}}本 / 共{{z.price_sum | number:2}}元</span>
                         </li>
                     </ul>
                 </a>

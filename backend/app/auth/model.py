@@ -178,7 +178,7 @@ class User(db.Document, UserMixin):
                     carts.remove(cart)
                 break
 
-        if not is_added and number>0:
+        if not is_added and number > 0:
             carts.append(UserInlineCart(
                 book_isbn=isbn,
                 number=number

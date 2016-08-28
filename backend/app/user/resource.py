@@ -603,7 +603,7 @@ class BillingsResource(Resource):
         user = User.get_user_on_headers()
         carts = []
         for l_id, book in enumerate(args['cart']):
-            user.add_cart(book.isbn, args['number'][l_id])
+            user.add_cart(book.isbn, -1 * args['number'][l_id])
             for loop in range(args['number'][l_id]):
                 cart = NewCart(
                     book=book,

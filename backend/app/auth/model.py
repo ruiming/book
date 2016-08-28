@@ -173,15 +173,16 @@ class User(db.Document, UserMixin):
         for cart in carts:
             if cart.book_isbn == str(isbn):
                 cart.number += number
+                cart.number = min(cart.number, 10)
                 is_added = True
                 if cart.number <= 0:
                     carts.remove(cart)
                 break
 
-        if not is_added and number>0:
+        if not is_added and number > 0:
             carts.append(UserInlineCart(
                 book_isbn=isbn,
-                number=number
+                number=min(number, 10)
             ))
         self.carts = carts
         self.save()

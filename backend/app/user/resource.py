@@ -481,17 +481,16 @@ class CartsResource(Resource):
             'isbn': isbn
         }
         cart = list(cart)
-        cart = cart[0] if len(cart)>0 else None
-
+        cart = cart[0] if len(cart) > 0 else None
         user.add_cart(isbn, args['number'])
         number = args['number']
         if cart:
-            number += cart.number
+            number = cart.number
 
         if number <= 0:
             number = 0
 
-        cart_json['number'] = number
+        cart_json['number'] = min(number, 10)
         return cart_json
 
     delete_parser = reqparse.RequestParser()
@@ -603,7 +602,7 @@ class BillingsResource(Resource):
         user = User.get_user_on_headers()
         carts = []
         for l_id, book in enumerate(args['cart']):
-            user.add_cart(book.isbn, args['number'][l_id])
+            user.add_cart(book.isbn, -1 * args['number'][l_id])
             for loop in range(args['number'][l_id]):
                 cart = NewCart(
                     book=book,

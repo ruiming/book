@@ -43,6 +43,11 @@ gulp.task('css', function() {
         .pipe(gulp.dest('src/css/'))
 });
 
+gulp.task('font', function() {
+    gulp.src('static/fonts/**.*')
+        .pipe(gulp.dest('src/fonts/'))
+});
+
 // 自己的js代码
 gulp.task('js', function() {
     gulp.src(['app/**/*.js', 'app/module/**/*.js'])
@@ -149,4 +154,4 @@ gulp.watch('app/module/**/*.html',['templates']);
 
 
 gulp.task('product', ['cdn']);
-gulp.task('default', ['js', 'css', 'angular','img','templates','sass']);
+gulp.task('default', ['js', 'css', 'font', 'angular','img','templates','sass']);

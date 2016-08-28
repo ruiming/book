@@ -3,3 +3,5 @@ node_modules
 bower_components
 src
 /backend/app/templates/cdn.bookist.org/
+.DS_Store
+app/.DS_Store

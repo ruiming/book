@@ -99,7 +99,7 @@ class BooksResource(Resource):
                     'reason': book.reason
                 })
 
-        if not user_tags and args['page'] == 1 and len(books_json) < args['per_page']:
+        if user_tags and args['page'] == 1 and len(books_json) < args['per_page']:
             books = Book.objects().order_by("-rate").limit(args['per_page']*2)
             for book in books:
                 is_in_books_json = False

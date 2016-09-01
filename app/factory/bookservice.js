@@ -11,32 +11,21 @@
 
         let bookDetail = [];
         let bookBelongs = [];
-        let popBooks = null;
         let similarBook = [];
         let changeStars = commonservice.changeStars;
 
         return {
-            getPopularBooks2: getPopularBooks2,
+            getPopularBooks: getPopularBooks,
             getBook: getBook,
             getBookDetail: getBookDetail,
             collectBook: collectBook,
             discollectBook: discollectBook,
             getSimilarBook: getSimilarBook,
-            getBookBelongs: getBookBelongs,
-            getBooks: getBooks
+            getBookBelongs: getBookBelongs
         };
 
-        function getPopularBooks2() {
-            if(popBooks === null) {
-                return popBooks = $http.get(host + '/books/pop')
-                    .then(response => changeStars(response.data));
-            }
-            return popBooks;
-        }
-
-        function getBooks(page) {
-            // TODO: page?
-            return $http.get(host + '/books/pop?page=' + page)
+        function getPopularBooks(page) {
+            return $http.get(host + '/books/pop?page=' + page + '&per_page=6')
                 .then(response => changeStars(response.data));
         }
 

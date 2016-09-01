@@ -35,7 +35,7 @@
             vm.booklists = response;
         });
 
-        bookservice.getPopularBooks2().then(response => {
+        bookservice.getPopularBooks().then(response => {
             vm.test = response;
         });
 

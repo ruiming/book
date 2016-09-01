@@ -99,7 +99,7 @@
                             .then(response => response);
                     },
                     popularBooks: function(bookservice) {
-                        return bookservice.getPopularBooks2()
+                        return bookservice.getPopularBooks(1)
                             .then(response => response);
                     }
                 }
@@ -161,7 +161,7 @@
                 controllerAs: 'vm',
                 resolve: {
                     books: function(bookservice) {
-                        return bookservice.getBooks(1)
+                        return bookservice.getPopularBooks(1)
                             .then(response => response);
                     }
                 }

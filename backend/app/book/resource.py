@@ -80,14 +80,11 @@ class BooksResource(Resource):
                 books_isbn.append(book.isbn)
 
         if user_tags:
-            books = Book.objects(tag__in=user_tags).order_by("-rate")
+            books = Book.objects(tag__in=user_tags).order_by("-rate").limit(args['per_page']).skip(args['per_page']*(args['page']-1))
         else:
-            books = Book.objects().order_by("-rate")
+            books = Book.objects().order_by("-rate").limit(args['per_page']).skip(args['per_page']*(args['page']-1))
 
-        if books.count() == 0:
-            books = Book.objects().order_by("-rate")
-
-        books = books.limit(args['per_page']).skip(args['per_page']*(args['page']-1))
+        books = books
 
         books_json = []
 
@@ -101,6 +98,25 @@ class BooksResource(Resource):
                     'rate': book.rate,
                     'reason': book.reason
                 })
+
+        if not user_tags and args['page'] == 1 and len(books_json) < args['per_page']:
+            books = Book.objects().order_by("-rate").limit(args['per_page']*2)
+            for book in books:
+                is_in_books_json = False
+                for one in books_json:
+                    if book.isbn == one['title']:
+                        is_in_books_json = True
+                        break
+
+                if not is_in_books_json and len(books_json) < args['per_page']:
+                    books_json.append({
+                        'title': book.title,
+                        'isbn': book.isbn,
+                        'subtitle': book.subtitle,
+                        'image': book.image.get_full_url(),
+                        'rate': book.rate,
+                        'reason': book.reason
+                    })
 
         return books_json
 

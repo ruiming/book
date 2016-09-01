@@ -110,7 +110,7 @@
         // 获取用户书籍评论
         function getUserComments() {
             return $http.get(host + '/user/comments')
-                .then(response => response.data);
+                .then(response => changeStars(response.data));
         }
 
         // 提交反馈

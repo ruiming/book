@@ -100,7 +100,7 @@
 
         // 发布书单评论
         function postCommentBL(id, star, content) {
-            return $http.post(host + '/booklist/' + id + '/comments', {
+            return $http.post(host + '/booklists/' + id + '/comments', {
                 content: content,
                 star: star*2,
             }).then(response => response.data);

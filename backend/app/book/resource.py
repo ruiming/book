@@ -322,7 +322,7 @@ class BookListsResource(Resource):
                 'id': str(book_list.pk),
                 'image': book_list.image.get_full_url(),
                 'title': book_list.title,
-                'collect': book_list.collect,
+                'collect': Collect.sum(book_list),
                 'commenters': BookListComment.objects(book_list=book_list).count(),
                 'description': book_list.description,
                 'tags': [one_tag.name for one_tag in book_list.tag][:3]
@@ -365,7 +365,7 @@ class BookListResource(Resource):
             },
             'description': book_list.description,
             'image': book_list.image.get_full_url(),
-            'collect': book_list.collect,
+            'collect': Collect.sum(book_list),
             'tags': [],
             'commenters': BookListComment.objects(book_list=book_list).count(),
             "collect_already": True if Collect.objects(user=user, type='booklist',

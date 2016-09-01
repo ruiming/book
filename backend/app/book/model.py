@@ -97,6 +97,7 @@ class BookList(db.Document):
     class NotBookListInstance(Exception):
         pass
 
+
     def save(self):
         self = super(BookList, self).save()
         if not self.image.is_cdn:

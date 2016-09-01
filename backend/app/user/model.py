@@ -164,6 +164,13 @@ class Collect(db.Document):
     type_id = db.StringField()
     time = db.IntField(required=True, default=time_int)
 
+    @classmethod
+    def sum(cls, object_instance):
+        if isinstance(object_instance, Book):
+            return cls.objects(type="book", type_id=object_instance.isbn).count()
+        elif isinstance(object_instance, BookList):
+            return cls.objects(type="booklist", type_id=str(object_instance.pk)).count()
+        return 0
 
 class Cart(db.Document):
     """

@@ -329,7 +329,10 @@
                 resolve: {
                     comments: function(userservice) {
                         return userservice.getUserComments()
-                            .then(response => response);
+                            .then(response => {
+                                console.log(response);
+                                return response;
+                            });
                     }
                 }
             })

@@ -53,14 +53,14 @@
 
         function plus(item) {
             item.number < 10 ? ++item.number : item.number;
-            cartservice.updateCart(item.book.isbn, item.number).then(() => {
+            cartservice.updateCart(item.book.isbn, +1).then(() => {
                 vm.recount();
             });
         }
 
         function minus(item) {
             item.number > 1 ? --item.number : item.number;
-            cartservice.updateCart(item.book.isbn, item.number).then(() => {
+            cartservice.updateCart(item.book.isbn, -1).then(() => {
                 vm.recount();
             });
         }

@@ -31,7 +31,7 @@
 
         // 更新购物车
         function updateCart(isbn ,number) {
-            return $http.put(host + '/carts', {
+            return $http.post(host + '/carts', {
                 isbn: isbn,
                 number: number
             }).then(response => response.data);

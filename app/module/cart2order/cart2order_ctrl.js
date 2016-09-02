@@ -10,8 +10,8 @@
     function Cart2OrderCtrl($location, userservice, orderservice){
         let vm = this;
         vm.no_address = true;      // 地址必须有
-        vm.cart_list = '';
-        vm.count_list = '';
+        vm.cart_list = [];
+        vm.count_list = [];
         vm.order = {　number: 0, price: 0　};
         vm.make = make;
 
@@ -21,9 +21,9 @@
         vm.books = orderservice.getStore();
         for(let book of vm.books) {
             vm.order.number += book.number;
-            vm.order.price += book.price * book.number;
-            vm.cart_list += vm.cart_list ? ',' + book.book.isbn : book.book.isbn;
-            vm.count_list += vm.count_list ? ',' + book.number : book.number;
+            vm.order.price += book.price;
+            vm.cart_list.push(book.book.isbn);
+            vm.count_list.push(book.number);
         }
         getUserDefaultAddress();
 

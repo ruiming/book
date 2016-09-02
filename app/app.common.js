@@ -297,17 +297,11 @@
                     }
                 }
             })
-            .state('orderReturn', {
-                url: '/order/{id}/return',
+            .state('aftersales', {
+                url: '/aftersales',
                 controller: 'OrderReturnCtrl',
                 templateUrl: 'order_return/order_return_tpl.html',
                 controllerAs: 'vm',
-                resolve: {
-                    order: function(orderservice, $stateParams) {
-                        return orderservice.getOrderDetail($stateParams.id)
-                            .then(response => response);
-                    }
-                }
             })
             .state('orderComments',{
                 url: '/order/{id}/comments',
@@ -428,6 +422,16 @@
                             .then(response => response);
                     }
                 }
+            })
+            .state('auth', {
+                url: '/auth',
+                template: '<div ui-view></div>',
+                abstract: true
+            })
+            .state('auth.register', {
+                url: '/register',
+                templateUrl: 'auth_register/auth_register_tpl.html',
+                controller: 'AuthRegisterCtrl as vm'
             })
     }
 

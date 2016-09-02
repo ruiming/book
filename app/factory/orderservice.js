@@ -11,6 +11,7 @@
 
         // 暂存进入订单生成页面时的勾选书籍
         let store = null;
+        let aftersales = null;
 
         return {
             setStore: setStore,
@@ -18,21 +19,23 @@
             makeOrder: makeOrder,
             getOrderDetail: getOrderDetail,
             cancelOrder: cancelOrder,
-            receiptOrder: receiptOrder,
-            getOrder: getOrder
+            getOrder: getOrder,
+            setAfterSales: setAfterSales,
+            getAfterSales: getAfterSales
         };
+
+        function setAfterSales(item) {
+            aftersales = item;
+        }
+
+        function getAfterSales() {
+            return aftersales;
+        }
 
         // 获取指定状态的全部书单
         function getOrder(status) {
             return $http.get(host + '/billings?status=' + status)
                 .then(response => response.data);
-        }
-
-        // 修改订单状态，签收订单
-        function receiptOrder(id) {
-            return $http.put(host + '/billings/' + id, {
-                status: 'commenting'
-            }).then(response => response.data);
         }
 
         // 取消订单
@@ -49,10 +52,13 @@
 
         // 生成订单
         function makeOrder(cart_list, number_list, address_id) {
-            return $http.post(host + '/billings', {
-                cart: cart_list,
-                number: number_list,
-                address: address_id
+            let form = new FormData();
+            for(let cart of cart_list) form.append('cart', cart);
+            for(let number of number_list) form.append('number', number)
+            form.append('address', address_id);
+            return $http.post(host + '/billings', form, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
             }).then(response => response.data);
         }
 

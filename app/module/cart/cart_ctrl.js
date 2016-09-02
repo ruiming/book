@@ -37,7 +37,7 @@
             vm.number = 0;
             for(let item of vm.items) {
                 if(!item.deleted) {
-                    vm.price += +item.checked * item.price * item.number;
+                    vm.price += +item.checked * item.price;
                     vm.count += +item.checked * item.number;
                     item.checked ? ++vm.number: vm.number;
                 }
@@ -53,14 +53,14 @@
 
         function plus(item) {
             item.number < 10 ? ++item.number : item.number;
-            cartservice.updateCart(item.book.isbn, item.number).then(() => {
+            cartservice.updateCart(item.book.isbn, +1).then(() => {
                 vm.recount();
             });
         }
 
         function minus(item) {
             item.number > 1 ? --item.number : item.number;
-            cartservice.updateCart(item.book.isbn, item.number).then(() => {
+            cartservice.updateCart(item.book.isbn, -1).then(() => {
                 vm.recount();
             });
         }

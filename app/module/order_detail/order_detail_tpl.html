@@ -7,13 +7,13 @@
                     <span class="order-status">共{{vm.price}}元</span>
                 </div>
                 <ul class="order-books">
-                    <a class="order-book" ng-repeat="z in vm.order.carts"
-                       ui-sref="book({isbn: z.book.isbn})">
+                    <div class="order-book" ng-repeat="z in vm.order.carts">
                         <img ng-src="{{z.book.image}}">
-                        <p>{{z.book.title}}</p>
+                        <p ui-sref="book({isbn: z.book.isbn})">{{z.book.title}}</p>
                         <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
+                        <input type="button" class="btn btn-default back" value="申请退换货" ng-click="vm.toReturn(z)">
                         <span class="count"> {{z.number}}本 / 共{{z.price_sum | number:2}}元</span>
-                    </a>
+                    </div>
                 </ul>
                 <div class="order-detail">
                     <div class="order-title">
@@ -49,8 +49,8 @@
                     </a>
                     <button class="btn btn-danger"
                             ng-if="vm.order.status=='待收货'"
-                            ng-click="vm.receipt(vm.order)">
-                        确认收货
+                            disabled>
+                        已发货啦
                     </button>
                     <button class="btn btn-danger" promise-btn
                             ng-if="vm.order.status=='待发货'"

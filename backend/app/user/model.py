@@ -226,6 +226,7 @@ class Cart(db.Document):
     create_time = db.IntField(required=True, default=time_int)
 
     status = db.IntField(required=True, default=STATUS_NORMAL)
+    in_after_selling_time = db.IntField()
     status_changed_time = db.IntField()
 
     user = db.ReferenceField(User)
@@ -233,9 +234,18 @@ class Cart(db.Document):
     def __eq__(self, other):
         if isinstance(other, Cart):
             if self.book == other.book \
-                    and self.price == self.price \
+                    and self.price == other.price \
                     and self.status == other.status:
-                return True
+                if self.status != self.STATUS_NORMAL:
+                    if self.in_after_selling_time == other.in_after_selling_time \
+                            and self.status_changed_time == other.status_changed_time:
+                        return True
+                    else:
+                        return False
+                else:
+
+                    return True
+
         return False
 
     def change_status(self, next_status):

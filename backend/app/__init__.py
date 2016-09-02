@@ -55,7 +55,7 @@ from app.lib.admin_base import AdminView, AdminBaseModelView
 from app.book.model import BookList, Activity, Book, Tag, Applacation
 from app.book.admin_model import BookView, TagView, BookListView, ActivityView
 from app.auth.admin_model import UserView
-from app.user.admin_model import PendingBillingView, WaitingBillingView
+from app.user.admin_model import PendingBillingView, WaitingBillingView, AfterSellingBillingView
 from app.auth.model import User, UserRole
 from app.user.model import Comment, Points, Collect, Notice, Feedback
 
@@ -72,6 +72,7 @@ admin.add_view(AdminBaseModelView(Comment, name=u"评论", category=u"用户相�
 admin.add_view(AdminBaseModelView(Points, name=u"积分", category=u"用户相关"))
 admin.add_view(PendingBillingView(name=u"待发货订单"))
 admin.add_view(WaitingBillingView(name=u"待收货订单"))
+admin.add_view(AfterSellingBillingView(name=u"售后订单"))
 admin.add_view(AdminBaseModelView(Collect, name=u"收藏", category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Notice, name=u"通知", category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Feedback, name=u"反馈信息"))

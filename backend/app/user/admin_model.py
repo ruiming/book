@@ -6,6 +6,7 @@ from app.lib import time_int
 from app.lib.admin_base import AdminBaseView
 from flask_admin import expose
 from flask import request, redirect, url_for, flash
+from app.lib.restful import abort_invalid_isbn
 
 
 # class BillingView(AdminBaseView):
@@ -222,6 +223,12 @@ class WaitingBillingView(AdminBaseView):
 class AfterSellingBillingView(AdminBaseView):
     @expose('/')
     def index(self):
-        after_selling_biilings = AfterSellBilling(canceled=False)
+        after_selling_biilings = list(AfterSellBilling.objects(canceled=False))
+
+        for one in after_selling_biilings:
+            print type(one)
+            one.__setattr__('book', abort_invalid_isbn(one.isbn))
+
+
 
         return self.render('admin/aftersellingbilling/index.html', billings=after_selling_biilings)

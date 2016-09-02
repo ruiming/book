@@ -643,6 +643,7 @@ class BillingResource(Resource):
         :return:
         """
         billing = get_from_object_id(billing_id, Billing, 'billing_id')
+        user = User.get_user_on_headers()
         billing_json = {
             'id': str(billing.pk),
             'status': billing.status,
@@ -652,19 +653,7 @@ class BillingResource(Resource):
                                 'time': str(one.time),
                                 'backend': one.backend_operator
                             } for one in billing.status_list],
-            'carts': [{
-                              'book': {
-                                  'isbn': one_cart.book.isbn,
-                                  'title': one_cart.book.title,
-                                  'image': one_cart.book.image.get_full_url(),
-                                  'authors': [one_author for one_author in one_cart.book.author]
-                              },
-                              'create_time': one_cart.create_time,
-                              'per_price': float(one_cart.price),
-                              'number': number,
-                              'price_sum': float(one_cart.price) * number,
-                              'status': Cart.status_to_string(one_cart.status)
-                          } for one_cart, number in billing.carts_info()],
+            'carts': [],
             'address': {
                 'name': billing.address.name,
                 'phone': billing.address.phone,
@@ -673,6 +662,33 @@ class BillingResource(Resource):
             'price': float(billing.get_sum_price()),
             'replace_refund_processing': billing.replace_refund_processing
         }
+
+        for one_cart, number in billing.carts_info():
+
+            cart_info = {
+                'book': {
+                    'isbn': one_cart.book.isbn,
+                    'title': one_cart.book.title,
+                    'image': one_cart.book.image.get_full_url(),
+                    'authors': [one_author for one_author in one_cart.book.author]
+                },
+                'create_time': one_cart.create_time,
+                'per_price': float(one_cart.price),
+                'number': number,
+                'price_sum': float(one_cart.price) * number,
+                'status': Cart.status_to_string(one_cart.status)
+            }
+            if one_cart.status not in [Cart.STATUS_NORMAL]:
+                after_selling = AfterSellBilling.objects(
+                    billing=billing,
+                    isbn=one_cart.book.isbn,
+                    number=number,
+                    user=user,
+                    create_time__gte=one_cart.in_after_selling_time,
+                    create_time__lte=one_cart.in_after_selling_time+5
+                ).first()
+                cart_info['after_selling_id'] = str(after_selling.pk)
+            billing_json['carts'].append(cart_info)
 
         return billing_json
 
@@ -786,7 +802,8 @@ class AfterSellBillingResource(Resource):
 
         for one_cart in after_selling_carts:
             # Change status of one cart
-            pass
+            one_cart.in_after_selling_time = int(time())
+            one_cart.save()
             if args['type'] == 'replace':
                 one_cart.change_status(Cart.STATUS_REPLACE_PROCESSING)
 
@@ -839,7 +856,8 @@ class SingleAfterSellBillingResource(Resource):
         elif afterseling.type == AfterSellBilling.REFUND:
             query_set['status'] = Cart.STATUS_REFUND_PROCESSING
 
-        carts = Cart.objects(status_changed_time__lte=afterseling.create_time, status_changed_time__gt=afterseling.create_time - 10).filter(**query_set).limit(afterseling.number)
+        book = abort_invalid_isbn(afterseling.isbn)
+        carts = Cart.objects(book=book, status_changed_time__lte=afterseling.create_time, status_changed_time__gt=afterseling.create_time - 10).filter(**query_set).limit(afterseling.number)
 
         for cart in carts:
             cart.change_status(Cart.STATUS_NORMAL)

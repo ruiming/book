@@ -535,25 +535,14 @@ class BillingsResource(Resource):
         args = self.get_parser.parse_args()
 
         abort_valid_in_list('status', args['status'], [
-            'create', 'pending', 'waiting', 'commenting', 'done', 'canceled', 'refund', 'refunding',
-            'refunded', 'replace', 'replacing', 'replaced', 'refunded_refused', 'replace_refunsed',
-            'closed',
-            'return', 'on_return', 'all'
+            'all', Billing.Status.CREATING, Billing.Status.PENDING, Billing.Status.WAITING, Billing.Status.RECEIVED
         ])
         status = args['status']
         user = User.get_user_on_headers()
 
-        if status == 'all':
-            billing = Billing.objects(user=user, status__not__in=['close', 'canceled'])
-        elif status == 'return':
-            billing = Billing.objects(user=user, status__in=['commenting', 'done'])
-        elif status == 'on_return':
-            billing = Billing.objects(user=user, status__in=['refund', 'refunding', 'refunded',
-                                                                 'replace', 'replacing', 'replaced',
-                                                                 'refund_refused', 'replace_refused'])
-
-        else:
-            billing = Billing.objects(user=user, status=status)
+        billing = Billing.objects(user=user, status__ne='canceled')
+        if status != 'all':
+            billing = billing.filter(status=status)
 
         billings_json = []
 
@@ -765,7 +754,7 @@ class AfterSellBillingResource(Resource):
     post_parser.add_argument('isbn', type=valid_book, dest='book', location='form', required=True, help="MISSING_OR_WRONG_ISBN")
     post_parser.add_argument('number', type=int, location='form')
     post_parser.add_argument('type', type=str, location='form')
-    post_parser.add_argument('reason', type=unicode, location='form',required=True, help="MISSING_REASON")
+    post_parser.add_argument('reason', type=unicode, location='form', required=True, help="MISSING_REASON")
 
     def post(self, billing_id):
         """

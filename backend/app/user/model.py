@@ -425,8 +425,13 @@ class Purchase(db.Document):
 
 
 class AfterSellBilling(db.Document):
+
     REPLACE = 1
     REFUND = 2
+
+    WAITING = 'waiting'
+    PROCESSING = 'processing'
+    REFUSED = 'refused'
 
     billing = db.ReferenceField(Billing, required=True)
     isbn = db.StringField(required=True)
@@ -437,6 +442,9 @@ class AfterSellBilling(db.Document):
     canceled = db.BooleanField(default=False)  # 售后账单是否已经取消
     user = db.ReferenceField(User, required=True)
     create_time = db.IntField(required=True, default=time_int)
+    process = db.StringField(default=WAITING)
+    process_feedback = db.StringField()
+    refused_feedback = db.StringField()
 
     @classmethod
     def status_to_string(cls, index):

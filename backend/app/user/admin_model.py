@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from app.user.model import BillingStatus, Billing, Cart, Purchase, Storehouse
+from app.user.model import BillingStatus, Billing, Cart, Purchase, Storehouse, AfterSellBilling
 
 from app.lib import time_int
 from app.lib.admin_base import AdminBaseView
@@ -217,3 +217,11 @@ class WaitingBillingView(AdminBaseView):
             billings = sorted(billings, cmp=self._sort)
 
             return self.render('admin/waitingbilling/index.html', billings=billings)
+
+
+class AfterSellingBillingView(AdminBaseView):
+    @expose('/')
+    def index(self):
+        after_selling_biilings = AfterSellBilling(canceled=False)
+
+        return self.render('admin/aftersellingbilling/index.html', billings=after_selling_biilings)

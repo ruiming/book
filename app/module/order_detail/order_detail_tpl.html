@@ -12,7 +12,7 @@
                         <p ui-sref="book({isbn: z.book.isbn})">{{z.book.title}}</p>
                         <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
                         <input type="button" class="btn btn-default back" value="申请退换货"
-                               ng-if="z.status === 'STATUS_NORMAL'" ng-click="vm.toReturn(z)">
+                               ng-if="z.status === 'STATUS_NORMAL' && vm.order.status === 'received'" ng-click="vm.toReturn(z)">
                         <input type="button" class="btn btn-default back" value="退货中"
                                ng-if="z.status === 'STATUS_REFUND_PROCESSING'">
                         <input type="button" class="btn btn-default back" value="换货中"

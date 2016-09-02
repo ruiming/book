@@ -21,7 +21,7 @@
         vm.books = orderservice.getStore();
         for(let book of vm.books) {
             vm.order.number += book.number;
-            vm.order.price += book.price * book.number;
+            vm.order.price += book.price;
             vm.cart_list += vm.cart_list ? ',' + book.book.isbn : book.book.isbn;
             vm.count_list += vm.count_list ? ',' + book.number : book.number;
         }

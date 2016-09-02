@@ -2,7 +2,7 @@
 from flask_restful import Resource, reqparse
 from app.lib.restful import authenticate
 from app.lib.restful import abort_valid_in_list, abort_invalid_isbn, get_from_object_id
-from app.user.model import Comment, Collect, UserCommentLove, Cart, UserBookListLove, BookListComment
+from app.user.model import Comment, Collect, UserCommentLove, UserBookListLove, BookListComment, Cart
 from app.auth.model import User
 from app.book.model import Tag, BookList, Activity, Book, BookTag
 

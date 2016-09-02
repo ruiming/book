@@ -172,21 +172,6 @@ class Collect(db.Document):
             return cls.objects(type="booklist", type_id=str(object_instance.pk)).count()
         return 0
 
-class Cart(db.Document):
-    """
-    购物车模型
-    """
-    book = db.ReferenceField(Book)
-    number = db.IntField(required=True, default=0)
-    price = db.DecimalField(required=True)
-    user = db.ReferenceField(User)
-    status = db.IntField(required=True, default=1)  # 1 有效， 0 无效, 2 已提交billing
-    create_time = db.IntField(required=True, default=time_int)
-    edit_time = db.IntField(required=True, default=time_int)
-
-    def __unicode__(self):
-        return u"《{}》*{}".format(self.book.title, self.number)
-
 
 class BillingStatus(db.EmbeddedDocument):
     status = db.StringField()
@@ -198,125 +183,99 @@ class BillingStatus(db.EmbeddedDocument):
         return u'{}|{}|{}'.format(self.status, self.content, self.time)
 
 
-class Billing(db.Document):
+class Storehouse(db.Document):
     """
-    账单模型
+    储存中的书籍
     """
-    user = db.ReferenceField(User)
-    status = db.StringField()
-    # 待付款 pending ; 代收货 waiting 带评价 commenting 已评价 done 已取消 canceled
-    status_list = db.ListField(db.EmbeddedDocumentField(BillingStatus))
-    list = db.ListField(db.ReferenceField(Cart))
-    address = db.ReferenceField(UserAddress)
-    price = db.DecimalField(required=True, default=0.00)
-    create_time = db.IntField(required=True, default=time_int)
-    edit_time = db.IntField(required=True, default=time_int)
+    STATUS_NORMAL = 0
+    STATUS_PROCESSING = 1
+    STATUS_RETURNED = 2
+    STATUS_IN_ENTREPOT = 3
 
-    class BillingErrorOperator(Exception):
-        pass
-
-    def _add_log(self, status, content=""):
-        """
-        向status_list中添加纪录
-        :param status:
-        :return:
-        """
-        self.status_list.append(BillingStatus(
-                status=status,
-                content=content
-            ))
-        self.save()
-
-    def add_log_backend(self, status, content=""):
-        """
-        向status_list中添加纪录
-        :param status:
-        :return:
-        """
-        self.status_list.append(BillingStatus(
-                status=status,
-                content=content,
-                backend_operator=True,
-            ))
-        self.status = status
-        self.edit_time = time_int()
-        self.save()
-
-    def change_status_force(self, status, content):
-        """
-        修改订单状态
-        :param status: 强制转换的状态
-        :param content: 记录的信息
-        :return:
-        """
-        self._add_log(status, content)
-        self.status = status
-        self.edit_time = time_int()
-        self.save()
-
-    def change_status(self, next_status, content="", backend=False):
-        """
-        修改订单状态
-        :param next_status: 下一个状态
-        :param content: 状态信息
-        :param backend: 是否后台操作，区分用户合管理操作
-        :return: True or BillingErrorOperator
-        """
-        # TODO: 完善状态更新的内容
-        if backend:
-            pass
-        else:
-            if next_status == 'canceled':  # 取消订单
-                # pending
-                if self.status in ['pending']:
-                    self.status = next_status
-                    self._add_log(next_status, content)
-                    self.save()
-                    return True
-
-            if next_status == 'commenting':  # 进入 已收货/待评价 状态
-                # waiting
-                if self.status in ['waiting']:
-                    self.status = next_status
-                    self._add_log(next_status, content)
-                    self.save()
-                    return True
-
-            if next_status in ['refund', 'replace']:  # 进入 退款、退货 状态
-                # done, replaced, refund_refused, replace_refused
-                if self.status in ['done', 'replaced']:
-                    self.status = next_status
-                    self._add_log(next_status, content)
-                    self.save()
-                    return True
-
-            raise self.BillingErrorOperator
-
-
-class NewCart(db.Document):
     book = db.ReferenceField(Book)
     price = db.DecimalField(required=True)
-    status = db.IntField(required=True, default=0)
-    create_time = db.IntField(required=True, default=time_int)
     real_price = db.DecimalField()
 
+    create_time = db.IntField(required=True, default=time_int)
+
+    status = db.IntField(required=True, default=STATUS_NORMAL)
+    status_changed_time = db.IntField()
+    source = db.StringField()  # 来源地
+
     def __eq__(self, other):
-        if isinstance(other, NewCart):
+        if isinstance(other, Cart):
             if self.book == other.book and self.price == self.price and self.status == other.status:
                 return True
         return False
 
 
+class Cart(db.Document):
+    """
+    订单中书籍
+    """
+    STATUS_NORMAL = 0  # 正常状态
+    STATUS_REPLACE_PROCESSING = 1  # 退货处理中
+    STATUS_REPLACE_END = 2  # 退货结束
+    STATUS_REFUND_PROCESSING = 3  # 换货处理中
+    STATUS_REFUND_END = 4  # 换货借宿
+    STATUS_CANCELED = 5
+
+    book = db.ReferenceField(Book)
+    price = db.DecimalField(required=True)
+    real_price = db.DecimalField()
+    create_time = db.IntField(required=True, default=time_int)
+
+    status = db.IntField(required=True, default=STATUS_NORMAL)
+    status_changed_time = db.IntField()
+
+    user = db.ReferenceField(User)
+
+    def __eq__(self, other):
+        if isinstance(other, Cart):
+            if self.book == other.book \
+                    and self.price == self.price \
+                    and self.status == other.status:
+                return True
+        return False
+
+    def change_status(self, next_status):
+        self.status = next_status
+        self.status_changed_time = time_int()
+        self.save()
+
+    @classmethod
+    def status_to_string(cls, index):
+        status = {
+            "0": "STATUS_NORMAL",
+            "1": "STATUS_REPLACE_PROCESSING",
+            "2": "STATUS_REPLACE_END",
+            "3": "STATUS_REFUND_PROCESSING",
+            "4": "STATUS_REFUND_END",
+        }
+        return status.get(str(index))
+
+
 class InlineAddress(db.EmbeddedDocument):
+    """
+    用户订单中的内嵌地址
+    """
     name = db.StringField(required=True)
     phone = db.StringField(required=True)
     dormitory = db.StringField(required=True)
 
 
-class NewBilling(db.Document):
+class Billing(db.Document):
+    """
+    订单
+    """
+    class Status:
+        CREATING = "creating"
+        PENDING = "pending"
+        WAITING = "waiting"
+        RECEIVED = "received"
 
-    carts = db.ListField(db.ReferenceField(NewCart))
-    status = db.StringField(required=True, default='create')  # TODO: status code
+    carts = db.ListField(db.ReferenceField(Cart))
+    status = db.StringField(required=True, default=Status.CREATING)  # TODO: status code
     status_list = db.ListField(db.EmbeddedDocumentField(BillingStatus))
 
     address = db.EmbeddedDocumentField(InlineAddress, required=True)
@@ -325,6 +284,19 @@ class NewBilling(db.Document):
     create_time = db.IntField(required=True, default=time_int)
     edit_time = db.IntField(required=True, default=time_int)
     in_purchase_time = db.IntField()
+
+    @property
+    def replace_refund_processing(self):
+        """
+        该订单中是否有书籍处于退换货状态中。
+        :return: Boolean
+        """
+        for cart in self.carts:
+            if cart.status not in[Cart.STATUS_NORMAL,
+                                  Cart.STATUS_REFUND_END,
+                                  Cart.STATUS_REPLACE_END]:
+                return True
+        return False
 
     def get_sum_price(self):
         sum_price = 0
@@ -429,10 +401,12 @@ class NewBilling(db.Document):
 
 
 class Purchase(db.Document):
-    billings = db.ListField(db.ReferenceField(NewBilling))
+    billings = db.ListField(db.ReferenceField(Billing))
 
     operator = db.StringField(required=True)
     warehouse = db.StringField(required=True)
+
+    source = db.StringField(required=True)
 
     create_time = db.IntField(required=True, default=time_int)
 
@@ -448,6 +422,29 @@ class Purchase(db.Document):
             for cart in billing.carts:
                 sum += cart.real_price
         return sum
+
+
+class AfterSellBilling(db.Document):
+    REPLACE = 1
+    REFUND = 2
+
+    billing = db.ReferenceField(Billing, required=True)
+    isbn = db.StringField(required=True)
+    number = db.IntField(required=True, default=1)
+    type = db.IntField(required=True)
+    reason = db.StringField()
+    is_done = db.BooleanField(default=False)  # 售后账单是否完成
+    canceled = db.BooleanField(default=False)  # 售后账单是否已经取消
+    user = db.ReferenceField(User, required=True)
+    create_time = db.IntField(required=True, default=time_int)
+
+    @classmethod
+    def status_to_string(cls, index):
+        status = {
+            "1": "REPLACE",
+            "2": "REFUND",
+        }
+        return status.get(str(index))
 
 
 class Notice(db.Document):

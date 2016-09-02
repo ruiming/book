@@ -55,9 +55,9 @@ from app.lib.admin_base import AdminView, AdminBaseModelView
 from app.book.model import BookList, Activity, Book, Tag, Applacation
 from app.book.admin_model import BookView, TagView, BookListView, ActivityView
 from app.auth.admin_model import UserView
-from app.user.admin_model import BillingView, PendingBillingView, WaitingBillingView
+from app.user.admin_model import PendingBillingView, WaitingBillingView
 from app.auth.model import User, UserRole
-from app.user.model import Comment, Points, Billing, Collect, Notice, Feedback, Cart
+from app.user.model import Comment, Points, Collect, Notice, Feedback
 
 
 admin = Admin(app, template_mode='bootstrap3', name=u'Bookist.org 后台', index_view=AdminView(endpoint="admin"))
@@ -68,11 +68,8 @@ admin.add_view(BookView(Book, name=u'书籍管理'))
 admin.add_view(TagView(Tag, name=u'书单标签', category=u"书单相关"))
 admin.add_view(UserView(User, name=u'用户管理', category=u"用户相关"))
 admin.add_view(AdminBaseModelView(UserRole, name=u'用户组', category=u"用户相关"))
-admin.add_view(AdminBaseModelView(Cart, name=u'购物车', category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Comment, name=u"评论", category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Points, name=u"积分", category=u"用户相关"))
-admin.add_view(AdminBaseModelView(Billing, name=u"订单"))
-admin.add_view(BillingView(name=u"订单"))
 admin.add_view(PendingBillingView(name=u"待发货订单"))
 admin.add_view(WaitingBillingView(name=u"待收货订单"))
 admin.add_view(AdminBaseModelView(Collect, name=u"收藏", category=u"用户相关"))
@@ -98,7 +95,8 @@ from app.book.resource import BookResource, TagResource, SlideResource, SlidesRe
 from app.user.resource import UserAddressResource, UserAddressListResource, FeedbackResource, UserNoticesResource, \
     UserNoticeResource, UserCollectsResource, UserPointsResource, UserCommentsResource, UserResource, \
     BookListLoveResource, BillingsResource, BillingResource, BookCommentsResource, BookCommentResource, \
-    CartsResource, BookListCommentsResource, BookListCommentResource, BookCollectResource, BookListCollectResource
+    CartsResource, BookListCommentsResource, BookListCommentResource, BookCollectResource, BookListCollectResource, \
+    AfterSellBillingResource, AfterSellBillingsResource, SingleAfterSellBillingResource
 
 # Slide
 api.add_resource(SlidesResource, '/rest/slides')
@@ -126,6 +124,9 @@ api.add_resource(CartsResource, '/rest/carts')
 # Billing
 api.add_resource(BillingsResource, '/rest/billings')
 api.add_resource(BillingResource, '/rest/billings/<billing_id>')
+api.add_resource(AfterSellBillingResource, '/rest/billings/<billing_id>/afterselling')
+api.add_resource(SingleAfterSellBillingResource, '/rest/billings/<billing_id>/afterselling/<afterselling_id>')
+api.add_resource(AfterSellBillingsResource, '/rest/afterselling')
 
 # User
 api.add_resource(UserResource, '/rest/user')

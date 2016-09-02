@@ -5,7 +5,7 @@
     }
     .order-list-one {
       background-color: $bgColor;
-      margin-bottom: 20px;
+      margin-bottom: 50px;
       overflow: hidden;
       .order-title,
       .order-meta,
@@ -169,6 +169,7 @@
     }
     &-items {
       padding: 10px;
+      margin: 0;
       li {
         display: block;
         overflow: hidden;
@@ -195,7 +196,7 @@
       border-radius: 0;
       font-size: 15px;
       float: right;
-      line-height: 1.9;
+      line-height: 1.75;
     }
   }
 }

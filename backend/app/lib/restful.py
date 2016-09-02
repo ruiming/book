@@ -40,6 +40,7 @@ def valid_object_id(check_id, name='ID'):
         raise ValueError('INVALID_{}'.format(name.upper()))
     return check_id
 
+
 def valid_book(isbn):
     this_book = Book.objects(isbn=isbn)
     if this_book.count() == 1:

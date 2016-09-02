@@ -2,7 +2,7 @@
 from flask_restful import Resource, reqparse
 from app.lib.restful import authenticate
 from app.lib.restful import abort_valid_in_list, abort_invalid_isbn, get_from_object_id
-from app.user.model import Comment, Collect, UserCommentLove, Cart, UserBookListLove, BookListComment
+from app.user.model import Comment, Collect, UserCommentLove, UserBookListLove, BookListComment, Cart
 from app.auth.model import User
 from app.book.model import Tag, BookList, Activity, Book, BookTag
 
@@ -80,14 +80,11 @@ class BooksResource(Resource):
                 books_isbn.append(book.isbn)
 
         if user_tags:
-            books = Book.objects(tag__in=user_tags).order_by("-rate")
+            books = Book.objects(tag__in=user_tags).order_by("-rate").limit(args['per_page']).skip(args['per_page']*(args['page']-1))
         else:
-            books = Book.objects().order_by("-rate")
+            books = Book.objects().order_by("-rate").limit(args['per_page']).skip(args['per_page']*(args['page']-1))
 
-        if books.count() == 0:
-            books = Book.objects().order_by("-rate")
-
-        books = books.limit(args['per_page']).skip(args['per_page']*(args['page']-1))
+        books = books
 
         books_json = []
 
@@ -101,6 +98,25 @@ class BooksResource(Resource):
                     'rate': book.rate,
                     'reason': book.reason
                 })
+
+        if user_tags and args['page'] == 1 and len(books_json) < args['per_page']:
+            books = Book.objects().order_by("-rate").limit(args['per_page']*2)
+            for book in books:
+                is_in_books_json = False
+                for one in books_json:
+                    if book.isbn == one['title']:
+                        is_in_books_json = True
+                        break
+
+                if not is_in_books_json and len(books_json) < args['per_page']:
+                    books_json.append({
+                        'title': book.title,
+                        'isbn': book.isbn,
+                        'subtitle': book.subtitle,
+                        'image': book.image.get_full_url(),
+                        'rate': book.rate,
+                        'reason': book.reason
+                    })
 
         return books_json
 
@@ -306,7 +322,7 @@ class BookListsResource(Resource):
                 'id': str(book_list.pk),
                 'image': book_list.image.get_full_url(),
                 'title': book_list.title,
-                'collect': book_list.collect,
+                'collect': Collect.sum(book_list),
                 'commenters': BookListComment.objects(book_list=book_list).count(),
                 'description': book_list.description,
                 'tags': [one_tag.name for one_tag in book_list.tag][:3]
@@ -349,7 +365,7 @@ class BookListResource(Resource):
             },
             'description': book_list.description,
             'image': book_list.image.get_full_url(),
-            'collect': book_list.collect,
+            'collect': Collect.sum(book_list),
             'tags': [],
             'commenters': BookListComment.objects(book_list=book_list).count(),
             "collect_already": True if Collect.objects(user=user, type='booklist',

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from app.book.model import BookList, Activity, Tag, Book, BookTag
-from app.user.model import Comment, Collect, UserCommentLove, Cart, UserBookListLove, \
+from app.user.model import Comment, Collect, UserCommentLove, UserBookListLove, \
     BookListComment, UserBookListCommentLove
 from app.auth.model import User
 

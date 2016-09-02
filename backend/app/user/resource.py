@@ -4,8 +4,9 @@ from app.lib.restful import authenticate, base_parse, phone, valid_object_id, va
 from app.lib.restful import abort_valid_in_list, abort_invalid_isbn, get_from_object_id
 from app.auth.model import User, UserInlineCart
 from app.book.model import Tag, BookList, Activity, Book, BookTag
-from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Cart, Feedback, BillingStatus, \
-    UserBookListLove, BookListComment, UserBookListCommentLove, UserAddress, NewBilling, NewCart, InlineAddress
+from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Feedback, BillingStatus, \
+    UserBookListLove, BookListComment, UserBookListCommentLove, UserAddress, Billing, Cart, \
+    InlineAddress, AfterSellBilling
 
 from time import time
 
@@ -534,25 +535,14 @@ class BillingsResource(Resource):
         args = self.get_parser.parse_args()
 
         abort_valid_in_list('status', args['status'], [
-            'create', 'pending', 'waiting', 'commenting', 'done', 'canceled', 'refund', 'refunding',
-            'refunded', 'replace', 'replacing', 'replaced', 'refunded_refused', 'replace_refunsed',
-            'closed',
-            'return', 'on_return', 'all'
+            'all', Billing.Status.CREATING, Billing.Status.PENDING, Billing.Status.WAITING, Billing.Status.RECEIVED
         ])
         status = args['status']
         user = User.get_user_on_headers()
 
-        if status == 'all':
-            billing = NewBilling.objects(user=user, status__not__in=['close', 'canceled'])
-        elif status == 'return':
-            billing = NewBilling.objects(user=user, status__in=['commenting', 'done'])
-        elif status == 'on_return':
-            billing = NewBilling.objects(user=user, status__in=['refund', 'refunding', 'refunded',
-                                                                 'replace', 'replacing', 'replaced',
-                                                                 'refund_refused', 'replace_refused'])
-
-        else:
-            billing = NewBilling.objects(user=user, status=status)
+        billing = Billing.objects(user=user, status__ne='canceled')
+        if status != 'all':
+            billing = billing.filter(status=status)
 
         billings_json = []
 
@@ -605,13 +595,14 @@ class BillingsResource(Resource):
         for l_id, book in enumerate(args['cart']):
             user.add_cart(book.isbn, -1 * args['number'][l_id])
             for loop in range(args['number'][l_id]):
-                cart = NewCart(
+                cart = Cart(
                     book=book,
                     price=float(book.price),
+                    user=user
                 ).save()
                 carts.append(cart)
 
-        billing = NewBilling(
+        billing = Billing(
             user=user,
             status='pending',
             carts=carts,
@@ -650,7 +641,7 @@ class BillingResource(Resource):
         :param billing_id:
         :return:
         """
-        billing = get_from_object_id(billing_id, NewBilling, 'billing_id')
+        billing = get_from_object_id(billing_id, Billing, 'billing_id')
         billing_json = {
             'id': str(billing.pk),
             'status': billing.status,
@@ -670,7 +661,8 @@ class BillingResource(Resource):
                               'create_time': one_cart.create_time,
                               'per_price': float(one_cart.price),
                               'number': number,
-                              'price_sum': float(one_cart.price) * number
+                              'price_sum': float(one_cart.price) * number,
+                              'status': Cart.status_to_string(one_cart.status)
                           } for one_cart, number in billing.carts_info()],
             'address': {
                 'name': billing.address.name,
@@ -682,40 +674,176 @@ class BillingResource(Resource):
 
         return billing_json
 
-    put_parser = reqparse.RequestParser()
-    put_parser.add_argument('status', type=str, required=True, help='MISSING_OR_WRONG_STATUS')
-
-    def put(self, billing_id):
-        """
-        修改一个订单
-        :return:
-        """
-        args = self.put_parser.parse_args()
-        abort_valid_in_list('status', args['status'], ['waiting', 'commenting', 'done', 'refund'])
-
-        billing = get_from_object_id(billing_id, NewBilling, 'billing_id')
-
-        try:
-            billing.change_status(args['status'])
-        except Exception:
-            abort(400, message='BILLING_ERROR_OPERATOR')
-
-        return {
-            'id': str(billing.pk),
-            'status': billing.status
-        }
+    # put_parser = reqparse.RequestParser()
+    # put_parser.add_argument('status', type=str, required=True, help='MISSING_OR_WRONG_STATUS')
+    #
+    # def put(self, billing_id):
+    #     """
+    #     修改一个订单
+    #     :return:
+    #     """
+    #     args = self.put_parser.parse_args()
+    #     abort_valid_in_list('status', args['status'], ['waiting', 'commenting', 'done', 'refund'])
+    #
+    #     billing = get_from_object_id(billing_id, Billing, 'billing_id')
+    #
+    #     try:
+    #         billing.change_status(args['status'])
+    #     except Exception:
+    #         abort(400, message='BILLING_ERROR_OPERATOR')
+    #
+    #     return {
+    #         'id': str(billing.pk),
+    #         'status': billing.status
+    #     }
 
     def delete(self, billing_id):
         """
         删除一个订单
         :return:
         """
-        billing = get_from_object_id(billing_id, NewBilling, 'billing_id')
+        billing = get_from_object_id(billing_id, Billing, 'billing_id')
 
         try:
             billing.change_status('canceled')
         except Exception:
             abort(400, message='BILLING_ERROR_OPERATOR')
+
+        for cart in billing.carts:
+            cart.change_status(Cart.STATUS_CANCELED)
+
+
+class AfterSellBillingsResource(Resource):
+    """
+    用户所有的售后订单
+    """
+    method_decorators = [authenticate]
+
+    def get(self):
+        user = User.get_user_on_headers()
+        after_selling_billings = AfterSellBilling.objects(user=user, canceled=False)
+
+        billings_json = []
+        for billing in after_selling_billings:
+            book = valid_book(billing.isbn)
+            billings_json.append({
+                'id': str(billing.pk),
+                'billing_id': str(billing.billing.pk),
+                'book': {
+                    'title': book.title,
+                    'isbn': book.isbn,
+                    'image': book.image.get_full_url(),
+                },
+                'number': billing.number,
+                'type': AfterSellBilling.status_to_string(billing.type),
+                'reason': billing.reason,
+                'is_done': billing.is_done,
+                'create_time': billing.create_time
+
+            })
+        return billings_json
+
+
+class AfterSellBillingResource(Resource):
+    # /rest/billings/<>/afterselling
+    """
+    售后账单
+    """
+
+    post_parser = reqparse.RequestParser()
+    post_parser.add_argument('isbn', type=valid_book, dest='book', location='form', required=True, help="MISSING_OR_WRONG_ISBN")
+    post_parser.add_argument('number', type=int, location='form')
+    post_parser.add_argument('type', type=str, location='form')
+    post_parser.add_argument('reason', type=unicode, location='form', required=True, help="MISSING_REASON")
+
+    def post(self, billing_id):
+        """
+        提交售后账单
+        :param billing_id:
+        :return:
+        """
+        billing = get_from_object_id(billing_id, Billing, 'billing_id')
+        if billing.status != Billing.Status.RECEIVED:
+            abort(400, message="INVALID_BILLING_STATUS")
+
+        user = User.get_user_on_headers()
+        args = self.post_parser.parse_args()
+        abort_valid_in_list('type', args['type'], ['replace', 'refund'])
+
+        # Check billing valid number of this book
+        after_selling_carts = []
+        for cart in billing.carts:
+            if cart.book.isbn == args['book'].isbn and cart.status in [Cart.STATUS_NORMAL, Cart.STATUS_REPLACE_END]:
+                after_selling_carts.append(cart)
+
+        if args['number'] <= 0 or len(after_selling_carts) < args['number']:
+            abort(400, message='AFTER_SELLING_NUMBER_LIMIT')
+
+
+        after_selling_carts = after_selling_carts[:args['number']]
+
+        for one_cart in after_selling_carts:
+            # Change status of one cart
+            pass
+            if args['type'] == 'replace':
+                one_cart.change_status(Cart.STATUS_REPLACE_PROCESSING)
+
+            elif args['type'] == 'refund':
+                one_cart.change_status(Cart.STATUS_REFUND_PROCESSING)
+
+        after_sell_billing = AfterSellBilling(
+            billing=billing,
+            isbn=args['book'].isbn,
+            number=args['number'],
+            type=AfterSellBilling.REFUND if args['type'] == "refund" else AfterSellBilling.REPLACE,
+            reason=args['reason'],
+            user=user,
+        ).save()
+
+        return {
+            'id': str(after_sell_billing.pk),
+            'billing_id': str(billing.pk),
+            'isbn': args['book'].isbn,
+            'number': args['number'],
+            'type': args['type'],
+            'reason': args['reason']
+        }
+
+
+class SingleAfterSellBillingResource(Resource):
+    # /rest/billings/<>/afterselling/<>
+    """
+    单个售后账单
+    """
+
+    def delete(self, billing_id, afterselling_id):
+        """
+        删除售后账单
+        :param billing_id:
+        :param afterselling_id:
+        :return:
+        """
+        billing = get_from_object_id(billing_id, Billing, 'billing_id')
+        afterseling = get_from_object_id(afterselling_id, AfterSellBilling, 'afterseling_id', canceled=False, is_done=False)
+
+        user = User.get_user_on_headers()
+
+        query_set = {
+            'user': user,
+        }
+        if afterseling.type == AfterSellBilling.REPLACE:
+            query_set['status'] = Cart.STATUS_REPLACE_PROCESSING
+
+        elif afterseling.type == AfterSellBilling.REFUND:
+            query_set['status'] = Cart.STATUS_REFUND_PROCESSING
+
+        carts = Cart.objects(status_changed_time__lte=afterseling.create_time, status_changed_time__gt=afterseling.create_time - 10).filter(**query_set).limit(afterseling.number)
+
+        for cart in carts:
+            cart.change_status(Cart.STATUS_NORMAL)
+
+        afterseling.canceled = True
+        afterseling.save()
 
 
 class UserResource(Resource):

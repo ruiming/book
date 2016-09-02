@@ -570,7 +570,8 @@ class BillingsResource(Resource):
                                     'backend': one.backend_operator
                                 } for one in billing.status_list],
                 'create_time': billing.create_time,
-                'edit_time': billing.edit_time
+                'edit_time': billing.edit_time,
+                'replace_refund_processing': billing.replace_refund_processing
             })
 
         return billings_json
@@ -669,7 +670,8 @@ class BillingResource(Resource):
                 'phone': billing.address.phone,
                 'dormitory': billing.address.dormitory
             },
-            'price': float(billing.get_sum_price())
+            'price': float(billing.get_sum_price()),
+            'replace_refund_processing': billing.replace_refund_processing
         }
 
         return billing_json

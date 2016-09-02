@@ -3,8 +3,8 @@
         <p>订单退换货申请</p>
     </div>
     <div class="contain">
-        <ul class="list-group">
-            <li class="list-group-item" ng-repeat="z in vm.order.carts">
+        <div class="list-group">
+            <div class="list-group-item">
                 <div class="checkbox">
                     <label>
                     <span ng-class="{true: 'active', false: ''}[item.checked]">
@@ -12,10 +12,10 @@
                     </span>
                     </label>
                 </div>
-                <img ng-src={{z.book.image}}>
-                <p>{{z.book.title}}</p>
-                <span>{{z.number}}本 / 共{{z.price*z.number | number:2}}元</span>
-            </li>
-        </ul>
+                <img ng-src={{vm.book.book.image}}>
+                <p>{{vm.book.book.title}}</p>
+                <span>{{vm.book.number}}本 / 共{{vm.book.price_sum}}元</span>
+            </div>
+        </div>
     </div>
 </div>

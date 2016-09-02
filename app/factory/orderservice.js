@@ -11,6 +11,7 @@
 
         // 暂存进入订单生成页面时的勾选书籍
         let store = null;
+        let aftersales = null;
 
         return {
             setStore: setStore,
@@ -18,8 +19,18 @@
             makeOrder: makeOrder,
             getOrderDetail: getOrderDetail,
             cancelOrder: cancelOrder,
-            getOrder: getOrder
+            getOrder: getOrder,
+            setAfterSales: setAfterSales,
+            getAfterSales: getAfterSales
         };
+
+        function setAfterSales(item) {
+            aftersales = item;
+        }
+
+        function getAfterSales() {
+            return aftersales;
+        }
 
         // 获取指定状态的全部书单
         function getOrder(status) {

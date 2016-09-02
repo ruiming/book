@@ -5,14 +5,15 @@
         .module('index')
         .controller('OrderDetailCtrl', OrderDetailCtrl);
 
-    OrderDetailCtrl.$inject = ['orderservice', 'order'];
+    OrderDetailCtrl.$inject = ['orderservice', 'order', '$state'];
 
-    function OrderDetailCtrl(orderservice, order) {
+    function OrderDetailCtrl(orderservice, order, $state) {
         let vm = this;
         vm.price = 0;
         vm.status_list = [];
 
         vm.cancel = cancel;
+        vm.toReturn = toReturn;
 
         vm.order = order;
         vm.order.status = statusDict[vm.order.status];
@@ -25,6 +26,12 @@
                 'content': item.content,
                 'time': item.time
             });
+        }
+
+        function toReturn(item) {
+            orderservice.setAfterSales(item);
+            console.log(orderservice.getAfterSales());
+            $state.go('aftersales');
         }
 
         function cancel(order) {

@@ -1,3 +1,4 @@
+// TODO: Change to Angular's Constant
 var host = 'https://www.bookist.org/rest';        // API url
 // var host = 'http://192.168.1.231';
 

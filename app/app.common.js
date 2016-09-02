@@ -429,6 +429,16 @@
                     }
                 }
             })
+            .state('auth', {
+                url: '/auth',
+                template: '<div ui-view></div>',
+                abstract: true
+            })
+            .state('auth.register', {
+                url: '/register',
+                templateUrl: 'auth_register/auth_register_tpl.html',
+                controller: 'AuthRegisterCtrl as vm'
+            })
     }
 
 })();

@@ -29,8 +29,7 @@
         }
 
         function toReturn(item) {
-            orderservice.setAfterSales(item);
-            console.log(orderservice.getAfterSales());
+            orderservice.setStore(Object.assign(item,{id: order.id}));
             $state.go('aftersales');
         }
 

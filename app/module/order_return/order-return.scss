@@ -6,23 +6,70 @@
     padding: 10px;
     background-color: #fff;
   }
+  .list-group {
+    margin-bottom: 0;
+  }
   .list-group-item {
     overflow: hidden;
+    border: 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
     padding: 10px;
-    color: #777;
+    color: #333;
     img {
-      height: 80px;
+      height: 120px;
       float: left;
       margin-right: 10px;
+    }
+    p {
+      font-weight: 700;
     }
     span {
       font-size: 12px;
     }
   }
-  .checkbox {
-    height: 60px;
+  .switch {
+    text-align:center;
     label {
-      top: 19px;
+      padding-right: 20px;
+      width: 35%;
     }
+  }
+  .order-meta-price {
+    padding: 8px;
+    display: block;
+    float: left;
+    span {
+      padding-left: 10px;
+      display: block;
+      margin: 5px 0;
+    }
+  }
+  .submit-bottom {
+    border-top: 1px solid #E7E7E7;
+    background-color: #fff;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    input {
+      border-radius: 0;
+      float: right;
+      padding: 6px 12px;
+      margin: 6px;
+      font-size: 14px;
+      width: 95px;
+    }
+  }
+  .css-form {
+    padding: 10px;
+    background-color: white;
+  }
+  .css-form input.ng-invalid.ng-touched {
+    background-color: #FA787E;
+  }
+  .css-form input.ng-valid.ng-touched {
+    background-color: #78FA89;
   }
 }

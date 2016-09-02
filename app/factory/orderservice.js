@@ -20,16 +20,17 @@
             getOrderDetail: getOrderDetail,
             cancelOrder: cancelOrder,
             getOrder: getOrder,
-            setAfterSales: setAfterSales,
-            getAfterSales: getAfterSales
+            postAfterSales: postAfterSales
         };
 
-        function setAfterSales(item) {
-            aftersales = item;
-        }
-
-        function getAfterSales() {
-            return aftersales;
+        // 提交售后订单
+        function postAfterSales(form) {
+            return $http.post(host + '/billings/' + form.id + '/afterselling', {
+                isbn: form.isbn,
+                number: form.number,
+                type: form.type,
+                reason: form.reason
+            }).then(response => response.data);
         }
 
         // 获取指定状态的全部书单

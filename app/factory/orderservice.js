@@ -49,10 +49,13 @@
 
         // 生成订单
         function makeOrder(cart_list, number_list, address_id) {
-            return $http.post(host + '/billings', {
-                cart: cart_list,
-                number: number_list,
-                address: address_id
+            let form = new FormData();
+            for(let cart of cart_list) form.append('cart', cart);
+            for(let number of number_list) form.append('number', number)
+            form.append('address', address_id);
+            return $http.post(host + '/billings', form, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
             }).then(response => response.data);
         }
 

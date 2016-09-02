@@ -1,26 +1,26 @@
 <div class="order-page">
     <div class="order-group">
-        <p class="empty" ng-if="!vm.aftersale">
+        <p class="empty" ng-if="!vm.aftersales.length">
             <i class="fa fa-rocket" aria-hidden="true"></i> 您还没有退换货订单
         </p>
-        <ul class="order-list" ng-if="vm.aftersale">
-            <li class="order-list-one">
+        <ul class="order-list" ng-if="vm.aftersales.length">
+            <li class="order-list-one" ng-repeat="aftersale in vm.aftersales">
                 <div class="order-title">
                     <span class="order-head">Bookist</span>
-                    <span class="order-status">{{vm.aftersale.type}}</span>
+                    <span class="order-status">{{aftersale.type}}</span>
                 </div>
                 <a ui-sref="orderDetail({id:order.id})">
                     <ul class="order-books" style="margin-bottom: 0">
                         <li class="order-book">
-                            <img ng-src="{{vm.aftersale.book.image}}">
-                            <p>{{vm.aftersale.book.title}}</p>
-                            <span class="count"> {{vm.aftersale.number}}本 / 共{{vm.aftersale.price | number:2}}元</span>
+                            <img ng-src="{{aftersale.book.image}}">
+                            <p>{{aftersale.book.title}}</p>
+                            <span class="count"> {{aftersale.number}}本 / 共{{aftersale.price | number:2}}元</span>
                         </li>
                     </ul>
                 </a>
                 <div class="order-meta">
                     <div class="order-meta-price">
-                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.aftersale.price}}</em> 元</span>
+                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{aftersale.price}}</em> 元</span>
                     </div>
                     <button class="btn btn-danger" promise-btn
                             ng-click="vm.cancel(aftersale.billing_id, aftersale.id)">

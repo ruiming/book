@@ -303,7 +303,7 @@
                 templateUrl: 'orders_aftersales/orders_aftersales_tpl.html',
                 controllerAs: 'vm',
                 resolve: {
-                    aftersale: function(orderservice) {
+                    aftersales: function(orderservice) {
                         return orderservice.getAftersale()
                             .then(response => response);
                     }

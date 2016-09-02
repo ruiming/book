@@ -18,7 +18,6 @@
             makeOrder: makeOrder,
             getOrderDetail: getOrderDetail,
             cancelOrder: cancelOrder,
-            receiptOrder: receiptOrder,
             getOrder: getOrder
         };
 
@@ -26,13 +25,6 @@
         function getOrder(status) {
             return $http.get(host + '/billings?status=' + status)
                 .then(response => response.data);
-        }
-
-        // 修改订单状态，签收订单
-        function receiptOrder(id) {
-            return $http.put(host + '/billings/' + id, {
-                status: 'commenting'
-            }).then(response => response.data);
         }
 
         // 取消订单

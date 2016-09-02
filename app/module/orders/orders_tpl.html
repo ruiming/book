@@ -30,8 +30,8 @@
                     </a>
                     <button class="btn btn-danger" promise-btn
                             ng-if="order.status=='待收货'"
-                            ng-click="vm.receipt(order)">
-                        确认收货
+                            disabled>
+                        已发货啦
                     </button>
                     <button class="btn btn-danger" promise-btn
                             ng-if="order.status=='待发货'"

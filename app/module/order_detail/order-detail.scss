@@ -1,4 +1,12 @@
 .order-detail-page {
+  .back {
+    border-radius: 0;
+    font-size: 12px;
+    padding: 5px 10px;
+    position: absolute;
+    right: 10px;
+    bottom: 40px;
+  }
   .order-group {
     .order-list {
       padding: 0;

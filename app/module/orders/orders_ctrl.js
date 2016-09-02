@@ -15,7 +15,6 @@
 
         vm.cancelReturn = cancelReturn;
         vm.cancel = cancel;
-        vm.receipt = receipt;
 
 
         if(status.indexOf(vm.type) === -1) {
@@ -32,12 +31,6 @@
         function cancel(order) {
             return orderservice.cancelOrder(order.id).then(() => {
                 order.status = '已取消';
-            });
-        }
-
-        function receipt(order){
-            return orderservice.receiptOrder(order.id).then(() => {
-                order.status = '待评价';
             });
         }
     }

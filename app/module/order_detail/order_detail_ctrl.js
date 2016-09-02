@@ -13,7 +13,6 @@
         vm.status_list = [];
 
         vm.cancel = cancel;
-        vm.receipt = receipt;
 
         vm.order = order;
         vm.order.status = statusDict[vm.order.status];
@@ -35,16 +34,6 @@
                     'status': '已取消',
                     'time': Date.parse(new Date()) / 1000
                 });
-            });
-        }
-
-        function receipt(order) {
-            return orderservice.receiptOrder(order.id).then(() => {
-                vm.status_list.push({
-                    'status': '已收货',
-                    'time': Date.parse(new Date()) / 1000
-                });
-                vm.order.status = '待评价';
             });
         }
     }

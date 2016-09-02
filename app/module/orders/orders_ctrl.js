@@ -11,7 +11,7 @@
         let vm = this;
         vm.type = $stateParams.status;
         vm.orders = orders;
-        let status = ['pending', 'all', 'creating', 'waiting', 'received'];
+        let status = ['pending', 'all', 'creating', 'waiting', 'received', 'afterselling'];
 
         vm.cancelReturn = cancelReturn;
         vm.cancel = cancel;

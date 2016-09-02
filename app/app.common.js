@@ -297,6 +297,18 @@
                     }
                 }
             })
+            .state('ordersAfterSales', {
+                url: '/aftersales/list',
+                controller: 'OrdersAftersalesCtrl',
+                templateUrl: 'orders_aftersales/orders_aftersales_tpl.html',
+                controllerAs: 'vm',
+                resolve: {
+                    aftersale: function(orderservice) {
+                        return orderservice.getAftersale()
+                            .then(response => response);
+                    }
+                }
+            })
             .state('aftersales', {
                 url: '/aftersales',
                 controller: 'OrderReturnCtrl',

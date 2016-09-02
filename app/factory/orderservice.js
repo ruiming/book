@@ -20,11 +20,25 @@
             getOrderDetail: getOrderDetail,
             cancelOrder: cancelOrder,
             getOrder: getOrder,
-            postAfterSales: postAfterSales
+            postAftersale: postAftersale,
+            getAftersale: getAftersale,
+            cancelAftersale: cancelAftersale
         };
 
+        // 取消售后订单
+        function cancelAftersale(billing_id,afterselling_id) {
+            return $http.delete(host + '/billings/' + billing_id + '/afterselling/' + afterselling_id)
+                .then(response => response.data);
+        }
+
+        // 获取售后订单
+        function getAftersale() {
+            return $http.get(host + '/afterselling')
+                .then(response => response.data);
+        }
+
         // 提交售后订单
-        function postAfterSales(form) {
+        function postAftersale(form) {
             return $http.post(host + '/billings/' + form.id + '/afterselling', {
                 isbn: form.isbn,
                 number: form.number,

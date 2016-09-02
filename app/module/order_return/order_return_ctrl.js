@@ -25,9 +25,9 @@
             return result;
         }
         function handel(form) {
-            return orderservice.postAfterSales(form).then(response => {
+            return orderservice.postAftersale(form).then(response => {
                 // TODO response.id
-                $state.go()
+                // $state.go()
             });
         }
     }

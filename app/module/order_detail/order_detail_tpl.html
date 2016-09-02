@@ -12,11 +12,11 @@
                         <p ui-sref="book({isbn: z.book.isbn})">{{z.book.title}}</p>
                         <small ng-repeat="x in z.book.author"><small>{{x}} </small></small>
                         <input type="button" class="btn btn-default back" value="申请退换货"
-                               ng-if="book.status === false" ng-click="vm.toReturn(z)">
+                               ng-if="z.status === 'STATUS_NORMAL'" ng-click="vm.toReturn(z)">
                         <input type="button" class="btn btn-default back" value="退货中"
-                               ng-if="book.status === 'STATUS_REFUND_PROCESSING'">
+                               ng-if="z.status === 'STATUS_REFUND_PROCESSING'">
                         <input type="button" class="btn btn-default back" value="换货中"
-                               ng-if="book.status === 'STATUS_REPLACE_PROCESSING'">
+                               ng-if="z.status === 'STATUS_REPLACE_PROCESSING'">
                         <span class="count"> {{z.number}}本 / 共{{z.price_sum | number:2}}元</span>
                     </div>
                 </ul>

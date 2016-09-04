@@ -88,8 +88,7 @@
             .state('index', {
                 url: '/',
                 templateUrl: 'index/index_tpl.html',
-                controller: 'IndexCtrl',
-                controllerAs: 'vm',
+                controller: 'IndexCtrl as vm',
                 nav: true,
                 resolve: {
                     hotBooklists: function(booklistservice) {
@@ -108,9 +107,8 @@
             })
             .state('cart',{
                 url: '/cart',
-                controller: 'CartCtrl',
+                controller: 'CartCtrl as vm',
                 templateUrl: 'cart/cart_tpl.html',
-                controllerAs: 'vm',
                 nav: true,
                 resolve: {
                     cart: function(cartservice) {
@@ -128,9 +126,8 @@
             })
             .state('me',{
                 url: '/me',
-                controller: 'MeCtrl',
+                controller: 'MeCtrl as vm',
                 templateUrl: 'me/me_tpl.html',
-                controllerAs: 'vm',
                 nav: true,
                 resolve: {
                     me: function(userservice) {
@@ -141,9 +138,8 @@
             })
             .state('booklists',{
                 url: '/booklists',
-                controller: 'BooklistsCtrl',
+                controller: 'BooklistsCtrl as vm',
                 templateUrl: 'booklists/booklists_tpl.html',
-                controllerAs: 'vm',
                 nav: true,
                 resolve: {
                     tags: function(tagservice) {
@@ -158,9 +154,8 @@
             })
             .state('recommend',{
                 url: '/books/recommend',
-                controller: 'RecommendMoreCtrl',
+                controller: 'RecommendMoreCtrl as vm',
                 templateUrl: 'recommend_more/recommend_more_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     books: function(bookservice) {
                         return bookservice.getPopularBooks(1)
@@ -170,9 +165,8 @@
             })
             .state('popular',{
                 url: '/booklists/popular',
-                controller: 'PopularMoreCtrl',
+                controller: 'PopularMoreCtrl as vm',
                 templateUrl: 'popular_more/popular_more_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     booklists: function(booklistservice) {
                         return booklistservice.getBooklists(1)
@@ -182,9 +176,8 @@
             })
             .state('book',{
                 url: '/book/{isbn}',
-                controller: 'BookCtrl',
+                controller: 'BookCtrl as vm',
                 templateUrl: 'book/book_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     book: function(bookservice, $stateParams) {
                         return bookservice.getBook($stateParams.isbn)
@@ -196,9 +189,8 @@
             })
             .state('bookDetail',{
                 url: '/book/{isbn}/detail',
-                controller: 'BookInfoCtrl',
+                controller: 'BookInfoCtrl as vm',
                 templateUrl: 'book_info/book_info_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     bookDetail: function(bookservice, $stateParams) {
                         return bookservice.getBookDetail($stateParams.isbn)
@@ -208,9 +200,8 @@
             })
             .state('booklist',{
                 url: '/booklist/{id}',
-                controller: 'BookListCtrl',
+                controller: 'BookListCtrl as vm',
                 templateUrl: 'booklist/booklist_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     booklist: function($stateParams, booklistservice) {
                         return booklistservice.getBooklistDetail($stateParams.id)
@@ -225,9 +216,8 @@
             })
             .state('booklistComments', {
                 url: '/booklist/{id}/{title}/comments',
-                controller: 'BooklistCommentsCtrl',
+                controller: 'BooklistCommentsCtrl as vm',
                 templateUrl: 'booklist_comments/booklist_comments_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     title: function($stateParams) {
                         return $stateParams.title;
@@ -236,9 +226,8 @@
             })
             .state('tagBooklists',{
                 url: '/booklists/{tag}',
-                controller: 'TagBooklistsCtrl',
+                controller: 'TagBooklistsCtrl as vm',
                 templateUrl: 'tag-booklists/tag-booklists_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     booklists: function(booklistservice, $stateParams) {
                         return booklistservice.getBooklists(1, 'all', $stateParams.tag)
@@ -248,9 +237,8 @@
             })
             .state('commentsBook',{
                 url: '/comments/{isbn}',
-                controller: 'CommentsCtrl',
+                controller: 'CommentsCtrl as vm',
                 templateUrl: 'comments/comments_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     comments: function(commentservice, $stateParams) {
                         return commentservice.getComment($stateParams.isbn)
@@ -260,9 +248,8 @@
             })
             .state('tags',{
                 url: '/tags',
-                controller: 'TagsCtrl',
+                controller: 'TagsCtrl as vm',
                 templateUrl: 'tags/tags_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     tags: function(tagservice) {
                         return tagservice.getAllTags()
@@ -272,9 +259,8 @@
             })
             .state('orders',{
                 url: '/orders/{status}/show',
-                controller: 'OrdersCtrl',
+                controller: 'OrdersCtrl as vm',
                 templateUrl: 'orders/orders_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     orders: function(orderservice, $stateParams) {
                         return orderservice.getOrder($stateParams.status)
@@ -289,9 +275,8 @@
             })
             .state('orderDetail',{
                 url: '/order/{id}/detail',
-                controller: 'OrderDetailCtrl',
+                controller: 'OrderDetailCtrl as vm',
                 templateUrl: 'order_detail/order_detail_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     order: function(orderservice, $stateParams) {
                         return orderservice.getOrderDetail($stateParams.id)
@@ -301,9 +286,8 @@
             })
             .state('ordersAfterSales', {
                 url: '/aftersales/list',
-                controller: 'OrdersAftersalesCtrl',
+                controller: 'OrdersAftersalesCtrl as vm',
                 templateUrl: 'orders_aftersales/orders_aftersales_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     aftersales: function(orderservice) {
                         return orderservice.getAftersale()
@@ -313,15 +297,13 @@
             })
             .state('aftersales', {
                 url: '/aftersales',
-                controller: 'OrderReturnCtrl',
+                controller: 'OrderReturnCtrl as vm',
                 templateUrl: 'order_return/order_return_tpl.html',
-                controllerAs: 'vm',
             })
             .state('orderComments',{
                 url: '/order/{id}/comments',
-                controller: 'OrderCommentsCtrl',
+                controller: 'OrderCommentsCtrl as vm',
                 templateUrl: 'order_comments/order_comments_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     order: function(orderservice, $stateParams) {
                         return orderservice.getOrderDetail($stateParams.id)
@@ -331,9 +313,8 @@
             })
             .state('comments',{
                 url: '/comments',
-                controller: 'UserCommentsCtrl',
+                controller: 'UserCommentsCtrl as vm',
                 templateUrl: 'user_comments/user_comments_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     comments: function(userservice) {
                         return userservice.getUserComments()
@@ -346,9 +327,8 @@
             })
             .state('booklistsCollect',{
                 url: '/collect',
-                controller: 'CollectCtrl',
+                controller: 'CollectCtrl as vm',
                 templateUrl: 'collect/collect_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     booklists: function(userservice) {
                         return userservice.getUserCollect('booklist')
@@ -367,9 +347,8 @@
             })
             .state('point', {
                 url: '/point',
-                controller: 'PointCtrl',
+                controller: 'PointCtrl as vm',
                 templateUrl: 'point/point_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     points: function(userservice) {
                         return userservice.getUserPoints()
@@ -379,9 +358,8 @@
             })
             .state('notices',{
                 url: '/notices',
-                controller: 'NoticesCtrl',
+                controller: 'NoticesCtrl as vm',
                 templateUrl: 'notices/notices_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     notices: function(userservice) {
                         return userservice.getUserNotices()
@@ -391,9 +369,8 @@
             })
             .state('settings', {
                 url: '/settings',
-                controller: 'SettingsCtrl',
+                controller: 'SettingsCtrl as vm',
                 templateUrl: 'settings/settings_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     user: function(userservice) {
                         return userservice.getUserInfo()
@@ -403,9 +380,8 @@
             })
             .state('address', {
                 url: '/setting/address',
-                controller: 'AddressCtrl',
+                controller: 'AddressCtrl as vm',
                 templateUrl: 'setting_address/setting_address_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     address: function(userservice) {
                         return userservice.getUserAddress()
@@ -415,21 +391,18 @@
             })
             .state('AddressAdd', {
                 url: '/setting/address/add',
-                controller: 'AddressAddCtrl',
+                controller: 'AddressAddCtrl as vm',
                 templateUrl: 'setting_address_add/setting_address_add_tpl.html',
-                controllerAs: 'vm'
             })
             .state('cart2order', {
                 url: '/cart2order',
-                controller: 'Cart2OrderCtrl',
+                controller: 'Cart2OrderCtrl as vm',
                 templateUrl: 'cart2order/cart2order_tpl.html',
-                controllerAs: 'vm'
             })
             .state('suggest', {
                 url: '/suggest',
-                controller: 'SuggestCtrl',
+                controller: 'SuggestCtrl as vm',
                 templateUrl: 'suggest/suggest_tpl.html',
-                controllerAs: 'vm',
                 resolve: {
                     user: function(userservice) {
                         return userservice.getUserInfo()

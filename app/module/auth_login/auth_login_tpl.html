@@ -1,4 +1,4 @@
-<form name="vm.form" ng-submit="vm.register(user)" novalidate>
+<form name="vm.form" ng-submit="vm.login(user)" novalidate>
     <div uib-alert ng-repeat="alert in vm.alerts" class="alert-warning" >{{alert}}</div>
     <div class="form-group">
         <label for="name">用户名</label>
@@ -8,12 +8,8 @@
         <label for="password">密码</label>
         <input type="password" class="form-control" id="password" name="password" ng-minlength="6" ng-maxlength="20" required placeholder="请输入密码" ng-model="user.password">
     </div>
-    <div class="form-group">
-        <label for="password_repeat">重复密码</label>
-        <input type="password" class="form-control" id="password_repeat" name="password_repeat" required placeholder="重复输入密码" ng-model="user.password_repeat">
-    </div>
     <div class="form-group auth-form">
-        <input type="submit" class="btn btn-primary auth" value="注册">
-        <a class="btn btn-primary auth" ui-sref="auth.login">已有账号? 登陆</a>
+        <input type="submit" class="btn btn-primary auth" value="登陆">
+        <a class="btn btn-primary auth" ui-sref="auth.register">没有账号? 注册</a>
     </div>
 </form>

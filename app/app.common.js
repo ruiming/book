@@ -439,13 +439,18 @@
             })
             .state('auth', {
                 url: '/auth',
-                template: '<div ui-view></div>',
+                templateUrl: 'auth/auth_tpl.html',
                 abstract: true
             })
             .state('auth.register', {
                 url: '/register',
                 templateUrl: 'auth_register/auth_register_tpl.html',
                 controller: 'AuthRegisterCtrl as vm'
+            })
+            .state('auth.login', {
+                url: '/login',
+                templateUrl: 'auth_login/auth_login_tpl.html',
+                controller: 'AuthLoginCtrl as vm'
             })
     }
 

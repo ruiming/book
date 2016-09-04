@@ -13,9 +13,18 @@
         ])
         .config(config)
         .run(function ($state, $rootScope, tokenInjector, $location, $window) {
-            // localStroage should be removed in the production
-            let token = $location.search().token || $window.localStorage.getItem('token');
-            let userid = $location.search().user_id || $window.localStorage.getItem('userid');
+            // experimental
+            let re = /\?token=(\S+)&user_id=(\S+)#/;
+            let absUrl = $location.absUrl();
+            let data = absUrl.match(re);
+            let token, userid;
+            if(data) {
+                token = data[1];
+                userid = data[2];
+            } else {
+                token = $window.localStorage.getItem('token');
+                userid = $window.localStorage.getItem('userid');
+            }
             tokenInjector.setAuth(token, userid);
             $rootScope.$state = $state;
             $rootScope.$on("$stateChangeStart", function (event, toState, toStateParams, fromState, fromStateParams) {

@@ -12,9 +12,10 @@
             'angularPromiseButtons'
         ])
         .config(config)
-        .run(function ($state, $rootScope, tokenInjector, $location) {
-            let token = $location.search().token;
-            let userid = $location.search().user_id;
+        .run(function ($state, $rootScope, tokenInjector, $location, $window) {
+            // localStroage should be removed in the production
+            let token = $location.search().token || $window.localStorage.getItem('token');
+            let userid = $location.search().user_id || $window.localStorage.getItem('userid');
             tokenInjector.setAuth(token, userid);
             $rootScope.$state = $state;
             $rootScope.$on("$stateChangeStart", function (event, toState, toStateParams, fromState, fromStateParams) {
@@ -64,7 +65,8 @@
             return str.join('&');
         };
 
-        $locationProvider.html5Mode(true);
+        // This can directly change to true in order to hide the synatx '#'
+        $locationProvider.html5Mode(false);
         $httpProvider.defaults.headers.post = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.put = {'Content-Type': 'application/x-www-form-urlencoded'};
         $httpProvider.defaults.headers.delete = {'Content-Type': 'application/x-www-form-urlencoded'};

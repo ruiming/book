@@ -136,7 +136,7 @@ def code2token():
                     record_type=Points.PointType.FIRST_LOGIN,
                 )
 
-                return redirect("https://www.bookist.org/?token={}&user_id={}".format(token['access_token'], token['openid'])), 301
+                return redirect("https://www.bookist.org/#/?token={}&user_id={}".format(token['access_token'], token['openid'])), 301
 
     return return_message('error', 1)
 

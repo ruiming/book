@@ -10,6 +10,7 @@
         <th>订单书籍</th>
         <th>书籍定价</th>
         <th>实际价钱</th>
+        <th>书籍采购处</th>
         <th>订单原价</th>
         <th>订单实际总价</th>
         <th>下单时间</th>
@@ -26,6 +27,7 @@
         <th>{{ one_cart.book.title }}</th>
         <th>{{ one_cart.price }}</th>
         <th><input type="number" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
+        <th><input type="text" name="{{ one.pk }}-{{ one_cart.pk }}-source" required="required"></th>
 
         <th rowspan="{{ loop.length }}">{{ one.get_sum_price() }}</th>
         <th rowspan="{{ loop.length }}"><div class="{{ one.pk }}">自行计算</div></th>
@@ -38,6 +40,7 @@
         <th>{{ one_cart.book.title }}</th>
         <th>{{ one_cart.price }}</th>
         <th><input type="number" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
+        <th><input type="text" name="{{ one.pk }}-{{ one_cart.pk }}-source" required="required"></th>
 
     </tr>
         {% endif %}
@@ -52,7 +55,6 @@
     <div class="interest">差价<span>自行计算</span></div>
     <div class="person">经手人<span><input type="text" name="operator" required="required"></span></div>
     <div class="dormitory">仓库<span><input type="text" name="warehouse" required="required"></span></div>
-    <div class="dormitory">书籍采购处<span><input type="text" name="source" required="required"></span></div>
     <button>下一步</button>
     </form>
 

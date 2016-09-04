@@ -442,6 +442,7 @@ class AfterSellBilling(db.Document):
     WAITING = 'waiting'
     PROCESSING = 'processing'
     REFUSED = 'refused'
+    DONE = 'done'
 
     billing = db.ReferenceField(Billing, required=True)
     isbn = db.StringField(required=True)
@@ -453,8 +454,15 @@ class AfterSellBilling(db.Document):
     user = db.ReferenceField(User, required=True)
     create_time = db.IntField(required=True, default=time_int)
     process = db.StringField(default=WAITING)
+    process_change_time = db.IntField()
+    feedback = db.ListField(db.StringField())
     process_feedback = db.StringField()
     refused_feedback = db.StringField()
+
+    def change_process_status(self, next_process):
+        self.process = next_process
+        self.process_change_time = time_int()
+        self.save()
 
     @classmethod
     def status_to_string(cls, index):
@@ -463,6 +471,13 @@ class AfterSellBilling(db.Document):
             "2": "REFUND",
         }
         return status.get(str(index))
+
+    def save(self):
+        super(AfterSellBilling, self).save()
+        if not self.process_change_time:
+            self.process_change_time = self.create_time
+            self.save()
+        return self
 
 
 class Notice(db.Document):

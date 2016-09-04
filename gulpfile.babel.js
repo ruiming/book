@@ -11,7 +11,6 @@ import plumber from 'gulp-plumber'
 import sass from 'gulp-sass'
 import qiniu from 'gulp-qiniu'
 import usemin from 'gulp-usemin'
-import eslint from 'gulp-eslint'
 
 // 打包js依赖
 gulp.task('angular', function() {
@@ -53,9 +52,6 @@ gulp.task('js', function() {
     gulp.src(['app/**/*.js', 'app/module/**/*.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
-        /*.pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError())*/
         .pipe(concat('bookist.js'))
         .pipe(babel())
         .pipe(gulp.dest('src/js/'))

@@ -172,19 +172,20 @@ class PendingBillingView(AdminBaseView):
                     cart.real_price = float(value)
                     cart.save()
 
+
                     # Saving StoreHouse
                     Storehouse(
                         book=cart.book,
                         price=cart.price,
                         real_price=cart.real_price,
-                        source=request.form.get('source', 'Unknown'),
+                        source=request.form.get('{}-source'.format(form_id), 'Unknown'),
                     ).save()
 
             Purchase(
                 billings=billings,
                 operator=request.form.get('operator', 'Unknown'),
                 warehouse=request.form.get('warehouse', 'Unknown'),
-                source=request.form.get('source', 'Unknown'),
+                source=u"未知"
             ).save()
             flash(u"已经生成采货单")
         else:
@@ -223,12 +224,70 @@ class WaitingBillingView(AdminBaseView):
 class AfterSellingBillingView(AdminBaseView):
     @expose('/')
     def index(self):
-        after_selling_biilings = list(AfterSellBilling.objects(canceled=False))
+        after_selling_biilings = list(AfterSellBilling.objects(canceled=False, is_done=False))
 
         for one in after_selling_biilings:
-            print type(one)
             one.__setattr__('book', abort_invalid_isbn(one.isbn))
 
-
-
         return self.render('admin/aftersellingbilling/index.html', billings=after_selling_biilings)
+
+    @expose('/save', methods=['POST'])
+    def save(self):
+        # billings_id = request.form.getlist('billingid')
+        # billings = []
+        # for one_id in billings_id:
+        #     try:
+        #         this_billing = Billing.objects(pk=one_id)
+        #         if this_billing.count() == 1:
+        #             billings.append(this_billing.first())
+        #     except:
+        #         pass
+        # return self.render('admin/pendingbilling/save.html', billings=billings)
+
+        after_selling = AfterSellBilling.objects(pk=request.form.get('billing_id')).first()
+        is_ok = True if 'submit_ok' in request.form else False
+        after_selling.feedback.append(request.form.get('reason'))
+
+        book = abort_invalid_isbn(after_selling.isbn)
+        carts = Cart.objects(user=after_selling.user, book=book, status_changed_time__lte=after_selling.process_change_time,
+                             status_changed_time__gt=after_selling.process_change_time - 10).limit(
+            after_selling.number)
+        for cart in carts:
+            print cart.book
+
+        if after_selling.process == AfterSellBilling.WAITING:
+
+            if is_ok:
+                after_selling.change_process_status(AfterSellBilling.PROCESSING)
+
+                # change status of cart
+                for cart in carts:
+                    cart.change_status(after_selling.type*2 - 1)
+
+            else:
+                after_selling.change_process_status(AfterSellBilling.REFUSED)
+                after_selling.is_done = True
+                # change status of cart
+                for cart in carts:
+                    cart.change_status(Cart.STATUS_NORMAL)
+
+        elif after_selling.process == AfterSellBilling.PROCESSING:
+
+            if is_ok:
+                after_selling.change_process_status(AfterSellBilling.DONE)
+                after_selling.is_done = True
+                # change status of cart
+                for cart in carts:
+                    cart.change_status(after_selling.type * 2)
+
+            else:
+                after_selling.change_process_status(AfterSellBilling.REFUSED)
+                after_selling.is_done = True
+                # change status of cart
+                for cart in carts:
+                    cart.change_status(Cart.STATUS_NORMAL)
+
+        after_selling.save()
+        flash(u"ID为 {} 的订单已经处理, 处理结果: {} ".format(unicode(after_selling.pk), u"同意" if is_ok else u"拒绝"))
+
+        return redirect(url_for("aftersellingbillingview.index"))

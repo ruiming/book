@@ -18,6 +18,10 @@
             user.name = user.password = user.password_repeat = '';
         }
 
+
+        // TODO
+
+
         function loginin(user) {
             vm.alerts = [];
             if(vm.form.name.$invalid) vm.alerts.push("用户名不能为空");

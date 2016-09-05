@@ -13,7 +13,7 @@
         ])
         .config(config)
         .run(function ($state, $rootScope, tokenInjector, $location, $window) {
-            // experimental
+            // just experimental
             let re = /\?token=(\S+)&user_id=(\S+)#/;
             let absUrl = $location.absUrl();
             let data = absUrl.match(re);

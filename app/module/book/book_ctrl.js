@@ -5,9 +5,9 @@
         .module('index')
         .controller('BookCtrl', BookCtrl);
 
-    BookCtrl.$inject = ['$stateParams', 'commentservice', 'bookservice', 'cartservice', 'userservice', 'book'];
+    BookCtrl.$inject = ['$state', '$stateParams', 'commentservice', 'bookservice', 'cartservice', 'userservice', 'book'];
 
-    function BookCtrl($stateParams, commentservice, bookservice, cartservice, userservice, book) {
+    function BookCtrl($state, $stateParams, commentservice, bookservice, cartservice, userservice, book) {
 
         let vm = this;
         vm.more = false;            // 默认不加载更多书籍信息介绍
@@ -19,6 +19,7 @@
         vm.postComment = postComment;
         vm.up = up;
         vm.down = down;
+        vm.home = home;
 
         vm.book = book;
         commentservice.setTitle(vm.book.title);
@@ -35,7 +36,11 @@
             vm.booklists = response;
         });
 
-        function addCart(){
+        function home() {
+            $state.go('cart');
+        }
+
+        function addCart() {
             return cartservice.addCart($stateParams.isbn);
         }
 

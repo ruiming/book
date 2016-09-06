@@ -41,7 +41,9 @@
         }
 
         function addCart() {
-            return cartservice.addCart($stateParams.isbn);
+            return cartservice.addCart($stateParams.isbn).then(() => {
+                notie.alert(1, '已加入购物车', 0.3);
+            });
         }
 
         function collect() {

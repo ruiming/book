@@ -26,7 +26,7 @@
         <th rowspan="{{ loop.length }}">{{ one.pk }}<input type="hidden" name="billing_id" value="{{ one.pk }}"></th>
         <th>{{ one_cart.book.title }}</th>
         <th>{{ one_cart.price }}</th>
-        <th><input type="number" class="form-control" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
+        <th><input type="number" class="form-control price" onchange="calc()" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
         <th><input type="text" class="form-control" name="{{ one.pk }}-{{ one_cart.pk }}-source" required="required"></th>
 
         <th rowspan="{{ loop.length }}">{{ one.get_sum_price() }}</th>
@@ -39,7 +39,7 @@
     <tr>
         <th>{{ one_cart.book.title }}</th>
         <th>{{ one_cart.price }}</th>
-        <th><input class="form-control price" type="number" oninput="calc()" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
+        <th><input class="form-control price" type="number" onchange="calc()" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
         <th><input class="form-control" type="text" name="{{ one.pk }}-{{ one_cart.pk }}-source" required="required"></th>
 
     </tr>

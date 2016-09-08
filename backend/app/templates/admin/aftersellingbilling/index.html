@@ -23,14 +23,14 @@
     <tr>
         <form action="save", method="POST">
         <th>{{ one.pk }}<input type="text" name="billing_id" hidden="hidden" value="{{ one.pk }}"></th>
-        <th>《{{ one['book'].title }}》 * {{ one.number }}</th>
+        <th style="white-space: pre">《{{ one['book'].title }}》 * {{ one.number }}</th>
         <th>{{ one['book'].price }} * {{ one.number }}</th>
         <th>{{ one.reason }}</th>
         <th>{{ one.billing.address.name }}</th>
         <th>{{ one.billing.address.dormitory }}</th>
         <th>{{ one.billing.address.phone }}</th>
         <th>{{ one.status_to_string(one.type) }} / {{ one.process }}</th>
-        <th><textarea class="form-control" type="text" name="reason"></th>
+        <th><textarea class="form-control" type="text" name="reason"></textarea></th>
         <th><button class="btn btn-primary" name="submit_ok">同意</button></th>
         <th><button class="btn btn-danger" name="submit_fail">拒绝</button></th>
         </form>

@@ -23,7 +23,7 @@
         <th>{{ one.user.username }}</th>
         <th>{{ one.address.name }}</th>
         <th>{{ one.address.dormitory }}</th>
-        <th>{% for one_cart, number in one.carts_info() %}{{ one_cart.book.title }} * {{ number }}<br />{% endfor %}</th>
+        <th style="white-space: pre">{% for one_cart, number in one.carts_info() %}{{ one_cart.book.title }} * {{ number }}<br />{% endfor %}</th>
         <th>{{ one.get_sum_price() }}</th>
         <th>{{ one.create_time|datetime }}</th>
         <th>{{ one.status }}</th>

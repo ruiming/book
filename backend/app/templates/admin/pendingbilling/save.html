@@ -37,7 +37,7 @@
 
         {% else %}
     <tr>
-        <th>{{ one_cart.book.title }}</th>
+        <th style="white-space: pre">{{ one_cart.book.title }}</th>
         <th>{{ one_cart.price }}</th>
         <th><input class="form-control price" type="number" onchange="calc()" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
         <th><input class="form-control" type="text" name="{{ one.pk }}-{{ one_cart.pk }}-source" required="required"></th>

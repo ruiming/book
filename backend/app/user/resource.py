@@ -871,6 +871,9 @@ class SingleAfterSellBillingResource(Resource):
         billing = get_from_object_id(billing_id, Billing, 'billing_id')
         afterseling = get_from_object_id(afterselling_id, AfterSellBilling, 'afterseling_id', billing=billing, canceled=False, is_done=False)
 
+        if afterseling.process != AfterSellBilling.WAITING:
+            abort(400, message="ERROR_AFTER_SELLING_BILLING_PROCESS")
+
         user = User.get_user_on_headers()
 
         query_set = {

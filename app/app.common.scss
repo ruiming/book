@@ -374,6 +374,23 @@ a {
     opacity: 0;
   }
 }
+.home {
+  position: fixed;
+  bottom: 75px;
+  right: 25px;
+  border: 1px solid #4caf50;
+  border-radius: 50%;
+  padding: 8px;
+  background-color: #4caf50;
+  width: 47px;
+  text-align: center;
+  &:hover {
+    background-color: #409043;
+  }
+  i {
+    color: white;
+  }
+}
 .checkbox-design {
   float: left;
   height: 110px;

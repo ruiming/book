@@ -49,7 +49,7 @@ gulp.task('font', function() {
 
 // 自己的js代码
 gulp.task('js', function() {
-    gulp.src(['app/**/*.js', 'app/module/**/*.js'])
+    gulp.src(['app/**/*.js', 'app/controllers/**/*.js'])
         .pipe(plumber())
         .pipe(ngAnnotate())
         .pipe(concat('bookist.js'))
@@ -59,7 +59,7 @@ gulp.task('js', function() {
 
 // 模板处理
 gulp.task('templates', function() {
-    gulp.src('app/module/**/*.html')
+    gulp.src('app/controllers/**/*.html')
         .pipe(minifyHtml({empty: true, quotes: true}))
         .pipe(ngTemplate({
             moduleName: 'index',
@@ -81,7 +81,7 @@ gulp.task('img', function() {
 
 // sass编译
 gulp.task('sass', function() {
-    gulp.src(['app/*.scss', 'app/**/*.scss', 'app/module/**/*.scss'])
+    gulp.src(['app/*.scss', 'app/**/*.scss', 'app/controllers/**/*.scss'])
         .pipe(plumber())
         .pipe(concat('bookist.min.scss'))
         .pipe(sass())
@@ -143,10 +143,10 @@ gulp.task('cdn', function() {
         }));
 });
 
-gulp.watch(['app/*.scss', 'app/**/*.scss', 'app/module/**/*.scss'], ['sass']);
-gulp.watch(['app/**/*.js', 'app/module/**/*.js'], ['js']);
+gulp.watch(['app/*.scss', 'app/**/*.scss', 'app/controllers/**/*.scss'], ['sass']);
+gulp.watch(['app/**/*.js', 'app/controllers/**/*.js'], ['js']);
 gulp.watch('static/img/*.*', ['img']);
-gulp.watch('app/module/**/*.html',['templates']);
+gulp.watch('app/controllers/**/*.html',['templates']);
 
 
 gulp.task('product', ['cdn']);

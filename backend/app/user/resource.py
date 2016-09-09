@@ -855,6 +855,7 @@ class SingleAfterSellBillingResource(Resource):
             'type': AfterSellBilling.status_to_string(after_selling.type),
             'reason': after_selling.reason,
             'is_done': after_selling.is_done,
+            'price_sum': float(book.price) * after_selling.number,
             'create_time': after_selling.create_time,
             'process': after_selling.process,
             'feedback': after_selling.feedback,

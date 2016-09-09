@@ -1,0 +1,31 @@
+<div class="order-page">
+    <div class="order-group">
+        <ul class="order-list">
+            <li class="order-list-one">
+                <div class="order-title">
+                    <span class="order-head">Bookist</span>
+                    <span class="order-status">{{vm.aftersale.type}}</span>
+                </div>
+                <div>
+                    <ul class="order-books" style="margin-bottom: 0">
+                        <li class="order-book">
+                            <img ng-src="{{vm.aftersale.book.image}}">
+                            <p>{{vm.aftersale.book.title}}</p>
+                            <span class="count"> {{vm.aftersale.number}}本 / 共{{vm.aftersale.price | number:2}}元</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="order-meta">
+                    <div class="order-meta-price">
+                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.aftersale.price}}</em> 元</span>
+                    </div>
+                    <button class="btn btn-danger" promise-btn ng-disabled="aftersale.is_done"
+                            ng-click="vm.cancel(aftersale)">
+                        <i ng-if="!aftersale.is_done">取消申请</i>
+                        <i ng-if="aftersale.is_done">已取消</i>
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

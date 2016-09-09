@@ -22,7 +22,8 @@
             getOrder: getOrder,
             postAftersale: postAftersale,
             getAftersale: getAftersale,
-            cancelAftersale: cancelAftersale
+            cancelAftersale: cancelAftersale,
+            getAferSaleDetail: getAferSaleDetail
         };
 
         // 取消售后订单
@@ -31,7 +32,13 @@
                 .then(response => response.data);
         }
 
-        // 获取售后订单
+        // 获取单个售后订单
+        function getAferSaleDetail(billing_id, afterselling_id) {
+            return $http.get(host + '/billings/' + billing_id + '/afterselling/' + afterselling_id)
+                .then(response => response.data);
+        }
+
+        // 获取所有售后订单
         function getAftersale() {
             return $http.get(host + '/afterselling')
                 .then(response => response.data);

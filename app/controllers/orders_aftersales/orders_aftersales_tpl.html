@@ -9,23 +9,23 @@
                     <span class="order-head">Bookist</span>
                     <span class="order-status">{{aftersale.type}}</span>
                 </div>
-                <a ui-sref="orderDetail({id:order.id})">
+                <a>
                     <ul class="order-books" style="margin-bottom: 0">
-                        <li class="order-book">
+                        <a class="order-book" ui-sref="ordersAftersalesDetail({orderid: aftersale.billing_id, aftersellingid: aftersale.id})">
                             <img ng-src="{{aftersale.book.image}}">
                             <p>{{aftersale.book.title}}</p>
                             <span class="count"> {{aftersale.number}}本 / 共{{aftersale.price | number:2}}元</span>
-                        </li>
+                        </a>
                     </ul>
                 </a>
                 <div class="order-meta">
                     <div class="order-meta-price">
                         <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{aftersale.price}}</em> 元</span>
                     </div>
-                    <button class="btn btn-danger" promise-btn
-                            ng-click="vm.cancel(aftersale.billing_id, aftersale.id)">
-                        <i ng-if="vm.canceled">取消申请</i>
-                        <i ng-if="!vm.canceled">已取消</i>
+                    <button class="btn btn-danger" promise-btn ng-disabled="aftersale.is_done"
+                            ng-click="vm.cancel(aftersale)">
+                        <i ng-if="!aftersale.is_done">取消申请</i>
+                        <i ng-if="aftersale.is_done">已取消</i>
                     </button>
                 </div>
             </li>

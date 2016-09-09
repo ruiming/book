@@ -309,6 +309,17 @@
                 controller: 'OrderReturnCtrl as vm',
                 templateUrl: 'order_return/order_return_tpl.html',
             })
+            .state('ordersAftersalesDetail', {
+                url: '/order/{orderid}/afterselling/{aftersellingid}',
+                controller: 'OrdersAftersalesDetailCtrl as vm',
+                templateUrl: 'orders_aftersales_detail/orders_aftersales_detail_tpl.html',
+                resolve: {
+                    aftersale: function(orderservice, $stateParams) {
+                        return orderservice.getAferSaleDetail($stateParams.orderid, $stateParams.aftersellingid)
+                            .then(response => response);
+                    }
+                }
+            })
             .state('orderComments',{
                 url: '/order/{id}/comments',
                 controller: 'OrderCommentsCtrl as vm',
@@ -327,10 +338,7 @@
                 resolve: {
                     comments: function(userservice) {
                         return userservice.getUserComments()
-                            .then(response => {
-                                console.log(response);
-                                return response;
-                            });
+                            .then(response => response);
                     }
                 }
             })

@@ -11,12 +11,13 @@
         let vm = this;
         vm.cancel = cancelReturn;
 
-        vm.canceled = false;
         vm.aftersales = aftersales;
 
-        function cancelReturn(billing_id, afterselling_id) {
-            return orderservice.cancelAftersale(billing_id, afterselling_id)
-                .then(response => response);
+        function cancelReturn(aftersale) {
+            return orderservice.cancelAftersale(aftersale.billing_id, aftersale.id)
+                .then(() => {
+                    aftersale.is_done = true;
+                });
         }
 
     }

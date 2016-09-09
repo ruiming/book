@@ -4,25 +4,58 @@
             <li class="order-list-one">
                 <div class="order-title">
                     <span class="order-head">Bookist</span>
-                    <span class="order-status">{{vm.aftersale.type}}</span>
+                    <span class="order-status">{{vm.aftersale.type === 'REFUND' ? '退货' : '换货'}}</span>
                 </div>
-                <div>
-                    <ul class="order-books" style="margin-bottom: 0">
-                        <li class="order-book">
-                            <img ng-src="{{vm.aftersale.book.image}}">
-                            <p>{{vm.aftersale.book.title}}</p>
-                            <span class="count"> {{vm.aftersale.number}}本 / 共{{vm.aftersale.price | number:2}}元</span>
+                <ul class="order-books" style="margin-bottom: 0">
+                    <li class="order-book">
+                        <img ng-src="{{vm.aftersale.book.image}}">
+                        <p>{{vm.aftersale.book.title}}</p>
+                        <span class="count"> {{vm.aftersale.number}}本 / 共{{vm.aftersale.per_price * vm.aftersale.number | number:2}}元</span>
+                    </li>
+                </ul>
+                <div class="order-detail">
+                    <div class="order-title">
+                        <span class="order-head">最新状态</span>
+                        <span class="order-status">{{vm.aftersale.process}}</span>
+                    </div>
+                    <ul class="order-process">
+                        <li ng-if="vm.aftersale.feedback">
+                            <p>已提交申请，正在等待处理</p>
+                        </li>
+                        <li ng-if="vm.aftersale.feedback[0]">
+                            <p>申请已通过，正在处理<br/>{{vm.aftersale.feedback[0]}}</p>
+                        </li>
+                        <li ng-if="vm.aftersale.feedback[1]">
+                            <p>已完成退换货<br />{{vm.aftersale.feedback[1]}}</p>
                         </li>
                     </ul>
                 </div>
-                <div class="order-meta">
-                    <div class="order-meta-price">
-                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.aftersale.price}}</em> 元</span>
+                <div class="order-detail">
+                    <div class="order-title">
+                        <span class="order-head">退换货理由</span>
                     </div>
-                    <button class="btn btn-danger" promise-btn ng-disabled="aftersale.is_done"
-                            ng-click="vm.cancel(aftersale)">
-                        <i ng-if="!aftersale.is_done">取消申请</i>
-                        <i ng-if="aftersale.is_done">已取消</i>
+                    <div class="order-receipt-meta">
+                        <p>{{vm.aftersale.reason}}</p>
+                    </div>
+                </div>
+                <div class="order-receipt" style="margin-bottom: 40px;">
+                    <div class="order-title">
+                        <span class="order-head">订单收货信息</span>
+                    </div>
+                    <div class="order-receipt-meta">
+                        <p>收货人: {{vm.order.address.name}}</p>
+                        <p>联系电话: {{vm.order.address.phone}}</p>
+                        <p>收货地址: {{vm.order.address.dormitory}}</p>
+                    </div>
+                <div class="order-meta order-meta-fix-bottom">
+                    <div class="order-meta-price">
+                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.aftersale.per_price * vm.aftersale.number}}</em> 元</span>
+                    </div>
+                    <button class="btn btn-danger" promise-btn ng-disabled="vm.aftersale.process === 'processing' || vm.aftersale.process === 'done'"
+                            ng-click="vm.cancel(vm.aftersale)">
+                        <i ng-if="vm.aftersale.process === 'done'">已完成</i>
+                        <i ng-if="vm.aftersale.process === 'processing'">处理中</i>
+                        <i ng-if="vm.aftersale.process === 'waiting'">取消申请</i>
                     </button>
                 </div>
             </li>

@@ -299,6 +299,9 @@
                 resolve: {
                     aftersale: function(orderservice, $stateParams) {
                         return orderservice.getAferSaleDetail($stateParams.orderid, $stateParams.aftersellingid)
+                    },
+                    order: function(orderservice, $stateParams) {
+                        return orderservice.getOrderDetail($stateParams.orderid)
                     }
                 }
             })

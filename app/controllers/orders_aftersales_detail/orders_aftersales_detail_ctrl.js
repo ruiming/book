@@ -5,18 +5,18 @@
         .module('index')
         .controller('OrdersAftersalesDetailCtrl', OrdersAftersalesDetailCtrl);
 
-    OrdersAftersalesDetailCtrl.$inject = ['orderservice', 'aftersale'];
+    OrdersAftersalesDetailCtrl.$inject = ['orderservice', 'aftersale', 'order', '$stateParams'];
 
-    function OrdersAftersalesDetailCtrl(orderservice, aftersale) {
+    function OrdersAftersalesDetailCtrl(orderservice, aftersale, order, $stateParams) {
         let vm = this;
         vm.cancel = cancelReturn;
 
-        console.log(aftersale);
         vm.canceled = false;
         vm.aftersale = aftersale;
+        vm.order = order;
 
         function cancelReturn(aftersale) {
-            return orderservice.cancelAftersale(aftersale.billing_id, aftersale.id)
+            return orderservice.cancelAftersale($stateParams.orderid, $stateParams.aftersellingid)
                 .then(() => {
                     aftersale.is_done = true;
                 });

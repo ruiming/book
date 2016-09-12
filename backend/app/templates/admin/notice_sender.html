@@ -3,7 +3,8 @@
 
 {% block body %}
     <form action="" method="POST">
-        <textarea name="content" id="" cols="30" rows="10" placeholder="Notice Content"></textarea>
+        <input type="text" name="title" placeholder="title" required="required">
+        <textarea name="content" id="" cols="30" rows="10" placeholder="Notice Content" required="required"></textarea>
         <input type="text" placeholder="URL" name="url">
         <button>提交</button>
 

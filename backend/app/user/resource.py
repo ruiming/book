@@ -915,8 +915,16 @@ class UserResource(Resource):
             'sex': user.sex,
             'unread_notice': Notice.objects(user=user, is_read=False).count(),
             'cart_num': Cart.objects(user=user, status=1).count(),
-            'billing_pending_num': Billing.objects(user=user, status='pending').count(),
-            'billing_commenting_num': Billing.objects(user=user, status='commenting').count()
+            'billing': {
+                Billing.Status.PENDING: Billing.objects(user=user, status=Billing.Status.PENDING).count(),
+                Billing.Status.WAITING: Billing.objects(user=user, status=Billing.Status.WAITING).count(),
+                Billing.Status.RECEIVED: Billing.objects(user=user, status=Billing.Status.RECEIVED).count()
+            },
+            'afterselling': AfterSellBilling.objects(
+                user=user,
+                is_done=False,
+                process__in=[AfterSellBilling.WAITING, AfterSellBilling.PROCESSING]
+            ).count()
         }
 
         return user_json

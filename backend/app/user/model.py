@@ -231,6 +231,9 @@ class Cart(db.Document):
 
     user = db.ReferenceField(User)
 
+    def __unicode__(self):
+        return u'<Cart id({}) <{}> ${}>'.format(str(self.pk), self.book.title, self.price)
+
     def __eq__(self, other):
         if isinstance(other, Cart):
             if self.book == other.book \
@@ -478,6 +481,19 @@ class AfterSellBilling(db.Document):
             self.process_change_time = self.create_time
             self.save()
         return self
+
+    def get_cart(self):
+        """
+        从 billing 中找出属于该售后订单的 Cart
+        :return: Cart list
+        """
+        all_carts = self.billing.carts
+        this_after_selling_carts = []
+        for cart in all_carts:
+            if cart.in_after_selling_time <= self.create_time and cart.in_after_selling_time > self.create_time - 5:
+                this_after_selling_carts.append(cart)
+
+        return this_after_selling_carts
 
 
 class Notice(db.Document):

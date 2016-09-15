@@ -21,7 +21,7 @@
     {% for one in billings %}
     <tr>
         <th>{{ one.pk }}</th>
-        <th style="white-space: pre">{% for one_cart, number in one.carts_info() %}{{ one_cart.book.title }} * {{ number }}<br />{% endfor %}</th>
+        <th style="white-space: pre">{% for one_cart, number in one.carts_info() %}《{{ one_cart.book.title }}》 * {{ number }}<br />{% endfor %}</th>
         <th>{{ one.get_sum_price() }}</th>
         <th>{{ one.in_purchase_time - one.create_time }}</th>
         <th>{{ one.create_time|datetime }}</th>

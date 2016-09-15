@@ -841,11 +841,8 @@ class SingleAfterSellBillingResource(Resource):
         after_selling = get_from_object_id(afterselling_id, AfterSellBilling, 'afterseling_id', billing=billing,
                                          canceled=False)
         book = abort_invalid_isbn(after_selling.isbn)
-        carts = Cart.objects(user=after_selling.user, book=book,
-                             status_changed_time__lte=after_selling.process_change_time,
-                             status_changed_time__gt=after_selling.process_change_time - 10).limit(
-            after_selling.number)
-
+        carts = after_selling.get_cart()
+        one_cart = carts[0]
         return {
             'book': {
                 'title': book.title,
@@ -855,12 +852,14 @@ class SingleAfterSellBillingResource(Resource):
             'type': AfterSellBilling.status_to_string(after_selling.type),
             'reason': after_selling.reason,
             'is_done': after_selling.is_done,
-            'price_sum': float(book.price) * after_selling.number,
+            # TODO: price updating
+            'price': float(one_cart.price),
+            'price_sum': float(one_cart.price) * after_selling.number,
             'create_time': after_selling.create_time,
             'process': after_selling.process,
-            'feedback': after_selling.feedback,
-            'per_price': float(book.price)
+            'feedback': after_selling.feedback
         }
+
 
     def delete(self, billing_id, afterselling_id):
         """

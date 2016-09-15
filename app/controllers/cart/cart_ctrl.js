@@ -41,6 +41,9 @@
                     vm.count += +item.checked * item.number;
                     item.checked ? ++vm.number: vm.number;
                 }
+                if(item.checked !== vm.checked) {
+                    vm.checked = !vm.checked;
+                }
             }
         }
 

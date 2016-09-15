@@ -26,8 +26,7 @@
         }
         function handel(form) {
             return orderservice.postAftersale(form).then(response => {
-                // TODO response.id
-                // $state.go()
+                $state.go('ordersAftersalesDetail', {orderid: response.billing_id, aftersellingid: response.id}, {location: 'replace'});
             });
         }
     }

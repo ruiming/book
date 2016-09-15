@@ -102,15 +102,12 @@
                 resolve: {
                     hotBooklists: function(booklistservice) {
                         return booklistservice.getHotBooklists()
-                            .then(response => response);
                     },
                     slides: function(slideservice) {
                         return slideservice.getSlides()
-                            .then(response => response);
                     },
                     popularBooks: function(bookservice) {
                         return bookservice.getPopularBooks(1)
-                            .then(response => response);
                     }
                 }
             })
@@ -141,7 +138,6 @@
                 resolve: {
                     me: function(userservice) {
                         return userservice.getUserInfo()
-                            .then(response => response);
                     }
                 }
             })
@@ -153,11 +149,9 @@
                 resolve: {
                     tags: function(tagservice) {
                         return tagservice.getHotTags()
-                            .then(response => response);
                     },
                     booklists: function(booklistservice) {
                         return booklistservice.getBooklists(1, 'all')
-                            .then(response => response);
                     }
                 }
             })
@@ -168,7 +162,6 @@
                 resolve: {
                     books: function(bookservice) {
                         return bookservice.getPopularBooks(1)
-                            .then(response => response);
                     }
                 }
             })
@@ -179,7 +172,6 @@
                 resolve: {
                     booklists: function(booklistservice) {
                         return booklistservice.getBooklists(1)
-                            .then(response => response);
                     }
                 }
             })
@@ -190,9 +182,6 @@
                 resolve: {
                     book: function(bookservice, $stateParams) {
                         return bookservice.getBook($stateParams.isbn)
-                            .then(response => {
-                                return response;
-                            });
                     }
                 }
             })
@@ -203,7 +192,6 @@
                 resolve: {
                     bookDetail: function(bookservice, $stateParams) {
                         return bookservice.getBookDetail($stateParams.isbn)
-                            .then(response => response);
                     }
                 }
             })
@@ -240,7 +228,6 @@
                 resolve: {
                     booklists: function(booklistservice, $stateParams) {
                         return booklistservice.getBooklists(1, 'all', $stateParams.tag)
-                            .then(response => response);
                     }
                 }
             })
@@ -251,7 +238,6 @@
                 resolve: {
                     comments: function(commentservice, $stateParams) {
                         return commentservice.getComment($stateParams.isbn)
-                            .then(response => response);
                     }
                 }
             })
@@ -262,7 +248,6 @@
                 resolve: {
                     tags: function(tagservice) {
                         return tagservice.getAllTags()
-                            .then(response => response);
                     }
                 }
             })
@@ -289,7 +274,6 @@
                 resolve: {
                     order: function(orderservice, $stateParams) {
                         return orderservice.getOrderDetail($stateParams.id)
-                            .then(response => response);
                     }
                 }
             })
@@ -300,7 +284,6 @@
                 resolve: {
                     aftersales: function(orderservice) {
                         return orderservice.getAftersale()
-                            .then(response => response);
                     }
                 }
             })
@@ -309,6 +292,19 @@
                 controller: 'OrderReturnCtrl as vm',
                 templateUrl: 'order_return/order_return_tpl.html',
             })
+            .state('ordersAftersalesDetail', {
+                url: '/order/{orderid}/afterselling/{aftersellingid}',
+                controller: 'OrdersAftersalesDetailCtrl as vm',
+                templateUrl: 'orders_aftersales_detail/orders_aftersales_detail_tpl.html',
+                resolve: {
+                    aftersale: function(orderservice, $stateParams) {
+                        return orderservice.getAferSaleDetail($stateParams.orderid, $stateParams.aftersellingid)
+                    },
+                    order: function(orderservice, $stateParams) {
+                        return orderservice.getOrderDetail($stateParams.orderid)
+                    }
+                }
+            })
             .state('orderComments',{
                 url: '/order/{id}/comments',
                 controller: 'OrderCommentsCtrl as vm',
@@ -316,7 +312,6 @@
                 resolve: {
                     order: function(orderservice, $stateParams) {
                         return orderservice.getOrderDetail($stateParams.id)
-                            .then(response => response);
                     }
                 }
             })
@@ -327,10 +322,6 @@
                 resolve: {
                     comments: function(userservice) {
                         return userservice.getUserComments()
-                            .then(response => {
-                                console.log(response);
-                                return response;
-                            });
                     }
                 }
             })
@@ -361,7 +352,6 @@
                 resolve: {
                     points: function(userservice) {
                         return userservice.getUserPoints()
-                            .then(response => response);
                     }
                 }
             })
@@ -372,7 +362,6 @@
                 resolve: {
                     notices: function(userservice) {
                         return userservice.getUserNotices()
-                            .then(response => response);
                     }
                 }
             })
@@ -383,7 +372,6 @@
                 resolve: {
                     user: function(userservice) {
                         return userservice.getUserInfo()
-                            .then(response => response);
                     }
                 }
             })
@@ -394,7 +382,6 @@
                 resolve: {
                     address: function(userservice) {
                         return userservice.getUserAddress()
-                            .then(response => response);
                     }
                 }
             })
@@ -415,7 +402,6 @@
                 resolve: {
                     user: function(userservice) {
                         return userservice.getUserInfo()
-                            .then(response => response);
                     }
                 }
             })

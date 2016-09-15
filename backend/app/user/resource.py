@@ -852,14 +852,12 @@ class SingleAfterSellBillingResource(Resource):
             'type': AfterSellBilling.status_to_string(after_selling.type),
             'reason': after_selling.reason,
             'is_done': after_selling.is_done,
-            # TODO: price updating
             'price': float(one_cart.price),
             'price_sum': float(one_cart.price) * after_selling.number,
             'create_time': after_selling.create_time,
             'process': after_selling.process,
             'feedback': after_selling.feedback
         }
-
 
     def delete(self, billing_id, afterselling_id):
         """

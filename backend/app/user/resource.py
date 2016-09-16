@@ -841,8 +841,11 @@ class SingleAfterSellBillingResource(Resource):
         after_selling = get_from_object_id(afterselling_id, AfterSellBilling, 'afterseling_id', billing=billing,
                                          canceled=False)
         book = abort_invalid_isbn(after_selling.isbn)
-        carts = after_selling.get_cart()
-        one_cart = carts[0]
+        carts = Cart.objects(user=after_selling.user, book=book,
+                             status_changed_time__lte=after_selling.process_change_time,
+                             status_changed_time__gt=after_selling.process_change_time - 10).limit(
+            after_selling.number)
+
         return {
             'book': {
                 'title': book.title,
@@ -852,11 +855,11 @@ class SingleAfterSellBillingResource(Resource):
             'type': AfterSellBilling.status_to_string(after_selling.type),
             'reason': after_selling.reason,
             'is_done': after_selling.is_done,
-            'price': float(one_cart.price),
-            'price_sum': float(one_cart.price) * after_selling.number,
+            'price_sum': float(book.price) * after_selling.number,
             'create_time': after_selling.create_time,
             'process': after_selling.process,
-            'feedback': after_selling.feedback
+            'feedback': after_selling.feedback,
+            'per_price': float(book.price)
         }
 
     def delete(self, billing_id, afterselling_id):
@@ -912,16 +915,8 @@ class UserResource(Resource):
             'sex': user.sex,
             'unread_notice': Notice.objects(user=user, is_read=False).count(),
             'cart_num': Cart.objects(user=user, status=1).count(),
-            'billing': {
-                Billing.Status.PENDING: Billing.objects(user=user, status=Billing.Status.PENDING).count(),
-                Billing.Status.WAITING: Billing.objects(user=user, status=Billing.Status.WAITING).count(),
-                Billing.Status.RECEIVED: Billing.objects(user=user, status=Billing.Status.RECEIVED).count()
-            },
-            'afterselling': AfterSellBilling.objects(
-                user=user,
-                is_done=False,
-                process__in=[AfterSellBilling.WAITING, AfterSellBilling.PROCESSING]
-            ).count()
+            'billing_pending_num': Billing.objects(user=user, status='pending').count(),
+            'billing_commenting_num': Billing.objects(user=user, status='commenting').count()
         }
 
         return user_json

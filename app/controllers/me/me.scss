@@ -7,6 +7,13 @@
       image: url('https://cdn.bookist.org/images.jpg');
       color: #FFFFFF;
     }
+    .badge {
+      background-color: #F44336;
+      line-height: 1.3;
+      position: absolute;
+      right: 40px;
+      top: 55px;
+    }
     img {
       width: 60px;
       height: 60px;
@@ -35,6 +42,12 @@
     }
   }
   .order-panel {
+    .badge {
+      position: absolute;
+      background-color: #F44336;
+      right: 20px;
+      top: 2px;
+    }
     margin-bottom: 15px;
     background-color: #FFF;
     overflow: hidden;
@@ -53,6 +66,7 @@
     }
     a {
       width: 25%;
+      position: relative;
       float: left;
       font-size: 13px;
       padding: 5px 0;

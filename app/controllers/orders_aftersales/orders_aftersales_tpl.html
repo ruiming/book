@@ -6,8 +6,8 @@
         <ul class="order-list" ng-if="vm.aftersales.length">
             <li class="order-list-one" ng-repeat="aftersale in vm.aftersales" ng-if="!aftersale.is_done || aftersale.process === 'done'">
                 <div class="order-title">
-                    <span class="order-head">Bookist</span>
-                    <span class="order-status">{{aftersale.type}}</span>
+                    <span class="order-head">LifeBrary</span>
+                    <span class="order-status">{{aftersale.type === 'REFUND' ? '退款' : '退货'}}</span>
                 </div>
                 <a>
                     <ul class="order-books" style="margin-bottom: 0">

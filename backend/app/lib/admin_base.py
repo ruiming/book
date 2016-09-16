@@ -2,7 +2,7 @@
 from flask_admin.contrib.mongoengine import ModelView
 from flask_admin import BaseView, expose, AdminIndexView
 from flask_security import current_user
-from flask import request, redirect, url_for, flash
+from flask import request, redirect, url_for
 from app import app
 
 from app.auth.model import User
@@ -68,19 +68,16 @@ class AdminView(AdminIndexView):
         users = User.objects()
 
         if request.method == 'POST':
-            title = request.form.get('title', None)
             content = request.form.get('content', None)
             url = request.form.get('url', None)
             for user in users:
                 is_send = request.form.get(str(user.pk), None)
                 if is_send == 'on':
                     Notice(
-                        title=title,
                         content=content,
                         url=url,
                         user=user
                     ).save()
-            flash(u"成功发送通知, 对象为: {}".format(" , ".join([user.username for user in users])))
             return redirect(url_for('admin.notice_sender'))
         return self.render('admin/notice_sender.html', users=users)
 

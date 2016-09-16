@@ -82,7 +82,14 @@ class AdminView(AdminIndexView):
         for billing in seven_days_ago_billings:
 
             day_to_now = (int(time()) - billing.create_time) / 86400
-            print int(time()), billing.create_time, day_to_now
+            if billing.status == Billing.Status.CANCELED:
+                seven_days_billing_canceled[day_to_now] += 1
+            else:
+                seven_days_billing_active[day_to_now] += 1
+        print seven_days_billing_active
+        print seven_days_billing_canceled
+        seven_days_billing_active_str = ', '.join([str(one) for one in seven_days_billing_active[::-1]])
+        seven_days_billing_canceled_str = ', '.join([str(one) for one in seven_days_billing_canceled[::-1]])
 
 
         return self.render('admin/index.html',
@@ -91,7 +98,8 @@ class AdminView(AdminIndexView):
                            billing_pending=Billing.objects(status='pending').count(),
                            billing_waiting=Billing.objects(status='waiting').count(),
                            after_selling=AfterSellBilling.objects(canceled=False, is_done=False).count(),
-
+                           seven_days_billing_active_str=seven_days_billing_active_str,
+                           seven_days_billing_canceled_str=seven_days_billing_canceled_str,
                            )
 
     @expose('/notice_sender', methods=['GET', 'POST'])

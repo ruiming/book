@@ -286,6 +286,7 @@ class Billing(db.Document):
         PENDING = "pending"
         WAITING = "waiting"
         RECEIVED = "received"
+        CANCELED = 'canceled'
 
     carts = db.ListField(db.ReferenceField(Cart))
     status = db.StringField(required=True, default=Status.CREATING)  # TODO: status code

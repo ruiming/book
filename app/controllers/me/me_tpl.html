@@ -13,15 +13,17 @@
         </div>
         <a ui-sref="orders({status:'pending'})" class="order-bar-split">
             <img src="/static/images/pending.png">
-            <span class="badge">{{vm.user.billing_pending_num}}</span>
+            <span class="badge" ng-if="vm.user.billing.pending">{{vm.user.billing.pending}}</span>
             <span>待发货</span>
         </a>
         <a ui-sref="orders({status:'waiting'})" class="order-bar-split">
             <img src="/static/images/waiting.png">
+            <span class="badge" ng-if="vm.user.billing.waiting">{{vm.user.billing.waiting}}</span>
             <span>待收货</span>
         </a>
         <a ui-sref="orders({status:'received'})" class="order-bar-split">
             <img src="/static/images/commenting.png">
+            <span class="badge" ng-if="vm.user.billing.received">{{vm.user.billing.received}}</span>
             <span>待评价</span>
         </a>
         <a ui-sref="ordersAfterSales()" class="order-bar-split">

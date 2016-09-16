@@ -139,7 +139,7 @@
                 nav: true,
                 resolve: {
                     me: function(userservice) {
-                        return userservice.getUserInfo()
+                        return userservice.getUserInfo(true)
                     }
                 }
             })

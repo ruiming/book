@@ -15,10 +15,8 @@
         vm.back = back;
 
         function edit(x) {
-            vm.edit = function(){
-                userservice.setAddress(x);
-                $state.go('AddressAdd');
-            };
+            userservice.setAddress(x);
+            $state.go('AddressAdd');
         }
 
         function back() {

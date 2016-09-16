@@ -10,7 +10,7 @@
             },
             template:
             `       
-           <div class="booklists-row" infinite-scroll="more()">
+           <div class="booklists-row" infinite-scroll="more()" infinite-scroll-distance='1'>
                 <a class="booklist" ng-repeat="booklist in booklists" ui-sref="booklist({id: booklist.id})">
                     <div class="pic">
                         <img ng-src="{{booklist.image}}">

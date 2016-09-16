@@ -128,14 +128,14 @@ class SimilarBooksResource(Resource):
 
         book = abort_invalid_isbn(isbn)
 
-        carts = Cart.objects(book=book, status=2)
+        carts = Cart.objects(book=book, status=Cart.STATUS_NORMAL)
         users = []
         for cart in carts:
             user = cart.user
             if user not in users:
                 users.append(user)
 
-        carts = Cart.objects(user__in=users, status=2)
+        carts = Cart.objects(user__in=users, status=Cart.STATUS_NORMAL)
         books = []
         for cart in carts:
             if cart.book not in books:

@@ -11,7 +11,6 @@
 
         let changeStars = commonservice.changeStars;
 
-        let defaultAddress = null;
         let address = null;
         let userInfo = null;
 
@@ -36,11 +35,8 @@
 
         // 获取用户默认地址
         function getUserDefaultAddress() {
-            if(defaultAddress === null) {
-                return defaultAddress = $http.get(host + '/user/addresses?type=default')
-                    .then(response => response.data);
-            }
-            return defaultAddress;
+            return $http.get(host + '/user/addresses?type=default')
+                .then(response => response.data);
         }
 
         // 获取用户收藏
@@ -57,21 +53,13 @@
                 dormitory: dormitory,
                 type: 'default',
             };
-            return $http.put(host + '/user/addresses/' + id, address).then(response => {
-                if(response.status == 200) {
-                    defaultAddress = address;
-                }
-            });
+            return $http.put(host + '/user/addresses/' + id, address).then(response => response.data);
         }
 
         // 删除用户地址
         function deleteUserAddress(id) {
             return $http.delete(host + '/user/addresses/' + id)
-                .then(response => {
-                    if(response.status == 200) {
-                        defaultAddress = null;
-                    }
-                });
+                .then(response => response.data);
         }
 
         // 更新用户地址
@@ -127,8 +115,8 @@
         }
 
         // 读取用户信息
-        function getUserInfo() {
-            if(userInfo == null) {
+        function getUserInfo(reget) {
+            if(userInfo == null || reget) {
                 return userInfo = $http.get(host + '/user')
                     .then(response => response.data);
             }

@@ -2,7 +2,7 @@
 from flask_admin.contrib.mongoengine import ModelView
 from flask_admin import BaseView, expose, AdminIndexView
 from flask_security import current_user
-from flask import request, redirect, url_for
+from flask import request, redirect, url_for, flash
 from app import app
 
 from app.auth.model import User
@@ -63,7 +63,7 @@ class AdminView(AdminIndexView):
     def index(self):
 
         now_time_day = (int(time()) - (int(time()) % 86400)) / 86400
-        seven_days_ago = now_time_day - 86400 * 6
+        seven_days_ago = now_time_day * 86400 - 86400 * 6
 
         # 14天用户数量
         users = User.objects()
@@ -80,7 +80,9 @@ class AdminView(AdminIndexView):
         seven_days_billing_active = [0 for i in range(0, 7)]
         seven_days_billing_canceled = [0 for i in range(0, 7)]
         for billing in seven_days_ago_billings:
-            pass
+
+            day_to_now = (int(time()) - billing.create_time) / 86400
+            print int(time()), billing.create_time, day_to_now
 
 
         return self.render('admin/index.html',
@@ -97,16 +99,19 @@ class AdminView(AdminIndexView):
         users = User.objects()
 
         if request.method == 'POST':
+            title = request.form.get('title', None)
             content = request.form.get('content', None)
             url = request.form.get('url', None)
             for user in users:
                 is_send = request.form.get(str(user.pk), None)
                 if is_send == 'on':
                     Notice(
+                        title=title,
                         content=content,
                         url=url,
                         user=user
                     ).save()
+            flash(u"成功发送通知, 对象为: {}".format(" , ".join([user.username for user in users])))
             return redirect(url_for('admin.notice_sender'))
         return self.render('admin/notice_sender.html', users=users)
 

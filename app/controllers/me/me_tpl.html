@@ -4,7 +4,7 @@
         <div ui-sref="settings" class="user-name">
             <p>{{vm.user.username}}</p>
         </div>
-        <a ui-sref="settings"><i class="fa fa-cog fa-lg"></i></a>
+        <a ui-sref="settings"><i class="fa fa-cog fa-lg"></i><span class="badge" ng-if="vm.user.unread_notice">{{vm.user.unread_notice}}</span></a>
         <a ui-sref="notices"><i class="fa fa-envelope-o fa-lg"></i></a>
     </div>
     <div class="order-panel">
@@ -13,6 +13,7 @@
         </div>
         <a ui-sref="orders({status:'pending'})" class="order-bar-split">
             <img src="/static/images/pending.png">
+            <span class="badge">{{vm.user.billing_pending_num}}</span>
             <span>待发货</span>
         </a>
         <a ui-sref="orders({status:'waiting'})" class="order-bar-split">

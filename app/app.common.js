@@ -45,6 +45,15 @@
             });
 
             $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
+                if(ga) {
+                    let re = /\{(.*?)}/g, url;
+                    if(Object.keys(toStateParams).length > 0) {
+                        url = toState.url.replace(re, Object.values(toStateParams).reduce((pre, curr) => curr));
+                    } else {
+                        url = toState.url;
+                    }
+                    ga('send', 'pageview', url);
+                }
                 $rootScope.loading = false;
             });
 

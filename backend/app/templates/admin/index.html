@@ -1,5 +1,60 @@
 {% extends 'admin/master.html' %}
 
+{% block head %}
+{% endblock %}
+
 {% block body %}
+    <h1>通用操作</h1>
     <a href="{{ url_for('admin.notice_sender') }}">通知发送</a>
+    <h1>用户数 {{ user_count }}</h1>
+
+    <canvas id="user_number" width="400" height="100"></canvas>
+
+    <h1>订单数量</h1>
+    <p>待发货 {{ billing_pending }}</p>
+    <p>待收货 {{ billing_waiting }}</p>
+    <p>售后订单 {{ after_selling }}</p>
+
+    <h1>订单</h1>
+    <canvas id="billing" width="400" height="100"></canvas>
+{% endblock %}
+{% block tail %}
+{{ super() }}
+<script src="/static/js/base64.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
+<script>
+
+var user_number = $("#user_number");
+var user_number_canvas = new Chart(user_number, {
+    type: 'bar',
+    data: {
+        labels: ["13天前", "12天前", "11天前", "10天前", "9天前", "8天前", "7天前", "6天前", "5天前", "4天前", "3天前", "2天前", "昨天", "今天"],
+        datasets: [{
+            label: '用户数',
+            data: [{{ user_list_day_str }}],
+            backgroundColor: 'rgba(54, 162, 235, 1)',
+        }]
+    }
+});
+var billing = $("#billing");
+var billing_canvas = new Chart(billing, {
+    type: 'line',
+    data: {
+        labels: ['6天前', '5天前', '4天前', '3天前', '2天前', '昨天', '今天'],
+        datasets: [
+            {
+                label: "有效的订单",
+                data: [3,2,7,5,10,2,1],
+                borderColor: 'rgba(54, 162, 235, 1)',
+
+            },
+            {
+                label: "取消的订单",
+                data: [1,2,3,4,5,6,7],
+
+            },
+        ]
+    }
+})
+</script>
 {% endblock %}

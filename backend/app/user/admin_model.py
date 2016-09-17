@@ -9,127 +9,6 @@ from flask import request, redirect, url_for, flash
 from app.lib.restful import abort_invalid_isbn
 
 
-# class BillingView(AdminBaseView):
-#     @expose('/')
-#     def index(self):
-#         page = request.args.get('page', 1)
-#         type = request.args.get('type', None)
-#         order = request.args.get('order', '-create_time')
-#         if type:
-#             billings = Billing.objects(status=type)
-#         else:
-#             billings = Billing.objects(status__not__in=['canceled', 'close'])
-#
-#         billings = billings.order_by(order).limit(30).skip(30*(page-1))
-#         return self.render('admin/billing/index.html', billings=billings)
-#
-#     @expose('/detail/<billing_id>')
-#     def detail(self, billing_id):
-#         try:
-#             billing = Billing.objects(pk=billing_id).first()
-#         except:
-#             abort(404)
-#
-#         return self.render('admin/billing/detail.html', billing=billing)
-#
-#     @expose('/changestatus/<billing_id>/<status>')
-#     def change_status(self, billing_id, status):
-#         try:
-#             billing = Billing.objects(pk=billing_id).first()
-#         except:
-#             abort(404)
-#
-#         billing.change_status_force(status, u'管理员强制更新状态')
-#         return redirect(url_for('billingview.detail', billing_id=billing_id))
-#
-#     @expose('/next/<billing_id>/<status>', methods=['POST'])
-#     def next(self, billing_id, status):
-#         print request.form
-#         billing = Billing.objects(pk=billing_id).first()
-#
-#         if status == 'pending':
-#             content = request.form.get('content', None)
-#
-#             billing.add_log_backend(
-#                 status='waiting',
-#                 content=u"已发货，信息：{}".format(content) if content != '' else u"已发货",
-#             )
-#
-#         if status == 'refund':
-#             is_ok = request.form.get('is_ok', 'no')
-#             content = request.form.get('content', None)
-#
-#             if is_ok == 'no':  # 拒绝退款/退货
-#
-#                 billing.add_log_backend(
-#                     status='refund_refused',
-#                     content=u"拒绝退款(退货)，原因：{}".format(content) if content != '' else u"拒绝退款(退货)",
-#                 )
-#
-#             elif is_ok == 'on':  # 同意退款/退货
-#
-#                 billing.add_log_backend(
-#                     status='refunding',
-#                     content=u"同意退款(退货)，原因：{}".format(content) if content != '' else u"同意退款(退货)",
-#                 )
-#
-#         if status == 'refunding':
-#             is_ok = request.form.get('is_ok', 'no')
-#             content = request.form.get('content', None)
-#
-#             if is_ok == 'no':  # 拒绝 确认退款处理
-#
-#                 billing.add_log_backend(
-#                     status='refund_refused',
-#                     content=u"退款(退货)失败，原因：{}".format(content) if content != '' else u"退款(退货)失败",
-#                 )
-#
-#             elif is_ok == 'on':  # 同意 确认退款处理
-#
-#                 billing.add_log_backend(
-#                     status='refunded',
-#                     content=u"退款(退货)成功，原因：{}".format(content) if content != '' else u"退款(退货)成功",
-#                 )
-#
-#         if status == 'replace':
-#             is_ok = request.form.get('is_ok', 'no')
-#             content = request.form.get('content', None)
-#
-#             if is_ok == 'no':  # 拒绝 换货
-#
-#                 billing.add_log_backend(
-#                     status='replace_refused',
-#                     content=u"拒绝换货，原因：{}".format(content) if content != '' else u"拒绝换货",
-#                 )
-#
-#             elif is_ok == 'on':  # 同意 换货
-#
-#                 billing.add_log_backend(
-#                     status='replacing',
-#                     content=u"同意换货，原因：{}".format(content) if content != '' else u"同意换货",
-#                 )
-#
-#         if status == 'replacing':
-#             is_ok = request.form.get('is_ok', 'no')
-#             content = request.form.get('content', None)
-#
-#             if is_ok == 'no':  # 拒绝 确认换货处理
-#
-#                 billing.add_log_backend(
-#                     status='replace_refused',
-#                     content=u"换货失败，原因：{}".format(content) if content != '' else u"换货失败",
-#                 )
-#
-#             elif is_ok == 'on':  # 同意 确认换货处理
-#
-#                 billing.add_log_backend(
-#                     status='replaced',
-#                     content=u"换货成功，原因：{}".format(content) if content != '' else u"换货成功",
-#                 )
-#
-#         return redirect(url_for('billingview.detail', billing_id=str(billing.pk)))
-
-
 class PendingBillingView(AdminBaseView):
     @expose('/')
     def index(self):
@@ -142,15 +21,24 @@ class PendingBillingView(AdminBaseView):
     @expose('/save', methods=['POST'])
     def save(self):
         billings_id = request.form.getlist('billingid')
+        billings_price_sum = 0
+        books_num = 0
         billings = []
         for one_id in billings_id:
             try:
                 this_billing = Billing.objects(pk=one_id)
                 if this_billing.count() == 1:
-                    billings.append(this_billing.first())
+                    this_billing = this_billing.first()
+                    billings.append(this_billing)
+                    billings_price_sum += this_billing.get_sum_price()
+                    books_num += len(this_billing.carts)
             except:
                 pass
-        return self.render('admin/pendingbilling/save.html', billings=billings)
+        return self.render('admin/pendingbilling/save.html',
+                           billings=billings,
+                           billings_price_sum=billings_price_sum,
+                           books_num=books_num
+        )
 
     @expose('/savein', methods=['POST'])
     def savein(self):
@@ -233,39 +121,25 @@ class AfterSellingBillingView(AdminBaseView):
 
     @expose('/save', methods=['POST'])
     def save(self):
-        # billings_id = request.form.getlist('billingid')
-        # billings = []
-        # for one_id in billings_id:
-        #     try:
-        #         this_billing = Billing.objects(pk=one_id)
-        #         if this_billing.count() == 1:
-        #             billings.append(this_billing.first())
-        #     except:
-        #         pass
-        # return self.render('admin/pendingbilling/save.html', billings=billings)
 
         after_selling = AfterSellBilling.objects(pk=request.form.get('billing_id')).first()
         is_ok = True if 'submit_ok' in request.form else False
-        after_selling.feedback.append(request.form.get('reason'))
 
-        book = abort_invalid_isbn(after_selling.isbn)
-        carts = Cart.objects(user=after_selling.user, book=book, status_changed_time__lte=after_selling.process_change_time,
-                             status_changed_time__gt=after_selling.process_change_time - 10).limit(
-            after_selling.number)
-        for cart in carts:
-            print cart.book
+        carts = after_selling.get_cart()
+
+        next_status = AfterSellBilling.DONE
 
         if after_selling.process == AfterSellBilling.WAITING:
 
             if is_ok:
-                after_selling.change_process_status(AfterSellBilling.PROCESSING)
+                next_status = AfterSellBilling.PROCESSING
 
                 # change status of cart
                 for cart in carts:
                     cart.change_status(after_selling.type*2 - 1)
 
             else:
-                after_selling.change_process_status(AfterSellBilling.REFUSED)
+                next_status = AfterSellBilling.REFUSED
                 after_selling.is_done = True
                 # change status of cart
                 for cart in carts:
@@ -274,19 +148,25 @@ class AfterSellingBillingView(AdminBaseView):
         elif after_selling.process == AfterSellBilling.PROCESSING:
 
             if is_ok:
-                after_selling.change_process_status(AfterSellBilling.DONE)
+                next_status = AfterSellBilling.DONE
                 after_selling.is_done = True
                 # change status of cart
                 for cart in carts:
                     cart.change_status(after_selling.type * 2)
 
             else:
-                after_selling.change_process_status(AfterSellBilling.REFUSED)
+                next_status = AfterSellBilling.REFUSED
                 after_selling.is_done = True
                 # change status of cart
                 for cart in carts:
                     cart.change_status(Cart.STATUS_NORMAL)
 
+        after_selling.change_process_status(next_status)
+        after_selling.feedback.append(BillingStatus(
+            status=next_status,
+            time=time_int(),
+            content=u"状态更新至: {} , 内容: {}".format(next_status, request.form.get('reason'))
+        ))
         after_selling.save()
         flash(u"ID为 {} 的订单已经处理, 处理结果: {} ".format(unicode(after_selling.pk), u"同意" if is_ok else u"拒绝"))
 

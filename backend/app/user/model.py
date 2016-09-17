@@ -459,9 +459,7 @@ class AfterSellBilling(db.Document):
     create_time = db.IntField(required=True, default=time_int)
     process = db.StringField(default=WAITING)
     process_change_time = db.IntField()
-    feedback = db.ListField(db.StringField())
-    process_feedback = db.StringField()
-    refused_feedback = db.StringField()
+    feedback = db.EmbeddedDocumentListField(BillingStatus)
 
     def change_process_status(self, next_process):
         self.process = next_process

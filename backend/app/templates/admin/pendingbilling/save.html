@@ -24,7 +24,7 @@
         {% if loop.first %}
     <tr class="billing_id" id="{{ one.pk }}">
         <th rowspan="{{ loop.length }}">{{ one.pk }}<input type="hidden" name="billing_id" value="{{ one.pk }}"></th>
-        <th>{{ one_cart.book.title }}</th>
+        <th>《{{ one_cart.book.title }}》</th>
         <th>{{ one_cart.price }}</th>
         <th><input type="number" class="form-control price" onchange="calc()" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
         <th><input type="text" class="form-control" name="{{ one.pk }}-{{ one_cart.pk }}-source" required="required"></th>
@@ -37,7 +37,7 @@
 
         {% else %}
     <tr>
-        <th style="white-space: pre">{{ one_cart.book.title }}</th>
+        <th style="white-space: pre">《{{ one_cart.book.title }}》</th>
         <th>{{ one_cart.price }}</th>
         <th><input class="form-control price" type="number" onchange="calc()" name="{{ one.pk }}-{{ one_cart.pk }}" step="0.01" required="required"></th>
         <th><input class="form-control" type="text" name="{{ one.pk }}-{{ one_cart.pk }}-source" required="required"></th>
@@ -52,13 +52,13 @@
     <div class="book-num form-group">
         <label class="col-sm-2 control-label">书籍数量</label>
         <div class="col-sm-10">
-            <p class="form-control-static"><!-- 在这里填入书籍数量 --></p>
+            <p class="form-control-static">{{ books_num }}</p>
         </div>
     </div>
     <div class="price_sum form-group">
         <label class="col-sm-2 control-label">总价</label>
         <div class="col-sm-10">
-            <p id="prices" class="form-control-static"><!-- 在这里填入实际总价 --></p>
+            <p id="prices" class="form-control-static">{{ billings_price_sum }}</p>
         </div>
     </div>
     <div class="price_sum_r form-group">

@@ -821,6 +821,13 @@ class AfterSellBillingResource(Resource):
             user=user,
         ).save()
 
+        after_sell_billing.feedback.append(BillingStatus(
+            status=AfterSellBilling.WAITING,
+            time=int(time()),
+            content=u"售后订单创建成功"
+        ))
+        after_sell_billing.save()
+
         return {
             'id': str(after_sell_billing.pk),
             'billing_id': str(billing.pk),
@@ -856,7 +863,11 @@ class SingleAfterSellBillingResource(Resource):
             'price_sum': float(one_cart.price) * after_selling.number,
             'create_time': after_selling.create_time,
             'process': after_selling.process,
-            'feedback': after_selling.feedback
+            'feedback': [{
+                'status': one.status,
+                'time': one.time,
+                'content': one.content
+            } for one in after_selling.feedback]
         }
 
     def delete(self, billing_id, afterselling_id):
@@ -884,12 +895,12 @@ class SingleAfterSellBillingResource(Resource):
             query_set['status'] = Cart.STATUS_REFUND_PROCESSING
 
         book = abort_invalid_isbn(afterseling.isbn)
-        carts = Cart.objects(user=user, book=book, status_changed_time__lte=afterseling.create_time, status_changed_time__gt=afterseling.create_time - 10).filter(**query_set).limit(afterseling.number)
-
+        carts = afterseling.get_cart()
         for cart in carts:
             cart.change_status(Cart.STATUS_NORMAL)
 
         afterseling.canceled = True
+        afterseling.is_done = True
         afterseling.save()
 
 
@@ -920,6 +931,7 @@ class UserResource(Resource):
             'afterselling': AfterSellBilling.objects(
                 user=user,
                 is_done=False,
+                canceled=True,
                 process__in=[AfterSellBilling.WAITING, AfterSellBilling.PROCESSING]
             ).count()
         }

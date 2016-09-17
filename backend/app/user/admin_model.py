@@ -165,7 +165,7 @@ class AfterSellingBillingView(AdminBaseView):
         after_selling.feedback.append(BillingStatus(
             status=next_status,
             time=time_int(),
-            content=u"状态更新至: {} , 内容: {}".format(next_status, request.form.get('reason'))
+            content=u"{}".format(next_status, request.form.get('reason'))
         ))
         after_selling.save()
         flash(u"ID为 {} 的订单已经处理, 处理结果: {} ".format(unicode(after_selling.pk), u"同意" if is_ok else u"拒绝"))

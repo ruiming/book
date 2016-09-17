@@ -931,7 +931,7 @@ class UserResource(Resource):
             'afterselling': AfterSellBilling.objects(
                 user=user,
                 is_done=False,
-                canceled=True,
+                canceled=False,
                 process__in=[AfterSellBilling.WAITING, AfterSellBilling.PROCESSING]
             ).count()
         }

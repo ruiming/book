@@ -54,7 +54,7 @@ class AdminView(AdminIndexView):
 
     def __init__(self, name=None, category=None,
                  endpoint=None, url=None,
-                 template='admin/index.html'):
+                 template='admin-custom/index.html'):
         super(AdminView, self).__init__(name, category, endpoint, url, template)
 
     @expose('/')
@@ -115,7 +115,7 @@ class AdminView(AdminIndexView):
 
         storehouse_all = storehouse_price - storehouse_real_price
 
-        return self.render('admin/index.html',
+        return self.render('admin-custom/index.html',
                            user_list_day_str=user_list_day_str,  # 14天新增用户数
                            user_count=User.objects().count(),  # 总用户数
                            billing_pending=Billing.objects(status='pending').count(),  # 待发货订单数量

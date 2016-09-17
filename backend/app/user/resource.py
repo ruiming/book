@@ -743,7 +743,9 @@ class AfterSellBillingsResource(Resource):
 
         billings_json = []
         for billing in after_selling_billings:
-            book = valid_book(billing.isbn)
+            cart = billing.get_cart()
+            cart = cart[0]
+            book = cart.book
             billings_json.append({
                 'id': str(billing.pk),
                 'billing_id': str(billing.billing.pk),
@@ -752,6 +754,8 @@ class AfterSellBillingsResource(Resource):
                     'isbn': book.isbn,
                     'image': book.image.get_full_url(),
                 },
+                'price': float(cart.price),
+                'price_num': float(cart.price) *billing.number,
                 'number': billing.number,
                 'type': AfterSellBilling.status_to_string(billing.type),
                 'reason': billing.reason,

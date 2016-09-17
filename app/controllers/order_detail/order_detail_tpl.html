@@ -4,7 +4,7 @@
             <li class="order-list-one">
                 <div class="order-title">
                     <span class="order-head">订单详细信息</span>
-                    <span class="order-status">共{{vm.price}}元</span>
+                    <span class="order-status">共{{vm.price | number: 2}}元</span>
                 </div>
                 <ul class="order-books">
                     <div class="order-book" ng-repeat="z in vm.order.carts">
@@ -47,7 +47,7 @@
                 <div class="order-detail-clear"></div>
                 <div class="order-meta order-meta-fix-bottom">
                     <div class="order-meta-price">
-                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.price}}</em> 元</span>
+                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.price | number: 2}}</em> 元</span>
                     </div>
                     <a class="btn btn-danger"
                        ng-if="vm.order.status=='待评价' && !vm.order.replace_refund_processing"

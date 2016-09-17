@@ -154,7 +154,7 @@ class AdminView(AdminIndexView):
 
             flash(u"成功发送通知, 对象为: {}".format(" , ".join([user for user in send_user])))
             return redirect(url_for('admin.notice_sender'))
-        return self.render('admin/notice_sender.html', users=users)
+        return self.render('admin-custom/notice_sender.html', users=users)
 
 
 

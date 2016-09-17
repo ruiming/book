@@ -60,7 +60,7 @@ from app.auth.model import User, UserRole
 from app.user.model import Comment, Points, Collect, Notice, Feedback
 
 
-admin = Admin(app, template_mode='bootstrap3', name=u'Bookist.org 后台', index_view=AdminView(endpoint="admin"))
+admin = Admin(app, template_mode='bootstrap3-full', name=u'Bookist.org 后台', index_view=AdminView(endpoint="admin"))
 
 admin.add_view(BookListView(BookList, name=u'书单管理', category=u"书单相关"))
 admin.add_view(ActivityView(Activity, name=u'活动管理'))

@@ -10,7 +10,7 @@
                     <li class="order-book">
                         <img ng-src="{{vm.aftersale.book.image}}">
                         <p>{{vm.aftersale.book.title}}</p>
-                        <span class="count"> {{vm.aftersale.number}}本 / 共{{vm.aftersale.per_price * vm.aftersale.number | number:2}}元</span>
+                        <span class="count"> {{vm.aftersale.number}}本 / 共{{vm.aftersale.price_sum | number:2}}元</span>
                     </li>
                 </ul>
                 <div class="order-detail">
@@ -19,14 +19,16 @@
                         <span class="order-status">{{vm.aftersale.process}}</span>
                     </div>
                     <ul class="order-process">
-                        <li ng-if="vm.aftersale.feedback">
-                            <p>已提交申请，正在等待处理</p>
-                        </li>
                         <li ng-if="vm.aftersale.feedback[0]">
-                            <p>申请已通过，正在处理<br/>{{vm.aftersale.feedback[0]}}</p>
+                            <p>已提交申请，正在等待处理<span>{{vm.aftersale.feedback[0].time*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
                         </li>
                         <li ng-if="vm.aftersale.feedback[1]">
-                            <p>已完成退换货<br />{{vm.aftersale.feedback[1]}}</p>
+                            <p>申请已通过，正在处理<span>{{vm.aftersale.feedback[1].time*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+                            <p>{{vm.aftersale.feedback[1].content}}</p>
+                        </li>
+                        <li ng-if="vm.aftersale.feedback[2]">
+                            <p>已完成退换货<span>{{vm.aftersale.feedback[2].time*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+                            <p>{{vm.aftersale.feedback[2].content}}</p>
                         </li>
                     </ul>
                 </div>
@@ -49,7 +51,7 @@
                     </div>
                 <div class="order-meta order-meta-fix-bottom">
                     <div class="order-meta-price">
-                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.aftersale.per_price * vm.aftersale.number}}</em> 元</span>
+                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.aftersale.price_sum | number: 2}}</em> 元</span>
                     </div>
                     <button class="btn btn-danger" promise-btn ng-disabled="vm.aftersale.process === 'processing' || vm.aftersale.process === 'done'"
                             ng-click="vm.cancel(vm.aftersale)">

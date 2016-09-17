@@ -44,11 +44,20 @@
                 }
             });
 
-            $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
+            $rootScope.$on("$stateChangeSuccess", function (event, toState, toStateParams, fromState, fromParams) {
+                if(ga) {
+                    let re = /\{(.*?)}/g, url;
+                    if(Object.keys(toStateParams).length > 0) {
+                        url = toState.url.replace(re, Object.values(toStateParams).reduce((pre, curr) => curr));
+                    } else {
+                        url = toState.url;
+                    }
+                    ga('send', 'pageview', url);
+                }
                 $rootScope.loading = false;
             });
 
-            $rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
+            $rootScope.$on("$stateChangeError", function (event, toState, toStateParams, fromState, fromParams, error) {
                 $rootScope.loading = false;
             });
         });

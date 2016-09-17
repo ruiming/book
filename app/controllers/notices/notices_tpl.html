@@ -10,7 +10,7 @@
         <p class="notice-content">
             {{notice.content}}
         </p>
-        <a class="notice-read" ng-href="url">
+        <a class="notice-read" ng-if="notice.url" ng-href="{{notice.url}}">
             <span>查看</span>
             <i class="fa fa-chevron-right"></i>
         </a>

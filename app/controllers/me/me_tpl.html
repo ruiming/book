@@ -28,6 +28,7 @@
         </a>
         <a ui-sref="ordersAfterSales()" class="order-bar-split">
             <img src="/static/images/return.png">
+            <span class="badge" ng-if="vm.user.afterselling">{{vm.user.afterselling}}</span>
             <span>退款/售后</span>
         </a>
     </div>

@@ -900,6 +900,7 @@ class SingleAfterSellBillingResource(Resource):
             cart.change_status(Cart.STATUS_NORMAL)
 
         afterseling.canceled = True
+        afterseling.is_done = True
         afterseling.save()
 
 
@@ -930,6 +931,7 @@ class UserResource(Resource):
             'afterselling': AfterSellBilling.objects(
                 user=user,
                 is_done=False,
+                canceled=True,
                 process__in=[AfterSellBilling.WAITING, AfterSellBilling.PROCESSING]
             ).count()
         }

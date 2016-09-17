@@ -16,7 +16,7 @@ class PendingBillingView(AdminBaseView):
         billings = Billing.objects(status='pending')
 
         billings = billings.order_by('create_time')
-        return self.render('admin/pendingbilling/index.html', billings=billings)
+        return self.render('admin-custom/pendingbilling/index.html', billings=billings)
 
     @expose('/save', methods=['POST'])
     def save(self):
@@ -34,7 +34,7 @@ class PendingBillingView(AdminBaseView):
                     books_num += len(this_billing.carts)
             except:
                 pass
-        return self.render('admin/pendingbilling/save.html',
+        return self.render('admin-custom/pendingbilling/save.html',
                            billings=billings,
                            billings_price_sum=billings_price_sum,
                            books_num=books_num
@@ -106,7 +106,7 @@ class WaitingBillingView(AdminBaseView):
             billings = billings.order_by('create_time')
             billings = sorted(billings, cmp=self._sort)
 
-            return self.render('admin/waitingbilling/index.html', billings=billings)
+            return self.render('admin-custom/waitingbilling/index.html', billings=billings)
 
 
 class AfterSellingBillingView(AdminBaseView):
@@ -117,7 +117,7 @@ class AfterSellingBillingView(AdminBaseView):
         for one in after_selling_biilings:
             one.__setattr__('book', abort_invalid_isbn(one.isbn))
 
-        return self.render('admin/aftersellingbilling/index.html', billings=after_selling_biilings)
+        return self.render('admin-custom/aftersellingbilling/index.html', billings=after_selling_biilings)
 
     @expose('/save', methods=['POST'])
     def save(self):

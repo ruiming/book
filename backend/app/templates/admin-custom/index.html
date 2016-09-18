@@ -20,15 +20,18 @@
         </div>
         <div class="col-md-6">
             <h1>用户数 {{ user_count }}</h1>
-            <canvas id="user_number" width="400" height="100"></canvas>
+            <canvas id="user_number" width="400" height="150"></canvas>
         </div>
         <div class="col-md-6">
             <h1>7天内订单</h1>
-            <canvas id="billing" width="400" height="100"></canvas>
+            <canvas id="billing" width="400" height="150"></canvas>
         </div>
         <div class="col-md-6">
             <h1>14天内收支金额</h1>
-            <canvas id="money_14" width="400" height="100"></canvas>
+            <canvas id="money_14" width="400" height="150"></canvas>
+        </div><div class="col-md-6">
+            <h1>14天内利润</h1>
+            <canvas id="earn_14" width="400" height="150"></canvas>
         </div>
     </div>
 
@@ -62,11 +65,13 @@ var billing_canvas = new Chart(billing, {
                 label: "有效的订单",
                 data: [{{ seven_days_billing_active_str }}],
                 borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'transparent'
 
             },
             {
                 label: "取消的订单",
                 data: [{{ seven_days_billing_canceled_str }}],
+
 
             },
         ]
@@ -81,17 +86,31 @@ var billing_canvas = new Chart(storehouse, {
             {
                 label: "收入 (用户支付的价格)",
                 data: [{{ storehouse_14_price_str }}],
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'transparent'
 
             },
             {
                 label: "支出 (购书实际价格)",
                 data: [{{ storehouse_14_real_price_str }}],
+                backgroundColor: 'transparent',
+                borderColor: 'red',
 
-            },
+            }
+        ]
+    }
+})
+var earn = $("#earn_14");
+var earn_canvas = new Chart(earn, {
+    type: 'line',
+    data: {
+        labels: ['13天前', '12天前', '11天前', '10天前', '9天前', '8天前', '7天前', '6天前', '5天前', '4天前', '3天前', '2天前', '昨天', '今天'],
+        datasets: [
             {
                 label: "利润",
                 data: [{{ storehouse_14_all_str }}],
-                borderColor: 'rgba(54, 162, 235, 1)'
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'transparent'
 
             }
         ]

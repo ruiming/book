@@ -97,7 +97,7 @@ from app.user.resource import UserAddressResource, UserAddressListResource, Feed
     UserNoticeResource, UserCollectsResource, UserPointsResource, UserCommentsResource, UserResource, \
     BookListLoveResource, BillingsResource, BillingResource, BookCommentsResource, BookCommentResource, \
     CartsResource, BookListCommentsResource, BookListCommentResource, BookCollectResource, BookListCollectResource, \
-    AfterSellBillingResource, AfterSellBillingsResource, SingleAfterSellBillingResource
+    AfterSellBillingResource, AfterSellBillingsResource, SingleAfterSellBillingResource, BillingScoreResource
 
 # Slide
 api.add_resource(SlidesResource, '/rest/slides')
@@ -125,6 +125,7 @@ api.add_resource(CartsResource, '/rest/carts')
 # Billing
 api.add_resource(BillingsResource, '/rest/billings')
 api.add_resource(BillingResource, '/rest/billings/<billing_id>')
+api.add_resource(BillingScoreResource, '/rest/billings/<billing_id>/score')
 api.add_resource(AfterSellBillingResource, '/rest/billings/<billing_id>/afterselling')
 api.add_resource(SingleAfterSellBillingResource, '/rest/billings/<billing_id>/afterselling/<afterselling_id>')
 api.add_resource(AfterSellBillingsResource, '/rest/afterselling')

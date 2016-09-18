@@ -768,11 +768,37 @@ class AfterSellBillingsResource(Resource):
         return billings_json
 
 
+class BillingScoreResource(Resource):
+    # /rest/billing/<>/score
+    """
+    订单评价
+    """
+    method_decorators = [authenticate]
+
+    post_parser = reqparse.RequestParser()
+    post_parser.add_argument('buy', type=int, required=True, location='form', help="MISSING_BUY_SCORE")
+    post_parser.add_argument('transport', type=int, required=True, location='form', help="MISSING_TRANSPORT_SCORE")
+    post_parser.add_argument('service', type=int, required=True, location='form', help="MISSING_SERVICE_SCORE")
+
+    def post(self, billing_id):
+        args = self.post_parser.parse_args()
+        for key, value in args.items():
+            args[key] = max(min(value, 10), 0)
+        billing = get_from_object_id(billing_id, Billing, 'billing_id', status=Billing.Status.RECEIVED)
+
+        billing.score_buy = args['buy']
+        billing.score_transport = args['transport']
+        billing.score_service = args['service']
+        billing.change_status(Billing.Status.DONE)
+
+
+
 class AfterSellBillingResource(Resource):
     # /rest/billings/<>/afterselling
     """
     售后账单
     """
+    method_decorators = [authenticate]
 
     post_parser = reqparse.RequestParser()
     post_parser.add_argument('isbn', type=valid_book, dest='book', location='form', required=True, help="MISSING_OR_WRONG_ISBN")
@@ -847,6 +873,8 @@ class SingleAfterSellBillingResource(Resource):
     """
     单个售后账单
     """
+    method_decorators = [authenticate]
+
     def get(self, billing_id, afterselling_id):
         billing = get_from_object_id(billing_id, Billing, 'billing_id')
         after_selling = get_from_object_id(afterselling_id, AfterSellBilling, 'afterseling_id', billing=billing,

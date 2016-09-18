@@ -287,6 +287,7 @@ class Billing(db.Document):
         WAITING = "waiting"
         RECEIVED = "received"
         CANCELED = 'canceled'
+        DONE = 'done'
 
     carts = db.ListField(db.ReferenceField(Cart))
     status = db.StringField(required=True, default=Status.CREATING)  # TODO: status code
@@ -298,6 +299,10 @@ class Billing(db.Document):
     create_time = db.IntField(required=True, default=time_int)
     edit_time = db.IntField(required=True, default=time_int)
     in_purchase_time = db.IntField()
+
+    score_buy = db.IntField()
+    score_transport = db.IntField()
+    score_service = db.IntField()
 
     @property
     def replace_refund_processing(self):
@@ -406,6 +411,13 @@ class Billing(db.Document):
             if next_status in ['refund', 'replace']:  # 进入 退款、退货 状态
                 # done, replaced, refund_refused, replace_refused
                 if self.status in ['done', 'replaced']:
+                    self.status = next_status
+                    self._add_log(next_status, content)
+                    self.save()
+                    return True
+
+            if next_status == 'done':
+                if self.status in [Billing.Status.RECEIVED]:
                     self.status = next_status
                     self._add_log(next_status, content)
                     self.save()

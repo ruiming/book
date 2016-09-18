@@ -26,12 +26,30 @@
             <h1>7天内订单</h1>
             <canvas id="billing" width="400" height="150"></canvas>
         </div>
+
         <div class="col-md-6">
             <h1>14天内收支金额</h1>
             <canvas id="money_14" width="400" height="150"></canvas>
-        </div><div class="col-md-6">
+        </div>
+
+        <div class="col-md-6">
             <h1>14天内利润</h1>
             <canvas id="earn_14" width="400" height="150"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <h1>平台评分</h1>
+        <div class="col-md-4">
+            <h3>购书体验</h3>
+            <canvas id="score_buy" width="400" height="150"></canvas>
+        </div>
+        <div class="col-md-4">
+            <h3>物流服务</h3>
+            <canvas id="score_transport" width="400" height="150"></canvas>
+        </div>
+        <div class="col-md-4">
+            <h3>服务态度</h3>
+            <canvas id="score_service" width="400" height="150"></canvas>
         </div>
     </div>
 
@@ -40,7 +58,7 @@
 {% block tail %}
 {{ super() }}
 <script src="/static/js/base64.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
+<script src="/static/js/Chart.min.js"></script>
 <script>
 
 var user_number = $("#user_number");
@@ -76,7 +94,7 @@ var billing_canvas = new Chart(billing, {
             },
         ]
     }
-})
+});
 var storehouse = $("#money_14");
 var billing_canvas = new Chart(storehouse, {
     type: 'line',
@@ -99,7 +117,7 @@ var billing_canvas = new Chart(storehouse, {
             }
         ]
     }
-})
+});
 var earn = $("#earn_14");
 var earn_canvas = new Chart(earn, {
     type: 'line',
@@ -115,6 +133,56 @@ var earn_canvas = new Chart(earn, {
             }
         ]
     }
-})
+});
+
+var score_buy = $("#score_buy");
+var score_transport = $("#score_transport");
+var score_service = $("#score_service");
+
+var score_buy_score = new Chart(score_buy, {
+    type: 'pie',
+    data: {
+        labels: ['当前评分', "缺失评分"],
+        datasets: [
+            {
+                data: [{{ score_buy }}, {{ 10.0-score_buy }}],
+                backgroundColor: ['red','transparent']
+            }
+        ]
+    }
+});
+var score_transport_score = new Chart(score_transport, {
+    type: 'pie',
+    data: {
+        labels: ['当前评分', "缺失评分"],
+        datasets: [
+            {
+                data: [{{ score_transport }}, {{ 10.0-score_transport }}],
+                backgroundColor: ['red','transparent']
+            }
+        ]
+    }
+});
+var score_service_score = new Chart(score_service, {
+    type: 'pie',
+    data: {
+        labels: ['当前评分', "缺失评分"],
+        datasets: [
+            {
+                data: [{{ score_buy }}, {{ 10.0-score_buy }}],
+                backgroundColor: ['red','transparent']
+            }
+        ]
+    }
+});
+{#,{#}
+{#    type: 'pie',#}
+{#    data: [#}
+{#	{#}
+{#		value: 30,#}
+{#		color:"#F38630"#}
+{#	}#}
+{#]#}
+{#}#}
 </script>
 {% endblock %}

@@ -115,6 +115,23 @@ class AdminView(AdminIndexView):
 
         storehouse_all = storehouse_price - storehouse_real_price
 
+        # 平台评分
+        done_billings = Billing.objects(status=Billing.Status.DONE)
+
+        score_buy = 0
+        score_transport = 0
+        score_service = 0
+
+        for billing in done_billings:
+            score_buy += billing.score_buy
+            score_transport += billing.score_transport
+            score_service += billing.score_service
+
+        score_buy = float(score_buy) / float(len(done_billings))
+        score_transport = float(score_transport) / float(len(done_billings))
+        score_service = float(score_service) / float(len(done_billings))
+
+
         return self.render('admin-custom/index.html',
                            user_list_day_str=user_list_day_str,  # 14天新增用户数
                            user_count=User.objects().count(),  # 总用户数
@@ -129,7 +146,9 @@ class AdminView(AdminIndexView):
                            storehouse_price=storehouse_price,  # 总收入
                            storehouse_real_price=storehouse_real_price,  # 总支出
                            storehouse_all=storehouse_all,  # 总利润
-
+                           score_buy=score_buy,  # 购书体验
+                           score_transport=score_transport,  # 物流服务
+                           score_service=score_service,  # 服务态度
                            )
 
     @expose('/notice_sender', methods=['GET', 'POST'])

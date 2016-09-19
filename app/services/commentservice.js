@@ -47,11 +47,11 @@
         }
 
         // TODO: 提交平台评价
-        function platformComment(stars1, stars2, stars3) {
-            return $http.post(host + '/user_billing', {
-                stars1: stars1*2,
-                stars2: stars2*2,
-                stars3: stars3*2
+        function platformComment(billing_id, stars1, stars2, stars3) {
+            return $http.post(host + '/billings/' + billing_id + '/score', {
+                buy: stars1*2,
+                transport: stars2*2,
+                service: stars3*2
             }).then(response => response.data);
         }
 

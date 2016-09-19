@@ -4,9 +4,9 @@
             <i class="fa fa-rocket" aria-hidden="true"></i> 您还没有{{vm.type2}}订单
         </p>
         <ul class="order-list">
-            <li class="order-list-one" ng-repeat="order in vm.orders">
+            <li class="order-list-one" ng-repeat="order in vm.orders | orderBy:'-edit_time'">
                 <div class="order-title">
-                    <span class="order-head">LifeBrary</span>
+                    <span class="order-head">{{order.create_time * 1000 | date: 'yyyy-MM-dd HH:mm'}}</span>
                     <span class="order-status">{{order.status}}</span>
                 </div>
                 <a ui-sref="orderDetail({id:order.id})">

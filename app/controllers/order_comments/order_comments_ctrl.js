@@ -25,7 +25,7 @@
                 }
             }
             return $q.all(promises).then(() => {
-                commentservice.platformComment(vm.stars1, vm.stars2, vm.stars3);
+                return commentservice.platformComment($stateParams.id, vm.stars1, vm.stars2, vm.stars3);
             }).then(() => {
                 history.back();
             });

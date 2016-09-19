@@ -145,7 +145,7 @@ def code2token():
 def admin_auth():
     if request.method == 'GET':
 
-        return render_template('admin/admin-login.html')
+        return render_template('admin-custom/admin-login.html')
 
     elif request.method == 'POST':
         username = request.form.get("username", None)

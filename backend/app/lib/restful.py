@@ -10,7 +10,6 @@ base_parse = reqparse.RequestParser()
 base_parse.add_argument('page', type=int, default=1)
 
 
-
 def authenticate(func):
     @wraps(func)
     def wrapper(*args, **kwargs):

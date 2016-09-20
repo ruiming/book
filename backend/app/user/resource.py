@@ -50,7 +50,6 @@ class BookCommentsResource(Resource):
     """
     单本书籍的评论
     """
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('page', type=int, default=1)
@@ -94,6 +93,7 @@ class BookCommentsResource(Resource):
     post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)
 
+    @authenticate
     def post(self, isbn):
         """
         发布一本书的评论
@@ -207,7 +207,6 @@ class BookCommentResource(Resource):
 
 class BookListCommentsResource(Resource):
     # /rest/booklist/<>/comments
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('page', type=int, default=1)
@@ -254,6 +253,7 @@ class BookListCommentsResource(Resource):
     post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)
 
+    @authenticate
     def post(self, book_list_id):
         """
         发布书单评论
@@ -347,6 +347,7 @@ class BookListCommentResource(Resource):
         return {
             'love': args['type']
         }
+
     def delete(self, comment_id):
         """
         删除评论
@@ -365,6 +366,8 @@ class BookCollectResource(Resource):
     """
     书籍收藏
     """
+    method_decorators = [authenticate]
+
     def post(self, isbn):
         """
         收藏
@@ -402,6 +405,7 @@ class BookListCollectResource(Resource):
     """
     书单收藏
     """
+    method_decorators = [authenticate]
 
     def post(self, book_list_id):
         """
@@ -971,11 +975,6 @@ class UserPhoneCaptchaResource(Resource):
                 captcha=captcha,
                 captcha_create_time=time_int()
             ).save()
-
-        return {
-            'phone': args['phone'],
-            'captcha': str(captcha)
-        }
 
 
 class UserTokenResource(Resource):

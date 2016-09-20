@@ -57,7 +57,7 @@ def auth_verify():
     user_id = request.args.get('user_id', None)
     token = request.args.get('token', None)
     if user_id and token:
-        this_user = User.objects(id=user_id)
+        this_user = User.objects(pk=user_id)
         this_user = this_user.first() if this_user.count() == 1 else None
 
         if not this_user:
@@ -93,7 +93,7 @@ def code2token():
             return return_message('error', 5)
         else:
 
-            this_user = User.objects(id=token['openid'])
+            this_user = User.objects(pk=token['openid'])
             this_user = this_user.first() if this_user.count() == 1 else None
 
             try:

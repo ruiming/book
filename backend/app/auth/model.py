@@ -100,38 +100,6 @@ class UserInlineCart(db.EmbeddedDocument):
     number = db.IntField(required=True, default=1)
 
 
-class UnUser:
-    phone = ''
-    username = ''
-
-    email = ''
-    password = ''
-
-    description = ''
-
-    avatar = 1  # the file name of avatar
-
-    school = u"华南师范大学石牌校区"
-
-    create_time = int(time())
-
-    group = 1
-
-    roles = []
-    credits = 0
-
-    # Carts
-    carts = []
-
-    # TOKEN
-    token = ''
-
-    # FOR REGISTER
-    captcha = 0
-    captcha_create_time = 0
-    register_done = True
-
-
 class User(db.Document, UserMixin):
     phone = db.StringField(required=True, unique=True, primary_key=True)
     username = db.StringField()

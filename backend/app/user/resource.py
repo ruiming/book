@@ -952,14 +952,14 @@ class UserPhoneCaptchaResource(Resource):
         args = self.get_parser.parse_args()
 
         if not User.phone_check(args['phone']):
-            abort(400, message="PHONE_EXISTED")
+            abort(400, message={"phone": "PHONE_EXISTED"})
 
         users = User.objects(phone=args['phone'])
         if users.count() == 1:
             # 已经处在于数据库
             user = users.first()
             if time_int() - user.captcha_create_time <= 60:
-                abort(400, message="SMS_CAPTCHA_TIME_LIMITED")
+                abort(400, message={"captcha": "SMS_CAPTCHA_TIME_LIMITED"})
 
             captcha = send_sms_captcha(args['phone'])
             user.captcha = captcha
@@ -988,12 +988,12 @@ class UserTokenResource(Resource):
         args = self.get_parser.parse_args()
         user = User.objects(phone=args['phone'], register_done=True)
         if user.count() != 1:
-            abort(400, message="WRONG_PHONE")
+            abort(400, message={"phone": "WRONG_PHONE"})
 
         user = user.first()
 
         if not (user.captcha == args['captcha'] and time_int() - user.captcha_create_time <= 5*60):
-            abort(400, message="WROING_CAPTCHA_OR_TIME_LIMITED")
+            abort(400, message={"captcha": "WRONG_CAPTCHA_OR_TIME_LIMITED"})
 
         user.token = random_str(24)
         user.captcha_create_time -= 60*5
@@ -1010,16 +1010,16 @@ class UserTokenResource(Resource):
     def post(self):
         args = self.post_parser.parse_args()
         if len(args['token']) != 24:
-            abort(400, message='WROING_TOKEN')
+            abort(400, message={"token": "WRONG_TOKEN"})
 
         user = User.objects(phone=args['phone'], register_done=True)
         if user.count() != 1:
-            abort(400, message="WRONG_PHONE")
+            abort(400, message={"phone": "WRONG_PHONE"})
 
         user = user.first()
 
         if user.token != args['token']:
-            abort(400, message='WROING_TOKEN')
+            abort(400, message={"token": "WRONG_TOKEN"})
 
         user.token = random_str(24)
         user.save()
@@ -1090,15 +1090,15 @@ class UserResource(Resource):
         user = User.objects(phone=args['phone'])
         if user.count() == 0:
             # 没在数据库中
-            abort(400, message="ERROR_OPERATION")
+            abort(400, message={"error": "ERROR_OPERATION"})
 
         # 手机已经注册
         user = user.first()
         if user.register_done:
-            abort(400, message="PHONE_EXISTED")
+            abort(400, message={"phone": "PHONE_EXISTED"})
 
         if not (args['captcha'] == user.captcha and int(time()) - user.captcha_create_time <= 60 * 30):
-            abort(400, message="WRONG_CAPTCHA_OR_TIME_LIMITED")
+            abort(400, message={"captcha": "WRONG_CAPTCHA_OR_TIME_LIMITED"})
 
         user.username = args['username']
         user.avatar = str(args['avatar'])

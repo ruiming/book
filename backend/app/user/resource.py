@@ -957,8 +957,7 @@ class UserPhoneCaptchaResource(Resource):
             if time_int() - user.captcha_create_time <= 60:
                 abort(400, message="SMS_CAPTCHA_TIME_LIMITED")
 
-            # captcha = send_sms_captcha(args['phone'])
-            captcha = 666666
+            captcha = send_sms_captcha(args['phone'])
             user.captcha = captcha
             user.captcha_create_time = time_int()
             user.save()
@@ -966,8 +965,7 @@ class UserPhoneCaptchaResource(Resource):
         else:
             # 没在数据库
 
-            # captcha = send_sms_captcha(args['phone'])
-            captcha = 666666
+            captcha = send_sms_captcha(args['phone'])
             User(
                 phone=args['phone'],
                 captcha=captcha,

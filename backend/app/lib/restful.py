@@ -25,10 +25,19 @@ def authenticate(func):
     return wrapper
 
 
+def username(name):
+    if isinstance(name, basestring) and len(name) in range(2, 9):
+        return name
+    else:
+        raise ValueError('WRONG_USERNAME')
+
+
 def phone(number):
+    if len(number) != 11 or number[0] != "1":
+        raise ValueError('WRONG_PHONE_NUMBER')
     try:
         for one in number:
-            int
+            int(one)
     except:
         raise ValueError('WRONG_PHONE_NUMBER')
     else:

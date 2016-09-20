@@ -23,28 +23,14 @@ b = BucketManager(q)
 
 api = Api(app)
 
-
-#
-# @app.errorhandler(404)
-# def not_found(error):
-#     return '404', 404
-#
-
-
-
-
 # Later on you'll import the other blueprints the same way:
 # from app.comments.views import mod as commentsModule
 # from app.posts.views import mod as postsModule
 # app.register_blueprint(commentsModule)
 # app.register_blueprint(postsModule)
 
-from app.book.view import book_modules
 from app.auth.view import auth_module
-from app.user.view import user_module
 from app.outline_api.view import outline_module
-app.register_blueprint(book_modules)
-app.register_blueprint(user_module)
 app.register_blueprint(auth_module)
 app.register_blueprint(outline_module)
 
@@ -90,14 +76,8 @@ app.add_template_filter(jinja2_filter_datetime, name='datetime')
 
 
 # Flask-RestFul
-from app.book.resource import BookResource, TagResource, SlideResource, SlidesResource, SimilarBooksResource, \
-    BooksResource, BookListsResource, BookListResource
-
-from app.user.resource import UserAddressResource, UserAddressListResource, FeedbackResource, UserNoticesResource, \
-    UserNoticeResource, UserCollectsResource, UserPointsResource, UserCommentsResource, UserResource, \
-    BookListLoveResource, BillingsResource, BillingResource, BookCommentsResource, BookCommentResource, \
-    CartsResource, BookListCommentsResource, BookListCommentResource, BookCollectResource, BookListCollectResource, \
-    AfterSellBillingResource, AfterSellBillingsResource, SingleAfterSellBillingResource, BillingScoreResource
+from app.book.resource import *
+from app.user.resource import *
 
 # Slide
 api.add_resource(SlidesResource, '/rest/slides')
@@ -132,6 +112,10 @@ api.add_resource(AfterSellBillingsResource, '/rest/afterselling')
 
 # User
 api.add_resource(UserResource, '/rest/user')
+
+api.add_resource(UserPhoneCaptchaResource, '/rest/user/captcha')
+api.add_resource(UserTokenResource, '/rest/user/token')
+api.add_resource(UserAvatarResource, '/rest/user/avatar')
 
 api.add_resource(UserAddressListResource, '/rest/user/addresses')
 api.add_resource(UserAddressResource, '/rest/user/addresses/<address_id>')

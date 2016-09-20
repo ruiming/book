@@ -2,6 +2,7 @@
 
 from time import time
 from app import b
+from random import choice
 
 
 def time_int():
@@ -25,3 +26,9 @@ def save_image(url, key):
     print save_name
     ret, info = b.fetch(url, bucket_name, save_name)
     return save_name
+
+
+def random_str(length):
+    r_str = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+
+    return ''.join([choice(r_str) for _ in range(length)])

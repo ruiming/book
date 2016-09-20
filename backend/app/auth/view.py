@@ -24,7 +24,6 @@ auth_module = Blueprint('auth_module', __name__)
 
 
 @auth_module.route('/', methods=['GET'])
-@oauth4link
 def index():
     return render_template('/index.html')
 

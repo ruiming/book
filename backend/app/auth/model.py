@@ -101,33 +101,48 @@ class UserInlineCart(db.EmbeddedDocument):
 
 
 class User(db.Document, UserMixin):
+    phone = db.StringField(required=True, unique=True, primary_key=True)
+    username = db.StringField()
 
-    id = db.StringField(required=True, unique=True, primary_key=True)
     email = db.StringField()
-    username = db.StringField(required=True)
     password = db.StringField()
-    phone = db.StringField()
+
     description = db.StringField()
-    sex = db.IntField(default=0)
-    avatar = db.StringField(default='')  # the file name of avatar
+
+    avatar = db.IntField(default=1)  # the file name of avatar
+
     school = db.StringField(required=True, default=u"华南师范大学石牌校区")
-    province = db.StringField()
-    city = db.StringField()
-    country = db.StringField()
+
     create_time = db.IntField(default=int(time()), required=True)
+
     group = db.IntField(required=True, default=1)
+
     roles = db.ListField(db.ReferenceField(UserRole), default=[])
     credits = db.IntField(required=True, default=0)
-    # For APP
-    wechat = db.EmbeddedDocumentField(WechatOAuth)
+
     # Carts
     carts = db.EmbeddedDocumentListField(UserInlineCart)
+
+    # TOKEN
+    token = db.StringField()
+
+    # FOR REGISTER
+    captcha = db.IntField()
+    captcha_create_time = db.IntField()
+    register_done = db.BooleanField(default=False)
 
     def __unicode__(self):
         return u'{}'.format(self.username)
 
     @property
     def active(self):
+        return True
+
+    @classmethod
+    def phone_check(cls, phone):
+        users = cls.objects(phone=phone, register_done=True)
+        if users.count() == 1:
+            return False
         return True
 
     @classmethod
@@ -140,7 +155,7 @@ class User(db.Document, UserMixin):
         token = request.headers.get('token', None)
         if not token:
             return None
-        this_user = cls.objects(wechat__access_token=token)
+        this_user = cls.objects(token=token)
         if this_user.count() == 1:
             return this_user.first()
         return None

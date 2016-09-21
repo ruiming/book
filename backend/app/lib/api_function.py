@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, request
-from app.user.model import User
+from app.models import User
 from functools import wraps
 from time import time
 from top import api, appinfo

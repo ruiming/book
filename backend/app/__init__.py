@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-import os
-import sys
-
 from flask import Flask
 from flask_mongoengine import MongoEngine
-from mongoengine import signals
 from flask_admin import Admin
 from flask_security import Security, MongoEngineUserDatastore
 from wechatpy.oauth import WeChatOAuth
@@ -29,22 +25,16 @@ api = Api(app)
 # app.register_blueprint(commentsModule)
 # app.register_blueprint(postsModule)
 
-from app.auth.view import auth_module
-from app.outline_api.view import outline_module
+from app.views import auth_module
 app.register_blueprint(auth_module)
-app.register_blueprint(outline_module)
 
 
 # Flask-Admin
 
-from app.lib.admin_base import AdminView, AdminBaseModelView
-from app.book.model import BookList, Activity, Book, Tag, Applacation
-from app.book.admin_model import BookView, TagView, BookListView, ActivityView
-from app.auth.admin_model import UserView
-from app.user.admin_model import PendingBillingView, WaitingBillingView, AfterSellingBillingView
-from app.auth.model import User, UserRole
-from app.user.model import Comment, Points, Collect, Notice, Feedback
+from app.lib.admin_base import AdminBaseModelView
 
+from app.admin_views import *
+from app.models import *
 
 admin = Admin(app, template_mode='bootstrap3-full', name=u'Bookist.org 后台', index_view=AdminView(endpoint="admin"))
 
@@ -62,6 +52,7 @@ admin.add_view(AfterSellingBillingView(name=u"售后订单"))
 admin.add_view(AdminBaseModelView(Collect, name=u"收藏", category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Notice, name=u"通知", category=u"用户相关"))
 admin.add_view(AdminBaseModelView(Feedback, name=u"反馈信息"))
+admin.add_view(StoreHouseView(name=u"退换书籍处理"))
 
 
 # Flask-Security
@@ -70,68 +61,64 @@ user_datastore = MongoEngineUserDatastore(db, User, UserRole)
 security = Security(app, user_datastore)
 
 
-
 # Jinja2 Filter
 from app.lib.jinja2 import jinja2_filter_datetime
 app.add_template_filter(jinja2_filter_datetime, name='datetime')
 
 
 # Flask-RestFul
-from app.book.resource import *
-from app.user.resource import *
+from app.resources import *
 
 # Slide
-api.add_resource(SlidesResource, '/rest/slides')
-api.add_resource(SlideResource, '/rest/slides/<activity_id>')
+api.add_resource(SlidesResource, '/slides')
+api.add_resource(SlideResource, '/slides/<activity_id>')
 
 # Book
-api.add_resource(BooksResource, '/rest/books/<books_type>')
-api.add_resource(BookResource, '/rest/book/<isbn>')
-api.add_resource(SimilarBooksResource, '/rest/book/<isbn>/similar')
-api.add_resource(BookCollectResource, '/rest/book/<isbn>/collect')
-api.add_resource(BookCommentsResource, '/rest/book/<isbn>/comments')
-api.add_resource(BookCommentResource, '/rest/comments/<comment_id>')
+api.add_resource(BooksResource, '/books/<books_type>')
+api.add_resource(BookResource, '/book/<isbn>')
+api.add_resource(SimilarBooksResource, '/book/<isbn>/similar')
+api.add_resource(BookCollectResource, '/book/<isbn>/collect')
+api.add_resource(BookCommentsResource, '/book/<isbn>/comments')
+api.add_resource(BookCommentResource, '/comments/<comment_id>')
 
 # Book List
-api.add_resource(BookListsResource, '/rest/booklists')
-api.add_resource(BookListResource, '/rest/booklists/<book_list_id>')
-api.add_resource(BookListLoveResource, '/rest/booklists/<book_list_id>/love')
-api.add_resource(BookListCollectResource, '/rest/booklists/<book_list_id>/collect')
-api.add_resource(BookListCommentsResource, '/rest/booklists/<book_list_id>/comments')
-api.add_resource(BookListCommentResource, '/rest/booklistcomment/<comment_id>')
+api.add_resource(BookListsResource, '/booklists')
+api.add_resource(BookListResource, '/booklists/<book_list_id>')
+api.add_resource(BookListLoveResource, '/booklists/<book_list_id>/love')
+api.add_resource(BookListCollectResource, '/booklists/<book_list_id>/collect')
+api.add_resource(BookListCommentsResource, '/booklists/<book_list_id>/comments')
+api.add_resource(BookListCommentResource, '/booklistcomment/<comment_id>')
 
 # Cart
-api.add_resource(CartsResource, '/rest/carts')
+api.add_resource(CartsResource, '/carts')
 
 # Billing
-api.add_resource(BillingsResource, '/rest/billings')
-api.add_resource(BillingResource, '/rest/billings/<billing_id>')
-api.add_resource(BillingScoreResource, '/rest/billings/<billing_id>/score')
-api.add_resource(AfterSellBillingResource, '/rest/billings/<billing_id>/afterselling')
-api.add_resource(SingleAfterSellBillingResource, '/rest/billings/<billing_id>/afterselling/<afterselling_id>')
-api.add_resource(AfterSellBillingsResource, '/rest/afterselling')
+api.add_resource(BillingsResource, '/billings')
+api.add_resource(BillingResource, '/billings/<billing_id>')
+api.add_resource(BillingScoreResource, '/billings/<billing_id>/score')
+api.add_resource(AfterSellBillingResource, '/billings/<billing_id>/afterselling')
+api.add_resource(SingleAfterSellBillingResource, '/billings/<billing_id>/afterselling/<afterselling_id>')
+api.add_resource(AfterSellBillingsResource, '/afterselling')
 
 # User
-api.add_resource(UserResource, '/rest/user')
+api.add_resource(UserResource, '/user')
 
-api.add_resource(UserPhoneCaptchaResource, '/rest/user/captcha')
-api.add_resource(UserTokenResource, '/rest/user/token')
-api.add_resource(UserAvatarResource, '/rest/user/avatar')
+api.add_resource(UserPhoneCaptchaResource, '/user/captcha')
+api.add_resource(UserTokenResource, '/user/token')
+api.add_resource(UserAvatarResource, '/user/avatar')
 
-api.add_resource(UserAddressListResource, '/rest/user/addresses')
-api.add_resource(UserAddressResource, '/rest/user/addresses/<address_id>')
+api.add_resource(UserAddressListResource, '/user/addresses')
+api.add_resource(UserAddressResource, '/user/addresses/<address_id>')
 
-api.add_resource(UserNoticesResource, '/rest/user/notices')
-api.add_resource(UserNoticeResource, '/rest/user/notices/<notice_id>')
+api.add_resource(UserNoticesResource, '/user/notices')
+api.add_resource(UserNoticeResource, '/user/notices/<notice_id>')
 
-api.add_resource(UserCollectsResource, '/rest/user/collects/<collect_type>')
+api.add_resource(UserCollectsResource, '/user/collects/<collect_type>')
 
-api.add_resource(UserPointsResource, '/rest/user/points')
+api.add_resource(UserPointsResource, '/user/points')
 
-api.add_resource(UserCommentsResource, '/rest/user/comments')
+api.add_resource(UserCommentsResource, '/user/comments')
 
 # Other
-api.add_resource(TagResource, '/rest/tags')
-api.add_resource(FeedbackResource, '/rest/feedback')
-
-
+api.add_resource(TagResource, '/tags')
+api.add_resource(FeedbackResource, '/feedback')

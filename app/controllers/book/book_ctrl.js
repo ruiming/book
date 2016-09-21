@@ -33,7 +33,8 @@
             vm.booklists = response;
         });
 
-        if($window.sessionStorage.getItem('token') !== void 0 && $window.sessionStorage.getItem('token') !== 'undefined') {
+        if($window.sessionStorage.getItem('token') !== void 0 && $window.sessionStorage.getItem('token') !== 'undefined'
+            && $window.sessionStorage.getItem('token') !== null && $window.sessionStorage.getItem('token') !== 'null') {
             userservice.getUserInfo().then(response => {
                 vm.user = response;
             });

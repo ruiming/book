@@ -122,7 +122,10 @@
         function getUserInfo(reget) {
             if(userInfo == null || reget) {
                 return userInfo = $http.get(host + '/user')
-                    .then(response => response.data);
+                    .then(response => {
+                        response.data.avatar = `https://cdn.bookist.org/avatar/${response.data.avatar}.jpg`;
+                        return response.data;
+                    });
             }
             console.log(userInfo);
             return userInfo;

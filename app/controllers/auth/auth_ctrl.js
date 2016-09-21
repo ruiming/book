@@ -41,11 +41,11 @@
                 vm.timelimit = 60;
                 var timelimit = $interval(() => {
                     vm.timelimit --;
-                }, 60000);
+                }, 1000);
                 $timeout(() => {
                     $interval.cancel(timelimit);
                     timelimit = undefined;
-                }, 10000);
+                }, 60000);
                 return userservice.getCaptcha(phone).then(data => {
                     vm.captcha = data.captcha;
                 }, err => {

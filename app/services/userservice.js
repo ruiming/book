@@ -30,7 +30,11 @@
             getUserDefaultAddress: getUserDefaultAddress,
 
             setAddress: setAddress,
-            getAddress: getAddress
+            getAddress: getAddress,
+
+            getCaptcha: getCaptcha,
+            register: register,
+            login: login
         };
 
         // 获取用户默认地址
@@ -120,6 +124,7 @@
                 return userInfo = $http.get(host + '/user')
                     .then(response => response.data);
             }
+            console.log(userInfo);
             return userInfo;
         }
 
@@ -129,6 +134,25 @@
                 .then(response => response.data);
         }
 
+        // 获取验证码
+        function getCaptcha(phone) {
+            return $http.get(host + '/user/captcha?phone=' + phone).then(response => response.data);
+        }
+
+        // 注册
+        function register(name, phone, captcha, avatar) {
+            return $http.post(host + '/user', {
+                username: name,
+                phone: phone,
+                captcha: captcha,
+                avatar: avatar,
+            }).then(response => response.data);
+        }
+
+        // 登陆
+        function login(phone, captcha) {
+            return $http.get(host + '/user/token?phone=' + phone + '&captcha=' + captcha).then(response => response.data);
+        }
     }
 
 })();

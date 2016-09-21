@@ -9,7 +9,8 @@
             'ngSanitize',
             'ngTouch',
             'infinite-scroll',
-            'angularPromiseButtons'
+            'angularPromiseButtons',
+            'base64'
         ])
         .config(config)
         .run(function ($state, $rootScope, tokenInjector, $location, $window) {
@@ -65,13 +66,6 @@
     config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider', 'angularPromiseButtonsProvider', '$compileProvider'];
     function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider, $compileProvider) {
         $compileProvider.debugInfoEnabled(false);
-
-        $httpProvider.defaults.transformResponse.push(response => {
-            if(response && response.status_id && notices[response.status_id] !== void 0) {
-                notie.alert(1, notices[response.status_id], 0.3);
-            }
-            return response;
-        });
 
         $httpProvider.interceptors.push('timestampMarker');
 

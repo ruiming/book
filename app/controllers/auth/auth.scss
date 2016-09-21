@@ -29,4 +29,24 @@
     margin: 15px 0;
     display: block;
   }
+  .avatar {
+    text-align: center;
+    img {
+      border-radius: 50%;
+      width: 100px;
+    }
+    small {
+      display: block;
+      padding-top: 5px;
+      color: #777;
+    }
+  }
+  .input-group-addon {
+    padding: 0;
+    button {
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+    }
+  }
 }

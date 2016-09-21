@@ -2,8 +2,7 @@
 from flask_restful import abort, reqparse
 from functools import wraps
 from app.lib.api_function import basic_authentication
-from app.user.model import User
-from app.book.model import Book
+from app.models import User, Book
 
 
 base_parse = reqparse.RequestParser()

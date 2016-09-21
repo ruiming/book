@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import jsonify
-from app.auth.model import User
-from app.user.model import Points
+from app.models import User, Points
 from datetime import datetime, timedelta
 
 

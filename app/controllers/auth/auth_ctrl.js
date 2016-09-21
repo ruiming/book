@@ -47,7 +47,6 @@
                     timelimit = undefined;
                 }, 60000);
                 return userservice.getCaptcha(phone).then(data => {
-                    vm.captcha = data.captcha;
                 }, err => {
                     if(err.status === 400 && err.data.message) {
                         vm.alerts.push(err.data.message);

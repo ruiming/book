@@ -420,12 +420,9 @@
                 templateUrl: 'auth/auth_tpl.html',
                 controller: 'AuthCtrl as vm',
                 resolve: {
-                    check: function($q, $window) {
+                    check: function($q, $window, userservice) {
                         return $q((resolve, reject) => {
-                            if($window.sessionStorage.getItem('token') === undefined ||
-                                $window.sessionStorage.getItem('token') === 'undefined' ||
-                                $window.sessionStorage.getItem('token') === null ||
-                                $window.sessionStorage.getItem('token') === 'null') {
+                            if(userservice.getUserInfo().then().$$state.value.status === 401) {
                                 resolve();
                             } else {
                                 reject();

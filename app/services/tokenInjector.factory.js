@@ -5,61 +5,45 @@
         .module('index')
         .factory('tokenInjector', tokenInjector);
 
-    tokenInjector.$inject = ['$injector','$q', '$window'];
+    function tokenInjector($injector, $q, $window, lang, $timeout, $base64, $location) {
 
-    function tokenInjector($injector, $q, $window) {
-
-        let verify = false;
-        let createdtime = null;
         let token = null;
-        let userid = null;
 
         return {
-            setAuth: function(t, u) {
+            setAuth: function(t) {
                 token = t;
-                userid = u;
                 $window.localStorage.setItem('token', t);
-                $window.localStorage.setItem('userid', u);
+                $window.sessionStorage.setItem('token', t);
             },
             request: function(config) {
-                var url = 'https://www.bookist.org/auth_verify';
                 var deferred = $q.defer();
-                var http = $injector.get('$http');
-                if(config.url === url)
-                    return config;
-                if(verify) {
-                    var timestamp = new Date().getTime() / 1000;
-                    // 时间超过7100s，需要重新验证
-                    if (timestamp - createdtime >= 7100) {
-                        verify = false;
-                    }
-                    config.headers['token'] = token;
-                    config.headers['userid'] = userid;
-                    deferred.resolve(config);
-                } else {
-                    // 验证token
-                    http({
-                        method: 'GET',
-                        url: url,
-                        params: {
-                            token: token,
-                            user_id: userid
-                        }
-                    }).success(function(response) {
-                        // TODO experimental
-                        token = response.token || response.data.token || token;
-                        $window.localStorage.setItem('token', token);
-                        createdtime = response.time;
-                        verify = true;
-                        config.headers['token'] = token;
-                        config.headers['userid'] = userid;
-                        deferred.resolve(config);
-                    }).error(function(){
-                        // window.location.replace(host);
-                        deferred.resolve(config);
-                    });
-                }
+                config.headers['token'] = token || $window.sessionStorage.getItem('token') || $window.localStorage.getItem('token');
+                deferred.resolve(config);
                 return deferred.promise;
+            },
+            responseError: function(config) {
+                if(config.status === 401) {
+                    notie.alert(1, '请先登陆', 0.3);
+                    $timeout(() => {
+                        window.location = "#/auth?redirectUrl=" + $base64.encode(document.URL);
+                    }, 300);
+                    return $q.reject(config);
+                } else if (config && config.data && config.data.message) {
+                    let message = config.data.message;
+                    if(typeof message === 'string') {
+                        config.data.message = lang[string];
+                    } else if(typeof message === 'object') {
+                        let str = '';
+                        for(let key in message) {
+                            if(message.hasOwnProperty(key)) str += str === '' ? lang[message[key]] : ', ' + lang[message[key]];
+                        }
+                        config.data.message = str;
+                    }
+                    return $q.reject(config);
+                } else if (config.status === 500) {
+                    notie.alert(1, '发生了不明觉厉的错误', 0.3);
+                    return $q.reject(config);
+                }
             }
         };
     }

@@ -1,18 +1,27 @@
 <div class="auth-page">
     <div class="bg"><span>书生LifeBrary</span></div>
-    <form name="vm.form" ng-submit="vm.login ? vm.register(user) : vm.loginin(user)" novalidate>
+    <form name="vm.form" ng-submit="vm.login ? vm.register(user) : vm.loginin(user)" novalidate autocomplete="off">
         <div uib-alert ng-repeat="alert in vm.alerts" class="alert-warning" >{{alert}}</div>
-        <div class="form-group">
+        <div class="avatar" ng-show="vm.login">
+            <img ng-src="{{vm.avatar}}" ng-click="vm.changeAvater()" />
+            <small>点击头像可进行更换</small>
+        </div>
+        <div class="form-group" ng-show="vm.login">
             <label for="name">用户名</label>
-            <input type="text" class="form-control" id="name" name="name" required placeholder="请输入用户名" ng-model="user.name">
+            <input type="text" class="form-control" id="name" name="name" ng-minlength="2"  minlength="2" maxlength="8" required placeholder="请输入用户名" ng-model="user.name">
         </div>
         <div class="form-group">
-            <label for="password">密码</label>
-            <input type="password" class="form-control" id="password" name="password" ng-minlength="6" ng-maxlength="20" required placeholder="请输入密码" ng-model="user.password">
+            <label for="phone">手机号</label>
+            <input type="number" class="form-control" id="phone" name="phone" ng-minlength="11" ng-maxlength="11" required placeholder="请输入手机号" ng-model="user.phone">
         </div>
-        <div class="form-group" ng-if="vm.login">
-            <label for="password_repeat">重复密码</label>
-            <input type="password" class="form-control" id="password_repeat" name="password_repeat" required placeholder="重复输入密码" ng-model="user.password_repeat">
+        <div class="form-group">
+            <label for="captcha">验证码</label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="captcha" name="captcha" required placeholder="请输入验证码" ng-model="user.captcha">
+                <div class="input-group-addon">
+                    <button class="btn btn-info" ng-disabled="vm.timelimit" ng-click="vm.getCaptcha(user.phone)">获取验证码<span ng-if="vm.timelimit"> ({{vm.timelimit}}) </span></button>
+                </div>
+            </div>
         </div>
         <div class="form-group auth-form" ng-if="vm.login">
             <input type="submit" class="btn btn-primary auth" value="注册">

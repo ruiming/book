@@ -30,6 +30,7 @@
     "ngInfiniteScroll": "^1.2.2",
     "notie": "^3.2.0",
     "angular-promise-buttons": "^0.1.14",
-    "angular": "^1.5.8"
+    "angular": "^1.5.8",
+    "angular-base64": "^2.0.5"
   }
 }

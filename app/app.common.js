@@ -62,6 +62,11 @@
             $rootScope.$on("$stateChangeError", function (event, toState, toStateParams, fromState, fromParams, error) {
                 $rootScope.loading = false;
             });
+
+            $rootScope.$on( "$locationChangeSuccess", function(event, next, current) {
+                console.log(current, '->' ,next);
+            });
+
         });
 
     function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider, $compileProvider, $cookiesProvider) {

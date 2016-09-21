@@ -96,7 +96,6 @@ gulp.task('cdn', function() {
     // 变动资源
     gulp.src(['./src/js/bookist.js', './src/js/templates.js'])
         .pipe(plumber())
-        .pipe(uglify())
         .pipe(babel())
         .pipe(concat('bookist.min.js'))
         .pipe(qiniu({

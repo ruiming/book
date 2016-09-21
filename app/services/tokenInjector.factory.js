@@ -26,7 +26,7 @@
                 if(config.status === 401) {
                     notie.alert(1, '请先登陆', 0.3);
                     $timeout(() => {
-                        $window.location.href = "#/auth?redirectUrl=" + encodeURIComponent($base64.encode(document.URL));
+                        $window.location.href = "#/auth?redirectUrl=" + encodeURIComponent($base64.encode($window.location.hash));
                     }, 300);
                     return $q.reject(config);
                 } else if (config && config.data && config.data.message) {

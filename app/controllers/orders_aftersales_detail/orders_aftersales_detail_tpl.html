@@ -16,7 +16,9 @@
                 <div class="order-detail">
                     <div class="order-title">
                         <span class="order-head">最新状态</span>
-                        <span class="order-status">{{vm.aftersale.process}}</span>
+                        <span class="order-status" ng-if="vm.aftersale.process === 'waiting'">等待处理中</span>
+                        <span class="order-status" ng-if="vm.aftersale.process === 'waiting'">{{vm.aftersale.process}}</span>
+                        <span class="order-status" ng-if="vm.aftersale.process === 'done'">完成啦</span>
                     </div>
                     <ul class="order-process">
                         <li ng-if="vm.aftersale.feedback[0]">
@@ -53,11 +55,12 @@
                     <div class="order-meta-price">
                         <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{vm.aftersale.price_sum | number: 2}}</em> 元</span>
                     </div>
-                    <button class="btn btn-danger" promise-btn ng-disabled="vm.aftersale.process === 'processing' || vm.aftersale.process === 'done'"
+                    <button class="btn btn-danger" promise-btn ng-disabled="vm.aftersale.process === 'processing' || vm.aftersale.process === 'done' || vm.aftersale.process === 'refused'"
                             ng-click="vm.cancel(vm.aftersale)">
                         <i ng-if="vm.aftersale.process === 'done'">已完成</i>
                         <i ng-if="vm.aftersale.process === 'processing'">处理中</i>
                         <i ng-if="vm.aftersale.process === 'waiting'">取消申请</i>
+                        <i ng-if="vm.aftersale.process === 'refused'">申请失败</i>
                     </button>
                 </div>
             </li>

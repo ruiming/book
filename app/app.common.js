@@ -10,7 +10,8 @@
             'ngTouch',
             'infinite-scroll',
             'angularPromiseButtons',
-            'base64'
+            'base64',
+            'ngCookies'
         ])
         .config(config)
         .run(function ($state, $rootScope, tokenInjector, $location, $window) {
@@ -63,10 +64,9 @@
             });
         });
 
-    config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider', 'angularPromiseButtonsProvider', '$compileProvider'];
-    function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider, $compileProvider) {
+    function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider, $compileProvider, $cookiesProvider) {
         $compileProvider.debugInfoEnabled(false);
-
+        $cookiesProvider.defaults.expires = new Date(new Date().getTime() +  86400000000);
         $httpProvider.interceptors.push('timestampMarker');
 
         $httpProvider.interceptors.push('tokenInjector');

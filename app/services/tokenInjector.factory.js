@@ -5,7 +5,7 @@
         .module('index')
         .factory('tokenInjector', tokenInjector);
 
-    function tokenInjector($injector, $q, $window, lang, $timeout, $base64, $location) {
+    function tokenInjector($injector, $q, $window, lang, $timeout, $base64, $location, $cookies) {
 
         let token = null;
 
@@ -14,10 +14,11 @@
                 token = t;
                 $window.localStorage.setItem('token', t);
                 $window.sessionStorage.setItem('token', t);
+                $cookies.put('token', t);
             },
             request: function(config) {
                 var deferred = $q.defer();
-                config.headers['token'] = token || $window.sessionStorage.getItem('token') || $window.localStorage.getItem('token');
+                config.headers['token'] = token || $window.sessionStorage.getItem('token') || $window.localStorage.getItem('token') || $cookies.get('token');
                 deferred.resolve(config);
                 return deferred.promise;
             },

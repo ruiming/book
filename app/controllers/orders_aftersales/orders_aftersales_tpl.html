@@ -4,7 +4,7 @@
             <i class="fa fa-rocket" aria-hidden="true"></i> 您还没有退换货订单
         </p>
         <ul class="order-list" ng-if="vm.aftersales.length">
-            <li class="order-list-one" ng-repeat="aftersale in vm.aftersales | orderBy: 'is_done'" ng-if="!aftersale.is_done || aftersale.process === 'done'">
+            <li class="order-list-one" ng-repeat="aftersale in vm.aftersales | orderBy: 'is_done'" >
                 <div class="order-title">
                     <span class="order-head">LifeBrary</span>
                     <span class="order-status">{{aftersale.type === 'REFUND' ? '退款' : '退货'}}</span>
@@ -20,13 +20,14 @@
                 </a>
                 <div class="order-meta">
                     <div class="order-meta-price">
-                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{aftersale.price}}</em> 元</span>
+                        <span class="order-price">货到付款&nbsp;&nbsp;&nbsp;<em>{{aftersale.price | number: 2}}</em> 元</span>
                     </div>
-                    <button class="btn btn-danger" promise-btn ng-disabled="aftersale.process === 'processing' || aftersale.process === 'done'"
+                    <button class="btn btn-danger" promise-btn ng-disabled="aftersale.process === 'processing' || aftersale.process === 'done'|| aftersale.process === 'refused'"
                             ng-click="vm.cancel(aftersale)">
                         <i ng-if="aftersale.process === 'done'">已完成</i>
                         <i ng-if="aftersale.process === 'processing'">处理中</i>
                         <i ng-if="aftersale.process === 'waiting'">取消申请</i>
+                        <i ng-if="aftersale.process === 'refused'">申请失败</i>
                     </button>
                 </div>
             </li>

@@ -406,14 +406,25 @@
                 templateUrl: 'suggest/suggest_tpl.html',
                 resolve: {
                     user: function(userservice) {
-                        return userservice.getUserInfo()
+                        return userservice.getUserInfo();
                     }
                 }
             })
             .state('auth', {
                 url: '/auth',
                 templateUrl: 'auth/auth_tpl.html',
-                controller: 'AuthCtrl as vm'
+                controller: 'AuthCtrl as vm',
+                resolve: {
+                    user: function($q, $window) {
+                        return $q((resolve, reject) => {
+                            if($window.sessionStorage.getItem('token') !== undefined && $window.sessionStorage.getItem('token') !== 'undefined') {
+                                reject();
+                            } else {
+                                resolve();
+                            }
+                        })
+                    }
+                }
             })
     }
 

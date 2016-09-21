@@ -3,6 +3,8 @@ from flask import make_response, request
 from app.user.model import User
 from functools import wraps
 from time import time
+from top import api, appinfo
+from random import randint
 
 
 def allow_cross_domain(fun):
@@ -21,15 +23,46 @@ def basic_authentication():
     token = request.headers.get('token', None)
     if token:
         # Verify User exist
-        this_user = User.objects(wechat__access_token=token)
+        this_user = User.objects(token=token)
         this_user = this_user.first() if this_user.count() == 1 else None
         if not this_user:
             return False, 'FAIL_GET_USER'
         else:
             # Verify Token
-            if not (this_user.wechat.token_time + this_user.wechat.expires_in > int(time())) + 10:
-                return False, 'TOKEN_OUT_OF_TIME'
+            pass
     else:
         return False, 'FAIL_GET_TOKEN'
 
     return True, 'SUCCESS'
+
+
+def send_sms_captcha(phone):
+    """
+    发送SMS验证码
+    :param phone: 用户手机号
+    :return: 生成的验证码(6位INT)
+    """
+    url = 'gw.api.taobao.com'
+    port = 80
+    appkey = '23276450'
+    secret = '9d4c4595733ee66cac9d1b46a7040cbe'
+
+    phone = str(phone)
+
+    captcha = randint(100000, 999999)
+    req = api.AlibabaAliqinFcSmsNumSendRequest(url, port)
+    req.set_app_info(appinfo(appkey, secret))
+    req.extend = ""
+    req.sms_type = "normal"
+    req.sms_free_sign_name = "注册验证"
+    req.sms_param = "{code:'%s'}" % captcha
+    req.rec_num = phone
+    req.sms_template_code = "SMS_15110001"
+    try:
+        resp = req.getResponse()
+        print resp
+    except Exception, e:
+        print e
+        raise Exception("ERROR_OPERATION")
+    else:
+        return captcha

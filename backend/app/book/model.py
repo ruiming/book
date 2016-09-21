@@ -64,6 +64,8 @@ class Book(db.Document):
 
     enabled = db.BooleanField(default=True)
 
+    need_to_refund =db.IntField(default=0)
+
     class NotBookInstance(Exception):
         pass
 

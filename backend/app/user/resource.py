@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask_restful import Resource, reqparse, abort
-from app.lib.restful import authenticate, base_parse, phone, valid_object_id, valid_book
+from app.lib.restful import authenticate, base_parse, phone, valid_object_id, valid_book, username
 from app.lib.restful import abort_valid_in_list, abort_invalid_isbn, get_from_object_id
+from app.lib import random_str, time_int
+from app.lib.api_function import send_sms_captcha
 from app.auth.model import User, UserInlineCart
 from app.book.model import Tag, BookList, Activity, Book, BookTag
 from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, Notice, Feedback, BillingStatus, \
@@ -9,6 +11,7 @@ from app.user.model import Comment, Points, UserCommentLove, Collect, Billing, N
     InlineAddress, AfterSellBilling
 
 from time import time
+from random import randint
 
 
 class BookListLoveResource(Resource):
@@ -47,7 +50,6 @@ class BookCommentsResource(Resource):
     """
     单本书籍的评论
     """
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('page', type=int, default=1)
@@ -91,6 +93,7 @@ class BookCommentsResource(Resource):
     post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)
 
+    @authenticate
     def post(self, isbn):
         """
         发布一本书的评论
@@ -204,7 +207,6 @@ class BookCommentResource(Resource):
 
 class BookListCommentsResource(Resource):
     # /rest/booklist/<>/comments
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('page', type=int, default=1)
@@ -251,6 +253,7 @@ class BookListCommentsResource(Resource):
     post_parser.add_argument('content', type=unicode, required=True, help='MISSING_CONTENT')
     post_parser.add_argument('star', type=int, default=0)
 
+    @authenticate
     def post(self, book_list_id):
         """
         发布书单评论
@@ -344,6 +347,7 @@ class BookListCommentResource(Resource):
         return {
             'love': args['type']
         }
+
     def delete(self, comment_id):
         """
         删除评论
@@ -362,6 +366,8 @@ class BookCollectResource(Resource):
     """
     书籍收藏
     """
+    method_decorators = [authenticate]
+
     def post(self, isbn):
         """
         收藏
@@ -399,6 +405,7 @@ class BookListCollectResource(Resource):
     """
     书单收藏
     """
+    method_decorators = [authenticate]
 
     def post(self, book_list_id):
         """
@@ -792,7 +799,6 @@ class BillingScoreResource(Resource):
         billing.change_status(Billing.Status.DONE)
 
 
-
 class AfterSellBillingResource(Resource):
     # /rest/billings/<>/afterselling
     """
@@ -936,13 +942,116 @@ class SingleAfterSellBillingResource(Resource):
         afterseling.save()
 
 
+class UserPhoneCaptchaResource(Resource):
+    # /rest/user/captcha
+
+    get_parser = reqparse.RequestParser()
+    get_parser.add_argument('phone', type=phone, required=True, help="MISSING_OR_WRONG_PHONE")
+
+    def get(self):
+        args = self.get_parser.parse_args()
+
+        if not User.phone_check(args['phone']):
+            abort(400, message={"phone": "PHONE_EXISTED"})
+
+        users = User.objects(phone=args['phone'])
+        if users.count() == 1:
+            # 已经处在于数据库
+            user = users.first()
+            if time_int() - user.captcha_create_time <= 60:
+                abort(400, message={"captcha": "SMS_CAPTCHA_TIME_LIMITED"})
+
+            captcha = send_sms_captcha(args['phone'])
+            user.captcha = captcha
+            user.captcha_create_time = time_int()
+            user.save()
+
+        else:
+            # 没在数据库
+
+            captcha = send_sms_captcha(args['phone'])
+            User(
+                phone=args['phone'],
+                captcha=captcha,
+                captcha_create_time=time_int()
+            ).save()
+
+
+class UserTokenResource(Resource):
+    # /rest/user/token
+
+    get_parser = reqparse.RequestParser()
+    get_parser.add_argument('phone', type=phone, required=True, help="MISSING_OR_WRONG_PHONE")
+    get_parser.add_argument('captcha', type=int, required=True, help="MISSING_CAPTCHA")
+
+    def get(self):
+        args = self.get_parser.parse_args()
+        user = User.objects(phone=args['phone'], register_done=True)
+        if user.count() != 1:
+            abort(400, message={"phone": "WRONG_PHONE"})
+
+        user = user.first()
+
+        if not (user.captcha == args['captcha'] and time_int() - user.captcha_create_time <= 5*60):
+            abort(400, message={"captcha": "WRONG_CAPTCHA_OR_TIME_LIMITED"})
+
+        user.token = random_str(24)
+        user.captcha_create_time -= 60*5
+        user.save()
+        return {
+            'phone': args['phone'],
+            'token': user.token
+        }
+
+    post_parser = reqparse.RequestParser()
+    post_parser.add_argument('phone', type=phone, required=True, help="MISSING_OR_WRONG_PHONE")
+    post_parser.add_argument('token', type=str, required=True, help="MISSING_TOKEN")
+
+    def post(self):
+        args = self.post_parser.parse_args()
+        if len(args['token']) != 24:
+            abort(400, message={"token": "WRONG_TOKEN"})
+
+        user = User.objects(phone=args['phone'], register_done=True)
+        if user.count() != 1:
+            abort(400, message={"phone": "WRONG_PHONE"})
+
+        user = user.first()
+
+        if user.token != args['token']:
+            abort(400, message={"token": "WRONG_TOKEN"})
+
+        user.token = random_str(24)
+        user.save()
+        return {
+            'phone': args['phone'],
+            'token': user.token
+        }
+
+
+class UserAvatarResource(Resource):
+
+    @authenticate
+    def post(self):
+        avatar_max = 111
+        random_avatar = randint(1, avatar_max)
+
+        user = User.get_user_on_headers()
+        user.avatar = random_avatar
+        user.save()
+
+        return {
+            'avatar': user.avatar
+        }
+
+
 class UserResource(Resource):
     # /rest/user
     """
     用户信息
     """
-    method_decorators = [authenticate]
 
+    @authenticate
     def get(self):
         """
         读取用户信息
@@ -952,7 +1061,6 @@ class UserResource(Resource):
         user_json = {
             'username': user.username,
             'avatar': user.avatar or '',
-            'sex': user.sex,
             'unread_notice': Notice.objects(user=user, is_read=False).count(),
             'cart_num': Cart.objects(user=user, status=1).count(),
             'billing': {
@@ -969,6 +1077,59 @@ class UserResource(Resource):
         }
 
         return user_json
+
+    post_parser = reqparse.RequestParser()
+    post_parser.add_argument('username', type=username, required=True, location='form', help="MISSING_OR_WRONG_USERNAME")
+    post_parser.add_argument('phone', type=phone, required=True, location='form', help="MISSING_OR_WRONG_PHONE")
+    post_parser.add_argument('captcha', type=int, required=True, location='form', help="MISSING_CAPTCHA")
+    post_parser.add_argument('avatar', type=int, required=True, location='form', help="MISSING_AVATAR")
+
+    def post(self):
+        args = self.post_parser.parse_args()
+
+        user = User.objects(phone=args['phone'])
+        if user.count() == 0:
+            # 没在数据库中
+            abort(400, message={"error": "ERROR_OPERATION"})
+
+        # 手机已经注册
+        user = user.first()
+        if user.register_done:
+            abort(400, message={"phone": "PHONE_EXISTED"})
+
+        if not (args['captcha'] == user.captcha and int(time()) - user.captcha_create_time <= 60 * 30):
+            abort(400, message={"captcha": "WRONG_CAPTCHA_OR_TIME_LIMITED"})
+
+        user.username = args['username']
+        user.avatar = str(args['avatar'])
+        user.register_done = True
+        user.token = random_str(24)
+        user.captcha_create_time -= 60*30
+        user.save()
+
+        return {
+            'token': user.token,
+            'phone': user.phone,
+            'username': user.username,
+            'avatar': user.avatar
+        }
+
+    put_parser = reqparse.RequestParser()
+    put_parser.add_argument('username', type=username, required=True, location='form',
+                            help="MISSING_OR_WRONG_USERNAME")
+
+    @authenticate
+    def put(self):
+        args = self.put_parser.parse_args()
+
+        user = User.get_user_on_headers()
+
+        user.username = args['username']
+        user.save()
+
+        return {
+            'username': args['username']
+        }
 
 
 class UserAddressListResource(Resource):

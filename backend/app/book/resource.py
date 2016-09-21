@@ -8,7 +8,6 @@ from app.book.model import Tag, BookList, Activity, Book, BookTag
 
 
 class SlidesResource(Resource):
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('page', type=int, default=1)
@@ -34,7 +33,6 @@ class SlidesResource(Resource):
 
 
 class SlideResource(Resource):
-    method_decorators = [authenticate]
 
     def get(self, activity_id):
 
@@ -51,7 +49,6 @@ class SlideResource(Resource):
 
 
 class BooksResource(Resource):
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('page', type=int, default=1)
@@ -59,7 +56,6 @@ class BooksResource(Resource):
 
     def get(self, books_type):
         abort_valid_in_list('type', books_type, ['pop'])
-
         args = self.get_parser.parse_args()
         if books_type == 'pop':
             return self.pop_book(args)
@@ -122,7 +118,6 @@ class BooksResource(Resource):
 
 
 class SimilarBooksResource(Resource):
-    method_decorators = [authenticate]
 
     def get(self, isbn):
 
@@ -157,13 +152,16 @@ class SimilarBooksResource(Resource):
 
 
 class BookResource(Resource):
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('type', type=str, default='summary')
 
     def get(self, isbn):
-
+        """
+        读取单本书 详细 / 简略 内容
+        :param isbn: 书本
+        :return:
+        """
         args = self.get_parser.parse_args()
         abort_valid_in_list('type', args['type'], ['summary', 'detail'])
 
@@ -234,7 +232,6 @@ class BookResource(Resource):
 
 
 class TagResource(Resource):
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('type', type=str, default='all')
@@ -281,7 +278,6 @@ class TagResource(Resource):
 
 
 class BookListsResource(Resource):
-    method_decorators = [authenticate]
 
     get_parser = reqparse.RequestParser()
     get_parser.add_argument('type', type=str, default='all')
@@ -347,7 +343,6 @@ class BookListsResource(Resource):
 
 
 class BookListResource(Resource):
-    method_decorators = [authenticate]
 
     def get(self, book_list_id):
 

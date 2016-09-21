@@ -415,12 +415,17 @@
                 templateUrl: 'auth/auth_tpl.html',
                 controller: 'AuthCtrl as vm',
                 resolve: {
-                    user: function($q, $window) {
+                    check: function($q, $window) {
                         return $q((resolve, reject) => {
-                            if($window.sessionStorage.getItem('token') !== undefined && $window.sessionStorage.getItem('token') !== 'undefined') {
-                                reject();
-                            } else {
+                            if($window.sessionStorage.getItem('token') === undefined ||
+                                $window.sessionStorage.getItem('token') === 'undefined' ||
+                                $window.sessionStorage.getItem('token') === null ||
+                                $window.sessionStorage.getItem('token') === 'null') {
+                                console.log('resolve');
                                 resolve();
+                            } else {
+                                console.log('reject');
+                                reject();
                             }
                         })
                     }

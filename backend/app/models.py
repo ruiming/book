@@ -67,7 +67,7 @@ class User(db.Document, UserMixin):
 
     @property
     def full_link_avatar(self):
-        return 'https://cdn.bookist.org/avatar/xxx.jpg'.format(self.avatar)
+        return 'https://cdn.bookist.org/avatar/{}.jpg'.format(self.avatar)
 
     @property
     def active(self):

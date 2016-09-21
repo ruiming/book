@@ -1412,7 +1412,7 @@ class UserAvatarResource(Resource):
 
     @authenticate
     def post(self):
-        avatar_max = 111
+        avatar_max = 38
         random_avatar = randint(1, avatar_max)
 
         user = User.get_user_on_headers()

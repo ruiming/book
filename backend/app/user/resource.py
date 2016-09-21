@@ -951,8 +951,8 @@ class UserPhoneCaptchaResource(Resource):
     def get(self):
         args = self.get_parser.parse_args()
 
-        if not User.phone_check(args['phone']):
-            abort(400, message={"phone": "PHONE_EXISTED"})
+        # if not User.phone_check(args['phone']):
+        #     abort(400, message={"phone": "PHONE_EXISTED"})
 
         users = User.objects(phone=args['phone'])
         if users.count() == 1:

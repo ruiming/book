@@ -26,7 +26,6 @@
                     notie.alert(1, '请先登陆', 0.3);
                     $timeout(() => {
                         window.location = "#/auth?redirectUrl=" + $base64.encode(document.URL);
-                        console.log(window.location);
                     }, 300);
                     return $q.reject(config);
                 } else if (config && config.data && config.data.message) {

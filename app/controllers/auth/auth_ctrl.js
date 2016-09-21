@@ -5,7 +5,7 @@
         .module('index')
         .controller('AuthCtrl', AuthCtrl);
 
-    function AuthCtrl(userservice, $interval, $timeout, tokenInjector) {
+    function AuthCtrl(userservice, $interval, $timeout, tokenInjector, $base64, $location) {
         let vm = this;
         vm.alerts = [];
         vm.timelimit = 0;
@@ -16,6 +16,8 @@
         vm.switchState = switchState;
         vm.changeAvater = changeAvater;
         vm.getCaptcha = getCaptcha;
+
+        var pre = $base64.decode($location.search().redirectUrl);
 
         vm.avatar = `https://cdn.bookist.org/avatar/${vm.number}.jpg`;
 
@@ -62,7 +64,7 @@
             else {
                 return userservice.login(user.phone, user.captcha).then(data => {
                         tokenInjector.setAuth(data.token);
-                        $state.go('me');
+                        $location.path(pre).replace();
                     }, err => {
                         if(err.status === 400 && err.data.message) {
                             vm.alerts.push(err.data.message);
@@ -81,7 +83,7 @@
             else {
                 return userservice.register(user.name, user.phone, user.captcha, vm.number).then(data => {
                     tokenInjector.setAuth(data.token);
-                    $state.go('me');
+                    $location.path(pre).replace();
                 }, err => {
                     if(err.status === 400 && err.data.message) {
                         vm.alerts.push(err.data.message);

@@ -10,7 +10,8 @@
             'ngTouch',
             'infinite-scroll',
             'angularPromiseButtons',
-            'base64'
+            'base64',
+            'ngCookies'
         ])
         .config(config)
         .run(function ($state, $rootScope, tokenInjector, $location, $window) {
@@ -61,12 +62,16 @@
             $rootScope.$on("$stateChangeError", function (event, toState, toStateParams, fromState, fromParams, error) {
                 $rootScope.loading = false;
             });
+
+            $rootScope.$on( "$locationChangeSuccess", function(event, next, current) {
+                console.log(current, '->' ,next);
+            });
+
         });
 
-    config.$inject = ['$stateProvider', '$locationProvider', '$httpProvider', '$urlRouterProvider', 'angularPromiseButtonsProvider', '$compileProvider'];
-    function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider, $compileProvider) {
+    function config($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider, angularPromiseButtonsProvider, $compileProvider, $cookiesProvider) {
         $compileProvider.debugInfoEnabled(false);
-
+        $cookiesProvider.defaults.expires = new Date(new Date().getTime() +  86400000000);
         $httpProvider.interceptors.push('timestampMarker');
 
         $httpProvider.interceptors.push('tokenInjector');
@@ -406,14 +411,30 @@
                 templateUrl: 'suggest/suggest_tpl.html',
                 resolve: {
                     user: function(userservice) {
-                        return userservice.getUserInfo()
+                        return userservice.getUserInfo();
                     }
                 }
             })
             .state('auth', {
                 url: '/auth',
                 templateUrl: 'auth/auth_tpl.html',
-                controller: 'AuthCtrl as vm'
+                controller: 'AuthCtrl as vm',
+                resolve: {
+                    check: function($q, $window) {
+                        return $q((resolve, reject) => {
+                            if($window.sessionStorage.getItem('token') === undefined ||
+                                $window.sessionStorage.getItem('token') === 'undefined' ||
+                                $window.sessionStorage.getItem('token') === null ||
+                                $window.sessionStorage.getItem('token') === 'null') {
+                                console.log('resolve');
+                                resolve();
+                            } else {
+                                console.log('reject');
+                                reject();
+                            }
+                        })
+                    }
+                }
             })
     }
 

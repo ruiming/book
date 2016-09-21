@@ -120,11 +120,10 @@
 
         // 读取用户信息
         function getUserInfo(reget) {
-            if(userInfo == null || reget) {
+            if(userInfo == null || reget === true) {
                 return userInfo = $http.get(host + '/user')
                     .then(response => response.data);
             }
-            console.log(userInfo);
             return userInfo;
         }
 

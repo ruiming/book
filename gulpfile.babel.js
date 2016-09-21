@@ -22,6 +22,7 @@ gulp.task('angular', function() {
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
         'bower_components/angular-animate/angular-animate.min.js',
         'bower_components/angular-touch/angular-touch.min.js',
+        'bower_components/angular-cookies/angular-cookies.min.js',
         'bower_components/angular-sanitize/angular-sanitize.min.js',
         'bower_components/angular-base64/angular-base64.min.js',
         'bower_components/angular-promise-buttons/dist/angular-promise-buttons.js',
@@ -95,7 +96,6 @@ gulp.task('cdn', function() {
     // 变动资源
     gulp.src(['./src/js/bookist.js', './src/js/templates.js'])
         .pipe(plumber())
-        .pipe(uglify())
         .pipe(babel())
         .pipe(concat('bookist.min.js'))
         .pipe(qiniu({

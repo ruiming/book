@@ -212,7 +212,7 @@ class BookResource(Resource):
                     'create_time': one_comment.create_time,
                     'user': {
                         'username': one_comment.user.username,
-                        'avatar': one_comment.user.avatar
+                        'avatar': one_comment.user.full_link_avatar
                     }
                 })
         elif args['type'] == 'detail':
@@ -363,7 +363,7 @@ class BookListResource(Resource):
             'title': book_list.title,
             'subtitle': book_list.subtitle,
             'author': {
-                'avatar': book_list.author.avatar or '',
+                'avatar': book_list.author.full_link_avatar,
                 'name': book_list.author.username or '',
                 'id': book_list.author.id or ''
             },
@@ -473,7 +473,7 @@ class BookCommentsResource(Resource):
                 'up_already': up_already,
                 'down_already': down_already,
                 'user': {
-                    'avatar': comment.user.avatar,
+                    'avatar': comment.user.full_link_avatar,
                     'username': comment.user.username
                 },
                 'create_time': comment.create_time
@@ -635,7 +635,7 @@ class BookListCommentsResource(Resource):
                 'up_already': up_already,
                 'down_already': down_already,
                 'user': {
-                    'avatar': comment.user.avatar,
+                    'avatar': comment.user.full_link_avatar,
                     'username': comment.user.username
                 },
                 'create_time': comment.create_time
@@ -1439,7 +1439,7 @@ class UserResource(Resource):
         user = User.get_user_on_headers()
         user_json = {
             'username': user.username,
-            'avatar': user.avatar or '',
+            'avatar': user.full_link_avatar,
             'unread_notice': Notice.objects(user=user, is_read=False).count(),
             'cart_num': Cart.objects(user=user, status=1).count(),
             'billing': {

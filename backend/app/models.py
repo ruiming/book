@@ -66,6 +66,10 @@ class User(db.Document, UserMixin):
         return u'{}'.format(self.username)
 
     @property
+    def full_link_avatar(self):
+        return 'https://cdn.bookist.org/avatar/xxx.jpg'.format(self.avatar)
+
+    @property
     def active(self):
         return True
 
@@ -208,6 +212,7 @@ class Book(db.Document):
     enabled = db.BooleanField(default=True)
 
     need_to_refund = db.IntField(default=0)
+    need_to_replace = db.IntField(default=0)
 
     class NotBookInstance(Exception):
         pass
@@ -223,6 +228,14 @@ class Book(db.Document):
             me.image.is_cdn = True
             me.save()
         return me
+
+    def add_storehouse(self, number, add_type):
+        if add_type == 'refund':
+            self.need_to_refund += number
+            self.save()
+        elif add_type == 'replace':
+            self.need_to_replace += number
+            self.save()
 
 
 class BookList(db.Document):

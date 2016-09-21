@@ -121,16 +121,15 @@ class AdminView(AdminIndexView):
         score_buy = 0
         score_transport = 0
         score_service = 0
+        if len(done_billings) != 0:
+            for billing in done_billings:
+                score_buy += billing.score_buy
+                score_transport += billing.score_transport
+                score_service += billing.score_service
 
-        for billing in done_billings:
-            score_buy += billing.score_buy
-            score_transport += billing.score_transport
-            score_service += billing.score_service
-
-        score_buy = float(score_buy) / float(len(done_billings))
-        score_transport = float(score_transport) / float(len(done_billings))
-        score_service = float(score_service) / float(len(done_billings))
-
+            score_buy = float(score_buy) / float(len(done_billings))
+            score_transport = float(score_transport) / float(len(done_billings))
+            score_service = float(score_service) / float(len(done_billings))
 
         return self.render('admin-custom/index.html',
                            user_list_day_str=user_list_day_str,  # 14天新增用户数

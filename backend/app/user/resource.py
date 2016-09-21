@@ -954,7 +954,7 @@ class UserPhoneCaptchaResource(Resource):
         # if not User.phone_check(args['phone']):
         #     abort(400, message={"phone": "PHONE_EXISTED"})
 
-        users = User.objects(phone=args['phone'])
+        users = User.objects(pk=args['phone'])
         if users.count() == 1:
             # 已经处在于数据库
             user = users.first()
@@ -986,7 +986,7 @@ class UserTokenResource(Resource):
 
     def get(self):
         args = self.get_parser.parse_args()
-        user = User.objects(phone=args['phone'], register_done=True)
+        user = User.objects(pk=args['phone'], register_done=True)
         if user.count() != 1:
             abort(400, message={"phone": "WRONG_PHONE"})
 
@@ -1012,7 +1012,7 @@ class UserTokenResource(Resource):
         if len(args['token']) != 24:
             abort(400, message={"token": "WRONG_TOKEN"})
 
-        user = User.objects(phone=args['phone'], register_done=True)
+        user = User.objects(pk=args['phone'], register_done=True)
         if user.count() != 1:
             abort(400, message={"phone": "WRONG_PHONE"})
 
@@ -1087,7 +1087,7 @@ class UserResource(Resource):
     def post(self):
         args = self.post_parser.parse_args()
 
-        user = User.objects(phone=args['phone'])
+        user = User.objects(pk=args['phone'])
         if user.count() == 0:
             # 没在数据库中
             abort(400, message={"error": "ERROR_OPERATION"})

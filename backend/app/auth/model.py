@@ -101,7 +101,7 @@ class UserInlineCart(db.EmbeddedDocument):
 
 
 class User(db.Document, UserMixin):
-    phone = db.StringField(required=True, unique=True, primary_key=True)
+    id = db.StringField(required=True, unique=True, primary_key=True)
     username = db.StringField()
 
     email = db.StringField()
@@ -140,7 +140,7 @@ class User(db.Document, UserMixin):
 
     @classmethod
     def phone_check(cls, phone):
-        users = cls.objects(phone=phone, register_done=True)
+        users = cls.objects(pk=phone, register_done=True)
         if users.count() == 1:
             return False
         return True

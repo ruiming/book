@@ -47,4 +47,4 @@ SECURITY_PASSWORD_SALT = 'some key'
 BUNDLE_ERRORS = True
 
 # CDN
-IMAGE_CDN_BASE_URL = os.environ.get("IMAGE_CDN_BASE_URL",'https://cdn.bookist.org')
+IMAGE_CDN_BASE_URL = os.environ.get("IMAGE_CDN_BASE_URL", 'https://cdn.bookist.org')

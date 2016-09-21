@@ -17,7 +17,7 @@
         vm.changeAvater = changeAvater;
         vm.getCaptcha = getCaptcha;
 
-        var pre = $base64.decode($location.search().redirectUrl);
+        var pre = $base64.decode(decodeURIComponent($location.search().redirectUrl));
 
         vm.avatar = `https://cdn.bookist.org/avatar/${vm.number}.jpg`;
 

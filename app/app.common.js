@@ -426,10 +426,8 @@
                                 $window.sessionStorage.getItem('token') === 'undefined' ||
                                 $window.sessionStorage.getItem('token') === null ||
                                 $window.sessionStorage.getItem('token') === 'null') {
-                                console.log('resolve');
                                 resolve();
                             } else {
-                                console.log('reject');
                                 reject();
                             }
                         })

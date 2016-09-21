@@ -5,9 +5,9 @@
         .module('index')
         .controller('BookCtrl', BookCtrl);
 
-    BookCtrl.$inject = ['$state', '$stateParams', 'commentservice', 'bookservice', 'cartservice', 'userservice', 'book'];
+    BookCtrl.$inject = ['$state', '$stateParams', 'commentservice', 'bookservice', 'cartservice', 'userservice', 'book', '$window'];
 
-    function BookCtrl($state, $stateParams, commentservice, bookservice, cartservice, userservice, book) {
+    function BookCtrl($state, $stateParams, commentservice, bookservice, cartservice, userservice, book, $window) {
 
         let vm = this;
         vm.more = false;            // 默认不加载更多书籍信息介绍
@@ -17,16 +17,13 @@
         vm.addCart = addCart;
         vm.collect = collect;
         vm.postComment = postComment;
+        vm.commentbox = commentbox;
         vm.up = up;
         vm.down = down;
         vm.home = home;
 
         vm.book = book;
         commentservice.setTitle(vm.book.title);
-
-        userservice.getUserInfo().then(response => {
-            vm.user = response;
-        });
 
         bookservice.getSimilarBook($stateParams.isbn).then(response => {
             vm.similarbooks = response;
@@ -35,6 +32,24 @@
         bookservice.getBookBelongs($stateParams.isbn).then(response => {
             vm.booklists = response;
         });
+
+        if($window.sessionStorage.getItem('token') !== void 0 && $window.sessionStorage.getItem('token') !== 'undefined') {
+            userservice.getUserInfo().then(response => {
+                vm.user = response;
+            });
+        } else {
+            vm.user = undefined;
+        }
+
+        function commentbox() {
+            if($window.sessionStorage.getItem('token') !== void 0 && $window.sessionStorage.getItem('token') !== 'undefined') {
+                vm.commentBox=!vm.commentBox;
+            } else {
+                userservice.getUserInfo().then(response => {
+                    vm.user = response;
+                });
+            }
+        }
 
         function home() {
             $state.go('cart');

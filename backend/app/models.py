@@ -230,10 +230,10 @@ class Book(db.Document):
         return me
 
     def add_storehouse(self, number, add_type):
-        if add_type == 'refund':
+        if add_type == 'REFUND':
             self.need_to_refund += number
             self.save()
-        elif add_type == 'replace':
+        elif add_type == 'REPLACE':
             self.need_to_replace += number
             self.save()
 
@@ -489,6 +489,7 @@ class Storehouse(db.Document):
     create_time = db.IntField(required=True, default=time_int)
 
     status = db.IntField(required=True, default=STATUS_NORMAL)
+    process_status = db.StringField()
     status_changed_time = db.IntField()
     source = db.StringField()  # 来源地
 

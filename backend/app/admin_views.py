@@ -451,4 +451,63 @@ class StoreHouseView(AdminBaseView):
 
     @expose('/confirm')
     def confirm(self):
-        pass
+        storehouse_id = request.args.get('s_id')
+        type = request.args.get('type')
+
+        storehouse = Storehouse.objects(pk=storehouse_id).first()
+
+        if type == 'refund_ok':
+            # 确认退货，书籍退到提供商
+            pass
+            storehouse.process_status = ''
+            storehouse.status = Storehouse.STATUS_RETURNED
+            storehouse.status_changed_time = time_int()
+
+            flash(u"成功确认退货，书籍退到提供商")
+            return redirect(url_for("storehouseview.list"))
+
+        elif type == 'refund_ok_store':
+            # 确认退货，书籍存入仓库
+            pass
+            storehouse.process_status = ''
+            storehouse.status = Storehouse.STATUS_IN_ENTREPOT
+            storehouse.status_changed_time = time_int()
+
+            flash(u"成功确认退货，书籍存入仓库")
+            return redirect(url_for("storehouseview.list"))
+
+
+        elif type == 'refund_no':
+            # 取消退货
+            pass
+            storehouse.process_status = ''
+            storehouse.status = STATUS_NORMAL
+            storehouse.status_changed_time = time_int()
+
+            flash(u"成功取消退货")
+            return redirect(url_for("storehouseview.list"))
+
+        elif type == 'replace_ok':
+            # 确认换货
+            pass
+            storehouse.process_status = ''
+            storehouse.status = Storehouse.STATUS_NORMAL
+            storehouse.status_changed_time = time_int()
+            storehouse.create_time = time_int()
+
+            flash(u"成功确认换货")
+            return redirect(url_for("storehouseview.list"))
+
+
+        elif type == 'replace_no':
+            # 取消换货
+            pass
+            storehouse.process_status = ''
+            storehouse.status = STATUS_NORMAL
+            storehouse.status_changed_time = time_int()
+
+            flash(u"成功取消换货")
+            return redirect(url_for("storehouseview.list"))
+
+        flash(u"非法操作")
+        return redirect(url_for("storehouseview.list"))

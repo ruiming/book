@@ -3,6 +3,12 @@
 {% block body %}
 
 <h1>处理中的书籍</h1>
+<p>确认退货，书籍退到提供商： 在仓库中把该本书标记为 完结</p>
+<p>确认退货，书籍存入仓库： 在仓库中把该本书标记为 库存</p>
+<p>取消退货： 好像什么都没发生那样</p>
+<p></p>
+<p>确认换货： 这本书的采购时间更新为点击的时间</p>
+<p>取消换货： 好像什么都没发生那样</p>
 <table>
     <tr>
         <td>书籍</td>
@@ -22,7 +28,7 @@
         <td>{{ one.real_price }}</td>
         <td>{{ one.create_time|datetime }}</td>
         <td>{{ one.process_status }}</td>
-        <td>{% if one.process_status == "REFUND" %} <a href="">退货成功</a> <a href="">退货失败</a> {% else %} 123456 {% endif %}</td>
+        <td>{% if one.process_status == "REFUND" %} <a href="confirm?s_id={{ one.pk }}&type=refund_ok">确认退货，书籍退到提供商</a> <a href="confirm?s_id={{ one.pk }}&type=refund_ok_store">确认退货，书籍存入仓库</a> | <a href="confirm?s_id={{ one.pk }}&type=refund_no">取消退货</a> {% else %} <a href="confirm?s_id={{ one.pk }}&type=replace_ok">确认换货</a> | <a href="confirm?s_id={{ one.pk }}&type=replace_no">取消换货</a> {% endif %}</td>
     </tr>
 
 {% endfor %}

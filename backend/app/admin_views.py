@@ -358,6 +358,7 @@ class AfterSellingBillingView(AdminBaseView):
 
                 # change status of cart
                 for cart in carts:
+                    cart.book.add_storehouse(1, after_selling.status_to_string(after_selling.type))
                     cart.change_status(after_selling.type*2 - 1)
 
             else:
@@ -399,4 +400,114 @@ class StoreHouseView(AdminBaseView):
 
     @expose('/')
     def list(self):
-        return '123'
+        books = Book.objects()
+        books_n = [book for book in books if book.need_to_refund != 0 or book.need_to_replace != 0]
+
+        storehouse_need_operation = Storehouse.objects(status=Storehouse.STATUS_PROCESSING)
+
+        storehouse_backup = {}
+        for book in books:
+            store = Storehouse.objects(book=book, status=Storehouse.STATUS_NORMAL, create_time__gt=time_int()-60*60*24*7)
+
+            storehouse_backup[book.isbn] = store
+
+        return self.render('admin-custom/storehouse/index.html',
+                           books=books_n,
+                           storehouse_need_operation=storehouse_need_operation,
+                           storehouse_backup=storehouse_backup)
+
+    @expose('/submit')
+    def submit(self):
+
+        storehouse_id = request.args.get('s_id')
+        type = request.args.get('type')
+
+        storehouse = Storehouse.objects(pk=storehouse_id).first()
+        if type == 'refund':
+            if storehouse.book.need_to_refund > 0:
+                storehouse.book.add_storehouse(-1, 'REFUND')
+
+                storehouse.process_status = 'REFUND'
+                storehouse.status_changed_time = time_int()
+                storehouse.status = Storehouse.STATUS_PROCESSING
+                storehouse.save()
+                flash(u"《{}》 进入 退货 处理状态".format(storehouse.book.title))
+                return redirect(url_for("storehouseview.list"))
+
+        elif type == 'replace':
+            if storehouse.book.need_to_replace > 0:
+                storehouse.book.add_storehouse(-1, 'REPLACE')
+
+                storehouse.process_status = 'REPLACE'
+                storehouse.status_changed_time = time_int()
+                storehouse.status = Storehouse.STATUS_PROCESSING
+                storehouse.save()
+                flash(u"《{}》 进入 换货 处理状态".format(storehouse.book.title))
+                return redirect(url_for("storehouseview.list"))
+                # return
+
+        flash(u"非法操作")
+        return redirect(url_for("storehouseview.list"))
+
+    @expose('/confirm')
+    def confirm(self):
+        storehouse_id = request.args.get('s_id')
+        type = request.args.get('type')
+
+        storehouse = Storehouse.objects(pk=storehouse_id).first()
+
+        if type == 'refund_ok':
+            # 确认退货，书籍退到提供商
+            pass
+            storehouse.process_status = ''
+            storehouse.status = Storehouse.STATUS_RETURNED
+            storehouse.status_changed_time = time_int()
+
+            flash(u"成功确认退货，书籍退到提供商")
+            return redirect(url_for("storehouseview.list"))
+
+        elif type == 'refund_ok_store':
+            # 确认退货，书籍存入仓库
+            pass
+            storehouse.process_status = ''
+            storehouse.status = Storehouse.STATUS_IN_ENTREPOT
+            storehouse.status_changed_time = time_int()
+
+            flash(u"成功确认退货，书籍存入仓库")
+            return redirect(url_for("storehouseview.list"))
+
+
+        elif type == 'refund_no':
+            # 取消退货
+            pass
+            storehouse.process_status = ''
+            storehouse.status = STATUS_NORMAL
+            storehouse.status_changed_time = time_int()
+
+            flash(u"成功取消退货")
+            return redirect(url_for("storehouseview.list"))
+
+        elif type == 'replace_ok':
+            # 确认换货
+            pass
+            storehouse.process_status = ''
+            storehouse.status = Storehouse.STATUS_NORMAL
+            storehouse.status_changed_time = time_int()
+            storehouse.create_time = time_int()
+
+            flash(u"成功确认换货")
+            return redirect(url_for("storehouseview.list"))
+
+
+        elif type == 'replace_no':
+            # 取消换货
+            pass
+            storehouse.process_status = ''
+            storehouse.status = STATUS_NORMAL
+            storehouse.status_changed_time = time_int()
+
+            flash(u"成功取消换货")
+            return redirect(url_for("storehouseview.list"))
+
+        flash(u"非法操作")
+        return redirect(url_for("storehouseview.list"))

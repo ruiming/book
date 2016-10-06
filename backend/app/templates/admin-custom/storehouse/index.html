@@ -1,0 +1,86 @@
+{% extends 'admin/model/create.html' %}
+
+{% block body %}
+
+<h1>处理中的书籍</h1>
+<p>确认退货，书籍退到提供商： 在仓库中把该本书标记为 完结</p>
+<p>确认退货，书籍存入仓库： 在仓库中把该本书标记为 库存</p>
+<p>取消退货： 好像什么都没发生那样</p>
+<p></p>
+<p>确认换货： 这本书的采购时间更新为点击的时间</p>
+<p>取消换货： 好像什么都没发生那样</p>
+<table>
+    <tr>
+        <td>书籍</td>
+        <td>采购处</td>
+        <td>价格</td>
+        <td>采购价</td>
+        <td>采购时间</td>
+        <td>处理方式</td>
+        <td>最后确认</td>
+    </tr>
+{% for one in storehouse_need_operation %}
+
+    <tr>
+        <td>《{{ one.book.title }}》</td>
+        <td>{{ one.source }}</td>
+        <td>{{ one.price }}</td>
+        <td>{{ one.real_price }}</td>
+        <td>{{ one.create_time|datetime }}</td>
+        <td>{{ one.process_status }}</td>
+        <td>{% if one.process_status == "REFUND" %} <a href="confirm?s_id={{ one.pk }}&type=refund_ok">确认退货，书籍退到提供商</a> <a href="confirm?s_id={{ one.pk }}&type=refund_ok_store">确认退货，书籍存入仓库</a> | <a href="confirm?s_id={{ one.pk }}&type=refund_no">取消退货</a> {% else %} <a href="confirm?s_id={{ one.pk }}&type=replace_ok">确认换货</a> | <a href="confirm?s_id={{ one.pk }}&type=replace_no">取消换货</a> {% endif %}</td>
+    </tr>
+
+{% endfor %}
+</table>
+
+
+<h1>需要操作的书籍</h1>
+<table>
+<tr>
+    <th>书籍名</th>
+    <th>类型</th>
+    <th>数量</th>
+</tr>
+{% for book in books %}
+<tr>
+    <td rowspan="2">《{{ book.title }}》</td>
+    <td>退货</td>
+    <td>{{ book.need_to_refund }}</td>
+</tr>
+<tr>
+    <td>换货</td>
+    <td>{{ book.need_to_replace }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+
+
+{% for book in books %}
+
+<h1>《{{ book.title }}》(退货:{{ book.need_to_refund }} 换货:{{ book.need_to_replace }})</h1>
+
+<table>
+<tr>
+    <td>入库时间</td>
+    <td>来源地</td>
+    <td>售价</td>
+    <td>采购价</td>
+    <td>操作</td>
+</tr>
+{% for one_backup in storehouse_backup[book.isbn] %}
+<tr>
+    <td>{{ one_backup.book.create_time|datetime }}</td>
+    <td>{{ one_backup.source }}</td>
+    <td>{{ one_backup.price }}</td>
+    <td>{{ one_backup.real_price }}</td>
+    <td><a href="submit?s_id={{ one_backup.pk }}&type=refund">退货</a> | <a href="submit?s_id={{ one_backup.pk }}&type=replace">换货</a></td>
+</tr>
+{% endfor %}
+</table>
+{% endfor %}
+
+
+{% endblock %}

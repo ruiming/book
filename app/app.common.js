@@ -30,20 +30,7 @@
             tokenInjector.setAuth(token, userid);
             $rootScope.$state = $state;
             $rootScope.$on("$stateChangeStart", function (event, toState, toStateParams, fromState, fromStateParams) {
-                var isLoading = toState.resolve;
-                if(!isLoading) {
-                    for (var prop in toState.views) {
-                        if (toState.views.hasOwnProperty(prop)) {
-                            if(toState.views[prop].resolve) {
-                                isLoading = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (isLoading) {
-                    $rootScope.loading = true;
-                }
+                $rootScope.loading = true;
             });
 
             $rootScope.$on("$stateChangeSuccess", function (event, toState, toStateParams, fromState, fromParams) {

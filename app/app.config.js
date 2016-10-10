@@ -1,5 +1,5 @@
 // TODO: Change to Angular's Constant
-var host = 'https://bookist.org';        // API url
+var host = 'https://www.bookist.org';        // API url
 // var host = 'http://192.168.1.231';
 
 var statusDict = {                       // 订单状态转换

@@ -60,9 +60,7 @@ def send_sms_captcha(phone):
     req.sms_template_code = "SMS_15110001"
     try:
         resp = req.getResponse()
-        print resp
     except Exception, e:
-        print e
         raise Exception("ERROR_OPERATION")
     else:
         return captcha

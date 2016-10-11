@@ -1340,20 +1340,25 @@ class UserPhoneCaptchaResource(Resource):
             if time_int() - user.captcha_create_time <= 60:
                 abort(400, message={"captcha": "SMS_CAPTCHA_TIME_LIMITED"})
 
-            captcha = send_sms_captcha(args['phone'])
-            user.captcha = captcha
-            user.captcha_create_time = time_int()
-            user.save()
-
+            try:
+                captcha = send_sms_captcha(args['phone'])
+                user.captcha = captcha
+                user.captcha_create_time = time_int()
+                user.save()
+            except:
+                abort(400, message="UNKNOWN_ERROR")
         else:
             # 没在数据库
 
-            captcha = send_sms_captcha(args['phone'])
-            User(
-                phone=args['phone'],
-                captcha=captcha,
-                captcha_create_time=time_int()
-            ).save()
+            try:
+                captcha = send_sms_captcha(args['phone'])
+                User(
+                    phone=args['phone'],
+                    captcha=captcha,
+                    captcha_create_time=time_int()
+                ).save()
+            except:
+                abort(400, message="UNKNOWN_ERROR")
 
 
 class UserTokenResource(Resource):

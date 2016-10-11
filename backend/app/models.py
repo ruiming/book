@@ -792,8 +792,9 @@ class AfterSellBilling(db.Document):
         all_carts = self.billing.carts
         this_after_selling_carts = []
         for cart in all_carts:
-            if self.create_time - cart.in_after_selling_time in range(0, 6):
-                this_after_selling_carts.append(cart)
+            if isinstance(cart.in_after_selling_time, int):
+                if self.create_time - cart.in_after_selling_time in range(0, 6):
+                    this_after_selling_carts.append(cart)
         return this_after_selling_carts
 
 

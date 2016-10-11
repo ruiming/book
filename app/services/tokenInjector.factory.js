@@ -11,7 +11,7 @@
 
         return {
             setAuth: function(t) {
-                if(token !== null) {
+                if(t !== null && t !== undefined && t !== 'null' && t !== 'undefined') {
                     token = t;
                     $window.localStorage.setItem('token', t);
                     $window.sessionStorage.setItem('token', t);
@@ -19,10 +19,11 @@
                 }
             },
             request: function(config) {
-                var deferred = $q.defer();
-                config.headers['token'] = token || $window.sessionStorage.getItem('token') || $window.localStorage.getItem('token') || $cookies.get('token');
-                deferred.resolve(config);
-                return deferred.promise;
+                let t = token || $window.sessionStorage.getItem('token') || $window.localStorage.getItem('token') || $cookies.get('token');
+                if(t !== null && t !== undefined && t !== 'null' && t !== 'undefined'){
+                    config.headers['token'] = t;
+                }
+                return config;
             },
             responseError: function(config) {
                 if(config.status === 401) {

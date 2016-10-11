@@ -11,18 +11,22 @@
 
         return {
             setAuth: function(t) {
-                if(t !== null && t !== undefined && t !== 'null' && t !== 'undefined') {
-                    token = t;
-                    $window.localStorage.setItem('token', t);
-                    $window.sessionStorage.setItem('token', t);
-                    $cookies.put('token', t);
-                }
+                token = t;
+                $window.localStorage.setItem('token', t);
+                $window.sessionStorage.setItem('token', t);
+                var expireDate = new Date();
+                expireDate.setDate(expireDate.getDate() + 360);
+                $cookies.put('token', t, {expires: expireDate});
             },
             request: function(config) {
-                let t = token || $window.sessionStorage.getItem('token') || $window.localStorage.getItem('token') || $cookies.get('token');
-                if(t !== null && t !== undefined && t !== 'null' && t !== 'undefined'){
-                    config.headers['token'] = t;
+                if(token == null) {
+                    token = $cookies.get('token') || $window.localStorage.setItem('token', t);
+                    var expireDate = new Date();
+                    expireDate.setDate(expireDate.getDate() + 360);
+                    $cookies.put('token', t, {expires: expireDate});
+                    $window.localStorage.setItem('token', t);
                 }
+                config.headers['token'] = token;
                 return config;
             },
             responseError: function(config) {

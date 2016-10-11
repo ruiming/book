@@ -3,4 +3,5 @@
     <div class="book-comment" ng-repeat="comment in vm.comments track by $index">
         <comment-row comment=comment up=vm.up down=vm.down></comment-row>
     </div>
+    <p class="empty" ng-if="!vm.comments.length">没有评论</p>
 </div>

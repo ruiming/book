@@ -16,7 +16,8 @@
         function cancelReturn(aftersale) {
             return orderservice.cancelAftersale(aftersale.billing_id, aftersale.id)
                 .then(() => {
-                    aftersale.is_done = true;
+                    console.log(vm.aftersales.indexOf(aftersale));
+                    vm.aftersales.splice(vm.aftersales.indexOf(aftersale), 1);
                 });
         }
 

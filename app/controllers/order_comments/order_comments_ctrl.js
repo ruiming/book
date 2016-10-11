@@ -21,7 +21,7 @@
             }
             else {
                 for(let z of vm.order.carts) {
-                    promises.push(commentservice.postComment(z.book.isbn, z.book.star, z.book.content));
+                    if(z.status === 'STATUS_NORMAL')    promises.push(commentservice.postComment(z.book.isbn, z.book.star, z.book.content));
                 }
             }
             return $q.all(promises).then(() => {

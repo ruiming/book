@@ -6,7 +6,7 @@
                 <span class="order-status">建议您把书看完再来评价书籍哦~</span>
             </div>
             <ul class="order-books order-comments">
-                <li class="order-book" ng-repeat="z in vm.order.carts">
+                <li class="order-book" ng-repeat="z in vm.order.carts" ng-if="z.status === 'STATUS_NORMAL'">
                     <a ui-sref="book({isbn: z.book.isbn})" class="order-img">
                         <img ng-src="{{z.book.image}}">
                     </a>

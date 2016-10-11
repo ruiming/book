@@ -4,7 +4,12 @@
                   no-wrap="false"
                   no-pause="true">
         <uib-slide ng-repeat="slide in vm.slides track by $index" index="slide.id">
+            <a ng-href="{{slide.url}}">
             <img ng-src="{{slide.image}}">
+            <div class="carousel-caption">
+                <p>{{slide.title}}</p>
+            </div>
+            </a>
         </uib-slide>
     </uib-carousel>
 </div>

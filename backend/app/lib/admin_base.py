@@ -37,5 +37,5 @@ class AdminBaseModelView(ModelView):
             if model.image.url[:4] == 'http':
                 return jinja2.Markup('<img src="{}" style="max-width:200px;">'.format(model.image.url))
             return jinja2.Markup('<img src="%s" style="max-width:200px;">' % '{}/{}'.format(app.config['IMAGE_CDN_BASE_URL'],
-                                                                                     model.image))
+                                                                                                     model.image))
 

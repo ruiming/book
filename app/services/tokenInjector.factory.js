@@ -19,12 +19,14 @@
                 $cookies.put('token', t, {expires: expireDate});
             },
             request: function(config) {
-                if(token == null) {
-                    token = $cookies.get('token') || $window.localStorage.setItem('token', t);
-                    var expireDate = new Date();
-                    expireDate.setDate(expireDate.getDate() + 360);
-                    $cookies.put('token', t, {expires: expireDate});
-                    $window.localStorage.setItem('token', t);
+                if(token == null && token !== 'null') {
+                    token = $cookies.get('token') || $window.localStorage.getItem('token');
+                    if(token !== null && token !== 'null') {
+                        var expireDate = new Date();
+                        expireDate.setDate(expireDate.getDate() + 360);
+                        $cookies.put('token', token, {expires: expireDate});
+                        $window.localStorage.setItem('token', token);
+                    }
                 }
                 config.headers['token'] = token;
                 return config;

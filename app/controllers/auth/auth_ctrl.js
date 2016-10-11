@@ -63,7 +63,9 @@
             else {
                 return userservice.login(user.phone, user.captcha).then(data => {
                         tokenInjector.setAuth(data.token);
-                        $location.path(pre.slice(2)).replace();
+                        $timeout(() => {
+                            $location.path(pre.slice(2)).replace();                            
+                        }, 0);
                     }, err => {
                         if(err.status === 400 && err.data.message) {
                             vm.alerts.push(err.data.message);
@@ -82,7 +84,9 @@
             else {
                 return userservice.register(user.name, user.phone, user.captcha, vm.number).then(data => {
                     tokenInjector.setAuth(data.token);
-                    $location.path(pre.slice(2)).replace();
+                    $timeout(() => {
+                        $location.path(pre.slice(2)).replace();                            
+                    }, 0);
                 }, err => {
                     if(err.status === 400 && err.data.message) {
                         vm.alerts.push(err.data.message);

@@ -28,7 +28,9 @@
                         $window.localStorage.setItem('token', token);
                     }
                 }
-                config.headers['token'] = token;
+                if(token !== null && token !== 'null') {
+                    config.headers['token'] = token;                    
+                }
                 return config;
             },
             responseError: function(config) {

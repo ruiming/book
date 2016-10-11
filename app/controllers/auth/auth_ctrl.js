@@ -38,7 +38,7 @@
             } else if(vm.form.phone.$error.minlength) {
                 vm.alerts.push("手机号码格式不正确");
             } else {
-                vm.timelimit = 60;
+                vm.timelimit = 59;
                 var timelimit = $interval(() => {
                     vm.timelimit --;
                 }, 1000);

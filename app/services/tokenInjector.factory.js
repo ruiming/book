@@ -11,10 +11,12 @@
 
         return {
             setAuth: function(t) {
-                token = t;
-                $window.localStorage.setItem('token', t);
-                $window.sessionStorage.setItem('token', t);
-                $cookies.put('token', t);
+                if(token !== null) {
+                    token = t;
+                    $window.localStorage.setItem('token', t);
+                    $window.sessionStorage.setItem('token', t);
+                    $cookies.put('token', t);
+                }
             },
             request: function(config) {
                 var deferred = $q.defer();

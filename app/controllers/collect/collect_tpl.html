@@ -12,7 +12,7 @@
             <booklist-row booklists=vm.booklists></booklist-row>
             <p class="empty" ng-if="!vm.booklists.length">没有收藏书单</p>
         </div>
-        <div class="animate-2" ng-class="{true: 'animate-hide-2', false: ''}[!vm.swap]">
+        <div class="animate-2" style="padding-top:20px" ng-class="{true: 'animate-hide-2', false: ''}[!vm.swap]">
             <book-row books=vm.books></book-row>
             <p class="empty" ng-if="!vm.books.length">没有收藏书籍</p>
         </div>

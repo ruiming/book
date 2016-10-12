@@ -1197,7 +1197,6 @@ class AfterSellBillingResource(Resource):
         :return:
         """
         billing = get_from_object_id(billing_id, Billing, 'billing_id')
-        print billing.find_received_time()
         if billing.status not in [Billing.Status.RECEIVED, Billing.Status.DONE]:
             abort(400, message="INVALID_BILLING_STATUS")
 

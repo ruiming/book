@@ -11,7 +11,7 @@ SECRET_KEY = '123456'
 
 
 # Mongodb Setting / MongoEngine
-MONGODB_DB = os.environ.get('MONGODB_DB', 'book')
+MONGODB_DB = os.environ.get('MONGODB_DB', 'bookist')
 MONGODB_HOST = os.environ.get('MONGODB_HOST', '127.0.0.1')
 MONGODB_PORT = os.environ.get('MONGODB_PORT', 27017)
 MONGODB_USERNAME = os.environ.get('MONGODB_USERNAME', '')

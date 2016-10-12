@@ -1197,8 +1197,12 @@ class AfterSellBillingResource(Resource):
         :return:
         """
         billing = get_from_object_id(billing_id, Billing, 'billing_id')
-        if billing.status != Billing.Status.RECEIVED:
+        print billing.find_received_time()
+        if billing.status not in [Billing.Status.RECEIVED, Billing.Status.DONE]:
             abort(400, message="INVALID_BILLING_STATUS")
+
+        if billing.find_received_time() + 3600 * 24 * 14 < time_int():
+            abort(400, message="BILLING_OUT_OF_TIME")
 
         user = User.get_user_on_headers()
         args = self.post_parser.parse_args()

@@ -631,6 +631,12 @@ class Billing(db.Document):
                 carts.append([cart, 1])
         return carts
 
+    def find_received_time(self):
+
+        for one_s in self.status_list:
+            if one_s.status == str(self.Status.RECEIVED):
+                return one_s.time
+
     def _add_log(self, status, content=""):
         """
         向status_list中添加纪录

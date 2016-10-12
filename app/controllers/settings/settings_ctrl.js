@@ -12,7 +12,7 @@
 
         function logout() {
             tokenInjector.setAuth(undefined);
-            $location.path('/').replace();
+            $location.path('#/').replace();
         }
     }
 })();

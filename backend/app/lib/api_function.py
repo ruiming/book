@@ -44,8 +44,8 @@ def send_sms_captcha(phone):
     """
     url = 'gw.api.taobao.com'
     port = 80
-    appkey = '23276450'
-    secret = '9d4c4595733ee66cac9d1b46a7040cbe'
+    appkey = '23481414'
+    secret = 'd15cc9341957b1bed938bc55247bac30'
 
     phone = str(phone)
 
@@ -58,11 +58,9 @@ def send_sms_captcha(phone):
     req.sms_param = "{code:'%s'}" % captcha
     req.rec_num = phone
     req.sms_template_code = "SMS_15110001"
-    print 'kkk'
     try:
         resp = req.getResponse()
     except Exception, e:
         print e
     else:
-        print captcha
         return captcha

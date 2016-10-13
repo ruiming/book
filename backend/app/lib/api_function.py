@@ -61,3 +61,5 @@ def send_sms_captcha(phone):
 
     resp = req.getResponse()
 
+    return captcha
+

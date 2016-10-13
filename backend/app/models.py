@@ -32,6 +32,7 @@ class UserInlineCart(db.EmbeddedDocument):
 
 
 class User(db.Document, UserMixin):
+
     id = db.StringField(required=True, unique=True, primary_key=True)
     username = db.StringField()
 

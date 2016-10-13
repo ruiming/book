@@ -61,6 +61,6 @@ def send_sms_captcha(phone):
     try:
         resp = req.getResponse()
     except Exception, e:
-        print e
+        raise Exception(e)
     else:
         return captcha

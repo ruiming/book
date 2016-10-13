@@ -1496,7 +1496,7 @@ class UserResource(Resource):
 
         return {
             'token': user.token,
-            'phone': user.phone,
+            'phone': user.pk,
             'username': user.username,
             'avatar': user.avatar
         }

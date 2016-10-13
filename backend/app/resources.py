@@ -1356,7 +1356,7 @@ class UserPhoneCaptchaResource(Resource):
             try:
                 captcha = send_sms_captcha(args['phone'])
                 User(
-                    phone=args['phone'],
+                    id=args['phone'],
                     captcha=captcha,
                     captcha_create_time=time_int()
                 ).save()

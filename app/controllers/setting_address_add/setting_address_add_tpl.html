@@ -14,9 +14,12 @@
         </div>
         <div class="form-group">
             <label>宿舍地址</label>
-            <input type="text" name="dorm" ng-model="vm.dormitory"
+            <div class="input-group">
+                <div class="input-group-addon">华南师范大学</div>
+                <input type="text" name="dorm" ng-model="vm.dormitory"
                    maxlength=30 class="form-control"
-                   ng-required=true placeholder="宿舍位置">
+                   ng-required=true placeholder="仅支持华师石牌校区配送哦">
+            </div>
         </div>
         <div class="btn-group">
             <button class="btn btn-success" promise-btn

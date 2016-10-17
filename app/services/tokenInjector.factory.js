@@ -47,7 +47,11 @@
                     } else if(typeof message === 'object') {
                         let str = '';
                         for(let key in message) {
-                            if(message.hasOwnProperty(key)) str += str === '' ? lang[message[key]] : ', ' + lang[message[key]];
+                            if(message.hasOwnProperty(key)) {
+                                if(lang[message[key]] !== undefined) key = lang[message[key]];          
+                                else key = message[key];                      
+                                str += str === '' ? key : ', ' + key;
+                            }
                         }
                         config.data.message = str;
                     }

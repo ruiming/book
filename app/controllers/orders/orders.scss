@@ -142,6 +142,7 @@
         padding: 10px 10px 10px 35px;
         li {
           padding: 5px 0;
+          clear: both;
           color: #03A9F4;
           &:last-child {
             color: #B12704;
@@ -152,6 +153,7 @@
             }
             &:last-child {
               float: right;
+              white-space: pre-line;
             }
           }
         }

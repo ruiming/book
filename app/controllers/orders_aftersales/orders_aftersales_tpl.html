@@ -4,7 +4,7 @@
             <i class="fa fa-rocket" aria-hidden="true"></i> 您还没有退换货订单
         </p>
         <ul class="order-list" ng-if="vm.aftersales.length">
-            <li class="order-list-one" ng-repeat="aftersale in vm.aftersales | orderBy: 'is_done'" ng-if="!aftersale.is_done">
+            <li class="order-list-one" ng-repeat="aftersale in vm.aftersales | orderBy: 'is_done'" ng-if="aftersale.is_done">
                 <div class="order-title">
                     <span class="order-head">LifeBrary</span>
                     <span class="order-status">{{aftersale.type === 'REFUND' ? '退款' : '退货'}}</span>

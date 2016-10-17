@@ -1348,20 +1348,20 @@ class UserPhoneCaptchaResource(Resource):
                 user.captcha = captcha
                 user.captcha_create_time = time_int()
                 user.save()
-            except:
-                abort(400, message="UNKNOWN_ERROR")
+            except Exception as e:
+                abort(400, message=e.message)
         else:
             # 没在数据库
 
             try:
                 captcha = send_sms_captcha(args['phone'])
                 User(
-                    phone=args['phone'],
+                    id=args['phone'],
                     captcha=captcha,
                     captcha_create_time=time_int()
                 ).save()
-            except:
-                abort(400, message="UNKNOWN_ERROR")
+            except Exception as e:
+                abort(400, message=e.message)
 
 
 class UserTokenResource(Resource):
@@ -1496,7 +1496,7 @@ class UserResource(Resource):
 
         return {
             'token': user.token,
-            'phone': user.phone,
+            'phone': user.pk,
             'username': user.username,
             'avatar': user.avatar
         }

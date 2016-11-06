@@ -520,7 +520,6 @@ class Cart(db.Document):
     status = db.IntField(required=True, default=STATUS_NORMAL)
     in_after_selling_time = db.IntField()
     status_changed_time = db.IntField()
-
     user = db.ReferenceField(User)
 
     def __unicode__(self):
@@ -771,6 +770,8 @@ class AfterSellBilling(db.Document):
     process_change_time = db.IntField()
     feedback = db.EmbeddedDocumentListField(BillingStatus)
 
+    carts = db.ListField(db.ReferenceField(Cart))
+
     def change_process_status(self, next_process):
         self.process = next_process
         self.process_change_time = time_int()
@@ -796,6 +797,8 @@ class AfterSellBilling(db.Document):
         从 billing 中找出属于该售后订单的 Cart
         :return: Cart list
         """
+        return self.carts
+
         all_carts = self.billing.carts
         this_after_selling_carts = []
         for cart in all_carts:

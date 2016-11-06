@@ -1232,6 +1232,7 @@ class AfterSellBillingResource(Resource):
         after_sell_billing = AfterSellBilling(
             billing=billing,
             isbn=args['book'].isbn,
+            carts=after_selling_carts,
             number=args['number'],
             type=AfterSellBilling.REFUND if args['type'] == "refund" else AfterSellBilling.REPLACE,
             reason=args['reason'],
